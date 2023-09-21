@@ -10,7 +10,8 @@
 </div>
 </div>
 <h1>Sign into Your Account</h1>
-<form action="instructor-dashboard.html">
+<form action="{{route('login')}}" medthod="POST">
+    @csrf
 <div class="form-group">
 <label class="form-control-label">Email</label>
 <input type="email" class="form-control" placeholder="Enter your email address">
@@ -41,7 +42,7 @@
 <span><a href="#">Or sign in with</a></span>
 <div class="sign-google">
 <ul>
-<li><a href="#"><img src="{{asset('assets/img/net-icon-01.png')}}" class="img-fluid" alt="Logo"> Sign In using Google</a></li>
+<li><a href="{{route('login.google')}}"><img src="{{asset('assets/img/net-icon-01.png')}}" class="img-fluid" alt="Logo"> Sign In using Google</a></li>
 <li><a href="#"><img src="{{asset('assets/img/net-icon-02.png')}}" class="img-fluid" alt="Logo">Sign In using Facebook</a></li>
 </ul>
 </div>
