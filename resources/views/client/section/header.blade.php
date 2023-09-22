@@ -134,13 +134,46 @@
     </ul>
     </div>
     <ul class="nav header-navbar-rht">
-    <li class="nav-item">
-    <a class="nav-link header-sign" href="{{route('login')}}">Login</a>
-    </li>
-    <li class="nav-item">
-    <a class="nav-link header-login" href="{{route('register')}}">Register</a>
-    </li>
+        @guest
+        <li class="nav-item">
+            <a class="nav-link header-login" href="{{ route('login') }}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link header-sign" href="{{ route('register') }}">Register</a>
+        </li>
+        @else
+            <li class="nav-item">
+                <div class="user-info" id="user-info-dropdown">
+                    <a class="nav-link header-sign" href="#">
+                        Xin chào, {{ Auth::user()->username }}
+                    </a>
+                    <div class="user-dropdown">
+                        <ul>
+                            <li><a href="">Cập nhật tài khoản</a></li>
+                            <li>
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Đăng xuất
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        @endguest
     </ul>
+    
+    
+    
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
     </div>
     </nav>
     </div>
