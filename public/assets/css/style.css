@@ -12209,11 +12209,25 @@ input[type=password]::-ms-clear
 .plan-box {
 	background: #FFFFFF;
 	border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 	padding: 20px;
 	display: flex;
     justify-content: space-between;
 	margin-bottom: 25px;
 	border: 1px solid #e9ecef;
+    animation: show_message 1s forwards;
+    position: fixed;
+    left: 0;
+    bottom:0;
+}
+@keyframes show_message {
+    0% {
+        transform: translateX(-100%);
+    }
+100% {
+       
+        transform: translateX(7%);
+}
 }
 .plan-box:hover {
 }
