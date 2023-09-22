@@ -12,13 +12,21 @@ class User extends Model implements Authenticatable
     use SoftDeletes;
     protected $fillable = [
         'name',
+        'username',
+        'image',
+        'phone',
+        'profession',
         'email',
         'password',
         'avatar',
         'auth',
     ];
     protected $attributes = [
-        'phone',
+        'phone' => '',
+        'username' => '',
+        'image' => [],
+        'profession' => [],
+        'role' => ['650ba6fdf6e2892bb7012082'],
     ];
 
 }

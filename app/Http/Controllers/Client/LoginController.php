@@ -18,7 +18,7 @@ class LoginController extends Controller
             $user = new User();
             $user->name = $data->name;
             $user->email = $data->email;
-            $user->avatar = $data->avatar;
+            $user->image = ['avatar' => $data->avatar];
             $user->auth = ['google' => $data->id];
             $user->save();
         }
