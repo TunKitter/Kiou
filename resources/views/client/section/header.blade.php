@@ -52,17 +52,17 @@
     </div>
     <ul class="main-nav">
     <li class="has-submenu active">
-    <a class href="{{route('home')}}">{{__('header.trang_chu')}}</a>
+    <a class href="{{route('home')}}">Home</a>
     </li>
     <li class="has-submenu">
-    <a href>{{__('header.khoa_hoc')}} <i class="fas fa-chevron-down"></i></a>
+    <a href>Course <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu first-submenu">
    <li><a href="setting-student-invoice.html">Khóa học</a></li>
     <li><a href="setting-support-tickets.html">Lộ trình</a></li>
     </ul>
     </li>
     <li class="has-submenu">
-    <a href>{{__('header.sinh_vien')}} <i class="fas fa-chevron-down"></i></a>
+    <a href>Student <i class="fas fa-chevron-down"></i></a>
     <ul class="submenu first-submenu">
     <li class="has-submenu ">
     <a href="students-list.html">Sinh viên</a>
@@ -132,7 +132,7 @@
     </ul>
     </li>
     <li class="has-submenu">
-    <a href>Bài viết <i class="fas fa-chevron-down"></i></a>
+    <a href>Blog <i class="fas fa-chevron-down"></i></a>
     <ul class="submenu">
     <li><a href="blog-list.html">Blog List</a></li>
     <li><a href="blog-grid.html">Blog Grid</a></li>
@@ -149,7 +149,7 @@
     <ul class="nav header-navbar-rht">
 @auth
     <li class="nav-item">
-    <a class="nav-link header-sign" href="#">Xin chao {{$auth::user()->name}}</a>
+    <a class="nav-link header-sign" href="#">Hello {{$auth::user()->name}}</a>
     </li>
 @endauth
 @guest

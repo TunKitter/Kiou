@@ -94,7 +94,7 @@ return [
         ],
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => 'mongodb+srv://xuanhau:xuanhau@kiou.tgsxzi5.mongodb.net/?retryWrites=true&w=majority',
+            'dsn' => env('DB_DSN'),
             'database' => env('DB_DATABASE', 'kiou'),
         ],
     ],
