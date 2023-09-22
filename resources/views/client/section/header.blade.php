@@ -51,23 +51,35 @@
     </div>
     <ul class="main-nav">
     <li class="has-submenu active">
-    <a class href="{{route('home')}}">Home</a>
+    <a class href="{{route('home')}}">{{__('header.trang_chu')}}</a>
     </li>
     <li class="has-submenu">
-    <a href>Courses <i class="fas fa-chevron-down"></i></a>
+    <a href>{{__('header.khoa_hoc')}} <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu first-submenu">
-   <li><a href="setting-student-invoice.html">Course</a></li>
-    <li><a href="setting-support-tickets.html">Roadmap</a></li>
+   <li><a href="setting-student-invoice.html">Khóa học</a></li>
+    <li><a href="setting-support-tickets.html">Lộ trình</a></li>
     </ul>
     </li>
     <li class="has-submenu">
-    <a href>Student <i class="fas fa-chevron-down"></i></a>
+    <a href>{{__('header.sinh_vien')}} <i class="fas fa-chevron-down"></i></a>
     <ul class="submenu first-submenu">
     <li class="has-submenu ">
-    <a href="students-list.html">Student</a>
+    <a href="students-list.html">Sinh viên</a>
     <ul class="submenu">
     <li><a href="students-list.html">List</a></li>
-    <li><a href="students-grid.html">Grid</a></li>
+    <li class="has-submenu "><a href="students-grid.html">Grid</a>
+      <ul class="submenu">
+        <li><a href="students-list.html">List</a></li>
+        <li class="has-submenu "><a href="students-grid.html">Grid</a>
+          <ul class="submenu">
+            <li><a href="students-list.html">List</a></li>
+            <li><a href="students-grid.html">Grid</a>
+              
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
     </ul>
     </li>
     <li><a href="setting-edit-profile.html">Student Profile</a></li>
@@ -119,7 +131,7 @@
     </ul>
     </li>
     <li class="has-submenu">
-    <a href>Blog <i class="fas fa-chevron-down"></i></a>
+    <a href>Bài viết <i class="fas fa-chevron-down"></i></a>
     <ul class="submenu">
     <li><a href="blog-list.html">Blog List</a></li>
     <li><a href="blog-grid.html">Blog Grid</a></li>
@@ -135,15 +147,16 @@
     </div>
     <ul class="nav header-navbar-rht">
     <li class="nav-item">
-    <a class="nav-link header-sign" href="{{route('login')}}">Login</a>
+    <a class="nav-link header-sign" href="{{route('login')}}">Đăng nhập</a>
     </li>
     <li class="nav-item">
-    <a class="nav-link header-login" href="{{route('register')}}">Register</a>
-    </li>
+    <a class="nav-link header-login" href="{{route('register')}}">Đăng ký</a>
+    </li> 
     </ul>
     </div>
     </nav>
     </div>
     </header>
     <body>
-        <div class="main-wrapper">
+    <div class="main-wrapper">
+        
