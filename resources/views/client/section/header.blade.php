@@ -1,3 +1,4 @@
+@inject('auth','Illuminate\Support\Facades\Auth' )
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,17 +142,25 @@
     </ul>
     </li>
     <li class="login-link">
-    <a href="login.html">Login / Signup</a>
+    <a href="login.html">Login / Signup </a>
     </li>
     </ul>
     </div>
     <ul class="nav header-navbar-rht">
+@auth
     <li class="nav-item">
-    <a class="nav-link header-sign" href="{{route('login')}}">Đăng nhập</a>
+    <a class="nav-link header-sign" href="#">Xin chao {{$auth::user()->name}}</a>
     </li>
-    <li class="nav-item">
-    <a class="nav-link header-login" href="{{route('register')}}">Đăng ký</a>
-    </li> 
+@endauth
+@guest
+     <li class="nav-item">
+    <a class="nav-link header-sign" href="{{route('login')}}">Login</a>
+    </li>
+     <li class="nav-item">
+    <a class="nav-link header-sign" href="{{route('register')}}">Register</a>
+    </li>
+@endguest
+     
     </ul>
     </div>
     </nav>

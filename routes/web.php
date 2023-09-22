@@ -6,22 +6,9 @@ use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\RegisterController;
 use Illuminate\Support\Facades\Route;
 
-
-# --------------------------- Language ---------------------------------
-Route::get('/lang/{locale}', function (string $locale) {
-    if (! in_array($locale, ['vi', 'en'])) {
-        abort(400);
-    }
- 
-    echo App::setLocale($locale);
-    Session::put('locale',$locale);
-    return redirect()->back();
- 
-    // ...
-});
-// Login Google 
-Route::get('/login/google',[LoginController::class,'redirectToGoogle'])->name('login.google');
-Route::get('/login/google/callback',[LoginController::class,'handleGoogleCallback']);
+// Login Google
+Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
 # --------------------------- Home ---------------------------------
 Route::get('/', [HomeController::class, 'index'])->name('home');
