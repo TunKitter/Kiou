@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -46,25 +46,12 @@ class LoginController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function customLogin(Request $request)
+    public function login(AuthRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ], [
-            'email.required' => 'Vui lòng nhập địa chỉ email.',
-            'email.email' => 'Địa chỉ email không hợp lệ.',
-            'password.required' => 'Vui lòng nhập mật khẩu.',
-            'password.min' => 'Mật khẩu phải chứa ít nhất 6 ký tự.',
-        ]);
-
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            // Đăng nhập thành công
+        $request->validated();
+        if (Auth::attempt($request->only('email', 'password'))) {
             return redirect()->intended('/');
         } else {
-            // Đăng nhập thất bại
             return redirect()->back()->withInput($request->only('email'))->withErrors([
                 'email' => 'Thông tin đăng nhập không đúng.',
             ]);

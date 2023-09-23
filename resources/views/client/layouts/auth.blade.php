@@ -70,6 +70,5 @@
 <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
 
 <script src="{{asset('assets/js/script.js')}}"></script>
-@yield('scripts')
 </body>
 </html>

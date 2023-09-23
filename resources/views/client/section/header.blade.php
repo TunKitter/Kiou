@@ -158,22 +158,15 @@
             <li class="nav-item">
                 <div class="user-info" id="user-info-dropdown">
                     <a class="nav-link header-sign" href="#">
-                        Xin chào, {{ Auth::user()->username }}
+                      👋 <b>{{ Auth::user()->name }}</b> 
                     </a>
-                    <div class="user-dropdown">
-                        <ul>
-                            <li><a href="">Cập nhật tài khoản</a></li>
-                            <li>
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Đăng xuất
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                </div>
+            </li>
+<li class="nav-item">
+                <div class="user-info" id="user-info-dropdown">
+                    <a class="nav-link header-sign" href="{{ route('logout')}}" style="background: #f6697b;color: white">
+                        Logout
+                    </a>
                 </div>
             </li>
         @endguest
