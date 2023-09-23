@@ -15,8 +15,11 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 
 Route::prefix('password')->group(function () {
-    Route::get('enter-email', [PasswordController::class, 'index'])->name('enter-email');
+    Route::get('enter-email', [PasswordController::class, 'getForgotPassword'])->name('get-fp');
+    Route::post('enter-email/store', [PasswordController::class, 'postForgotPassword'])->name('post-fp');
     Route::redirect('/', 'password/enter-email');
-    Route::get('confirm-code', [PasswordController::class, 'confirm_code'])->name('confirm-code');
-    Route::get('new-password', [PasswordController::class, 'new_password'])->name('new-password');
+    Route::get('confirm-code', [PasswordController::class, 'getSendCode'])->name('get-sendcode');
+    Route::post('confirm-code/store', [PasswordController::class, 'postSendCode'])->name('post-sendcode');
+    Route::get('new-password', [PasswordController::class, 'getChangeFP'])->name('get-change-fp');
+    Route::post('new-password/store', [PasswordController::class, 'postChangeFP'])->name('post-change-fp');
 });
