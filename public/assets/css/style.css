@@ -10856,6 +10856,41 @@ textarea:focus {
     align-items: center;
     padding-bottom: 50px;
   }
+  /* Ẩn dropdown menu ban đầu */
+.user-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+/* Hiển thị dropdown menu khi di chuột qua user-info */
+.user-info:hover .user-dropdown {
+    display: block;
+}
+
+/* Tùy chỉnh giao diện dropdown menu theo ý muốn của bạn */
+.user-dropdown ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-dropdown ul li {
+    padding: 10px;
+}
+
+.user-dropdown ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.user-dropdown ul li a:hover {
+    background-color: #f0f0f0;
+}
+
+
   .impressive-section .section-headings p {
     font-weight: 400;
     font-size: 16px;
@@ -11560,14 +11595,15 @@ textarea:focus {
 	margin-bottom: 30px;
 }
 .btn-start {
-	background: #FF875A;
+	background: #f7b79e;
 	border-radius: 5px;
 	padding: 12px 15px;
     font-weight: 700;
 	color: #FFF;
+    outline: none;
+    border: none;
 }
 .btn-start:hover {
-	background: #f57b4d;
 	color: #FFF;
 }
 .login-wrapper .loginbox .dont-have {
