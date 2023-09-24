@@ -31,7 +31,7 @@ class AuthRequest extends FormRequest
                 return $login_rules;
             case 'register':
                 return array_merge($login_rules, [
-                    'name' => 'required|min:3|max:40|alpha_dash:ascii',
+                    'name' => ['required', 'min:3', 'max:40', 'regex:/^[a-zA-Z\s]+$/'],
                     'phone' => ['required', 'string', 'alpha_dash:ascii', Rule::unique('users')],
                     'username' => [
                         'required',
@@ -78,6 +78,7 @@ class AuthRequest extends FormRequest
             'email.unique' => 'Địa chỉ email đã tồn tại trong hệ thống.',
             'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống.',
             '*.alpha_dash' => ':attribute không được chứa ký tự đặc biệt.',
+            'name.regex' => ':attribute không được chứa ký tự đặc biệt.',
 
         ];
     }

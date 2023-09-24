@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller

@@ -19,8 +19,8 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
-Route::get('/logout', [LogoutController::class, 'index'])->name('logout');
-Route::post('/logout', [LogoutController::class, 'logout']);
+Route::get('/logout', [LogoutController::class, 'index'])->name('logout')->middleware('auth');
+Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');
 
 Route::prefix('password')->group(function () {
     Route::get('enter-email', [PasswordController::class, 'index'])->name('enter-email');
@@ -28,3 +28,6 @@ Route::prefix('password')->group(function () {
     Route::get('confirm-code', [PasswordController::class, 'confirm_code'])->name('confirm-code');
     Route::get('new-password', [PasswordController::class, 'new_password'])->name('new-password');
 });
+
+# ------------------------- Profile --------------------------------
+Route::get('/profile', fn() => view('client.profile.profile'))->name('profile')->middleware('auth');
