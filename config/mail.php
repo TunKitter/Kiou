@@ -11,7 +11,7 @@ return [
     | messages sent by your application. Alternative mailers may be setup
     | and used as needed; however, this mailer will be used by default.
     |
-    */
+     */
 
     'default' => env('MAIL_MAILER', 'smtp'),
 
@@ -31,20 +31,20 @@ return [
     | Supported: "smtp", "sendmail", "mailgun", "ses", "ses-v2",
     |            "postmark", "log", "array", "failover"
     |
-    */
+     */
 
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => 'smtp.gmail.com',
-            'port' =>  587,
-            'encryption' => 'tls',
-            'username' => 'toanweb8@gmail.com',
-            'password' => 'sqpntoeyzostsnhi',
+            'url' => env('MAIL_URL'),
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
-
 
         'ses' => [
             'transport' => 'ses',
@@ -96,7 +96,7 @@ return [
     | the same address. Here, you may specify a name and address that is
     | used globally for all e-mails that are sent by your application.
     |
-    */
+     */
 
     'from' => [
         'address' => 'toanweb8@gmail.com',
@@ -112,7 +112,7 @@ return [
     | theme and component paths here, allowing you to customize the design
     | of the emails. Or, you may simply stick with the Laravel defaults!
     |
-    */
+     */
 
     'markdown' => [
         'theme' => 'default',

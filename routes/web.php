@@ -23,13 +23,13 @@ Route::get('/logout', [LogoutController::class, 'index'])->name('logout')->middl
 Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');
 
 Route::prefix('password')->group(function () {
-    Route::get('enter-email', [PasswordController::class, 'getForgotPassword'])->name('get-fp');
-    Route::post('enter-email/store', [PasswordController::class, 'postForgotPassword'])->name('post-fp');
+    Route::get('enter-email', [PasswordController::class, 'enterEmail'])->name('enter-email');
+    Route::post('enter-email', [PasswordController::class, 'handleEnterEmail']);
     Route::redirect('/', 'password/enter-email');
-    Route::get('confirm-code', [PasswordController::class, 'getSendCode'])->name('get-sendcode');
-    Route::post('confirm-code/store', [PasswordController::class, 'postSendCode'])->name('post-sendcode');
-    Route::get('new-password', [PasswordController::class, 'getChangeFP'])->name('get-change-fp');
-    Route::post('new-password/store', [PasswordController::class, 'postChangeFP'])->name('post-change-fp');
+    Route::get('confirm-code', [PasswordController::class, 'confirmCode'])->name('confirm-code');
+    Route::post('confirm-code', [PasswordController::class, 'handleConfirmCode']);
+    Route::get('new-password', [PasswordController::class, 'newPassword'])->name('new-password');
+    Route::post('new-password', [PasswordController::class, 'handleNewPassword']);
 });
 
 # ------------------------- Profile --------------------------------

@@ -1,5 +1,15 @@
 @extends('client.layouts.auth')
 @section('content')
+@if(Session::get('no_confirm_code'));
+@include('client.section.message', ['message' => session('no_confirm_code'),'type'=>'error'])
+@endif
+@if(Session::get('no_user'));
+@include('client.section.message', ['message' => session('no_user'),'type'=>'error'])
+@endif
+
+
+
+
     <div class="login-wrapper">
         <div class="loginbox">
             <div class="img-logo">
@@ -17,7 +27,7 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <form action="{{ route('post-fp') }}" method="post">
+            <form action="{{ route('enter-email') }}" method="post">
                 @csrf
                 <div class="form-group">
                     <label class="form-control-label">Email</label>

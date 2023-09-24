@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>Mã xác nhận</h1>
+    {{$name}}
     @if(session('send_code'))
         <div class="">
             {{ session('send_code') }}

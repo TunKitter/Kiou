@@ -1,5 +1,10 @@
 @extends('client.layouts.auth')
 @section('content')
+@if(Session::get('wrong_code'));
+@include('client.section.message', ['message' => session('wrong_code'),'type'=>'error'])
+@endif
+
+
     <div class="login-wrapper">
         @if (session('error'))
             <div class="alert alert-success">
@@ -17,17 +22,11 @@
             <div class="reset-password">
                 <p>We've sent a code to your email to confirm</p>
             </div>
-            <form action="{{ route('post-sendcode') }}" method="post">
+            <form action="{{ route('confirm-code') }}" method="post">
                 @csrf
                 <div class="form-group d-flex gap-2">
-                    {{-- <label class="form-control-label">Email</label> --}}
-                    {{-- <input type="text" class="form-control" maxlength="1">
-                    <input type="text" class="form-control" maxlength="1">
-                    <input type="text" class="form-control" maxlength="1">
-                    <input type="text" class="form-control" maxlength="1">
-                    <input type="text" class="form-control" maxlength="1">
-                    <input type="text" class="form-control" maxlength="1"> --}}
-                    <input type="number" class="form-control" name="send_code" id="send_code"
+                    <input type="hidden" name="token_id" value="{{ $token_id }}">
+                    <input type="number" class="form-control" name="confirmCode" id="send_code"
                         placeholder="Nhập mã xác nhận gồm 6 chữ số">
                 </div>
                 <div class="d-grid">

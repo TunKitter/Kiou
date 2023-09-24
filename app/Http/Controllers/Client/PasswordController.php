@@ -3,113 +3,78 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class PasswordController extends Controller
 {
-    public function getForgotPassword()
+    public function enterEmail()
     {
         return view('client.auth.password.enter-email');
     }
 
-    //Xử lý thông tin quên mật khẩu để gửi mã xác nhận qua Mail
-    public function postForgotPassword(Request $request)
+    public function handleEnterEmail(Request $request)
     {
-        $findEmail =  $request->email;
-        $checkmail = DB::collection('users')->where('email', $findEmail)->first();
-        if ($checkmail) {
-            //Số ngẫu nhiên gồm 6 chữ số
+        $request_mail = $request->email;
+        $user_from_request_mail = User::where('email', $request_mail)->first();
+        if ($user_from_request_mail) {
             $randomNumber = mt_rand(100000, 999999);
-            session(['send_code' => $randomNumber]);
-            $name = 'hello';
-            session(['mail_forgotpassword' => $checkmail->email]);
-            // Mail::to($checkmail)->send(new SendCodeMail($randomNumber));
-            Mail::send('mail.send-code-mail', compact('name'), function ($email) use ($checkmail) {
+            $token_id = uniqid();
+            Session::push($token_id, [$request_mail, $randomNumber]);
+            $name = $randomNumber;
+            Mail::send('mail.send-code-mail', compact('name'), function ($email) use ($user_from_request_mail) {
                 $email->subject('demo');
-                $email->to($checkmail->email, 'Ma xac nhan mat khau');
+                $email->to($user_from_request_mail->email, 'Ma xac nhan mat khau');
             });
-            return redirect(route('get-sendcode'))->with('success', 'Vui lòng check mail để lấy mã đổi mật khẩu');
+            return redirect(route('confirm-code', ['token_id' => $token_id]));
         } else {
-            echo "<script>alert('Email không tồn tại')</script>";
-            return view("client.auth.password.enter-email");
+            return redirect()->route("enter-email")->with('no_user', 'Không tìm thấy người dùng');
         }
     }
 
-
-    public function getSendCode()
+    public function confirmCode(Request $request)
     {
-        return view('client.auth.password.confirm-code');
-    }
-
-
-
-    //Biến quy định số lần nhập sai mã xác nhận(send code)
-    protected $maxWrongAttempts = 5;
-
-    //Hàm tăng số lần nhập sai mã xác nhận(send code)
-    protected function incrementWrongAttempts(Request $request)
-    {
-        // Lấy số lần nhập sai hiện tại từ session (hoặc database, cache, ...)
-        $wrongAttempts = $request->session()->get('wrong_attempts', 0);
-
-
-        // Tăng số lần nhập sai lên 1
-        $wrongAttempts++;
-
-        // Lưu lại số lần nhập sai mới vào session
-        session(['wrong_attempts' => $wrongAttempts]);
-    }
-
-    //Hàm kiểm tra số lần nhập sai mã xác nhận(send code)
-    protected function hasTooManyWrongAttempts(Request $request)
-    {
-        // Lấy số lần nhập sai từ session
-        $wrongAttempts = $request->session()->get('wrong_attempts', 0);
-
-        // Kiểm tra xem số lần nhập sai có vượt quá ngưỡng cho phép không
-        return $wrongAttempts >= $this->maxWrongAttempts;
-    }
-
-    //Xử lý mã xác nhận(send code) lấy từ mail người dùng 
-    public function postSendCode(Request $request)
-    {
-        $sendCode = $request->send_code;
-        //Lấy xác nhận sai, tăng số lần nhập sai
-        if ($sendCode == session('send_code')) {
-            return redirect(route('get-change-fp'))->with('success', 'Đổi mật khẩu đi pro');
+        if (!$request->token_id) {
+            return redirect()->route('enter-email')->with('no_confirm_code', 'Không có mã xác nhận');
         }
-        $this->incrementWrongAttempts($request);
-        // dd($this->incrementWrongAttempts($request));
-        if ($this->hasTooManyWrongAttempts($request)) {
-            // Nếu nhập sai quá 5 lần, chuyển đến trang bị khóa
-            session()->forget('wrong_attempts');
-            return redirect()->route('get-fp')->with('error', 'Bạn đã nhập sai mã xác nhận hơn 5 lần hả nhập lại mail để lấy mã xác nhận mới');
+        return view('client.auth.password.confirm-code', ['token_id' => $request->token_id]);
+    }
+
+    public function handleConfirmCode(Request $request)
+    {
+        $confirmCode = $request->confirmCode;
+        if ($confirmCode == session($request->token_id)[0][1]) {
+            session([$request->token_id => true]);
+            return redirect(route('new-password', ['token_id' => $request->token_id]));
         } else {
-            return redirect()->route('get-sendcode')->with('error', 'Mã xác nhận không chính xác vui lòng nhập lại');
+            return redirect()->route('confirm-code', ['token_id' => $request->token_id])->with('wrong_code', 'Mã xác nhận không chính xác');
         }
     }
 
-    public function getChangeFP()
+    public function newPassword(Request $request)
     {
-        return view('client.auth.password.new-password');
+        return view('client.auth.password.new-password', ['id_token' => $request->token_id]);
     }
 
     //Hàm xử lý đổi mật khẩu khi nhập đúng mã xác nhận(send code)
-    public function postChangeFP(Request $request)
+    public function handleNewPassword(Request $request)
     {
-        $findEmail =  session('mail_forgotpassword');
-        $checkmail = DB::collection('users')->where('email', $findEmail)->first();
+        $findEmail = $request->id_token;
+        $checkmail = User::where('email', $findEmail)->first();
         //Bắt lỗi nhập input
         $validator = Validator::make($request->all(), [
             'newPassword' => 'required|min:6',
             'confirmPassword' => 'required|same:newPassword',
-        ]);
+        ],
+            [
+                'newPassword.required' => 'Mật khẩu không được để trống',
+                'confirmPassword.required' => 'Xác nhận mật khẩu không được để trống',
+                'confirmPassword.same' => 'Mật khẩu không trùng nhau',
+            ]);
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -121,10 +86,8 @@ class PasswordController extends Controller
             $data = [
                 'password' => Hash::make($request->confirmPassword),
             ];
-            DB::collection('users')
-                ->where('email', $findEmail)
-                ->update($data);
-            return "đổi mật khẩu thành công";
+            User::where('email', $findEmail)->update($data);
+            return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công');
         }
     }
 }
