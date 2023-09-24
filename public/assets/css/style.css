@@ -79,7 +79,6 @@ html {
     color: #22100d;
     font-family: "Inter", sans-serif;
     font-size: 16px;
-    height: 100%;
     overflow-x: hidden;
 }
 
@@ -12360,19 +12359,19 @@ input[type="password"]::-ms-clear {
     border: 1px solid #e9ecef;
     animation: show_message 1s forwards;
     position: fixed;
-    left: 0;
-    bottom: 0;
+    right: 0;
+    top: 20px;
+    z-index: 9999999 !important;
 }
 @keyframes show_message {
     0% {
-        transform: translateX(-100%);
+        transform: translateX(0%);
     }
     100% {
-        transform: translateX(7%);
+        transform: translateX(-100%);
     }
 }
-.plan-box:hover {
-}
+
 .plan-box h4 {
     color: #ff5364;
     margin-bottom: 16px;

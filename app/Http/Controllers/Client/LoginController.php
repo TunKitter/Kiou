@@ -50,7 +50,7 @@ class LoginController extends Controller
     {
         $request->validated();
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->intended('/');
+            return redirect()->route('home')->with('success', 'Đăng nhập thành công');
         } else {
             return redirect()->back()->withInput($request->only('email'))->withErrors([
                 'email' => 'Thông tin đăng nhập không đúng.',

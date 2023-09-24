@@ -4,3 +4,8 @@
         <p style="">{{$message}}</p>
         </div>
         </div>
+        <script>
+                setTimeout(() => {
+                       document.querySelector('.plan-box').style.display = 'none'; 
+                }, 3000);
+        </script>

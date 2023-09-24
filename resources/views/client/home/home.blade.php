@@ -25,7 +25,9 @@
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-
+@if ($message = Session::get('success'))
+@include('client.section.message', ['message' => $message,'type'=>'success'])
+@endif
 <div class="main-wrapper">
 
 <header class="header">
