@@ -9,7 +9,7 @@
 <div class="settings-menu p-0">
 <div class="profile-bg">
 <h5>Beginner</h5>
-<img src="{{asset('assets/img/profile-bg.jpg')}}" alt>
+<img src="{{asset('assets/img/instructor-profile-bg.jpg')}}" alt>
 <div class="profile-img">
 <a href="student-profile.html"><img src="{{asset('assets/img/user/user11.jpg')}}" alt></a>
 </div>
@@ -132,13 +132,13 @@
 <div class="row">
 <div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">First Name</label>
+<label class="form-control-label">Full Name</label>
 <input type="text" class="form-control" placeholder="Enter your first Name">
 </div>
 </div>
 <div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Last Name</label>
+<label class="form-control-label">Username</label>
 <input type="text" class="form-control" placeholder="Enter your last Name">
 </div>
 </div>
@@ -154,46 +154,56 @@
 <input type="text" class="form-control" placeholder="Enter your Email">
 </div>
 </div>
+<label class="form-control-label">Professions</label>
 <div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Birthday</label>
-<input type="text" class="form-control" placeholder="Birth of Date">
+<div class="remember-me">
+<label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> 
+<input type="checkbox" checked name="radio" onclick="demo()">IT
+<span class="checkmark"></span>
+</label>
 </div>
 </div>
-<div class="col-lg-6">
+ </div><div class="col-lg-6">
 <div class="form-group">
-<label class="form-label">Country</label>
-<select class="form-select select country-select" name="sellist1">
-<option>Select country</option>
-<option>India</option>
-<option>America</option>
-<option>London</option>
-</select>
+<div class="remember-me">
+<label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> 
+<input type="checkbox" checked name="radio" onclick="demo()">IT
+<span class="checkmark"></span>
+</label>
 </div>
 </div>
-<div class="col-lg-6">
+ </div><div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Address Line 1</label>
-<input type="text" class="form-control" placeholder="Address">
+<div class="remember-me">
+<label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> 
+<input type="checkbox" checked name="radio" onclick="demo()">IT
+<span class="checkmark"></span>
+</label>
 </div>
 </div>
-<div class="col-lg-6">
+ </div><div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Address Line 2 (Optional)</label>
-<input type="text" class="form-control" placeholder="Address">
+<div class="remember-me">
+<label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> 
+<input type="checkbox" checked name="radio" onclick="demo()">IT
+<span class="checkmark"></span>
+</label>
 </div>
 </div>
-<div class="col-lg-6">
+ </div><div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">City</label>
-<input type="text" class="form-control" placeholder="Enter your City">
+<div class="remember-me">
+<label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> 
+<input type="checkbox" checked name="radio" onclick="demo()">IT
+<span class="checkmark"></span>
+</label>
 </div>
 </div>
+ </div>
+</div>
+ 
 <div class="col-lg-6">
-<div class="form-group">
-<label class="form-control-label">ZipCode</label>
-<input type="text" class="form-control" placeholder="Enter your Zipcode">
-</div>
 </div>
 <div class="update-profile">
 <button type="button" class="btn btn-primary">Update Profile</button>
@@ -209,4 +219,3 @@
 </div>
 </div>
 @endsection
-

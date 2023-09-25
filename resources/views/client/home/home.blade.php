@@ -407,7 +407,7 @@
     </div>
     </div>
     <a class="dropdown-item" href="{{route('profile')}}"><i class="feather-user me-1"></i> Profile</a>
-    <a class="dropdown-item" href="setting-student-subscription.html"><i class="feather-star me-1"></i> Subscription</a>
+    <a class="dropdown-item" href="{{route('mentor-overview')}}"><i class="feather-user me-1"></i> Mentor </a>
     <div class="dropdown-item night-mode">
     <span><i class="feather-moon me-1"></i> Night Mode </span>
     <div class="form-check form-switch check-on m-0">

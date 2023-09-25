@@ -32,14 +32,14 @@
 <span></span>
 </span>
 </a>
-<a href="index.html" class="navbar-brand logo">
-<img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+<a href="{{route('home')}}" class="navbar-brand logo">
+<img src="{{asset('assets/img/logo.svg')}}" class="img-fluid" alt="Logo">
 </a>
 </div>
 <div class="main-menu-wrapper">
 <div class="menu-header">
-<a href="index.html" class="menu-logo">
-<img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+<a href="{{route('home')}}" class="menu-logo">
+<img src="{{asset('assets/img/logo.svg')}}" class="img-fluid" alt="Logo">
 </a>
 <a id="menu_close" class="menu-close" href="javascript:void(0);">
 <i class="fas fa-times"></i>
@@ -156,11 +156,11 @@
 </div>
 <ul class="nav header-navbar-rht">
 <li class="nav-item">
-<a href="course-message.html"><img src="assets/img/icon/messages.svg" alt="img"></a>
+<a href="course-message.html"><img src="{{asset('assets/img/icon/messages.svg')}}" alt="img"></a>
 </li>
 <li class="nav-item cart-nav">
 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-<img src="assets/img/icon/cart.svg" alt="img">
+<img src="{{asset('assets/img/icon/cart.svg')}}" alt="img">
 </a>
 <div class="wishes-list dropdown-menu dropdown-menu-right">
 <div class="wish-header">
@@ -174,7 +174,7 @@
 <div class="d-flex media-wide">
 <div class="avatar">
 <a href="course-details.html">
-<img alt src="assets/img/course/course-04.jpg">
+<img alt src="{{asset('assets/img/course/course-04.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -193,7 +193,7 @@
 <div class="d-flex media-wide">
 <div class="avatar">
 <a href="course-details.html">
-<img alt src="assets/img/course/course-14.jpg">
+<img alt src="{{asset('assets/img/course/course-14.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -212,7 +212,7 @@
 <div class="d-flex media-wide">
 <div class="avatar">
 <a href="course-details.html">
-<img alt src="assets/img/course/course-15.jpg">
+<img alt src="{{asset('assets/img/course/course-15.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -236,7 +236,7 @@
 </li>
 <li class="nav-item wish-nav">
 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-<img src="assets/img/icon/wish.svg" alt="img">
+<img src="{{asset('assets/img/icon/wish.svg')}}" alt="img">
 </a>
 <div class="wishes-list dropdown-menu dropdown-menu-right">
 <div class="wish-content">
@@ -246,7 +246,7 @@
 <div class="d-flex media-wide">
 <div class="avatar">
 <a href="course-details.html">
-<img alt src="assets/img/course/course-04.jpg">
+<img alt src="{{asset('assets/img/course/course-04.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -265,7 +265,7 @@
 <div class="d-flex media-wide">
 <div class="avatar">
 <a href="course-details.html">
-<img alt src="assets/img/course/course-14.jpg">
+<img alt src="{{asset('assets/img/course/course-14.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -284,7 +284,7 @@
 <div class="d-flex media-wide">
 <div class="avatar">
 <a href="course-details.html">
-<img alt src="assets/img/course/course-15.jpg">
+<img alt src="{{asset('assets/img/course/course-15.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -304,7 +304,7 @@
 </li>
 <li class="nav-item noti-nav">
 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-<img src="assets/img/icon/notification.svg" alt="img">
+<img src="{{asset('assets/img/icon/notification.svg')}}" alt="img">
 </a>
 <div class="notifications dropdown-menu dropdown-menu-right">
 <div class="topnav-dropdown-header">
@@ -322,7 +322,7 @@
 <div class="media d-flex">
 <div>
 <a href="notifications.html" class="avatar">
-<img class="avatar-img" alt src="assets/img/user/user1.jpg">
+<img class="avatar-img" alt src="{{asset('assets/img/user/user1.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -337,7 +337,7 @@
 <div class="media d-flex">
 <div>
 <a href="notifications.html" class="avatar">
-<img class="avatar-img" alt src="assets/img/user/user2.jpg">
+<img class="avatar-img" alt src="{{asset('assets/img/user/user2.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -350,7 +350,7 @@
 <div class="media d-flex">
 <div>
 <a href="notifications.html" class="avatar">
-<img class="avatar-img" alt src="assets/img/user/user3.jpg">
+<img class="avatar-img" alt src="{{asset('assets/img/user/user3.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -364,7 +364,7 @@
 <div class="media d-flex">
 <div>
 <a href="notifications.html" class="avatar">
-<img class="avatar-img" alt src="assets/img/user/user1.jpg">
+<img class="avatar-img" alt src="{{asset('assets/img/user/user1.jpg')}}">
 </a>
 </div>
 <div class="media-body">
@@ -380,22 +380,22 @@
 <li class="nav-item user-nav">
 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
 <span class="user-img">
-<img src="assets/img/user/user11.jpg" alt>
+<img src="{{asset('assets/img/user/user11.jpg')}}" alt>
 <span class="status online"></span>
 </span>
 </a>
 <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end">
 <div class="user-header">
 <div class="avatar avatar-sm">
-<img src="assets/img/user/user11.jpg" alt="User Image" class="avatar-img rounded-circle">
+<img src="{{asset('assets/img/user/user11.jpg')}}" alt="User Image" class="avatar-img rounded-circle">
 </div>
 <div class="user-text">
 <h6>Rolands R</h6>
 <p class="text-muted mb-0">Student</p>
 </div>
 </div>
-<a class="dropdown-item" href="setting-edit-profile.html"><i class="feather-user me-1"></i> Profile</a>
-<a class="dropdown-item" href="setting-student-subscription.html"><i class="feather-star me-1"></i> Subscription</a>
+<a class="dropdown-item" href="{{route('profile')}}"><i class="feather-user me-1"></i> Profile</a>
+<a class="dropdown-item" href="{{route('mentor-overview')}}"><i class="feather-user me-1"></i> Mentor</a>
 <div class="dropdown-item night-mode">
 <span><i class="feather-moon me-1"></i> Night Mode </span>
 <div class="form-check form-switch check-on m-0">
