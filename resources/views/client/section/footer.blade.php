@@ -1,6 +1,6 @@
 <footer class="footer">
 
-    <div class="footer-top aos" data-aos="fade-up">
+    <div class="footer-top">
     <div class="container">
     <div class="row">
     <div class="col-lg-4 col-md-6">
@@ -59,7 +59,7 @@
     </div>
     <p>
     <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
-    <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d9bdabbcb8b4aab5b4aa99bca1b8b4a9b5bcf7bab6b4">[email&#160;protected]</a>
+    <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1d796f787c706e71706e5d78657c706d7178337e7270">[email&#160;protected]</a>
     </p>
     <p class="mb-0">
     <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
@@ -99,22 +99,21 @@
     </div>
     
     </footer>
-</div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{{ asset('assets/js/jquery-3.6.0.min.js')}}"></script>
+    
+    </div>
 
-<script src="{{ asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.6.0.min.js"></script>
+
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
     
-<script src="{{ asset('assets/js/jquery.waypoints.js')}}"></script>
-<script src="{{ asset('assets/js/jquery.counterup.min.js')}}"></script>
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
     
-<script src="{{ asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+    <script src="assets/plugins/feather/feather.min.js"></script>
     
-<script src="{{ asset('assets/js/owl.carousel.min.js')}}"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
     
-<script src="{{ asset('assets/plugins/slick/slick.js')}}"></script>
+    <script src="assets/js/script.js"></script>
     
-<script src="{{ asset('assets/plugins/aos/aos.js')}}"></script>
-    
-<script src="{{ asset('assets/js/script.js')}}"></script>
-</body>
-</html>
+    </body>
+    </html>    

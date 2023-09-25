@@ -1,5 +1,3 @@
-
-
-        @include('client.section.header')
-        @yield('content')
-        @include('client.section.footer')
+@include('client.section.header')
+@yield('content')
+@include('client.section.footer')
