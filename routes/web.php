@@ -5,6 +5,7 @@ use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\RegisterController;
+use App\Http\Controllers\Client\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Login Google
@@ -33,4 +34,9 @@ Route::prefix('password')->group(function () {
 });
 
 # ------------------------- Profile --------------------------------
-Route::get('/profile', fn() => view('client.profile.profile'))->name('profile')->middleware('auth');
+// Route::get('/profile', fn() => view('client.profile.profile'))->name('profile')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  
+});
