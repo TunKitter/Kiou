@@ -3,6 +3,7 @@
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
+use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\ProfileController;
@@ -40,3 +41,11 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   
 });
+Route::get('/profile', fn() => view('client.profile.profile'))->name('profile')->middleware('auth');
+
+# ------------------------- Mentor --------------------------------
+
+Route::get('/mentor/overview', [MentorController::class, 'overview'])->name('mentor-overview')->middleware('auth');
+Route::get('/mentor/register', [MentorController::class, 'register'])->name('mentor-register')->middleware('auth');
+Route::post('/mentor/register', [MentorController::class, 'handleRegister'])->middleware('auth');
+Route::get('/mentor/profile', [MentorController::class, 'profile'])->middleware('auth');

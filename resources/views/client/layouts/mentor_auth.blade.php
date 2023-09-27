@@ -28,10 +28,10 @@
 <div class="owl-carousel login-slide owl-theme">
 <div class="welcome-login">
 <div class="login-banner">
-<img src="{{asset('assets/img/login-img.png')}}" class="img-fluid" id="img-banner" alt="Logo">
+<img src="{{asset('assets/img/img_banner.png')}}" class="img-fluid" id="img-banner" alt="Logo">
 </div>
 <div class="mentor-course text-center">
-<h2>Welcome to <br>DreamsLMS Courses.</h2>
+<h2>Welcome to <br>Mentor</h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
 </div>
 </div>

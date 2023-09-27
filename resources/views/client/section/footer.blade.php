@@ -7,7 +7,7 @@
     
     <div class="footer-widget footer-about">
     <div class="footer-logo">
-    <img src="assets/img/logo.svg" alt="logo">
+    <img src="{{asset('assets/img/logo.svg')}}" alt="logo">
     </div>
     <div class="footer-about-content">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
@@ -54,15 +54,15 @@
     </div>
     <div class="footer-contact-info">
     <div class="footer-address">
-    <img src="assets/img/icon/icon-20.svg" alt class="img-fluid">
+    <img src="{{asset('assets/img/icon/icon-20.svg')}}" alt class="img-fluid">
     <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
     </div>
     <p>
-    <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
+    <img src="{{asset('assets/img/icon/icon-19.svg')}}" alt class="img-fluid">
     <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1d796f787c706e71706e5d78657c706d7178337e7270">[email&#160;protected]</a>
     </p>
     <p class="mb-0">
-    <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
+    <img src="{{asset('assets/img/icon/icon-21.svg')}}" alt class="img-fluid">
     +19 123-456-7890
     </p>
     </div>
@@ -102,18 +102,18 @@
     
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
 
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
     
-    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
     
-    <script src="assets/plugins/feather/feather.min.js"></script>
+    <script src="{{asset('assets/plugins/feather/feather.min.js')}}"></script>
     
-    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
-    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+    <script src="{{asset('assets/plugins/theia-sticky-sidebar/ResizeSensor.js')}}"></script>
+    <script src="{{asset('assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js')}}"></script>
     
-    <script src="assets/js/script.js"></script>
+    <script src="{{asset('assets/js/script.js')}}"></script>
     
     </body>
     </html>    
