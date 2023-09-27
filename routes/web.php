@@ -41,4 +41,6 @@ Route::get('/profile', fn() => view('client.profile.profile'))->name('profile')-
 Route::get('/mentor/overview', [MentorController::class, 'overview'])->name('mentor-overview')->middleware('auth');
 Route::get('/mentor/register', [MentorController::class, 'register'])->name('mentor-register')->middleware('auth');
 Route::post('/mentor/register', [MentorController::class, 'handleRegister'])->middleware('auth');
-Route::get('/mentor/profile', [MentorController::class, 'profile'])->middleware('auth');
+Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
+Route::get('/edit/profile', [MentorController::class, 'edit'])->name('edit-profile')->middleware('auth');
+Route::post('/update/profile', [MentorController::class, 'update'])->name('update-profile')->middleware('auth');

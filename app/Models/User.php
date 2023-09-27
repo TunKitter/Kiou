@@ -29,4 +29,10 @@ class User extends Model implements Authenticatable
         'role' => ['650ba6fdf6e2892bb7012082'],
     ];
 
+    public function mentor()
+    {
+    return $this->hasOne(Mentor::class, 'user_id');
+    }
+
+
 }
