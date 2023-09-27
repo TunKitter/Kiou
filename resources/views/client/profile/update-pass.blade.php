@@ -57,7 +57,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('profile.pass.edit', $user->id)}}" class="nav-link">
+                                    <a href="setting-student-privacy.html" class="nav-link">
                                         <i class="feather-lock"></i> Profile Privacy
                                     </a>
                                 </li>
@@ -114,88 +114,54 @@
                     <div class="settings-widget profile-details">
                         <div class="settings-menu p-0">
                             <div class="profile-heading">
-                                <h3>Profile Details</h3>
+                                <h3>Password</h3>
                                 <p>You have full control to manage your own account setting.</p>
                             </div>
-                            <div class="course-group mb-0 d-flex">
-                                <div class="course-group-img d-flex align-items-center">
-                                  
-                                        <a href="student-profile.html"><img src="{{$user->image['avatar']}}" alt class="img-fluid"></a>
-                                       
-                            
-                                    <div class="course-name">
-                                        <h4><a href="student-profile.html">Your avatar</a></h4>
-                                        <p>PNG or JPG no bigger than 800px wide and tall.</p>
-                                        
-                                    </div>
-                                </div>
-                                <div class="profile-share d-flex align-items-center justify-content-center">
-                                    <a href="javascript:;" class="btn btn-success">
-                                       Update
-                                    </a>
-                                    <a href="javascript:;" class="btn btn-danger">Delete</a>
-                                </div> 
-                            </div>
                             <div class="checkout-form personal-address add-course-info ">
-                                <div class="personal-info-head">
-                                    <h4>Personal Details</h4>
-                                    <p>Edit your personal information and address.</p>
-                                </div>
-                                @php
-                                    $fullname = explode(" ", $user->name);
-                                    $count = count($fullname);
-                                    $firstname =$fullname[0];
-                                    $lastname = $fullname[$count-1];
-                                @endphp
-                                <form action="{{route('profile.update', $user->id)}}" method="POST">
+                               
+                                <form action="{{route('profile.password.update', $user->id)}}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label class="form-control-label">Username</label>
-                                                <input type="text" class="form-control" placeholder="Enter your Username"
-                                                    name="username" value="{{ $user->username }}">
-                                                @error('username')
+                                                <label class="form-control-label">Password</label>
+                                                <input type="text" class="form-control" placeholder="Enter your password"
+                                                    name="password">
+                                                @error('password')
                                                     <span style="color: red">{{$message}}</span>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label class="form-control-label">Full Name</label>
+                                                <label class="form-control-label">New password</label>
                                                 <input type="text" class="form-control"
-                                                    placeholder="Enter your first Name" name="name" value="{{$user->name}}">
-                                              
+                                                    placeholder="Enter your new password" name="new_password">
+                                                @error('new_password')
+                                                    <span style="color: red">{{$message}}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label class="form-control-label">Phone</label>
-                                                <input type="text" class="form-control" placeholder="Enter your Phone"
-                                                    name="phone" value="{{ $user->phone }}">
-                                                @error('phone')
+                                                <label class="form-control-label">Confirm password</label>
+                                                <input type="text" class="form-control" placeholder="Enter your confirm password"
+                                                    name="cf_password" >
+                                                @error('cf_password')
                                                     <span style="color: red">{{$message}}</span>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label class="form-control-label">Email</label>
-                                                <input type="text" class="form-control" placeholder="Enter your Email"
-                                                    name="email" value="{{ $user->email }}">
-                                                @error('email')
-                                                    <span style="color: red">{{$message}}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                    
                                         <div class="update-profile">
                                             <button type="submit" class="btn btn-primary">Update Profile</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
+                          
                         </div>
                     </div>
                 </div>

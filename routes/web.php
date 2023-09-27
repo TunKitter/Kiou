@@ -35,13 +35,15 @@ Route::prefix('password')->group(function () {
 });
 
 # ------------------------- Profile --------------------------------
-// Route::get('/profile', fn() => view('client.profile.profile'))->name('profile')->middleware('auth');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-  
+    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::get('/profile/{id}', [ProfileController::class, 'delete'])->name('profile.delete');
+    Route::get('/profile/password/{id}', [ProfileController::class, 'password'])->name('profile.pass.edit');
+    Route::patch('/profile/password/{id}', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 });
-Route::get('/profile', fn() => view('client.profile.profile'))->name('profile')->middleware('auth');
+
 
 # ------------------------- Mentor --------------------------------
 

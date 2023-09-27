@@ -29,7 +29,7 @@ class AuthRequest extends FormRequest
         switch ($this->path()) {
             case 'login':
                 return $login_rules;
-            case 'register':
+            default:
                 return array_merge($login_rules, [
                     'name' => ['required', 'min:3', 'max:40', 'regex:/^[a-zA-Z\s]+$/'],
                     'phone' => ['required', 'string', 'alpha_dash:ascii', Rule::unique('users')],
@@ -53,6 +53,11 @@ class AuthRequest extends FormRequest
                         'string',
                         'min:6',
                     ],
+                    'avatar' => [
+                        'image',
+                        'mimes:png,jpg',
+                        'max:2048'
+                    ]
                 ]);
         }
 
