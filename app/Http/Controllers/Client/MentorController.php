@@ -30,7 +30,7 @@ class MentorController extends Controller
         $request->validated();
          // Kiểm tra nếu người dùng đã đăng ký mentor
     if (Mentor::where('user_id', auth()->id())->exists()) {
-        return redirect()->route('mentor-overview')->withSuccess('Bạn đã đăng ký là Mentor.');
+        return redirect()->route('mentor-profile')->withSuccess('Bạn đã đăng ký là Mentor.');
     }
     // Tạo mentor mới và lưu vào cơ sở dữ liệu
     Mentor::create([
