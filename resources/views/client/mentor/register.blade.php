@@ -43,34 +43,54 @@
     var professions =  document.querySelector('.professions');
     var id_profession = "{{$id_professions}}".split(',')
     const promptString = `
-Input categorize of these job :"Website Designer" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Website Designer" is invalid or not exist in "{{$professions}}", just return "invalid". if "Website Designer" not a job , just return "invalid"
-Output HTML,CSS,Javascript,Front End
-Input categorize of these job :"sdasde231" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "sdasde231" is invalid or not exist in "{{$professions}}", just return "invalid". if "sdasde231" not a job , just return "invalid"
-Output invalid
-Input categorize of these job :"Front end" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Front end" is invalid or not exist in "{{$professions}}", just return "invalid". if "Front End" not a job , just return "invalid"
-Output Front end,HTML,CSS,Javascript
-Input categorize of these job :"Doctor" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Doctor" is invalid or not exist in "{{$professions}}", just return "invalid". if "Doctor" not a job , just return "invalid"
-Output invalid
-Input categorize of these job :"HTML" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "HTML" is invalid or not exist in "{{$professions}}", just return "invalid". if "HTML" not a job , just return "invalid"
-Output HTML, Front End
-Input categorize of these job :"Full stack" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Full stack" is invalid or not exist in "{{$professions}}", just return "invalid". if "Full stack" not a job , just return "invalid"
-Output Front End,Back End
-Input categorize of these job :"PHP" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "PHP" is invalid or not exist in "{{$professions}}", just return "invalid". if "PHP" not a job , just return "invalid"
-Output PHP, Back End
-Input categorize of these job :"Javascript" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Javascript" is invalid or not exist in "{{$professions}}", just return "invalid". if "Javascript" not a job , just return "invalid"
-Output Javascript,Front End, Back End
-Input categorize of these job :"Angular" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Angular" is invalid or not exist in "{{$professions}}", just return "invalid". if "Angular" not a job , just return "invalid"
-Output Front End
-Input categorize of these job :"React Native" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "React Native" is invalid or not exist in "{{$professions}}", just return "invalid". if "React Native" not a job , just return "invalid"
-Output Front End, Javascript
-Input categorize of these job :"MongoDB" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "MongoDB" is invalid or not exist in "{{$professions}}", just return "invalid". if "MongoDB" not a job , just return "invalid"
-Output Back end
-Input categorize of these job :"NextJs" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "NextJs" is invalid or not exist in "{{$professions}}", just return "invalid". if "NextJs" not a job , just return "invalid"
-Output Front End,Back End
-Input categorize of these job :"Drawing" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Drawing" is invalid or not exist in "{{$professions}}", just return "invalid". if "Drawing" not a job , just return "invalid"
-Output Graphic Designer
-Input categorize of these job :"Ruby" in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if "Ruby" is invalid or not exist in "{{$professions}}", just return "invalid". if "Ruby" not a job , just return "invalid"
-Output Back End
+input "Website Designer" in "{{$professions}}" 
+output Front End,Javascript,HTML,CSS
+input "sdasd2dasd" in "{{$professions}}" 
+output invalid
+input "d2f322ydfsda" in "{{$professions}}" 
+output invalid
+input "23123131231" in "{{$professions}}" 
+output invalid
+input "Front End" in "{{$professions}}" 
+output Front End,Javascript,HTML,CSS
+input "Doctor" in "{{$professions}}" 
+output invalid
+input "Dance" in "{{$professions}}" 
+output invalid
+input "Swimming" in "{{$professions}}" 
+output invalid
+input "Doctor" in "{{$professions}},Doctor" 
+output Doctor
+input "Dance" in "{{$professions}},Dance" 
+output Dance
+input "Swimming" in "{{$professions}},Swimming," 
+output Swimming
+input "Draw" in "{{$professions}}" 
+output Graphic Designer
+input "Drawing" in "{{$professions}}" 
+output Graphic Designer
+input "HTML" in "{{$professions}}" 
+output Front End,HTML,CSS,Javascript
+input "CSS" in "{{$professions}}" 
+output Front End,HTML,CSS,Javascript
+input "Javascript" in "{{$professions}}" 
+output Back End,Front End,Javascript
+input "Full stack" in "{{$professions}}" 
+output Back End,Front End
+input "PHP" in "{{$professions}}" 
+output Back End,PHP
+input "Ruby" in "{{$professions}}" 
+output Back End
+input "NextJs" in "{{$professions}}" 
+output Front End,Back End
+input "Programming Language" in "{{$professions}}" 
+output Back End
+input "HTLM" in "{{$professions}}" 
+output Front End,HTML,CSS,Javascript
+input "Progamming Lanuge" in "{{$professions}}" 
+output Back End
+input "MangoDB" in "{{$professions}}" 
+output Back End
 Input`;
 function loadCate() {
  let Input = `categorize of these job : ${profession.value} in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if ${profession.value} is invalid or not exist in "{{$professions}}", just return "invalid". if "${profession.value}" not a job , just return "invalid"`   

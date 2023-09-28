@@ -25,4 +25,18 @@ class MentorController extends Controller
     {
         return view('client.mentor.profile');
     }
+    public function uploadIdCard()
+    {
+        return view('client.mentor.id-card-upload');
+    }
+    public function takingPicture()
+    {
+        return view('client.mentor.online-take-picture-id-card-confirm');
+    }
+
+    public function handleUploadIdCard(Request $request)
+    {
+        return view('client.mentor.handle-id-card-confirm', ['image' => ($request->file('image')->getClientOriginalName())]);
+
+    }
 }

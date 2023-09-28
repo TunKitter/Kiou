@@ -31,7 +31,7 @@ class AuthRequest extends FormRequest
                 return $login_rules;
             case 'register':
                 return array_merge($login_rules, [
-                    'name' => ['required', 'min:3', 'max:40', 'regex:/^[a-zA-Z\s]+$/'],
+                    'name' => ['required', 'min:3', 'max:40', 'regex:/[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/'],
                     'phone' => ['required', 'string', 'alpha_dash:ascii', Rule::unique('users')],
                     'username' => [
                         'required',
