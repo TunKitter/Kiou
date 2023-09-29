@@ -1,5 +1,8 @@
 @extends('client.layouts.mentor_auth')
 @section('content')
+@if(Session::has('not_found_profession'))
+@include('client.section.message',['type' => 'Fail','message' => Session::get('not_found_profession')])
+@endif
 <div class="login-wrapper">
 <div class="loginbox">
 <div class="w-100">

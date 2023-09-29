@@ -44,7 +44,6 @@ Route::post('/mentor/register', [MentorController::class, 'handleRegister'])->mi
 Route::get('/mentor/upload-id-card', [MentorController::class, 'uploadIdCard'])->middleware('auth')->name('mentor-upload-id-card');
 Route::post('/mentor/upload-id-card', [MentorController::class, 'handleUploadIdCard'])->middleware('auth');
 Route::get('/mentor/upload-id-card/taking-picture', [MentorController::class, 'takingPicture'])->name('mentor-taking-picture')->middleware('auth');
-Route::get('/mentor/profile', [MentorController::class, 'profile'])->middleware('auth');
+Route::get('/mentor/face-verify', [MentorController::class, 'faceVerify'])->name('mentor-face-verify')->middleware('auth');
 Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
-Route::get('/edit/profile', [MentorController::class, 'edit'])->name('edit-profile')->middleware('auth');
-Route::post('/update/profile', [MentorController::class, 'update'])->name('update-profile')->middleware('auth');
+Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');

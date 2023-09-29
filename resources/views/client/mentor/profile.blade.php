@@ -1,5 +1,8 @@
 @extends('client.layouts.master')
 @section('content')
+@if (Session::has('success'))
+    @include('client.section.message',['type' => 'success', 'message' => Session::get('success')])
+@endif
 <div class="page-content">
 <div class="container">
 <div class="row">
@@ -11,7 +14,7 @@
 <h5>Beginner</h5>
 <img src="{{asset('assets/img/instructor-profile-bg.jpg')}}" alt>
 <div class="profile-img">
-<a href="student-profile.html"><img src="{{asset('assets/img/user/user11.jpg')}}" alt></a>
+<a href="student-profile.html"><img src="{{asset('storage/'. $mentor->image['avatar'])}}" alt></a>
 </div>
 </div>
 <div class="profile-group">
@@ -112,15 +115,16 @@
 </div>
 <div class="course-group mb-0 d-flex">
 <div class="course-group-img d-flex align-items-center">
-<a href="student-profile.html"><img src="{{asset('assets/img/user/user11.jpg')}}" alt class="img-fluid"></a>
+<a href="student-profile.html"><img src="{{asset('storage/'. $mentor->image['avatar'])}}" alt class="img-fluid"></a>
 <div class="course-name">
 <h4><a href="student-profile.html">{{ auth()->user()->mentor->name }}</a></h4>
 <p>PNG or JPG no bigger than 800px wide and tall.</p>
 </div>
 </div>
 <div class="profile-share d-flex align-items-center justify-content-center">
-<a href="javascript:;" class="btn btn-success">Update</a>
-<a href="javascript:;" class="btn btn-danger">Delete</a>
+<label  for="avatar" class="btn btn-success">Update</label>
+<input type="file" id="avatar" form="mentor" name="avatar" style="display: none">
+<label href="javascript:;" class="btn btn-danger">Delete</label>
 </div>
 </div>
 <div class="checkout-form personal-address add-course-info ">
@@ -128,17 +132,16 @@
 <h4>Personal Details</h4>
 <p>Edit your personal information and address.</p>
 </div>
-<form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('mentor-profile') }}" id="mentor" method="POST" enctype="multipart/form-data">
     @csrf
 <div class="row">
 <div class="col-lg-6">
 <div class="form-group">
 <label class="form-control-label">Full Name</label>
-<input type="text" class="form-control" name="name" value="{{ auth()->user()->mentor->name }}" placeholder="Enter your first Name">
+<input type="text" class="form-control" name="name" value="{{ $mentor->name }}" placeholder="Enter your first Name">
 <div class="error_message">
-    @error('name')
-    <span style="color: red;font-weight:lighter">{{$message}}</span>
-    <br>
+@error('name')
+    <Kspan style="color: red;font-weight:lighter">{{$message}}</span>
 @enderror
 </div> 
 </div>
@@ -146,7 +149,10 @@
 <div class="col-lg-6">
 <div class="form-group">
 <label class="form-control-label">Username</label>
-<input type="text" class="form-control" name="username" value="{{ auth()->user()->username }}" placeholder="Enter your last Name">
+<input type="text" class="form-control" name="username" value="{{ $mentor->username }}" placeholder="Enter your last Name">
+@error('username')
+<span style="color: red;font-weight:lighter">{{$message}}</span>
+@enderror
 </div>
 </div>
 <label class="form-control-label">Professions</label>
