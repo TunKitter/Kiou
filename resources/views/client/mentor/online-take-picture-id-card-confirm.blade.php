@@ -72,7 +72,7 @@
 
             </div>
             <div class="d-grid">
-                <button class="btn btn-primary btn-start" type="submit" disabled>Đăng ký mentor</button>
+                <button class="btn btn-primary btn-start" id="btn_submit" onclick="sendImage()" disabled>Đăng ký mentor</button>
                 <br>
                 <a class="link-secondary" href="{{route('mentor-upload-id-card')}}">Hoặc upload ảnh tại đây</a>
             </div>
@@ -81,6 +81,8 @@
 const btn_front_id = document.querySelector('#btn_front_id');
 const btn_back_id = document.querySelector('#btn_back_id');
 const id_infor = document.querySelector('.id-infor');
+const ok_cccd_post = []
+const API_KEY = 'ptWApLzUhL72YKXzCH9ZnZNbneAcROVF';
 Webcam.attach( '#my_camera' );
 Webcam.attach( '#my_camera2' );
 		function take_snapshot(camera_id) {
@@ -95,7 +97,7 @@ let formData = new FormData();
     fetch('https://api.fpt.ai/vision/idr/vnm',{
             method: 'POST',
             headers: {
-                'api_key': 'dGDWECzEw8eeN5BGCj7jTJimuJMiMvlS'
+                'api_key': API_KEY
             },
             body: formData
         }).then(res => res.json())
@@ -106,6 +108,10 @@ let formData = new FormData();
                 document.querySelector('#where_card_infor').style.display = 'block'
                 document.querySelector('#where_card_infor').innerHTML += '<b>' + data['data'][0]['issue_loc'] + '</b>'
                 success_cccd(camera_id,'.loader_'+camera_id,camera_id == 'my_camera2' ? btn_back_id : btn_front_id);
+                ok_cccd_post[ok_cccd_post.length] = file
+                if(ok_cccd_post.length == 2){
+                    document.querySelector('#btn_submit').removeAttribute('disabled')
+                }
             }
             else if(data['data'][0]['type'] == 'chip_front' && camera_id == 'my_camera'){
 
@@ -116,6 +122,10 @@ let formData = new FormData();
                 document.querySelector('#valid_date_card_infor').innerHTML = result_id['dob']
                 document.querySelector('#id_card_address').innerHTML = result_id['address']
                 id_infor.style.display = 'block'
+                ok_cccd_post[ok_cccd_post.length] = file
+                if(ok_cccd_post.length == 2){
+                    document.querySelector('#btn_submit').removeAttribute('disabled')
+                }
             }
             else {
                 fail_cccd(camera_id,'.loader_'+camera_id,camera_id == 'my_camera2' ? btn_back_id : btn_front_id);
@@ -187,6 +197,18 @@ function fail_cccd(camera_id,loader_id,btn_id) {
             Webcam.attach('#'+camera_id);
         }, 1000);
                 
+}
+function sendImage() {
+    let formData = new FormData();
+    formData.append('front_card',ok_cccd_post[0])
+    formData.append('back_card',ok_cccd_post[1])
+    fetch("{{route('mentor-upload-id-card')}}",{
+            method: 'POST',
+            body: formData
+        }).then(res => {
+            location.href = '{{route('mentor-register')}}'
+        })
+       
 }
  </script>
 <script src="https://cdn.tailwindcss.com"></script>

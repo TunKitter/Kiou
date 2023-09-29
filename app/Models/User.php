@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Mentor;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
 use MongoDB\Laravel\Eloquent\Model;
@@ -28,5 +29,8 @@ class User extends Model implements Authenticatable
         'profession' => [],
         'role' => ['650ba6fdf6e2892bb7012082'],
     ];
-
+    public function getMentorInfo()
+    {
+        return $this->hasOne(Mentor::class);
+    }
 }

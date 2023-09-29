@@ -36,7 +36,14 @@ class MentorController extends Controller
 
     public function handleUploadIdCard(Request $request)
     {
-        return view('client.mentor.handle-id-card-confirm', ['image' => ($request->file('image')->getClientOriginalName())]);
-
+        $front_card_name = uniqid() . '.' . $request->file('front_card')->getClientOriginalExtension();
+        $back_card_name = uniqid() . '.' . $request->file('back_card')->getClientOriginalExtension();
+        $request->front_card->move(storage_path('cccd'), $front_card_name);
+        $request->back_card->move(storage_path('cccd'), $back_card_name);
+        // Mentor::create([
+        // 'front_card' => $front_card_name,
+        // 'back_card' => $back_card_name,
+        // ]);
+        return redirect()->route('mentor.overview');
     }
 }

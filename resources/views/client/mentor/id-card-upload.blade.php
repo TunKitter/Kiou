@@ -8,20 +8,20 @@
 
             </div>
             <h1>Upload your identify card</h1>
-            <form action="{{route('mentor-register')}}" method="POST">
+            <form action="{{route('mentor-upload-id-card')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label class="form-control-label">Front ID CARD</label>
                     <div class="profile-share d-flex align-items-center justify-content-center">
                         <label href="javascript:;" class="btn btn-primary text-white" for="front_id">Upload</label>
-                        <input type="file" style="display: none" id="front_id" onchange="uploadImage(this,'front_id')">
+                        <input type="file" style="display: none" name="front_card" id="front_id" onchange="uploadImage(this,'front_id')">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label">Back ID CARD</label>
                     <div class="profile-share d-flex align-items-center justify-content-center">
                         <label href="javascript:;" class="btn btn-primary text-white" for="back_id">Upload</label>
-                        <input type="file" style="display: none" id="back_id" onchange="uploadImage(this,'back_id')">
+                        <input type="file" name="back_card" style="display: none" id="back_id" onchange="uploadImage(this,'back_id')">
                     </div>
                 </div>
                 <div class="spinner-border mb-2" id="loader" style="color: #f66962;display: none" role="status">
@@ -54,7 +54,7 @@
 
             </div>
         <div class="d-grid">
-            <button class="btn btn-primary btn-start" type="submit" disabled>Đăng ký mentor</button>
+            <button class="btn btn-primary btn-start" id="btn_submit" disabled>Đăng ký mentor</button>
             <br>
             <a class="link-secondary" href="{{route('mentor-taking-picture')}}">Hoặc chụp trực tiếp tại đây</a>
         </div>
@@ -64,9 +64,11 @@
 </div>
 </div>
 <script>
+    var is_both_uploaded = [false,false]
     var loader = document.querySelector('#loader')
     var professions = document.querySelector('.professions')
-    const FPT_API_KEY = 'dGDWECzEw8eeN5BGCj7jTJimuJMiMvlS'
+    const FPT_API_KEY = 'ptWApLzUhL72YKXzCH9ZnZNbneAcROVF'
+    const btn_submit = document.querySelector('#btn_submit')
     const FPT_API_ENDPOINT = 'https://api.fpt.ai/vision/idr/vnm'
     var id_infor = document.querySelector('.id-infor')
 
@@ -111,6 +113,8 @@
                                 document.querySelector('#id_card_address').innerHTML = result_id['address']
                                 id_infor.style.display = 'block'
                                 loader.style.display = 'none'
+                                is_both_uploaded[0]= true
+                                is_disable_button()
                                 document.querySelector('label[for=front_id]').onclick = () => {
                                     location.reload()
                                 }
@@ -125,7 +129,7 @@
                                     if(!data['data'][0]['issue_loc']) {
                                         document.querySelector('#back_id').value = ''
                                 temp_label.innerHTML = 'Invalid image, Please try again'
-                                temp_label.style.background = '#'     
+                                temp_label.style.background = '#f66962'     
                                 loader.style.display = 'none'
                                     }
 else {
@@ -139,6 +143,8 @@ else {
                                     }
                                     Object.assign(temp_label.style, successStyle)
                                     temp_label.innerHTML = 'Success';
+                                    is_both_uploaded[1] = true
+                                    is_disable_button()
                                     document.querySelector('label[for=back_id]').onclick = () => {
                                         location.reload()
                                     }
@@ -183,7 +189,11 @@ break;
             location.reload()
         }, 2000);
     }
-
+    function is_disable_button() {
+        if(is_both_uploaded[0] && is_both_uploaded[1]) {
+            btn_submit.removeAttribute('disabled')
+        }
+    }
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
 
