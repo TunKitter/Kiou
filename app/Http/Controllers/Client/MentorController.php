@@ -84,15 +84,16 @@ class MentorController extends Controller
                 'username.unique' => 'Username đã tồn tại trong hệ thống!',
                 'username.alpha_dash' => 'Username không được chứa ký tự đặc biệt!',
             ]);
-        $mentor = Mentor::where('user_id', Auth::id())->first();
-
-        $mentor->name = $request->input('name');
-        $mentor->username = $request->input('username');
-        if ($request->hasFile('avatar')) {
-            $imagePath = $request->file('avatar')->store('', 'public');
-            $mentor->image = array_merge($mentor->image, ['avatar' => $imagePath]);
+        $update_data = [
+            'name' => $request->input('name'),
+            'username' => $request->input('username'),
+        ];
+        if ($request->avatar) {
+            $imagePath = \uniqid() . '.' . $request->file('avatar')->getClientOriginalExtension();
+            $request->avatar->move(public_path('avatar'), $imagePath);
+            $update_data['image.avatar'] = $imagePath;
         }
-        $mentor->save();
+        Mentor::where('user_id', Auth::id())->update($update_data);
         return redirect()->route('mentor-profile')->with('success', 'Thông tin đã được cập nhật thành công.');
     }
     public function profile()
@@ -128,7 +129,8 @@ class MentorController extends Controller
         $request->front_card->move(storage_path('cccd'), $front_card_name);
         $request->back_card->move(storage_path('cccd'), $back_card_name);
         Mentor::where('user_id', auth()->id())->first()->update([
-            'image' => ['front_card' => $front_card_name, 'back_card' => $back_card_name],
+            'image.front_card' => $front_card_name,
+            'image.back_card' => $back_card_name,
         ]);
         return redirect()->route('mentor-profile');
     }

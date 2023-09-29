@@ -14,12 +14,12 @@
 <h5>Beginner</h5>
 <img src="{{asset('assets/img/instructor-profile-bg.jpg')}}" alt>
 <div class="profile-img">
-<a href="student-profile.html"><img src="{{asset('storage/'. $mentor->image['avatar'])}}" alt></a>
+<a href="student-profile.html"><img src="{{asset('avatar/'. $mentor->image['avatar'])}}" alt></a>
 </div>
 </div>
 <div class="profile-group">
 <div class="profile-name text-center">
-<h4><a href="#">{{ auth()->user()->mentor->name }}</a></h4>
+<h4><a href="#">{{ $mentor->name }}</a></h4>
 <p>Mentor</p>
 </div>
 <div class="go-dashboard text-center">
@@ -115,7 +115,7 @@
 </div>
 <div class="course-group mb-0 d-flex">
 <div class="course-group-img d-flex align-items-center">
-<a href="student-profile.html"><img src="{{asset('storage/'. $mentor->image['avatar'])}}" alt class="img-fluid"></a>
+<a href="student-profile.html"><img src="{{asset('avatar/'. $mentor->image['avatar'])}}" alt class="img-fluid"></a>
 <div class="course-name">
 <h4><a href="student-profile.html">{{ auth()->user()->mentor->name }}</a></h4>
 <p>PNG or JPG no bigger than 800px wide and tall.</p>
