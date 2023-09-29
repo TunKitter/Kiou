@@ -23,6 +23,16 @@
 @enderror
 </div>   
 </div>
+<div class="form-group">
+<label class="form-control-label">Username</label>
+<input type="text" name="username" class="form-control" placeholder="Enter your username" oninput="enter_data()">
+<div class="error_message">
+    @error('username')
+    <span style="color: red;font-weight:lighter">{{$message}}</span>
+    <br>
+@enderror
+</div>   
+</div>
 <label class="form-control-label">Profession</label>
 <div class="form-group d-flex justify-content-center gap-2 align-items-center">
 <input type="text" id="profession" name="profession" class="form-control" onblur="check_load_cate()"  placeholder="For example: Website designer, Graphic designer" oninput="enter_data()">  

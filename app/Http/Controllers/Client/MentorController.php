@@ -30,15 +30,20 @@ class MentorController extends Controller
     {
         $request->validate([
             'name' => ['required', 'min:2', 'max:40', 'regex:/[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/'],
+            'username' => ['required', 'string', 'min:3', 'alpha_dash:ascii', Rule::unique('users')],
         ],
             [
                 'name.required' => 'Vui lòng nhập tên.',
                 'name.min' => 'Tên ít nhất phải :min ký tự!',
                 'name.max' => 'Tên không được vượt quá :max ký tự!',
                 'name.regex' => 'Tên không được chứa ký tự đặc biệt!',
+                'username.required' => 'Vui lòng nhập tên đăng nhập.',
+                'username.min' => 'Tên đăng nhập phải chứa ít nhất :min ký tự!',
+                'username.alpha_dash' => 'Tên đăng nhập không được chứa ký tự đặc biệt!',
+                'username.unique' => 'Tên đăng nhập đã có người dùng!',
             ]);
         $temp_profession = [];
-        foreach ($request->except('_token', 'name', 'profession') as $key => $value) {
+        foreach ($request->except('_token', 'username', 'name', 'profession') as $key => $value) {
 
             if ($temp_key = Profession::find($key)) {
                 if ($temp_key->name == $value) {
@@ -55,6 +60,7 @@ class MentorController extends Controller
         Mentor::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
+            'username' => $request->username,
             'profession' => $temp_profession,
         ]);
 
