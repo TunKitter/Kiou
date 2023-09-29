@@ -13,14 +13,26 @@
 <div class="form-group">
 <label class="form-control-label">Full Name</label>
 <input type="text" id="email" name="name" class="form-control" placeholder="Enter your mentor's name" oninput="enter_data()">
+<div class="error_message">
+    @error('name')
+    <span style="color: red;font-weight:lighter">{{$message}}</span>
+    <br>
+@enderror
+</div>   
 </div>
 <label class="form-control-label">Profession</label>
 <div class="form-group d-flex justify-content-center gap-2 align-items-center">
-<input type="text" id="profession" name="profession" class="form-control" onblur="check_load_cate()"  placeholder="For example: Website designer, Graphic designer" oninput="enter_data()">
+<input type="text" id="profession" name="profession" class="form-control" onblur="check_load_cate()"  placeholder="For example: Website designer, Graphic designer" oninput="enter_data()">  
 <div class="spinner-border" id="loader" style="color: #f66962;display: none" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
+<div class="error_message">
+    @error('profession')
+    <span style="color: red;font-weight:lighter">{{$message}}</span>
+    <br>
+@enderror
+</div> 
 <div class="professions">
 {{-- <div class="remember-me">
 <label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> IT

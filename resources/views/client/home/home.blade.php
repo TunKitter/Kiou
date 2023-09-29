@@ -402,12 +402,37 @@
     <img src="assets/img/user/user11.jpg" alt="User Image" class="avatar-img rounded-circle">
     </div>
     <div class="user-text">
-    <h6>{{$auth::user()->name}}</h6>
-    <p class="text-muted mb-0">Student</p>
+        <h6>
+            @if(auth()->user()->mentor)
+                {{ auth()->user()->mentor->name }}
+            @else
+                {{ auth()->user()->name }}
+            @endif
+        </h6>        
+    <p class="text-muted mb-0">
+        @if(auth()->user()->mentor)
+            Mentor
+        @else
+            Student
+        @endif
+    </p>
+    
     </div>
     </div>
     <a class="dropdown-item" href="{{route('profile')}}"><i class="feather-user me-1"></i> Profile</a>
-    <a class="dropdown-item" href="{{route('mentor-overview')}}"><i class="feather-user me-1"></i> Mentor </a>
+    @if(auth()->user()->mentor)
+    <a class="dropdown-item" href="{{ route('mentor-profile') }}"><i class="feather-user me-1"></i> Mentor-Profile</a>
+    @else
+    <a class="dropdown-item" href="{{ route('mentor-overview') }}"><i class="feather-user me-1"></i>
+        @if(auth()->user()->mentor == null || auth()->user()->mentor->user_id != auth()->user()->id)
+            Đăng ký mentor
+        @else
+            Mentor-Profile
+        @endif
+    </a>
+    @endif
+
+
     <div class="dropdown-item night-mode">
     <span><i class="feather-moon me-1"></i> Night Mode </span>
     <div class="form-check form-switch check-on m-0">

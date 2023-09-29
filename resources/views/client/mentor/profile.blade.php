@@ -16,8 +16,8 @@
 </div>
 <div class="profile-group">
 <div class="profile-name text-center">
-<h4><a href="student-profile.html">Rolands R</a></h4>
-<p>Student</p>
+<h4><a href="#">{{ auth()->user()->mentor->name }}</a></h4>
+<p>Mentor</p>
 </div>
 <div class="go-dashboard text-center">
 <a href="deposit-student-dashboard.html" class="btn btn-primary">Go to Dashboard</a>
@@ -114,7 +114,7 @@
 <div class="course-group-img d-flex align-items-center">
 <a href="student-profile.html"><img src="{{asset('assets/img/user/user11.jpg')}}" alt class="img-fluid"></a>
 <div class="course-name">
-<h4><a href="student-profile.html">Your avatar</a></h4>
+<h4><a href="student-profile.html">{{ auth()->user()->mentor->name }}</a></h4>
 <p>PNG or JPG no bigger than 800px wide and tall.</p>
 </div>
 </div>
@@ -128,30 +128,25 @@
 <h4>Personal Details</h4>
 <p>Edit your personal information and address.</p>
 </div>
-<form action="#">
+<form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
+    @csrf
 <div class="row">
 <div class="col-lg-6">
 <div class="form-group">
 <label class="form-control-label">Full Name</label>
-<input type="text" class="form-control" placeholder="Enter your first Name">
+<input type="text" class="form-control" name="name" value="{{ auth()->user()->mentor->name }}" placeholder="Enter your first Name">
+<div class="error_message">
+    @error('name')
+    <span style="color: red;font-weight:lighter">{{$message}}</span>
+    <br>
+@enderror
+</div> 
 </div>
 </div>
 <div class="col-lg-6">
 <div class="form-group">
 <label class="form-control-label">Username</label>
-<input type="text" class="form-control" placeholder="Enter your last Name">
-</div>
-</div>
-<div class="col-lg-6">
-<div class="form-group">
-<label class="form-control-label">Phone</label>
-<input type="text" class="form-control" placeholder="Enter your Phone">
-</div>
-</div>
-<div class="col-lg-6">
-<div class="form-group">
-<label class="form-control-label">Email</label>
-<input type="text" class="form-control" placeholder="Enter your Email">
+<input type="text" class="form-control" name="username" value="{{ auth()->user()->username }}" placeholder="Enter your last Name">
 </div>
 </div>
 <label class="form-control-label">Professions</label>
@@ -206,7 +201,7 @@
 <div class="col-lg-6">
 </div>
 <div class="update-profile">
-<button type="button" class="btn btn-primary">Update Profile</button>
+<button type="submit" class="btn btn-primary">Update Profile</button>
 </div>
 </div>
 </form>

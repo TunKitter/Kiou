@@ -29,8 +29,10 @@ class User extends Model implements Authenticatable
         'profession' => [],
         'role' => ['650ba6fdf6e2892bb7012082'],
     ];
-    public function getMentorInfo()
+
+    public function mentor()
     {
-        return $this->hasOne(Mentor::class);
+        return $this->hasOne(Mentor::class, 'user_id');
     }
+
 }
