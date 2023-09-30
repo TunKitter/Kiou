@@ -405,7 +405,7 @@
         <h6>
                 {{ auth()->user()->name }}
         </h6>        
-    
+    <p class="text-muted">{{auth()->user()->username}}</p>
     </div>
     </div>
     <a class="dropdown-item" href="{{route('profile')}}"><i class="feather-user me-1"></i>Profile</a>
