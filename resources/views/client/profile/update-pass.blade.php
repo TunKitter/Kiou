@@ -3,6 +3,9 @@
 @if ($message = Session::get('success'))
 @include('client.section.message', ['message' => $message,'type'=>'success'])
 @endif
+@if($message = Session::get('error'))
+@include('client.section.message', ['message' => $message,'type'=>'error'])
+@endif
     <div class="page-content">
         <div class="container">
             <div class="row">
@@ -119,14 +122,14 @@
                             </div>
                             <div class="checkout-form personal-address add-course-info ">
                                
-                                <form action="{{route('profile.password.update', $user->id)}}" method="POST">
+                                <form action="{{route('profile-password', $user->id)}}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label class="form-control-label">Password</label>
-                                                <input type="text" class="form-control" placeholder="Enter your password"
+                                                <label class="form-control-label">Old Password</label>
+                                                <input type="password" class="form-control" placeholder="Enter your old password"
                                                     name="password">
                                                 @error('password')
                                                     <span style="color: red">{{$message}}</span>
@@ -136,7 +139,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label class="form-control-label">New password</label>
-                                                <input type="text" class="form-control"
+                                                <input type="password" class="form-control"
                                                     placeholder="Enter your new password" name="new_password">
                                                 @error('new_password')
                                                     <span style="color: red">{{$message}}</span>
@@ -147,7 +150,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label class="form-control-label">Confirm password</label>
-                                                <input type="text" class="form-control" placeholder="Enter your confirm password"
+                                                <input type="password" class="form-control" placeholder="Enter your confirm password"
                                                     name="cf_password" >
                                                 @error('cf_password')
                                                     <span style="color: red">{{$message}}</span>

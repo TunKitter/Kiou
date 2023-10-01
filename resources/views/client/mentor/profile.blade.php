@@ -3,6 +3,11 @@
 @if (Session::has('success'))
     @include('client.section.message',['type' => 'success', 'message' => Session::get('success')])
 @endif
+<style>
+    input:focus {
+        border: 1px solid #fca483 !important ;
+    }
+</style>
 <div class="page-content">
 <div class="container">
 <div class="row">
@@ -14,7 +19,7 @@
 <h5>Beginner</h5>
 <img src="{{asset('assets/img/instructor-profile-bg.jpg')}}" alt>
 <div class="profile-img">
-<a href="student-profile.html"><img src="{{asset('avatar/'. $mentor->image['avatar'])}}" alt></a>
+<a href="student-profile.html"><img src="{{asset('mentor/avatar/'. $mentor->image['avatar'])}}" alt></a>
 </div>
 </div>
 <div class="profile-group">
@@ -115,15 +120,15 @@
 </div>
 <div class="course-group mb-0 d-flex">
 <div class="course-group-img d-flex align-items-center">
-<a href="student-profile.html"><img src="{{asset('avatar/'. $mentor->image['avatar'])}}" alt class="img-fluid"></a>
+{{-- <a href="student-profile.html"><img src="{{asset('avatar/'. $mentor->image['avatar'])}}" alt class="img-fluid"></a> --}}
 <div class="course-name">
 <h4><a href="student-profile.html">{{ auth()->user()->mentor->name }}</a></h4>
 <p>PNG or JPG no bigger than 800px wide and tall.</p>
 </div>
 </div>
 <div class="profile-share d-flex align-items-center justify-content-center">
-<label  for="avatar" class="btn btn-success">Update</label>
-<input type="file" id="avatar" form="mentor" name="avatar" style="display: none">
+<label for="avatar" class="btn btn-success" onclick="document.getElementById('avatar').disabled = false">Update</label>
+<input  disabled type="file" id="avatar" form="mentor" name="avatar" style="display: none" accept="image/*" onchange="enable_btn()">
 <label href="javascript:;" class="btn btn-danger">Delete</label>
 </div>
 </div>
@@ -137,8 +142,8 @@
 <div class="row">
 <div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Full Name</label>
-<input type="text" class="form-control" name="name" value="{{ $mentor->name }}" placeholder="Enter your first Name">
+<label class="form-control-label">Full Name <i class="icon feather-edit" onclick="un_disabled_input('name')"></i></label>
+<input type="text" class="form-control" name="name" value="{{ $mentor->name }}" placeholder="Enter your first Name" disabled id="name">
 <div class="error_message">
 @error('name')
     <Kspan style="color: red;font-weight:lighter">{{$message}}</span>
@@ -148,8 +153,8 @@
 </div>
 <div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Username</label>
-<input type="text" class="form-control" name="username" value="{{ $mentor->username }}" placeholder="Enter your last Name">
+<label class="form-control-label">Username <i class="icon feather-edit" onclick="un_disabled_input('username')"></i></label>
+<input type="text" class="form-control" name="username" value="{{ $mentor->username }}" placeholder="Enter your last Name" disabled id="username">
 @error('username')
 <span style="color: red;font-weight:lighter">{{$message}}</span>
 @enderror
@@ -207,7 +212,7 @@
 <div class="col-lg-6">
 </div>
 <div class="update-profile">
-<button type="submit" class="btn btn-primary">Update Profile</button>
+<button disabled type="submit" class="btn btn-primary border-0" id="btn-submit">Update Profile</button>
 </div>
 </div>
 </form>
@@ -219,4 +224,15 @@
 </div>
 </div>
 </div>
+<script>
+function un_disabled_input(id){
+    let temp_input =document.getElementById(id) 
+    temp_input.disabled = false
+    temp_input.focus()
+    enable_btn()
+}
+function enable_btn(){
+    document.getElementById('btn-submit').disabled = false
+}
+</script>
 @endsection

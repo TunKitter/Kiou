@@ -35,4 +35,14 @@ class Controller extends BaseController
         $is_role = in_array($role, $role_user[$model]);
         return $is_role ? 0 : 2;
     }
+    public function upload_file($filename, $path, $file, $is_unlink = false, $old_file = null)
+    {
+        $file->move($path, $filename);
+        if ($is_unlink) {
+            try {
+                unlink($path . '/' . $old_file);
+            } catch (\Throwable $th) {
+            }
+        }
+    }
 }

@@ -57,8 +57,8 @@ class AuthRequest extends FormRequest
                     'avatar' => [
                         'image',
                         'mimes:png,jpg',
-                        'max:2048'
-                    ]
+                        'max:2048',
+                    ],
                 ]);
         }
 
@@ -86,6 +86,9 @@ class AuthRequest extends FormRequest
             'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống!',
             '*.alpha_dash' => ':attribute không được chứa ký tự đặc biệt!',
             'name.regex' => ':attribute không được chứa ký tự đặc biệt!',
+            'avatar.image' => 'Vui lòng chọn hình ảnh!',
+            'avatar.mimes' => 'Định dạng không hợp lệ!',
+            'avatar.max' => 'Ảnh không được vượt quá :max ký tự!',
 
         ];
     }
@@ -97,6 +100,7 @@ class AuthRequest extends FormRequest
             'phone' => 'Số điện thoại',
             'username' => 'Tên đăng nhập',
             'password' => 'Mật khẩu',
+            'avatar' => 'Hình ảnh',
         ];
     }
 }

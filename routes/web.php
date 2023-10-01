@@ -5,8 +5,8 @@ use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
-use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\ProfileController;
+use App\Http\Controllers\Client\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 // Login Google
@@ -37,13 +37,11 @@ Route::prefix('password')->group(function () {
 # ------------------------- Profile --------------------------------
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::get('/profile/{id}', [ProfileController::class, 'delete'])->name('profile.delete');
-    Route::get('/profile/password/{id}', [ProfileController::class, 'password'])->name('profile.pass.edit');
-    Route::patch('/profile/password/{id}', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update']);
+    Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile-password');
+    Route::patch('/profile/password', [ProfileController::class, 'handlePassword'])->name('profile-password');
 });
-
 
 # ------------------------- Mentor --------------------------------
 

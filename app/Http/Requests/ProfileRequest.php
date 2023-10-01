@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\AuthRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 class ProfileRequest extends FormRequest
 {
@@ -17,6 +17,7 @@ class ProfileRequest extends FormRequest
     }
 
     /**
+     *
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
@@ -24,14 +25,19 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'],
-            'username' => ['required','string','min:6','alpha_dash:ascii',Rule::unique('users')],
-            'phone' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:9','max:10'],
-            'avatar' => ['image','mimes:png,jpg','max:2048'],
-            'email' => ['required','string','email','max:40',Rule::unique('users'),],
-            'password' => ['required','string','min:6',],
-            'new_password' => ['required','string','min:6',],
-            'cf_password' => ['required','string','min:6',],
+            'name' => $this->name ? ['required', 'max:40', 'regex:/[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/'] : '',
+            'username' => $this->username ? ['required', 'string', 'min:6', 'alpha_dash:ascii', Rule::unique('users')] : '',
+            'phone' => $this->phone ? ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:9', 'max:10'] : '',
+            'email' => $this->email ? ['required', 'string', 'email', 'max:40', Rule::unique('users')] : '',
+            'avatar' => $this->avatar ? ['image', 'mimes:png,jpg', 'max:2048'] : '',
         ];
+    }
+    public function messages()
+    {
+        return (new AuthRequest())->messages();
+    }
+    public function attributes()
+    {
+        return (new AuthRequest())->attributes();
     }
 }

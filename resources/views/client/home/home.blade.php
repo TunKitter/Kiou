@@ -394,14 +394,14 @@
     <li class="nav-item user-nav">
     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
     <span class="user-img">
-    <img src="{{auth()->user()->image['avatar'] ? auth()->user()->image['avatar'] :  asset('assets/img/user/avatar.jpg')}}" style="transform: scale(0.8);">
+    <img src="{{($image = auth()->user()->image['avatar']) ? ((strpos($image,'http')) ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" style="transform: scale(0.8);">
     <span class="status online"></span>
     </span>
     </a>
     <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end">
     <div class="user-header">
     <div class="avatar avatar-sm">
-    <img src="{{auth()->user()->image['avatar'] ? auth()->user()->image['avatar'] :  asset('assets/img/user/avatar.jpg')}}" alt="User Image" class="avatar-img rounded-circle">
+    <img src="{{$image ? (strpos($image,'http') ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" alt="User Image" class="avatar-img rounded-circle">
     </div>
     <div class="user-text">
         <h6>
@@ -410,7 +410,7 @@
     <p class="text-muted">{{auth()->user()->username}}</p>
     </div>
     </div>
-    <a class="dropdown-item" href="{{route('profile')}}"><i class="feather-user me-1"></i>Profile</a>
+    <a class="dropdown-item" href="{{ route('profile') }}"><i class="feather-user me-1"></i>Profile</a>
     @if(auth()->user()->mentor)
     <a class="dropdown-item" href="{{ route('mentor-profile') }}"><i class="feather-user me-1"></i> Mentor Profile <img src="{{asset('assets/mentor.gif')}}" width="50px"></a>
     @else
@@ -443,40 +443,6 @@
 </li>
 </ul>   
 @endguest
-@auth
-                                            </div>
-                                            <div class="user-text">
-                                                <h6>{{ $auth::user()->name }}</h6>
-                                                <p class="text-muted mb-0">Student</p>
-                                            </div>
-                                        </div>
-                                        <a class="dropdown-item" href="{{ route('profile.edit', $auth::user()->id) }}"><i
-                                                class="feather-user me-1"></i> Profile</a>
-                                        <a class="dropdown-item" href="setting-student-subscription.html"><i
-                                                class="feather-star me-1"></i> Subscription</a>
-                                        <div class="dropdown-item night-mode">
-                                            <span><i class="feather-moon me-1"></i> Night Mode </span>
-                                            <div class="form-check form-switch check-on m-0">
-                                                <input class="form-check-input" type="checkbox" id="night-mode">
-                                            </div>
-                                        </div>
-                                        <a class="dropdown-item" href="http://127.0.0.1:8000/logout"><i
-                                                class="feather-log-out me-1"></i> Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        @endauth
-                        @guest
-                            <ul class="nav header-navbar-rht">
-                                <li class="nav-item">
-                                    <a class="nav-link header-sign" href="{{ route('login') }}">Signin</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link header-login" href="{{ route('register') }}">Signup</a>
-                                </li>
-                            </ul>
-                        @endguest
-
                     </div>
                 </nav>
             </div>

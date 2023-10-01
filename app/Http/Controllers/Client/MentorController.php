@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfileRequest;
 use App\Models\Mentor;
 use App\Models\Profession;
 use Illuminate\Http\Request;
@@ -67,39 +68,21 @@ class MentorController extends Controller
         return redirect()->route('mentor-upload-id-card');
     }
 
-    public function handleProfile(Request $request)
+    public function handleProfile(ProfileRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'min:3', 'max:40', 'regex:/[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/'],
-            'username' => [
-                'required',
-                'string',
-                'min:3',
-                'alpha_dash:ascii',
-                Rule::unique('users'),
-            ],
-        ],
-            [
-                'name.required' => 'Vui lòng nhập tên.',
-                'name.min' => 'Tên ít nhất phải :min ký tự!',
-                'name.max' => 'Tên không được vượt quá :max ký tự!',
-                'name.regex' => 'Tên không được chứa ký tự đặc biệt!',
-                'username.required' => 'Vui lòng nhập tên đăng nhập.',
-                'username.min' => 'Tên đăng nhập phải chứa ít nhất :min ký tự!',
-                'username.max' => 'Tên đăng nhập không được vượt quá :max ký tự!',
-                'username.unique' => 'Username đã tồn tại trong hệ thống!',
-                'username.alpha_dash' => 'Username không được chứa ký tự đặc biệt!',
-            ]);
-        $update_data = [
-            'name' => $request->input('name'),
-            'username' => $request->input('username'),
-        ];
+        $request->validated();
+        $update_data = [];
+        $request->name ? $update_data['name'] = $request->name : '';
+        $request->username ? $update_data['username'] = $request->username : '';
+        $user = Auth::user();
+
         if ($request->avatar) {
             $imagePath = \uniqid() . '.' . $request->file('avatar')->getClientOriginalExtension();
-            $request->avatar->move(public_path('avatar'), $imagePath);
+            $this->upload_file($imagePath, public_path('mentor/avatar'), $request->file('avatar'), true, $user->image['avatar']);
             $update_data['image.avatar'] = $imagePath;
+
         }
-        Mentor::where('user_id', Auth::id())->update($update_data);
+        Mentor::where('user_id', $user->id)->update($update_data);
         return redirect()->route('mentor-profile')->with('success', 'Thông tin đã được cập nhật thành công.');
     }
     public function profile()

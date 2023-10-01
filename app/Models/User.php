@@ -15,6 +15,7 @@ class User extends Model implements Authenticatable
         'name',
         'username',
         'image',
+        'image.avatar',
         'phone',
         'profession',
         'email',
@@ -25,9 +26,12 @@ class User extends Model implements Authenticatable
     protected $attributes = [
         'phone' => '',
         'username' => '',
-        'image' => [],
+        'image' => [
+            'avatar' => '',
+        ],
         'profession' => [],
         'role' => ['650ba6fdf6e2892bb7012082'],
+        'auth' => ['google' => ''],
     ];
 
     public function mentor()
