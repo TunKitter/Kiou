@@ -88,4 +88,9 @@ class ProfileController extends Controller
             return redirect()->back()->with('error', 'Invalid password');
         }
     }
+    public function deleteAvatar()
+    {
+        auth()->user()->update(['image.avatar' => 'avatar.jpg']);
+        return 1;
+    }
 }

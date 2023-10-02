@@ -13,5 +13,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'mentor/upload-id-card',
+        'mentor/face-verify',
+        'mentor/profile',
+        'mentor/save-id-card-data',
+        'profile',
     ];
 }

@@ -39,6 +39,7 @@ Route::prefix('password')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile', [ProfileController::class, 'update']);
+    Route::delete('/profile', [ProfileController::class, 'deleteAvatar']);
     Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile-password');
     Route::patch('/profile/password', [ProfileController::class, 'handlePassword'])->name('profile-password');
 });
@@ -51,6 +52,10 @@ Route::post('/mentor/register', [MentorController::class, 'handleRegister'])->mi
 Route::get('/mentor/upload-id-card', [MentorController::class, 'uploadIdCard'])->middleware('auth')->name('mentor-upload-id-card');
 Route::post('/mentor/upload-id-card', [MentorController::class, 'handleUploadIdCard'])->middleware('auth');
 Route::get('/mentor/upload-id-card/taking-picture', [MentorController::class, 'takingPicture'])->name('mentor-taking-picture')->middleware('auth');
+Route::post('/mentor/save-id-card-data', [MentorController::class, 'saveIdCardData'])->middleware('auth');
 Route::get('/mentor/face-verify', [MentorController::class, 'faceVerify'])->name('mentor-face-verify')->middleware('auth');
+Route::post('/mentor/face-verify', [MentorController::class, 'handleFaceVerify'])->middleware('auth');
+Route::get('/mentor/success', [MentorController::class, 'success'])->name('mentor-success')->middleware('auth');
 Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
+Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');

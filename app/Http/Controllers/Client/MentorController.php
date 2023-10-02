@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
+use App\Models\IdCard;
 use App\Models\Mentor;
 use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class MentorController extends Controller
@@ -87,10 +89,16 @@ class MentorController extends Controller
     }
     public function profile()
     {
+        if (!Auth::user()->mentor) {
+            return redirect()->route('mentor-overview');
+        }
+        if (!(Auth::user()->mentor->image['front_card'] && Auth::user()->mentor->image['back_card'] && Auth::user()->mentor->image['user_face'])) {
+            return redirect()->route('mentor-register');
+        }
         $mentor = Mentor::where('user_id', Auth::id())->first();
         return view('client.mentor.profile', compact('mentor'));
     }
-    public function uploadIdCard()
+    public function uploadIdCard(Request $request)
     {
         $mentor_check = Mentor::where('user_id', auth()->id())->first();
         if ($mentor_check) {
@@ -98,16 +106,16 @@ class MentorController extends Controller
                 return redirect()->route('mentor-face-verify');
             }
         }
-        return view('client.mentor.id-card-upload');
+        return view('client.mentor.id-card-upload', ['is_already' => $request->already ? 1 : 0]);
     }
-    public function takingPicture()
+    public function takingPicture(Request $request)
     {
         $mentor_check = Mentor::where('user_id', auth()->id())->first();
         if ($mentor_check) {
             if ($mentor_check->image['front_card'] && $mentor_check->image['back_card']) {
                 return redirect()->route('mentor-face-verify');
             }
-            return view('client.mentor.online-take-picture-id-card-confirm');
+            return view('client.mentor.online-take-picture-id-card-confirm', ['is_already' => $request->already ? 1 : 0]);
         }
     }
 
@@ -115,16 +123,58 @@ class MentorController extends Controller
     {
         $front_card_name = uniqid() . '.' . $request->file('front_card')->getClientOriginalExtension();
         $back_card_name = uniqid() . '.' . $request->file('back_card')->getClientOriginalExtension();
-        $request->front_card->move(storage_path('cccd'), $front_card_name);
-        $request->back_card->move(storage_path('cccd'), $back_card_name);
+        $request->front_card->move(storage_path('app/mentor/cccd'), $front_card_name);
+        $request->back_card->move(storage_path('app/mentor/cccd'), $back_card_name);
         Mentor::where('user_id', auth()->id())->first()->update([
             'image.front_card' => $front_card_name,
             'image.back_card' => $back_card_name,
         ]);
-        return redirect()->route('mentor-profile');
+        return redirect()->route('mentor-face-verify');
     }
     public function faceVerify()
     {
-        return 'sdas';
+        if (!(auth()->user()->mentor->image['front_card'] && auth()->user()->mentor->image['back_card'])) {
+            return redirect()->route('mentor-upload-id-card');
+        }
+        if (auth()->user()->mentor->image['user_face']) {
+            return \redirect()->route('mentor-success');
+        }
+
+        $filePath = (Storage::get('mentor/cccd/' . auth()->user()->mentor->image['front_card']));
+        $base64 = base64_encode($filePath);
+        return view('client.mentor.verify-face', compact('base64'));
+    }
+    public function handleFaceVerify(Request $request)
+    {
+
+        if ($request->user_face) {
+            $fileName = uniqid() . '.' . $request->file('user_face')->getClientOriginalExtension();
+            auth()->user()->mentor->update([
+                'image.user_face' => $fileName,
+            ]);
+            $this->upload_file($fileName, storage_path('app/mentor/face'), $request->file('user_face')
+            );
+        }
+        return 1;
+    }
+    public function deleteAvatar()
+    {
+        unlink(\public_path('mentor/avatar/' . auth()->user()->mentor->image['avatar']));
+        auth()->user()->mentor->update(['image.avatar' => 'avatar.jpg']);
+        return 1;
+    }
+    public function success()
+    {
+        return view('client.mentor.success');
+    }
+    public function saveIdCardData(Request $request)
+    {
+        if (IdCard::where('id', $request->id)->exists()) {
+            return 0;
+        }
+
+        IdCard::create(array_merge(['mentor_id' => auth()->user()->mentor->id], $request->all()));
+        return 1;
+
     }
 }

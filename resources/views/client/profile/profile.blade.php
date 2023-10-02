@@ -139,7 +139,7 @@
                                        Update 
                                     </label>
                                     <input onchange="document.getElementById('btn-submit').disabled = false" disabled type="file" name="avatar" style="display: none" id="avatar"accept="image/*" form="profile-form">
-                                    <label  class="btn btn-danger">Delete</label>
+                                    <label  class="btn btn-danger" onclick="delete_avatar()">Delete</label>
                                 </div> 
                             </div>
                             @error('avatar')
@@ -227,5 +227,20 @@
         input_temp.focus()
         document.getElementById('btn-submit').disabled = false
     }
+function delete_avatar(){
+    if(confirm('Are you sure to delete your avatar?')){
+        fetch(location.href,{
+            method: 'DELETE',
+        }).then(data => data.text()).then(data => {
+            if(data==1) {
+                alert('Avatar deleted successfully')
+                setTimeout(() => {
+                    location.reload()
+                }, 1000);
+            }
+            
+        })
+    }
+}
 </script>
 @endsection

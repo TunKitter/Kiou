@@ -13,6 +13,9 @@
     left: 10px;
 }
 </style>
+@if($is_already ==1)
+@include('client.section.message', ['type' => 'Fail','message' => 'The id card already uploaded your identify card'])
+@endif
 <div class="login-wrapper">
     <div class="loginbox">
     <div class="w-100">
@@ -44,7 +47,7 @@
 <br>
     <div class="profile-share d-flex align-items-center justify-content-center">
     <label href="javascript:;" class="btn btn-primary text-white" onclick="take_snapshot('my_camera2')" id="btn_back_id">Take Snapshot</label>
-    <input type="file" style="display: none" id="front_id" onchange="uploadImage(this,'front_id')">
+    <input type="file" style="display: none" id="back_id" onchange="uploadImage(this,'back_id')">
     </div>
     </div>
     </form> 
@@ -82,6 +85,7 @@ const btn_front_id = document.querySelector('#btn_front_id');
 const btn_back_id = document.querySelector('#btn_back_id');
 const id_infor = document.querySelector('.id-infor');
 const ok_cccd_post = []
+var data_form = new FormData()
 const API_KEY = 'ptWApLzUhL72YKXzCH9ZnZNbneAcROVF';
 Webcam.attach( '#my_camera' );
 Webcam.attach( '#my_camera2' );
@@ -102,20 +106,33 @@ let formData = new FormData();
             body: formData
         }).then(res => res.json())
         .then(data => {
-            console.log(data);
             if(data['errorCode'] == 0) {
             if(data['data'][0]['type'] == 'chip_back' && camera_id == 'my_camera2'){ 
                 document.querySelector('#where_card_infor').style.display = 'block'
                 document.querySelector('#where_card_infor').innerHTML += '<b>' + data['data'][0]['issue_loc'] + '</b>'
                 success_cccd(camera_id,'.loader_'+camera_id,camera_id == 'my_camera2' ? btn_back_id : btn_front_id);
                 ok_cccd_post[ok_cccd_post.length] = file
+                let result_id = data['data'][0]
+                for(let key in result_id) {
+                            if(key != 'address_entities') 
+                            {
+                                data_form.append(key, result_id[key])                                
+                            }
+                        }
                 if(ok_cccd_post.length == 2){
                     document.querySelector('#btn_submit').removeAttribute('disabled')
+                    save_data_card()
                 }
             }
             else if(data['data'][0]['type'] == 'chip_front' && camera_id == 'my_camera'){
 
                 let result_id = data['data'][0]
+                for(let key in result_id) {
+                    if(key != 'address_entities') 
+                            {
+                                data_form.append(key, result_id[key])                                
+                            }
+                        }
                 success_cccd(camera_id,'.loader_'+camera_id,camera_id == 'my_camera2' ? btn_back_id : btn_front_id);
                 document.querySelector('#id_card_infor').innerHTML = result_id['id']
                 document.querySelector('#name_card_infor').innerHTML = result_id['name']
@@ -125,6 +142,7 @@ let formData = new FormData();
                 ok_cccd_post[ok_cccd_post.length] = file
                 if(ok_cccd_post.length == 2){
                     document.querySelector('#btn_submit').removeAttribute('disabled')
+                    save_data_card()
                 }
             }
             else {
@@ -161,9 +179,6 @@ let formData = new FormData();
 
 function loading_cccd(camera_id,data_uri) {
     document.getElementById(camera_id).innerHTML = '<div class="cccd_img_parent"><img src="'+data_uri+'" class="cccd_img '+ camera_id+'" /><div class="spinner-border mb-2 loader_'+camera_id+'" id="loader" style="color: #f66962;" role="status"><span class="visually-hidden">Loading...</span></div> </div>';
-// setTimeout(() => {
-//     fail_cccd(camera_id,'.loader_'+camera_id,camera_id == 'my_camera2' ? btn_back_id : btn_front_id);
-// }, 2000);
 
 }
 function success_cccd(camera_id,loader_id,btn_id) {
@@ -206,9 +221,19 @@ function sendImage() {
             method: 'POST',
             body: formData
         }).then(res => {
-            location.href = '{{route('mentor-register')}}'
+            location.href = '{{route('mentor-face-verify')}}'
         })
        
+}
+function save_data_card() {
+    fetch('http://127.0.0.1:8000/mentor/save-id-card-data', {
+        method: 'POST',
+        body: data_form
+        }).then(res => res.text()).then(data => {
+            if(data == 0) {
+                location.href = location.href + '?already=1'
+            }
+        })
 }
  </script>
 <script src="https://cdn.tailwindcss.com"></script>

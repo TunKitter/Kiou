@@ -129,7 +129,7 @@
 <div class="profile-share d-flex align-items-center justify-content-center">
 <label for="avatar" class="btn btn-success" onclick="document.getElementById('avatar').disabled = false">Update</label>
 <input  disabled type="file" id="avatar" form="mentor" name="avatar" style="display: none" accept="image/*" onchange="enable_btn()">
-<label href="javascript:;" class="btn btn-danger">Delete</label>
+<label href="javascript:;" class="btn btn-danger" onclick="delete_avatar()">Delete</label>
 </div>
 </div>
 <div class="checkout-form personal-address add-course-info ">
@@ -233,6 +233,21 @@ function un_disabled_input(id){
 }
 function enable_btn(){
     document.getElementById('btn-submit').disabled = false
+}
+function delete_avatar(){
+    if(confirm('Are you sure to delete your avatar?')){
+        fetch(location.href,{
+            method: 'DELETE',
+        }).then(data => data.text()).then(data => {
+            if(data==1) {
+                alert('Avatar deleted successfully')
+                setTimeout(() => {
+                    location.reload()
+                }, 1000);
+            }
+            
+        })
+    }
 }
 </script>
 @endsection

@@ -1,5 +1,8 @@
 @extends('client.layouts.mentor_auth')
 @section('content')
+@if($is_already ==1)
+@include('client.section.message', ['type' => 'Fail','message' => 'The id card already uploaded your identify card'])
+@endif
 <div class="login-wrapper">
     <div class="loginbox">
         <div class="w-100">
@@ -71,6 +74,7 @@
     const btn_submit = document.querySelector('#btn_submit')
     const FPT_API_ENDPOINT = 'https://api.fpt.ai/vision/idr/vnm'
     var id_infor = document.querySelector('.id-infor')
+    var data_form = new FormData()
 
     function uploadImage(input, label_id) {
         let temp_label = document.querySelector('label[for=' + label_id + ']')
@@ -91,8 +95,15 @@
                 switch (error_code) {
                     case 0: {
                         let result_id = data['data'][0]
+                  
+                   
                         if (label_id == 'front_id') {
-
+                        for(let key in result_id) {
+                            if(key != 'address_entities') 
+                            {
+                                data_form.append(key, result_id[key])                                
+                            }
+                        }
                             if (!(result_id['id'] && result_id['name'] && result_id['dob'] && result_id['address'])) {
                                 document.querySelector('#front_id').value = ''
                                 temp_label.innerHTML = 'Invalid image, Please try again'
@@ -133,7 +144,10 @@
                                 loader.style.display = 'none'
                                     }
 else {
-                                    document.querySelector('#where_card_infor').style.display = 'block'
+                         for(let key in data['data'][0]) {
+                                data_form.append(key, data['data'][0][key])                                
+                        }
+                              document.querySelector('#where_card_infor').style.display = 'block'
                                     document.querySelector('#where_card_infor').innerHTML += '<b>' + data['data'][0]['issue_loc'] + '</b>'
                                     loader.style.display = 'none'
                                     const successStyle = {
@@ -192,6 +206,14 @@ break;
     function is_disable_button() {
         if(is_both_uploaded[0] && is_both_uploaded[1]) {
             btn_submit.removeAttribute('disabled')
+            fetch('http://127.0.0.1:8000/mentor/save-id-card-data', {
+                            method: 'POST',
+                            body: data_form
+                        }).then(res => res.text()).then(data => {
+                            if(data == 0) {
+                                location.href = location.href + '?already=1'
+                            }
+                        })
         }
     }
 </script>

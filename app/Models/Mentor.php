@@ -12,6 +12,7 @@ class Mentor extends Model
         'image',
         'image.avatar',
         'image.front_card',
+        'image.user_face',
         'image.back_card',
         'profession',
         'contact',
@@ -20,9 +21,10 @@ class Mentor extends Model
     ];
     protected $attributes = [
         'image' => [
-            'avatar' => 'avatar.png',
+            'avatar' => 'avatar.jpg',
             'front_card' => '',
             'back_card' => '',
+            'user_face' => '',
         ],
     ];
 }
