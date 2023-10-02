@@ -206,10 +206,12 @@ break;
     function is_disable_button() {
         if(is_both_uploaded[0] && is_both_uploaded[1]) {
             btn_submit.removeAttribute('disabled')
-            fetch('http://127.0.0.1:8000/mentor/save-id-card-data', {
+            fetch("{{route('mentor-save-id-card')}}", {
                             method: 'POST',
                             body: data_form
                         }).then(res => res.text()).then(data => {
+                            console.log(data);
+                            
                             if(data == 0) {
                                 location.href = location.href + '?already=1'
                             }

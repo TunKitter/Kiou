@@ -33,7 +33,7 @@ class MentorController extends Controller
     {
         $request->validate([
             'name' => ['required', 'min:2', 'max:40', 'regex:/[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/'],
-            'username' => ['required', 'string', 'min:3', 'alpha_dash:ascii', Rule::unique('users')],
+            'username' => ['required', 'string', 'min:3', 'alpha_dash:ascii', Rule::unique('mentors')],
         ],
             [
                 'name.required' => 'Vui lòng nhập tên.',
@@ -80,7 +80,7 @@ class MentorController extends Controller
 
         if ($request->avatar) {
             $imagePath = \uniqid() . '.' . $request->file('avatar')->getClientOriginalExtension();
-            $this->upload_file($imagePath, public_path('mentor/avatar'), $request->file('avatar'), true, $user->image['avatar']);
+            $this->upload_file($imagePath, public_path('mentor/avatar'), $request->file('avatar'), true, auth()->user()->mentor->image['avatar']);
             $update_data['image.avatar'] = $imagePath;
 
         }
@@ -159,8 +159,10 @@ class MentorController extends Controller
     }
     public function deleteAvatar()
     {
-        unlink(\public_path('mentor/avatar/' . auth()->user()->mentor->image['avatar']));
-        auth()->user()->mentor->update(['image.avatar' => 'avatar.jpg']);
+        if (!auth()->user()->mentor->image['avatar']) {
+            unlink(\public_path('mentor/avatar/' . auth()->user()->mentor->image['avatar']));
+            auth()->user()->mentor->update(['image.avatar' => 'avatar.jpg']);
+        }
         return 1;
     }
     public function success()
@@ -169,7 +171,7 @@ class MentorController extends Controller
     }
     public function saveIdCardData(Request $request)
     {
-        if (IdCard::where('id', $request->id)->exists()) {
+        if (IdCard::where('id', $request->id)->isNotEmpty()) {
             return 0;
         }
 

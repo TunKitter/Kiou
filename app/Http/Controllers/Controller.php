@@ -40,7 +40,9 @@ class Controller extends BaseController
         $file->move($path, $filename);
         if ($is_unlink) {
             try {
-                unlink($path . '/' . $old_file);
+                if ($old_file != 'avatar.jpg') {
+                    unlink($path . '/' . $old_file);
+                }
             } catch (\Throwable $th) {
             }
         }

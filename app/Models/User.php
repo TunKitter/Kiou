@@ -27,7 +27,7 @@ class User extends Model implements Authenticatable
         'phone' => '',
         'username' => '',
         'image' => [
-            'avatar' => '',
+            'avatar' => 'avatar.jpg',
         ],
         'profession' => [],
         'role' => ['650ba6fdf6e2892bb7012082'],
