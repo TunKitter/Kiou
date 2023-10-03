@@ -394,14 +394,14 @@
     <li class="nav-item user-nav">
     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
     <span class="user-img">
-    <img src="{{($image = auth()->user()->image['avatar']) ? ((strpos($image,'http')) ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" style="transform: scale(0.8);">
+    <img src="{{($image = auth()->user()->image['avatar']) ? ((str_starts_with($image,'http')) ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" style="transform: scale(0.8);">
     <span class="status online"></span>
     </span>
     </a>
     <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end">
     <div class="user-header">
     <div class="avatar avatar-sm">
-    <img src="{{$image ? (strpos($image,'http') ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" alt="User Image" class="avatar-img rounded-circle">
+    <img src="{{$image ? (str_starts_with($image,'http') ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" alt="User Image" class="avatar-img rounded-circle">
     </div>
     <div class="user-text">
         <h6>

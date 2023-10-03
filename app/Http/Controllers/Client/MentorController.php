@@ -171,7 +171,7 @@ class MentorController extends Controller
     }
     public function saveIdCardData(Request $request)
     {
-        if (IdCard::where('id', $request->id)->isNotEmpty()) {
+        if (IdCard::where('id', $request->id)->exists()) {
             return 0;
         }
 
