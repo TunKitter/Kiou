@@ -77,7 +77,7 @@ output invalid
 input "23123131231" in "{{$professions}}" 
 output invalid
 input "Front End" in "{{$professions}}" 
-output Front End,Javascript,HTML,CSS
+output Front End,Javascript,HTML,CSS,UX/UI Designer,Motion Graphic
 input "Doctor" in "{{$professions}}" 
 output invalid
 input "Dance" in "{{$professions}}" 
@@ -116,6 +116,10 @@ input "Progamming Lanuge" in "{{$professions}}"
 output Back End
 input "MangoDB" in "{{$professions}}" 
 output Back End
+input "Graphic Designer" in "{{$professions}}" 
+output Front End,UX/UI Designer,Motion Graphic
+input "Graphic Design" in "{{$professions}}" 
+output Front End,UX/UI Designer,Motion Graphic
 Input`;
 function loadCate() {
  let Input = `categorize of these job : ${profession.value} in "{{$professions}}" . Return me a string with split by a comma that involve in this job. if ${profession.value} is invalid or not exist in "{{$professions}}", just return "invalid". if "${profession.value}" not a job , just return "invalid"`   

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\CourseController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
@@ -59,3 +60,7 @@ Route::get('/mentor/success', [MentorController::class, 'success'])->name('mento
 Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
 Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
+
+# ------------------------- Course --------------------------------
+Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
+Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');

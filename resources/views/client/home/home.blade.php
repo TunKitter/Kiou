@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="{{asset('assets/css/feather.css')}}">
     <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
 
@@ -59,38 +60,19 @@
 </div>
 <ul class="main-nav">
 <li class="has-submenu active">
-<a class href>Home <i class="fas fa-chevron-down"></i></a>
-<ul class="submenu">
-<li class="active"><a href="index.html">Home</a></li>
-<li><a href="index-two.html">Home Two</a></li>
-<li><a href="index-three.html">Home Three</a></li>
-<li><a href="index-four.html">Home Four</a></li>
-</ul>
+<a class href>Home</a>
 </li>
 <li class="has-submenu">
-<a href>Instructor <i class="fas fa-chevron-down"></i></a>
+<a href="{{route('course-list')}}">Courses <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu">
-<li><a href="instructor-dashboard.html">Dashboard</a></li>
+<li><a href="{{route('course-list')}}">Explore Courses</a></li>
 <li class="has-submenu">
-<a href="instructor-list.html">Instructor</a>
+<a href="instructor-list.html">Category Courses</a>
 <ul class="submenu">
-<li><a href="instructor-list.html">List</a></li>
-<li><a href="instructor-grid.html">Grid</a></li>
+    @include('client.section.category')
 </ul>
 </li>
 <li><a href="instructor-course.html">My Course</a></li>
-<li><a href="instructor-reviews.html">Reviews</a></li>
-<li><a href="instructor-earnings.html">Earnings</a></li>
-<li><a href="instructor-orders.html">Orders</a></li>
-<li><a href="instructor-payouts.html">Payouts</a></li>
-<li><a href="instructor-tickets.html">Support Ticket</a></li>
-<li><a href="instructor-edit-profile.html">Instructor Profile</a></li>
-<li><a href="instructor-security.html">Security</a></li>
-<li><a href="instructor-social-profiles.html">Social Profiles</a></li>
-<li><a href="instructor-notification.html">Notifications</a></li>
-<li><a href="instructor-profile-privacy.html">Profile Privacy</a></li>
-<li><a href="instructor-delete-profile.html">Delete Profile</a></li>
-<li><a href="instructor-linked-account.html">Linked Accounts</a></li>
 </ul>
 </li>
 <li class="has-submenu">
@@ -422,12 +404,12 @@
     @endif
 
 
-    <div class="dropdown-item night-mode">
+    {{-- <div class="dropdown-item night-mode">
     <span><i class="feather-moon me-1"></i> Night Mode </span>
     <div class="form-check form-switch check-on m-0">
     <input class="form-check-input" type="checkbox" id="night-mode">
     </div>
-    </div>
+    </div> --}}
     <a class="dropdown-item" href="http://127.0.0.1:8000/logout"><i class="feather-log-out me-1"></i> Logout</a>
     </div>
     </li>
@@ -2443,6 +2425,7 @@
     <script src="assets/plugins/aos/aos.js"></script>
 
     <script src="assets/js/script.js"></script>
+<script src="{{asset('assets/plugins/feather/feather.min.js')}}"></script>
 </body>
 
 </html>

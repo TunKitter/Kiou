@@ -112,8 +112,7 @@
     
     <script src="{{asset('assets/plugins/theia-sticky-sidebar/ResizeSensor.js')}}"></script>
     <script src="{{asset('assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js')}}"></script>
-    
     <script src="{{asset('assets/js/script.js')}}"></script>
-    
+    <script src="{{asset('assets/plugins/feather/feather.min.js')}}"></script>
     </body>
     </html>    
