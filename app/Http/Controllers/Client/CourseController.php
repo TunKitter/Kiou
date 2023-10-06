@@ -14,4 +14,8 @@ class CourseController extends Controller
     {
         return view('client.courses.course-details');
     }
+    public function learn(string $id)
+    {
+        return view('client.courses.course-learn');
+    }
 }

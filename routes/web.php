@@ -64,3 +64,4 @@ Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->midd
 # ------------------------- Course --------------------------------
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
+Route::get('course/{id}/learn', [CourseController::class, 'learn'])->name('course-learn');
