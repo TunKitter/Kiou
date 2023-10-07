@@ -490,7 +490,9 @@ hls.on(window.Hls.Events.FRAG_LOADING, () => {
 })
 
  }
-  
+  video.onplaying = function(){
+      progress.style.display = 'none'
+  }
 function backWardVideo(){
     if(video.currentTime > 5){
         

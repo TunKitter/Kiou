@@ -54,17 +54,17 @@
 <li class="has-submenu">
 <a href="{{route('course-list')}}">Courses<i class="fas fa-chevron-down"></i></a>
 <ul class="submenu">
-<li><a href="{{route('course-list')}}">Explore Courses</a></li>
+<li><a href="{{route('course-explore')}}">Explore Courses</a></li>
 <li class="has-submenu">
-<a href="instructor-list.html">Category Courses</a>
+<a href="#">Category Courses</a>
 <ul class="submenu">
 @include('client.section.category')
 </ul>
 </li>
-<li><a href="instructor-course.html">My Course</a></li>
+<li><a href="{{route('course-list')}}">Find Courses</a></li>
 </ul>
 </li>
-<li class="has-submenu active">
+<li class="has-submenu">
 <a href>Student <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu first-submenu">
 <li class="has-submenu ">
@@ -74,7 +74,7 @@
 <li><a href="students-grid.html">Grid</a></li>
 </ul>
 </li>
-<li class="active"><a href="setting-edit-profile.html">Student Profile</a></li>
+<li><a href="setting-edit-profile.html">Student Profile</a></li>
 <li><a href="setting-student-security.html">Security</a></li>
 <li><a href="setting-student-social-profile.html">Social profile</a></li>
 <li><a href="setting-student-notification.html">Notification</a></li>
