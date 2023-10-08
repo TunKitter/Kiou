@@ -1,5 +1,13 @@
 @extends('client.layouts.master')
 @section('content')
+@if (Session::has('success'))
+    @include('client.section.message',['type' => 'success', 'message' => Session::get('success')])
+@endif
+<style>
+    input:focus {
+        border: 1px solid #fca483 !important ;
+    }
+</style>
 <div class="page-content">
 <div class="container">
 <div class="row">
@@ -11,13 +19,13 @@
 <h5>Beginner</h5>
 <img src="{{asset('assets/img/instructor-profile-bg.jpg')}}" alt>
 <div class="profile-img">
-<a href="student-profile.html"><img src="{{asset('assets/img/user/user11.jpg')}}" alt></a>
+<a href="student-profile.html"><img src="{{asset('mentor/avatar/'. $mentor->image['avatar'])}}" alt></a>
 </div>
 </div>
 <div class="profile-group">
 <div class="profile-name text-center">
-<h4><a href="student-profile.html">Rolands R</a></h4>
-<p>Student</p>
+<h4><a href="#">{{ $mentor->name }}</a></h4>
+<p>Mentor</p>
 </div>
 <div class="go-dashboard text-center">
 <a href="deposit-student-dashboard.html" class="btn btn-primary">Go to Dashboard</a>
@@ -112,15 +120,16 @@
 </div>
 <div class="course-group mb-0 d-flex">
 <div class="course-group-img d-flex align-items-center">
-<a href="student-profile.html"><img src="{{asset('assets/img/user/user11.jpg')}}" alt class="img-fluid"></a>
+{{-- <a href="student-profile.html"><img src="{{asset('avatar/'. $mentor->image['avatar'])}}" alt class="img-fluid"></a> --}}
 <div class="course-name">
-<h4><a href="student-profile.html">Your avatar</a></h4>
+<h4><a href="student-profile.html">{{ auth()->user()->mentor->name }}</a></h4>
 <p>PNG or JPG no bigger than 800px wide and tall.</p>
 </div>
 </div>
 <div class="profile-share d-flex align-items-center justify-content-center">
-<a href="javascript:;" class="btn btn-success">Update</a>
-<a href="javascript:;" class="btn btn-danger">Delete</a>
+<label for="avatar" class="btn btn-success" onclick="document.getElementById('avatar').disabled = false">Update</label>
+<input  disabled type="file" id="avatar" form="mentor" name="avatar" style="display: none" accept="image/*" onchange="enable_btn()">
+<label href="javascript:;" class="btn btn-danger" onclick="delete_avatar()">Delete</label>
 </div>
 </div>
 <div class="checkout-form personal-address add-course-info ">
@@ -128,30 +137,27 @@
 <h4>Personal Details</h4>
 <p>Edit your personal information and address.</p>
 </div>
-<form action="#">
+<form action="{{ route('mentor-profile') }}" id="mentor" method="POST" enctype="multipart/form-data">
+    @csrf
 <div class="row">
 <div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Full Name</label>
-<input type="text" class="form-control" placeholder="Enter your first Name">
+<label class="form-control-label">Full Name <i class="icon feather-edit" onclick="un_disabled_input('name')"></i></label>
+<input type="text" class="form-control" name="name" value="{{ $mentor->name }}" placeholder="Enter your first Name" disabled id="name">
+<div class="error_message">
+@error('name')
+    <Kspan style="color: red;font-weight:lighter">{{$message}}</span>
+@enderror
+</div> 
 </div>
 </div>
 <div class="col-lg-6">
 <div class="form-group">
-<label class="form-control-label">Username</label>
-<input type="text" class="form-control" placeholder="Enter your last Name">
-</div>
-</div>
-<div class="col-lg-6">
-<div class="form-group">
-<label class="form-control-label">Phone</label>
-<input type="text" class="form-control" placeholder="Enter your Phone">
-</div>
-</div>
-<div class="col-lg-6">
-<div class="form-group">
-<label class="form-control-label">Email</label>
-<input type="text" class="form-control" placeholder="Enter your Email">
+<label class="form-control-label">Username <i class="icon feather-edit" onclick="un_disabled_input('username')"></i></label>
+<input type="text" class="form-control" name="username" value="{{ $mentor->username }}" placeholder="Enter your last Name" disabled id="username">
+@error('username')
+<span style="color: red;font-weight:lighter">{{$message}}</span>
+@enderror
 </div>
 </div>
 <label class="form-control-label">Professions</label>
@@ -206,7 +212,7 @@
 <div class="col-lg-6">
 </div>
 <div class="update-profile">
-<button type="button" class="btn btn-primary">Update Profile</button>
+<button disabled type="submit" class="btn btn-primary border-0" id="btn-submit">Update Profile</button>
 </div>
 </div>
 </form>
@@ -218,4 +224,30 @@
 </div>
 </div>
 </div>
+<script>
+function un_disabled_input(id){
+    let temp_input =document.getElementById(id) 
+    temp_input.disabled = false
+    temp_input.focus()
+    enable_btn()
+}
+function enable_btn(){
+    document.getElementById('btn-submit').disabled = false
+}
+function delete_avatar(){
+    if(confirm('Are you sure to delete your avatar?')){
+        fetch(location.href,{
+            method: 'DELETE',
+        }).then(data => data.text()).then(data => {
+            if(data==1) {
+                alert('Avatar deleted successfully')
+                setTimeout(() => {
+                    location.reload()
+                }, 1000);
+            }
+            
+        })
+    }
+}
+</script>
 @endsection

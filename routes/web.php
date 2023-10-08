@@ -5,6 +5,7 @@ use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
+use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -37,17 +38,25 @@ Route::prefix('password')->group(function () {
 # ------------------------- Profile --------------------------------
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::get('/profile/{id}', [ProfileController::class, 'delete'])->name('profile.delete');
-    Route::get('/profile/password/{id}', [ProfileController::class, 'password'])->name('profile.pass.edit');
-    Route::patch('/profile/password/{id}', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update']);
+    Route::delete('/profile', [ProfileController::class, 'deleteAvatar']);
+    Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile-password');
+    Route::patch('/profile/password', [ProfileController::class, 'handlePassword'])->name('profile-password');
 });
-
 
 # ------------------------- Mentor --------------------------------
 
 Route::get('/mentor/overview', [MentorController::class, 'overview'])->name('mentor-overview')->middleware('auth');
 Route::get('/mentor/register', [MentorController::class, 'register'])->name('mentor-register')->middleware('auth');
 Route::post('/mentor/register', [MentorController::class, 'handleRegister'])->middleware('auth');
-Route::get('/mentor/profile', [MentorController::class, 'profile'])->middleware('auth');
+Route::get('/mentor/upload-id-card', [MentorController::class, 'uploadIdCard'])->middleware('auth')->name('mentor-upload-id-card');
+Route::post('/mentor/upload-id-card', [MentorController::class, 'handleUploadIdCard'])->middleware('auth');
+Route::get('/mentor/upload-id-card/taking-picture', [MentorController::class, 'takingPicture'])->name('mentor-taking-picture')->middleware('auth');
+Route::post('/mentor/save-id-card-data', [MentorController::class, 'saveIdCardData'])->name('mentor-save-id-card')->middleware('auth');
+Route::get('/mentor/face-verify', [MentorController::class, 'faceVerify'])->name('mentor-face-verify')->middleware('auth');
+Route::post('/mentor/face-verify', [MentorController::class, 'handleFaceVerify'])->middleware('auth');
+Route::get('/mentor/success', [MentorController::class, 'success'])->name('mentor-success')->middleware('auth');
+Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
+Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
+Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');

@@ -12,6 +12,10 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'mentor/upload-id-card',
+        'mentor/face-verify',
+        'mentor/profile',
+        'mentor/save-id-card-data',
+        'profile',
     ];
 }

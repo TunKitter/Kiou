@@ -3,6 +3,11 @@
 @if ($message = Session::get('success'))
 @include('client.section.message', ['message' => $message,'type'=>'success'])
 @endif
+<style>
+    input:focus {
+        border: 1px solid #fca483 !important ;
+    }
+</style>
     <div class="page-content">
         <div class="container">
             <div class="row">
@@ -17,7 +22,7 @@
                                     @if($user->image['avatar'] == null)
                                         <a href="student-profile.html"><img src="{{asset('assets/img/user/avatar.jpg')}}" alt></a>
                                     @else
-                                         <a href="student-profile.html"><img src="{{$user->image['avatar']}}" alt></a>
+                                         <a href="student-profile.html"><img src="{{asset('user/avatar/'. $user->image['avatar'])}}" alt></a>
                                     @endif
                                 </div>
                             </div>
@@ -57,8 +62,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('profile.pass.edit', $user->id)}}" class="nav-link">
-                                        <i class="feather-lock"></i> Profile Privacy
+                                    <a href="{{route('profile-password', $user->id)}}" class="nav-link">
+                                        <i class="feather-lock"></i> Password
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -130,32 +135,29 @@
                                     </div>
                                 </div>
                                 <div class="profile-share d-flex align-items-center justify-content-center">
-                                    <a href="javascript:;" class="btn btn-success">
-                                       Update
-                                    </a>
-                                    <a href="javascript:;" class="btn btn-danger">Delete</a>
+                                    <label class="btn btn-success" for="avatar" onclick="document.getElementById('avatar').disabled = false" >
+                                       Update 
+                                    </label>
+                                    <input onchange="document.getElementById('btn-submit').disabled = false" disabled type="file" name="avatar" style="display: none" id="avatar"accept="image/*" form="profile-form">
+                                    <label  class="btn btn-danger" onclick="delete_avatar()">Delete</label>
                                 </div> 
                             </div>
+                            @error('avatar')
+        <span class="text-danger text-center d-block">{{$message}}</span>
+                            @enderror
                             <div class="checkout-form personal-address add-course-info ">
                                 <div class="personal-info-head">
                                     <h4>Personal Details</h4>
                                     <p>Edit your personal information and address.</p>
                                 </div>
-                                @php
-                                    $fullname = explode(" ", $user->name);
-                                    $count = count($fullname);
-                                    $firstname =$fullname[0];
-                                    $lastname = $fullname[$count-1];
-                                @endphp
-                                <form action="{{route('profile.update', $user->id)}}" method="POST">
+                                <form action="{{route('profile')}}" method="POST" id="profile-form" enctype="multipart/form-data">
                                     @csrf
-                                    @method('PATCH')
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label">Username</label>
-                                                <input type="text" class="form-control" placeholder="Enter your Username"
-                                                    name="username" value="{{ $user->username }}">
+                                                <label class="form-control-label">Username <i class="icon feather-edit" onclick="un_disabled_input('username')"></i></i></label>
+                                                <input type="text" class="form-control" placeholder="Enter your Username" id="username"
+                                                    name="username" value="{{ $user->username }}" disabled>
                                                 @error('username')
                                                     <span style="color: red">{{$message}}</span>
                                                 @enderror
@@ -163,18 +165,20 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label">Full Name</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="Enter your first Name" name="name" value="{{$user->name}}">
-                                              
+                                                <label class="form-control-label">Full Name <i class="icon feather-edit" onclick="un_disabled_input('name')"></i></label>
+                                                <input type="text" class="form-control" disabled
+                                                    placeholder="Enter your first Name" name="name" value="{{$user->name}}" id="name">
+                                                    @error('name')
+                                                    <span style="color: red">{{$message}}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label">Phone</label>
-                                                <input type="text" class="form-control" placeholder="Enter your Phone"
-                                                    name="phone" value="{{ $user->phone }}">
+                                                <label class="form-control-label">Phone <i class="icon feather-edit" onclick="un_disabled_input('phone')"></i></label>
+                                                <input type="text" class="form-control" disabled placeholder="Enter your Phone"
+                                                    name="phone" value="{{ $user->phone }}" id="phone">
                                                 @error('phone')
                                                     <span style="color: red">{{$message}}</span>
                                                 @enderror
@@ -182,18 +186,31 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label">Email</label>
-                                                <input type="text" class="form-control" placeholder="Enter your Email"
-                                                    name="email" value="{{ $user->email }}">
+                                                <label class="form-control-label">Email <i class="icon feather-edit" onclick="un_disabled_input('email')"></i></label>
+                                                <input type="text" class="form-control" placeholder="Enter your Email" id="email"
+                                                    name="email" value="{{ $user->email }}" disabled>
                                                 @error('email')
                                                     <span style="color: red">{{$message}}</span>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="update-profile">
-                                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                                        <div class="d-flex justify-content-center  gap-2">
+                                         <div class="update-profile">
+                                            <button type="submit" class="btn btn-primary border-0" id="btn-submit" disabled>Update Profile</button>
                                         </div>
-                                    </div>
+                                        @unless(auth()->user()->auth['google'])
+                                        <div class="update-profile">
+                                            <label class="btn btn-primary text-white" id="update_password" onclick="location.href='{{route('profile-password')}}'" >Change Password</label>
+                                            <style>
+                                                #update_password:hover{
+                                                    color: #fc7f50 !important;
+                                                }
+                                            </style>
+                                        </div>
+                                        @endunless
+                                            
+                                        </div>
+                                   </div>
                                 </form>
                             </div>
                         </div>
@@ -203,4 +220,27 @@
             </div>
         </div>
     </div>
+<script>
+    function un_disabled_input(id){
+        let input_temp = document.getElementById(id)
+        input_temp.disabled = false
+        input_temp.focus()
+        document.getElementById('btn-submit').disabled = false
+    }
+function delete_avatar(){
+    if(confirm('Are you sure to delete your avatar?')){
+        fetch(location.href,{
+            method: 'DELETE',
+        }).then(data => data.text()).then(data => {
+            if(data==1) {
+                alert('Avatar deleted successfully')
+                setTimeout(() => {
+                    location.reload()
+                }, 1000);
+            }
+            
+        })
+    }
+}
+</script>
 @endsection
