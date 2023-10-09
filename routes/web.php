@@ -7,7 +7,12 @@ use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
+
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
