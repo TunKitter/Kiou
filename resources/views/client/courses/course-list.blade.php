@@ -47,7 +47,7 @@
 <div class="course-box course-design list-course d-flex">
 <div class="product">
 <div class="product-img">
-<a href="course-details.html">
+<a href="{{route('course-detail',$course->slug)}}">
 <img class="img-fluid" alt src="{{ asset($course->image)}}">
 </a>
 <div class="price">

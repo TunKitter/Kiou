@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\CourseController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\LessonController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
@@ -70,4 +71,7 @@ Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->midd
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
-Route::get('course/{id}/learn', [CourseController::class, 'learn'])->name('course-learn');
+
+# ------------------------- Lesson --------------------------------
+Route::get('course/{id}/learn', [LessonController::class, 'index'])->name('lesson-learn');
+Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBookmark'])->name('lesson-bookmark-add');

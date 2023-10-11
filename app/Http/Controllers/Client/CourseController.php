@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chapter;
 use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\Mentor;
 use App\Models\Profession;
 use Illuminate\Http\Request;
 
@@ -15,31 +18,18 @@ class CourseController extends Controller
     }
     public function load_ajax(Request $request)
     {
-        $courses = (Course::orderBy('complete_course_rate', 'desc')->orderBy('user_attract_rate', 'desc')->orderBy('total_enrollment', 'desc')->skip($request->page)->take(10)->get());
-        $a_length = count($courses) - 1;
-        for ($i = 0; $i < $a_length; $i++) {
-            $temp_i = $courses[$i];
-            for ($j = $i + 1; $j < $a_length; $j++) {
-                $temp_j = $courses[$j];
-                if ((($temp_i->complete_course_rate * 2) + ($temp_i->user_attract_rate * 1.3) + ($temp_i->total_enrollment)) < ($temp_j->complete_course_rate * 2) + ($temp_j->user_attract_rate * 1.3) + ($temp_j->total_enrollment)) {
-                    $temp = $courses[$i];
-                    $courses[$i] = $courses[$j];
-                    $courses[$j] = $temp;
-                }
-            }
-        }
 
     }
     public function getCourseData($skip = 0, $take = 10)
     {
-        $courses = (Course::orderBy('complete_course_rate', 'desc')->orderBy('user_attract_rate', 'desc')->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
+        $courses = (Course::orderBy('complete_course_rate', 'desc')->orderBy('view', 'desc')->orderBy('click', 'desc')->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
         $a_length = count($courses) - 1;
         // for ($i = 0; $i < $a_length; $i++) {
         // $temp_i = $courses[$i];
-        // $temp_i = ($temp_i->user_attract_rate * 1.3) + ($temp_i->total_enrollment) / (($temp_i->meta['total_lesson'] == $temp_i->complete_course_rate) ? 1 : $temp_i->meta['total_lesson'] - $temp_i->complete_course_rate);
+        // $temp_i = $temp_i->complete_course_rate + ($temp_i->user_attract_rate) + ($temp_i->total_enrollment / 2);
         // for ($j = 0; $j < $a_length - $i; $j++) {
         // $temp_j = $courses[$j];
-        // if (($temp_i) > ($temp_j->user_attract_rate * 1.3) + ($temp_j->total_enrollment) / (($temp_j->meta['total_lesson'] == $temp_j->complete_course_rate) ? 1 : $temp_j->meta['total_lesson'] - $temp_j->complete_course_rate)) {
+        // if (($temp_i) > $temp_j->complete_course_rate + (($temp_j->view - $temp_j->click) / 10) + ($temp_j->total_enrollment / 2)) {
         // $temp = $courses[$j];
         // $courses[$j] = $courses[$j + 1];
         // $courses[$j + 1] = $temp;
@@ -50,12 +40,22 @@ class CourseController extends Controller
     }
     public function detail(string $id)
     {
-        return view('client.courses.course-details');
+        $course = Course::where('slug', $id)->first();
+        $chapter = $course->chapter;
+        $mentor_professions = Profession::whereIn('_id', $course->mentor->profession)->orWhere('_id', $course->category)->distinct('name')->get()->toArray();
+        $mentor_professions = implode(', ', array_map(function ($item) {
+            return $item[0];
+        }, $mentor_professions));
+        $category_profession = substr($mentor_professions, strrpos($mentor_professions, ',') + 1);
+        $lessons_db = (Lesson::where('course_id', $course->id)->get(['chapter', 'name'])->toArray());
+        $lessons = [];
+        array_map(function ($item) use (&$lessons) {
+            $lessons[$item['chapter'][1]][] = $item['name'];
+        }, $lessons_db);
+        // dd($lessons['dasd']);
+        return $course ? view('client.courses.course-details', compact('course', 'mentor_professions', 'category_profession', 'chapter', 'lessons')) : redirect()->route('course-list');
     }
-    public function learn(string $id)
-    {
-        return view('client.courses.course-learn');
-    }
+
     public function explore($id = null)
     {
         $profession_name = Profession::where('slug', $id)->first();

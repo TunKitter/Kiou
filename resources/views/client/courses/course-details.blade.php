@@ -7,37 +7,37 @@
 <div class="instructor-wrap border-bottom-0 m-0">
 <div class="about-instructor align-items-center">
 <div class="abt-instructor-img">
-<a href="instructor-profile.html"><img src="{{asset('assets/img/user/user1.jpg')}}" alt="img" class="img-fluid"></a>
+<a href="instructor-profile.html"><img src="{{asset('mentor/avatar/'. $course->mentor->image['avatar'])}}" alt="img" class="img-fluid"></a>
 </div>
 <div class="instructor-detail me-3">
-<h5><a href="instructor-profile.html">Nicole Brown</a></h5>
-<p>UX/UI Designer</p>
+<h5><a href="instructor-profile.html">{{$course->mentor->name}}</a></h5>
+<p id="mentor_profession">{{$mentor_professions}}</p>
 </div>
 <div class="rating mb-0">
+{{-- <i class="fas fa-star filled"></i> --}}
+{{-- <i class="fas fa-star filled"></i> --}}
+{{-- <i class="fas fa-star filled"></i> --}}
 <i class="fas fa-star filled"></i>
-<i class="fas fa-star filled"></i>
-<i class="fas fa-star filled"></i>
-<i class="fas fa-star filled"></i>
-<i class="fas fa-star"></i>
-<span class="d-inline-block average-rating"><span>4.5</span> (15)</span>
+{{-- <i class="fas fa-star"></i> --}}
+<span class="d-inline-block average-rating"><span>{{$course->complete_course_rate}}</span></span>
 </div>
 </div>
-<span class="web-badge mb-3">WEB DEVELPMENT</span>
+<span class="web-badge mb-3">{{$category_profession}}</span>
 </div>
-<h2>The Complete Web Developer Course 2.0</h2>
-<p>Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!</p>
+<h2>{{$course->name}}</h2>
+<p>{{$course->description}}</p>
 <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
 <div class="cou-info">
 <img src="assets/img/icon/icon-01.svg" alt>
-<p>12+ Lesson</p>
+<p>{{ $course->meta['total_lesson']}} Lessons</p>
 </div>
 <div class="cou-info">
 <img src="assets/img/icon/timer-icon.svg" alt>
-<p>9hr 30min</p>
+<p>{{round($course->meta['total_time']/60)}}hr {{round($course->meta['total_time']%60)}}min</p>
 </div>
 <div class="cou-info">
 <img src="assets/img/icon/people.svg" alt>
-<p>32 students enrolled</p>
+<p>{{ $course->total_enrollment}} students enrolled</p>
 </div>
 </div>
 </div>
@@ -55,34 +55,17 @@
 <div class="card-body">
 <h5 class="subs-title">Overview</h5>
 <h6>Course Description</h6>
-<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-<p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+<p id="description"></p>
 <h6>What you'll learn</h6>
 <div class="row">
 <div class="col-md-6">
-<ul>
-<li>Become a UX designer.</li>
-<li>You will be able to add UX designer to your CV</li>
-<li>Become a UI designer.</li>
-<li>Build & test a full website design.</li>
-<li>Build & test a full mobile app.</li>
-</ul>
-</div>
-<div class="col-md-6">
-<ul>
-<li>Learn to design websites & mobile phone apps.</li>
-<li>You'll learn how to choose colors.</li>
-<li>Prototype your designs with interactions.</li>
-<li>Export production ready assets.</li>
-<li>All the techniques used by UX professionals</li>
+<ul id="objective">
 </ul>
 </div>
 </div>
 <h6>Requirements</h6>
-<ul class="mb-0">
-<li>You will need a copy of Adobe XD 2019 or above. A free trial can be downloaded from Adobe.</li>
-<li>No previous design experience is needed.</li>
-<li class="mb-0">No previous Adobe XD skills are needed.</li>
+<ul class="mb-0" id="requirements">
+
 </ul>
 </div>
 </div>
@@ -95,185 +78,35 @@
 <h5 class="subs-title">Course Content</h5>
 </div>
 <div class="col-sm-6 text-sm-end">
-<h6>92 Lectures 10:56:11</h6>
+<h6>{{$course->meta['total_lesson']}} Lectures <span id="total_time">{{$course->meta['total_time']}}</span></h6>
 </div>
 </div>
-<div class="course-card">
-<h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#collapseOne" aria-expanded="false">In which areas do you operate?</a>
+@foreach ($chapter->infor as $key => $value )
+   <div class="course-card">
+    <h6 class="cou-title">
+    <a class="collapsed" data-bs-toggle="collapse" href="#collapse_{{$key}}" aria-expanded="false">{{$value}}</a>
 </h6>
-<div id="collapseOne" class="card-collapse collapse" style>
-<ul>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.1 Introduction to the User Experience Course</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.2 Exercise: Your first design challenge</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.3 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.3 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.5 How to use text layers effectively</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="course-card">
-<h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#course2" aria-expanded="false">The Brief</a>
-</h6>
-<div id="course2" class="card-collapse collapse" style>
-<ul>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.1 Introduction to the User Experience Course</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.2 Exercise: Your first design challenge</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.3 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.3 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.5 How to use text layers effectively</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="course-card">
-<h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#course3" aria-expanded="false">Wireframing Low Fidelity</a>
-</h6>
-<div id="course3" class="card-collapse collapse" style>
-<ul>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.1 Introduction to the User Experience Course</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.2 Exercise: Your first design challenge</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.3 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.3 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture1.5 How to use text layers effectively</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="course-card">
-<h6 class="cou-title mb-0">
-<a class="collapsed" data-bs-toggle="collapse" href="#coursefour" aria-expanded="false">Type, Color & Icon Introduction</a>
-</h6>
-<div id="coursefour" class="card-collapse collapse" style>
-<ul>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture4.1 Introduction to the User Experience Course</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture4.2 Exercise: Your first design challenge</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture4.3 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture4.4 How to solve the previous exercise</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-<li>
-<p><img src="assets/img/icon/play.svg" alt class="me-2">Lecture4.5 How to use text layers effectively</p>
-<div>
-<a href="javascript:;">Preview</a>
-<span>02:53</span>
-</div>
-</li>
-</ul>
-</div>
-</div>
+    <div id="collapse_{{$key}}" class="card-collapse collapse" >
+    <ul id="ul_{{$key}}">
+        @isset($lessons[$key])
+            
+        @foreach ($lessons[$key] as $lesson)
+    <li>
+    <p><img src="assets/img/icon/play.svg" alt class="me-2">{{($lesson)}}</p>
+    <div>
+    {{-- <a href="javascript:;">Preview</a> --}}
+    <span>02:53</span>
+    </div>
+    </li>
+    @endforeach
+    @else
+    <li><p class="text-muted">There are no lessons</p></li>
+    @endisset
+
+    </ul>
+    </div>
+    </div> 
+@endforeach
 </div>
 </div>
 
@@ -284,11 +117,11 @@
 <div class="instructor-wrap">
 <div class="about-instructor">
 <div class="abt-instructor-img">
-<a href="instructor-profile.html"><img src="assets/img/user/user1.jpg" alt="img" class="img-fluid"></a>
+<a href="instructor-profile.html"><img src="{{asset('mentor/avatar/'. $course->mentor->image['avatar'] )}}" alt="img" class="img-fluid"></a>
 </div>
 <div class="instructor-detail">
-<h5><a href="instructor-profile.html">Nicole Brown</a></h5>
-<p>UX/UI Designer</p>
+<h5><a href="instructor-profile.html">{{$course->mentor->name}}</a></h5>
+<p>{{$mentor_professions}}</p>
 </div>
 </div>
 <div class="rating">
@@ -422,7 +255,7 @@
 </div>
 
 
-<div class="card include-sec">
+{{-- <div class="card include-sec">
 <div class="card-body">
 <div class="cat-title">
 <h4>Includes</h4>
@@ -436,7 +269,7 @@
 <li><img src="assets/img/icon/teacher.svg" class="me-2" alt> Certificate of Completion</li>
 </ul>
 </div>
-</div>
+</div> --}}
 
 
 <div class="card feature-sec">
@@ -445,11 +278,11 @@
 <h4>Includes</h4>
 </div>
 <ul>
-<li><img src="assets/img/icon/users.svg" class="me-2" alt> Enrolled: <span>32 students</span></li>
-<li><img src="assets/img/icon/timer.svg" class="me-2" alt> Duration: <span>20 hours</span></li>
-<li><img src="assets/img/icon/chapter.svg" class="me-2" alt> Chapters: <span>15</span></li>
-<li><img src="assets/img/icon/video.svg" class="me-2" alt> Video:<span> 12 hours</span></li>
-<li><img src="assets/img/icon/chart.svg" class="me-2" alt> Level: <span>Beginner</span></li>
+<li><img src="assets/img/icon/users.svg" class="me-2" alt> Enrolled: <span>{{ $course->total_enrollment}} students</span></li>
+<li><img src="assets/img/icon/timer.svg" class="me-2" alt> Duration: <span>{{ round($course->meta['total_time'] /60,2)}} hours</span></li>
+<li><img src="assets/img/icon/chapter.svg" class="me-2" alt> Chapters: <span>{{$course->meta['total_chapter']}}</span></li>
+<li><img src="assets/img/icon/video.svg" class="me-2" alt> Lessons:<span> {{$course->meta['total_lesson']}}</span></li>
+<li><img src="assets/img/icon/chart.svg" class="me-2" alt> Level: <span>{{$course->level->name}}</span></li>
 </ul>
 </div>
 </div>
@@ -460,6 +293,11 @@
 </div>
 </section>
 <script>
+
+[... document.querySelectorAll('#loading')].map(e => e.style.display = 'block')
+var mentor_pro = (document.querySelector('#mentor_profession'));
+var mentor_pro_string = mentor_pro.innerHTML
+mentor_pro.innerHTML = mentor_pro_string.substring(0,mentor_pro_string.lastIndexOf(','));
 function play_overview(){
     var video = document.getElementById('video-overview');
     video.outerHTML = '<video id="video" style="width:100%;max-height:200px" controls src="https://storage.googleapis.com/kiou_lesson/Download%20(1).mp4"></video>';
@@ -467,5 +305,17 @@ function play_overview(){
 document.getElementsByClassName('play-icon')[0].style.display = 'none';
 
 }
+fetch('{{asset("course/overview/".$course->content_path)}}').then(response => response.json()).then(data => {
+    document.getElementById('description').innerHTML = data['description'];
+    let objectives = ''
+    data['objective'].map(item => objectives+= `<li>${item}</li>`)
+    document.getElementById('objective').innerHTML = objectives;
+    objectives = ''
+    data['requirements'].map(item => objectives+= `<li>${item}</li>`)
+    document.getElementById('requirements').innerHTML = objectives; 
+})
+var total_time = document.getElementById('total_time')
+
+total_time.innerHTML = parseInt(total_time.innerHTML)/60 + ' hr'
 </script>
 @endsection

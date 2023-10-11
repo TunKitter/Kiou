@@ -42,8 +42,41 @@ height: 100%;
 background: #f66962;
 position: absolute;
 top: 0;
-z-index: 100;
-border-radius: 10px
+z-index: 1;
+border-radius: 10px;
+border-end-end-radius: 0;
+border-top-right-radius: 0
+}
+.bookmark-in-video {
+    z-index: 999;
+    height: 100%;
+    background:black;
+    width: 3px;
+    margin-right: -3px;
+    float: right;
+    position: relative
+}
+.bookmark-in-video-wrapper {
+   position: absolute;
+   height: 100%;
+   background: transparent;
+}
+.content-bookmark-in-video {
+    width: max-content;
+    height: max-content;
+    padding: 10px 10px 0 10px;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -2.5em;
+    background: white;
+    border-radius: 10px;
+    color: black;
+    display: none;
+}
+.bookmark-in-video:hover .content-bookmark-in-video {
+    display: block;
 }
 video::-webkit-media-controls-fullscreen-button,video::-webkit-media-controls-play-button,video::-webkit-media-controls-timeline,video::-webkit-media-controls-timeline-container,video::-webkit-media-controls-volume-slider,video::-webkit-media-controls-volume-slider-container,video::-webkit-media-controls-panel {
 display: none !important;
@@ -95,6 +128,9 @@ display: block;
     100% {
         transform: rotate(360deg);
     }
+}
+.bookmark-time {
+    color:#ff4667 !important;
 }
 </style>
 <section class="page-content course-sec course-lesson">
@@ -359,7 +395,21 @@ display: block;
 </div>
 </div>
 </div>
-
+<br>
+<h4>Your Bookmark <i onclick="addBookmark()" class="fa-feather feather-bookmark float-end"><sup><i class="fa-solid fa-add fs-6"></i></sup></i></h4>
+<br>
+<div class="bookmark-wrapper"></div>
+<div class=" bookmark mb-2" id="bookmarks_list">
+ @foreach ($bookmarks as $bookmark)
+ <div class="course-card ">
+    <h6 class="cou-title">
+    <a class="collapsed" data-bs-toggle="collapse" href="#boormark{{$loop->index}}" aria-expanded="false"><span class="bookmark-time" onclick="jumpVideo({{$bookmark['timeline']}})">{{floor($bookmark['timeline']/60). ':'. $bookmark['timeline']%60}} </span>{{$bookmark['front_card']}}</a>
+    </h6>
+    <div id="boormark{{$loop->index}}" class="card-collapse collapse p-2">{{$bookmark['back_card']}}</div>
+    </div>
+ @endforeach 
+ 
+</div>
 </div>
 <div class="col-lg-8">
 
@@ -379,10 +429,12 @@ display: block;
         <i class="fa-solid fa-backward" onclick="backWardVideo()"></i>
         <i class="fa-solid fa-play" id="video-play-icon" onclick="play_video(this)"></i>
         <i class="fa-solid fa-forward" onclick="forwardVideo()"></i>
+        <i style="font-style: normal;font-size: 0.9em" id="timeline">00:00</i>
     </div>
     <div class="progress-video" style="flex-grow: 1; position: relative;">
-        <div style="height: 10px;background: #fff;border-radius: 10px;" onclick="changeVideoTime(this)">
+        <div style="height: 10px;background: #fff;border-radius: 10px;width: 100%" onclick="changeVideoTime(this)" >
             <div class="current-progress-video"></div>
+            <div id="bookmarks"></div>
         </div>
     </div>
     <div class="controls" style="display: flex;align-items: center;">
@@ -413,13 +465,28 @@ display: block;
 </div>
 </section>
 <script>
+var video_inside = document.querySelector('#video_inside');
 var video = document.getElementById('video');
 var video_state = false
 var wrapper_video = document.querySelector('.wrapper-video');
 var is_fullscreen = false 
 var current_progress_video = document.querySelector('.current-progress-video');
+var bookmarks_list = document.querySelector('#bookmarks_list');
 var video_play_icon = document.querySelector('#video-play-icon');
 var current_volume = document.getElementById('current-volume');
+document.body.onload = function(){
+let bookmarks_string = ``;
+@foreach ($bookmarks as $bookmark)
+bookmarks_string+= `<div class="bookmark-in-video-wrapper" style="width: ${(100/video.duration) * {{$bookmark['timeline']}}}% ;z-index: {{$loop->index+1}}">
+            <div class="bookmark-in-video">
+                <div class="content-bookmark-in-video">
+                <p>{{$bookmark['front_card']}}</p>
+                </div>
+            </div>
+            </div>`;
+@endforeach
+document.querySelector('#bookmarks').outerHTML = bookmarks_string + '<div id="bookmarks"></div>'
+}
     function play_video(obj){
         if(!video_state){
          video.play();
@@ -435,10 +502,17 @@ var current_volume = document.getElementById('current-volume');
         }
             }
            var videoInterval;
+var timeline = document.querySelector('#timeline'); 
            video.onplay = function(){
                 videoInterval = setInterval(() => {
                     let percent = (video.currentTime / video.duration) * 100;
                     current_progress_video.style.width = percent + '%';
+                    let video_current = video.currentTime;
+    let minutes = Math.floor((video_current % 3600) / 60);
+    let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    let seconds = (video_current % 60).toFixed(0);
+    let formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+                timeline.innerHTML = formattedMinutes + ':' + formattedSeconds;
             },0)
             }
 video.onpause = function(){
@@ -490,7 +564,9 @@ hls.on(window.Hls.Events.FRAG_LOADING, () => {
 })
 
  }
+
   video.onplaying = function(){
+   
       progress.style.display = 'none'
   }
 function backWardVideo(){
@@ -518,6 +594,86 @@ var video_quality = document.querySelector('.video-quality');
 function displayQuality(){
     let temp_video_quality=  video_quality.style.display
  video_quality.style.display = temp_video_quality == 'block' ? 'none' : 'block'
+}
+function addBookmark(){
+    video_state = true
+    play_video(video_play_icon)
+document.querySelector('.bookmark-wrapper').insertAdjacentHTML("beforeBegin",`
+ <div class="add-new-card-wrapper">
+<input type="text" id="front-flash"  class="form-control" placeholder="Enter your definition" oninput="enter_data()">
+<br>
+<input type="text" id="back-flash" class="form-control" placeholder="Enter your own meaning" oninput="enter_data()">
+<br>
+<button id="btn-add-flash" disabled class="btn btn-primary w-100" onclick="saveBookmark(this)">Add</button>
+<br>
+<br>
+<button class="btn btn-outline-primary w-100 border-0" onclick="cancelAddBookmark()">Cancel</button>
+</div>`);
+}
+function cancelAddBookmark(){
+    document.querySelector('.add-new-card-wrapper').remove();  
+}
+function saveBookmark(obj) {
+let front_card = document.querySelector('#front-flash');
+let back_card = document.querySelector('#back-flash');
+let formData = new FormData();
+formData.append('front_card', front_card.value);
+formData.append('back_card', back_card.value);
+formData.append('timeline', parseInt(video.currentTime));
+
+    obj.disabled = true;
+    obj.innerHTML = 'Adding';
+    fetch("{{route('lesson-bookmark-add','dsaas')}}", {
+        method: "POST",
+        body: formData  
+    }).then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        if(data.status == 'success'){
+            obj.innerHTML = 'Added bookmark successfully';
+            obj.style.backgroundColor = '#00e676';
+            setTimeout(() => {
+        cancelAddBookmark()
+        obj.disabled = false;
+        obj.style.color = '#6bb0ec';
+        obj.innerHTML = 'Add';
+        let bookmark_length = bookmarks_list.children.length;
+           bookmarks_list.insertAdjacentHTML("beforeBegin",` <div class="course-card ">
+    <h6 class="cou-title">
+    <a class="collapsed" data-bs-toggle="collapse" href="#boormark${bookmark_length+1}" aria-expanded="false"><span class="bookmark-time" onclick="jumpVideo(${video.currentTime})">${(video.currentTime/60).toFixed(0) + ':'+ (video.currentTime%60).toFixed()} </span>${front_card.value}</a>
+    </h6>
+    <div id="boormark${bookmark_length+1}" class="card-collapse collapse p-2">${back_card.value}</div>
+    </div>`);     
+    document.querySelector('#bookmarks').outerHTML =  `<div class="bookmark-in-video-wrapper" style="width: ${(100/video.duration) * video.currentTime}% ;z-index: ${bookmark_length+1}">
+            <div class="bookmark-in-video">
+                <div class="content-bookmark-in-video">
+                <p>${front_card.value}</p>
+                </div>
+            </div>
+            </div> <div id="bookmarks"></div>`;
+            }, 1000);
+ 
+        }
+        })
+        }
+
+ function enter_data(){
+let inputs = (document.querySelectorAll('input[oninput="enter_data()"]'))
+let inputs_length = inputs.length
+let btn_add_card = document.querySelector('#btn-add-flash');
+    let check_ = true
+        for(let i = 0 ; i < inputs_length; i++) {
+            if(inputs[i].value.length < 5){
+                btn_add_card.setAttribute('disabled', true);
+                return;
+            }
+        }
+        if(check_)   btn_add_card.removeAttribute('disabled');
+    
+}
+function jumpVideo(timeline) {
+    // alert(timeline)
+    video.currentTime = timeline
 }
 </script>
 @endsection

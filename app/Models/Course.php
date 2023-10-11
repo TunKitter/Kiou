@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Models\Chapter;
+use App\Models\Level;
 use App\Models\Mentor;
 use MongoDB\Laravel\Eloquent\Model;
 
@@ -12,5 +14,13 @@ class Course extends Model
     {
         return $this->belongsTo(Mentor::class);
         // return $this->hasOne(Mentor::class, 'mentor_id');
+    }
+    public function chapter()
+    {
+        return $this->hasOne(Chapter::class);
+    }
+    public function level()
+    {
+        return $this->belongsTo(Level::class);
     }
 }
