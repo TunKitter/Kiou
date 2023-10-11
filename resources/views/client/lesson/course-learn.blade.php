@@ -477,7 +477,7 @@ var current_volume = document.getElementById('current-volume');
 document.body.onload = function(){
 let bookmarks_string = ``;
 @foreach ($bookmarks as $bookmark)
-bookmarks_string+= `<div class="bookmark-in-video-wrapper" style="width: ${(100/video.duration) * {{$bookmark['timeline']}}}% ;z-index: {{$loop->index+1}}">
+bookmarks_string+= `<div class="bookmark-in-video-wrapper" style="width: ${(100/video.duration) * {{$bookmark['timeline']}}}% ;z-index: $loop->count - $loop->index+1">
             <div class="bookmark-in-video">
                 <div class="content-bookmark-in-video">
                 <p>{{$bookmark['front_card']}}</p>
