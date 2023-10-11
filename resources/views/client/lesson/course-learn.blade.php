@@ -401,7 +401,8 @@ display: block;
 <div class="bookmark-wrapper"></div>
 <div class=" bookmark mb-2" id="bookmarks_list">
  @foreach ($bookmarks as $bookmark)
- <div class="course-card ">
+ <div class="m-2 bookmark_list" onclick="removeBookmark({{$loop->index}},this,{{$bookmark['timeline']}})"><i class="feather feather-x"></i></div>
+ <div class="course-card bookmarks_list">
     <h6 class="cou-title">
     <a class="collapsed" data-bs-toggle="collapse" href="#boormark{{$loop->index}}" aria-expanded="false"><span class="bookmark-time" onclick="jumpVideo({{$bookmark['timeline']}})">{{floor($bookmark['timeline']/60). ':'. $bookmark['timeline']%60}} </span>{{$bookmark['front_card']}}</a>
     </h6>
@@ -477,7 +478,7 @@ var current_volume = document.getElementById('current-volume');
 document.body.onload = function(){
 let bookmarks_string = ``;
 @foreach ($bookmarks as $bookmark)
-bookmarks_string+= `<div class="bookmark-in-video-wrapper" style="width: ${(100/video.duration) * {{$bookmark['timeline']}}}% ;z-index: $loop->count - $loop->index+1">
+bookmarks_string+= `<div class="bookmark-in-video-wrapper bookmark_{{$bookmark['timeline']}}" style="width: ${(100/video.duration) * {{$bookmark['timeline']}}}% ;z-index: $loop->count - $loop->index+1">
             <div class="bookmark-in-video">
                 <div class="content-bookmark-in-video">
                 <p>{{$bookmark['front_card']}}</p>
@@ -638,14 +639,16 @@ formData.append('timeline', parseInt(video.currentTime));
         obj.style.color = '#6bb0ec';
         obj.innerHTML = 'Add';
         let bookmark_length = bookmarks_list.children.length;
-           bookmarks_list.insertAdjacentHTML("beforeBegin",` <div class="course-card ">
+           bookmarks_list.innerHTML += `
+           <div class="m-2 bookmark_list" onclick="removeBookmark(${document.querySelectorAll('.bookmark_list').length},this,${(video.currentTime).toFixed(0)})"><div class="bookmark_remove"><i class="feather feather-x"></i></div>
+        <div class="course-card bookmarks_list">
     <h6 class="cou-title">
-    <a class="collapsed" data-bs-toggle="collapse" href="#boormark${bookmark_length+1}" aria-expanded="false"><span class="bookmark-time" onclick="jumpVideo(${video.currentTime})">${(video.currentTime/60).toFixed(0) + ':'+ (video.currentTime%60).toFixed()} </span>${front_card.value}</a>
+    <a class="collapsed" data-bs-toggle="collapse" href="#boormark${document.querySelectorAll('.bookmark_list').length}" aria-expanded="false"><span class="bookmark-time" onclick="jumpVideo(${video.currentTime})">${Math.floor(video.currentTime/60).toFixed(0) + ':'+ (video.currentTime%60).toFixed()} </span>${front_card.value}</a>
     </h6>
-    <div id="boormark${bookmark_length+1}" class="card-collapse collapse p-2">${back_card.value}</div>
-    </div>`);     
-    document.querySelector('#bookmarks').outerHTML =  `<div class="bookmark-in-video-wrapper" style="width: ${(100/video.duration) * video.currentTime}% ;z-index: ${bookmark_length+1}">
-            <div class="bookmark-in-video">
+    <div id="boormark${document.querySelectorAll('.bookmark_list').length}" class="card-collapse collapse p-2">${back_card.value}</div>
+    </div>`;     
+    document.querySelector('#bookmarks').outerHTML =  `<div class="bookmark-in-video-wrapper bookmark_${(video.currentTime).toFixed(0)}" style="width: ${(100/video.duration) * video.currentTime}% ;z-index: ${bookmark_length+1}">
+            <div class="bookmark-in-video bookmark_${(video.currentTime).toFixed(0)}">
                 <div class="content-bookmark-in-video">
                 <p>${front_card.value}</p>
                 </div>
@@ -674,6 +677,28 @@ let btn_add_card = document.querySelector('#btn-add-flash');
 function jumpVideo(timeline) {
     // alert(timeline)
     video.currentTime = timeline
+    video_state = false;
+    play_video(video_play_icon)
+}
+// var bookmarks_list_class = document.querySelectorAll('.bookmarks_list');
+function removeBookmark(index,obj,timeline) {
+    if(confirm('Are you sure to remove this bookmark?')){
+        let formData = new FormData();
+        formData.append('timeline',timeline );
+        fetch("{{route('lesson-bookmark-delete','dsaas')}}", {
+            method: "POST",
+            body: formData
+        }).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            if(data.status == 'success'){
+                document.querySelector('.bookmark_'+ timeline).remove();
+            }
+        })
+        document.querySelectorAll('.bookmarks_list')[index].style.display = 'none';
+    obj.style.display = 'none';       
+    }
+
 }
 </script>
 @endsection

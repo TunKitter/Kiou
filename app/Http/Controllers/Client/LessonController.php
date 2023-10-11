@@ -11,9 +11,9 @@ class LessonController extends Controller
     public function index(string $id)
     {
         $bookmarks = Bookmark::where('lesson_id', '6522a000b9d4267db4cdf182')->first()->cards;
-        usort($bookmarks, function ($a, $b) {
-            return $a['timeline'] - $b['timeline'];
-        });
+        // usort($bookmarks, function ($a, $b) {
+        // return $a['timeline'] - $b['timeline'];
+        // });
         return view('client.lesson.course-learn', compact('bookmarks'));
     }
     public function addBookmark(Request $request)
@@ -28,5 +28,17 @@ class LessonController extends Controller
             'message' => 'Add bookmark successfully',
         ]);
     }
-
+    public function deleteBookmark(Request $request)
+    {
+        $bookmarks = Bookmark::where('lesson_id', '6522a000b9d4267db4cdf182')->first()->cards;
+        array_map(function ($bookmark) use ($request) {
+            if ($bookmark['timeline'] == $request->timeline) {
+                Bookmark::where('lesson_id', '6522a000b9d4267db4cdf182')->first()->pull('cards', $bookmark);
+            }
+        }, $bookmarks);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Delete bookmark successfully',
+        ]);
+    }
 }
