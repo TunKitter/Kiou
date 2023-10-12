@@ -41,4 +41,22 @@ class LessonController extends Controller
             'message' => 'Delete bookmark successfully',
         ]);
     }
+    public function updateBookmark(Request $request)
+    {
+        $bookmarks = Bookmark::where('lesson_id', '6522a000b9d4267db4cdf182')->first()->cards;
+        array_map(function ($bookmark) use ($request) {
+            if ($bookmark['timeline'] == $request->timeline) {
+                Bookmark::where('lesson_id', '6522a000b9d4267db4cdf182')->first()->pull('cards', $bookmark);
+                Bookmark::where('lesson_id', '6522a000b9d4267db4cdf182')->first()->push('cards', [
+                    'front_card' => $request->front_card,
+                    'back_card' => $request->back_card,
+                    'timeline' => $request->timeline,
+                ]);
+            }
+        }, $bookmarks);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Delete bookmark successfully',
+        ]);
+    }
 }

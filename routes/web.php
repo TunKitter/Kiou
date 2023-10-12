@@ -76,3 +76,4 @@ Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('cours
 Route::get('course/{id}/learn', [LessonController::class, 'index'])->name('lesson-learn');
 Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBookmark'])->name('lesson-bookmark-add');
 Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
+Route::post('course/{id}/learn/bookmark/update', [LessonController::class, 'updateBookmark'])->name('lesson-bookmark-update');
