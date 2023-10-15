@@ -132,6 +132,31 @@ display: block;
 .bookmark-time {
     color:#ff4667 !important;
 }
+#subtitle * {
+    color: white;
+}
+
+#subtitle span:hover {
+    color: #ff4667
+}
+    #lookup {
+        width: 250px;
+        height: 100px;
+        background: white;
+        position: absolute;
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+        display: none;
+    }
+    #definition {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 0.4em
+    }
 </style>
 <section class="page-content course-sec course-lesson">
 <div class="container">
@@ -451,13 +476,22 @@ display: block;
                 </ul>
             </div>
         </i>
+        <i class="fa-solid feather-file-text" onclick="changeCaption(this)" ></i>
         <i class="fa-solid feather-volume-2" id="volume"></i>
         <div style="width: 80px;height:10px;background: white;margin:0 15px 0 -2px;border-radius:12px" onclick="changeVideoVolume(this)">
             <div style="width:100%;height:100%;background: #f66962;border-radius: 12px" id="current-volume"></div>
         </div>
         <i class="fa-solid feather-maximize" onclick="fullscreenVideo()"></i>
     </div>
-</div></div>
+</div>
+<div id="lookup" onmouseover="hoverCaption(this)" onmouseout="hoverOutCaption(this)">
+    <div id="definition"></div>
+    <div id="explain"></div>
+</div>
+
+<p class="bg-black w-100 text-white text-center position-absolute p-2" style="bottom: 1.5em;z-index: 1; cursor: pointer;" id="subtitle" onmouseover="hoverCaption(this)" onmouseout="hoverOutCaption(this)"></p>
+
+</div>
 </a>
 </div>
 </div>
@@ -466,8 +500,10 @@ display: block;
 </div>
 </div>
 </div>
+
 </section>
 <script>
+var is_caption_on = false
 var video_inside = document.querySelector('#video_inside');
 var video = document.getElementById('video');
 var video_state = false
@@ -507,6 +543,7 @@ document.querySelector('#bookmarks').outerHTML = bookmarks_string + '<div id="bo
            var videoInterval;
 var timeline = document.querySelector('#timeline'); 
            video.onplay = function(){
+            let current_
                 videoInterval = setInterval(() => {
                     let percent = (video.currentTime / video.duration) * 100;
                     current_progress_video.style.width = percent + '%';
@@ -567,11 +604,37 @@ hls.on(window.Hls.Events.FRAG_LOADING, () => {
 })
 
  }
-
+ 
+var lookupView = document.querySelector('#lookup');
   video.onplaying = function(){
-   
+        lookupView.style.display = 'none'   
       progress.style.display = 'none'
+// if(is_cation_on){
+    if(subtitle_result){
+
+        let current_subtitle =[0,0]
+        setInterval(() => {
+            
+           if(video.currentTime < current_subtitle[0] || video.currentTime > current_subtitle[1]){
+            
+                let temp_subtitle = subtitle_result.find(e => (e.start <= video.currentTime && e.end >= video.currentTime) )
+                if(is_caption_on){
+                    temp_subtitle ? subtitle.style.display = 'block' : subtitle.style.display = 'none'
+                }
+                current_subtitle = [temp_subtitle.start,temp_subtitle.end]
+                if(temp_subtitle){
+                    let temp_ =''
+                    temp_subtitle.content.split(' ').map(e => {
+                        let replace_e = e.replace("'",'___');
+                        temp_ += `<span onclick='lookUpWord(\`${replace_e}\`,this)'>${e}</span> `
+                    })
+                    subtitle.innerHTML = temp_
+                }
+           } 
+        }, 1000);
+}
   }
+
 function backWardVideo(){
     if(video.currentTime > 5){
         
@@ -580,7 +643,6 @@ function backWardVideo(){
 }
 function forwardVideo(){
 if(video.currentTime < video.duration - 5){
-    
     video.currentTime += 5;
 }
 }
@@ -743,6 +805,73 @@ function updateBookmark(btn,timeline_value) {
     })
 
 }
+var subtitle = document.querySelector('#subtitle');
+subtitle.style.display = 'none';
+var subtitle_result = null
+fetch("{{asset('course/lesson/subtitle/tunkit.srt')}}").then(response => response.text()).then(data => {
+    let formData = new FormData();
+    formData.append('srt', data);
+    fetch("https://kiou-subtitle-90168a6941e4.herokuapp.com/api/subtitle",{
+        method: "POST",
+        body: formData
+    }).then(response => response.json()).then(result => {
+        subtitle_result = result['message']
 
+    })
+});
+function changeCaption(obj) {
+    is_caption_on = !is_caption_on
+    if(is_caption_on){
+        subtitle.style.display = 'block'       
+        obj.style.color = '#ff4667';
+    }
+    else{
+        subtitle.style.display = 'none'
+            obj.style.color = 'white';
+    }
+}
+function hoverCaption(obj) {
+video_state = true;
+play_video(video_play_icon)
+}
+function hoverOutCaption(obj) {
+    video_state = false;
+    play_video(video_play_icon)
+}
+var definition = document.querySelector('#definition');
+var explain = document.querySelector('#explain');
+function lookUpWord(text,obj) {
+    text = text.replace('___',"'")
+    lookupView.style.display = 'flex';
+    let obj_x_y = obj.getBoundingClientRect();
+    if(is_fullscreen) {
+    //   lookupView.style.left = ((obj_x_y.left + window.scrollX)-50) + 'px';
+      lookupView.style.left = ((obj_x_y.left + window.scrollX)-50) + 'px';
+      lookupView.style.bottom= 'initial';
+     lookupView.style.top = ((obj_x_y.top )-100) + 'px';       
+     console.log('fullscreen');
+    }
+    else {
+     lookupView.style.left = ((obj_x_y.left + window.scrollX)-300) / 2 + 'px'
+     lookupView.style.top = 'initial';
+     lookupView.style.bottom = '72px'
+     console.log('not fullscreen')
+       
+    }
+        definition.innerText = text;
+    let formData = new FormData();
+    console.log(text.replace("'", ''));
+    formData.append('q', text);
+    formData.append('target', 'vi');
+    formData.append('key', 'AIzaSyCMlt_uezOxZQ3Bd_AaZhxoFkYpo2Zth2c');
+
+    fetch('https://translation.googleapis.com/language/translate/v2',{
+        method:"POST",
+        body: formData 
+    }).then(response => response.json()).then(result => {
+        explain.innerHTML = result.data.translations[0].translatedText
+    })
+}
 </script>
+
 @endsection
