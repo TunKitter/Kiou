@@ -7,6 +7,7 @@ class Mentor extends Model
 {
     protected $fillable = [
         'name',
+        'ip',
         'user_id',
         'username',
         'image',

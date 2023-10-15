@@ -13,6 +13,7 @@ class User extends Model implements Authenticatable
     use SoftDeletes;
     protected $fillable = [
         'name',
+        'ip',
         'username',
         'image',
         'image.avatar',
