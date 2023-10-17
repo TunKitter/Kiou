@@ -496,8 +496,49 @@ display: block;
 </div>
 </div>
 </div>
-
+<style>
+    .plan-box {
+        animation: none;
+        position: relative;
+        z-index: 3 !important;
+    }
+</style>
+{{-- <div class="interactive_wrapper" style="width: max-content">
+    <div class="plan-box" style="left: 50%">
+        <div>
+        <h6 style="text-transform: capitalize" class="text-muted text-center">Hello this is Tunkit</h6>
+        <button class="btn btn-secondary">Hello this is Tunkit</button>
+        <button class="btn btn-secondary">Hello this is Tunkit</button>
+        </div>
+        </div>
+        </div> --}}
+ <div class="parent_interactive">
+    <div class="interactive_wrapper" style="display: none" > <div class="plan-box" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize">Hello this is Tunkit</h6>
+        <p>Hello this is Tunkit</p>
+        </div>
+        </div>
 </div>
+<div class="interactive_wrapper select_ideal" style="width: max-content;display: none">
+    <div class="plan-box" style="left: 50%">
+        <div>
+        <h6 style="text-transform: capitalize" class="text-muted text-center">Hello this is Tunkit</h6>
+        <button class="btn btn-secondary" onclick="jumpVideo(300)">Hello this is Tunkit</button>
+        <button class="btn btn-secondary" onclick="jumpVideo()">Hello this is Tunkit</button>
+        </div>
+        </div>
+</div>
+<div class="interactive_wrapper" style="display: none" >
+            <div class="plan-box" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize">Hello this is Tunkit</h6>
+        <p>Hello this is Tunkit 3</p>
+        </div>
+        </div>
+</div>
+ </div>
+</div>  
 </div>
 </div>
 
@@ -580,8 +621,6 @@ function changeVideoVolume(obj){
 current_volume.style.width = temp_volume + '%';
 video.volume = temp_volume / 100
 }
-
-
 </script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
@@ -606,6 +645,8 @@ hls.on(window.Hls.Events.FRAG_LOADING, () => {
  }
  
 var lookupView = document.querySelector('#lookup');
+
+
   video.onplaying = function(){
         lookupView.style.display = 'none'   
       progress.style.display = 'none'
@@ -741,7 +782,9 @@ let btn_add_card = document.querySelector('#btn-add-flash');
     
 }
 function jumpVideo(timeline) {
-    // alert(timeline)
+    if(!timeline) {
+        timeline = video.currentTime;
+    }
     video.currentTime = timeline
     video_state = false;
     play_video(video_play_icon)
@@ -872,6 +915,30 @@ function lookUpWord(text,obj) {
         explain.innerHTML = result.data.translations[0].translatedText
     })
 }
+video.addEventListener('playing', () => {
+let arr = [[7,10],[12,16],[20,22]]
+let current_index = 0
+// let start_ = arr[current_index][0]
+// let end_ = arr[current_index][1]
+setInterval(() => {
+let temp_ = arr.find((item,index) => {
+    current_index = index
+return video.currentTime >= item[0] && video.currentTime <= item[1]   
+}) 
+if(temp_){
+        let temp_interact =  $('.interactive_wrapper:eq('+current_index+')')
+        temp_interact.show()
+        if(temp_interact.hasClass('select_ideal')){
+            video_state = true;
+            play_video(video_play_icon)
+        }
+ }
+else {
+    $('.interactive_wrapper').hide()
+    
+}
+}, 1000);   
+})
 </script>
 
 @endsection
