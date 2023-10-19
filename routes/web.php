@@ -71,6 +71,7 @@ Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->midd
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
+Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
 
 # ------------------------- Lesson --------------------------------
 Route::get('course/{id}/learn', [LessonController::class, 'index'])->name('lesson-learn');

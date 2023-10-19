@@ -12,30 +12,36 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
+        if ($request->q) {
+            $courses = Course::where('name', 'like', '%' . ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : $request->q) . '%')->get();
+            $courses = $this->softData($courses, count($courses) - 1);
+            return view('client.courses.course-list', ['courses' => count($courses) > 0 ? $courses : $this->getCourseData(), 'is_not_found' => count($courses) == 0, 'q' => $request->q, 'is_wrong_spell' => ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : '0')]);
+        }
         return view('client.courses.course-list', ['courses' => $this->getCourseData()]);
     }
-    public function load_ajax(Request $request)
+    public function getCourseData($skip = 0, $take = 10, $where = [])
     {
-
-    }
-    public function getCourseData($skip = 0, $take = 10)
-    {
-        $courses = (Course::orderBy('complete_course_rate', 'desc')->orderBy('view', 'desc')->orderBy('click', 'desc')->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
+        $courses = (Course::where($where)->orderBy('complete_course_rate', 'desc')->orderBy('view', 'desc')->orderBy('click', 'desc')->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
         $a_length = count($courses) - 1;
-        // for ($i = 0; $i < $a_length; $i++) {
-        // $temp_i = $courses[$i];
-        // $temp_i = $temp_i->complete_course_rate + ($temp_i->user_attract_rate) + ($temp_i->total_enrollment / 2);
-        // for ($j = 0; $j < $a_length - $i; $j++) {
-        // $temp_j = $courses[$j];
-        // if (($temp_i) > $temp_j->complete_course_rate + (($temp_j->view - $temp_j->click) / 10) + ($temp_j->total_enrollment / 2)) {
-        // $temp = $courses[$j];
-        // $courses[$j] = $courses[$j + 1];
-        // $courses[$j + 1] = $temp;
-        // }
-        // }
-        // }
+        $courses = $this->softData($courses, $a_length);
+        return $courses;
+    }
+    public function softData($courses, $a_length)
+    {
+        for ($i = 0; $i < $a_length; $i++) {
+            $courses[$i]->mentor_name = $courses[$i]->mentor->name;
+            for ($j = 0; $j < $a_length - $i; $j++) {
+                $temp_j = $courses[$j];
+                $temp_j_2 = $courses[$j + 1];
+                if ($temp_j->complete_course_rate + (1 / ($temp_j->view - $temp_j->click + 1)) + ($temp_j->total_enrollment / 2) < $temp_j_2->complete_course_rate + (1 / ($temp_j_2->view - $temp_j_2->click + 1)) + ($temp_j_2->total_enrollment / 2)) {
+                    $temp = $courses[$j];
+                    $courses[$j] = $courses[$j + 1];
+                    $courses[$j + 1] = $temp;
+                }
+            }
+        }
         return $courses;
     }
     public function detail(string $id)
