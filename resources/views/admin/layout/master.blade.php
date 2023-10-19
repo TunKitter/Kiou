@@ -20,7 +20,8 @@
   <link rel="stylesheet" href="{{asset('/template/admin/dist/css/image-uploader.min.css')}}">
    <!-- Toastr -->
    <link rel="stylesheet" href="{{asset('/template/admin/plugins/toastr/toastr.min.css')}}">
- 
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
   @stack('link')
   <style>
@@ -53,7 +54,7 @@
     @include('admin.components.footer');
   </div>
   <!-- ./wrapper -->
-  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- jQuery -->
 <script src="{{asset('/template/admin/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -61,15 +62,14 @@
 <!-- Bootstrap 4 -->
 <script src="{{asset('/template/admin/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- ChartJS -->
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset('/template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('/template/admin/dist/js/adminlte.js')}}"></script>
 <!-- Toastr -->
 <script src="{{asset('/template/admin/plugins/toastr/toastr.min.js')}}"></script>
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @stack('script')
 </body>
 </html>

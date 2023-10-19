@@ -17,5 +17,6 @@ class VerifyCsrfToken extends Middleware
         'mentor/profile',
         'mentor/save-id-card-data',
         'profile',
+        'admin/users/update/*'
     ];
 }
