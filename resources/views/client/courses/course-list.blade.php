@@ -34,22 +34,26 @@
 </div>
 <div class="col-md-6 col-lg-6 col-item">
 <div class="form-group select-form mb-0">
-<select class="form-select select" name="sellist1">
-<option>All</option>
-<option>Course</option>
-<option>Mentor</option>
-{{-- <option>published 3</option> --}}
+<select class="form-select select" name="type">
+<option value="all">All</option>
+<option value="course">Course</option>
+<option value="mentor">Mentor</option>
 </select>
+<script>
+    document.querySelector('option[value={{$type}}]').selected = true
+</script>
 </div>
 </div>
 </div>
 </form>
 </div>
+@isset($courses)
 @isset($q)
 @if($is_wrong_spell != '0')
 <br>
 <div class="col-lg-12 col-md-12 d-flex ">Is your mean: <span class="text-primary px-1">{{$is_wrong_spell}}</span> ?</div>
 @endif
+@endisset
 @endisset
 </div>
 
@@ -63,56 +67,14 @@
 <div class="row courses_parent">
 @isset($is_not_found)
 @if($is_not_found == true)
-<div class="text-danger text-center">There is no course available</div>
+<div class="text-danger text-center">There is no data available</div>
 <br><br><br>
-<h4>Some courses you may like</h4>
+<h4>Some others you may like</h4>
 <br><br>
 @endisset
 @endif
 
-
-<div class="col-lg-12 col-md-12 d-flex">
-<div class="mentor_load course-box course-design list-course d-flex" style="border:none !important">
-<div class="product mentor_load">
-<div class="product-img">
-<a href="#">
-<img class="img-fluid rounded-circle" style="width: 200px" alt src="https://picsum.photos/200">
-</a>
-</div>
-<div class="product-content">
-<div class="head-course-title">
-<h3 class="title">Dang Tuan Kiet</h3>
-<div class="all-btn all-category d-flex align-items-center">
-<a href="checkout.html" class="btn btn-primary">See more</a>
-</div>
-</div>
-<p class="text-muted">@tunkit</p>
-<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
-<div class="rating-img d-flex align-items-center">
-<img src="assets/img/icon/icon-01.svg" alt>
-<p>3,422 students</p>
-</div>
-<div class="course-view d-flex align-items-center">
-<img src="assets/img/icon/icon-02.svg" alt>
-<p>34 courses</p>
-</div>
-</div>
-<div class="course-group d-flex mb-0">
-<div class="course-group-img d-flex">
-<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
-<div class="course-name">
-</div>
-</div>
-<div class="course-share d-flex align-items-center justify-content-center">
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-
-
+@isset($courses)
 @foreach ($courses as $course)
 <div class="col-lg-12 col-md-12 d-flex">
 <div class="course-box course-design list-course d-flex">
@@ -167,6 +129,50 @@
 </div>
 </div>
 @endforeach
+@endisset
+@isset($mentors)
+@foreach ($mentors as $mentor ) 
+<div class="col-lg-12 col-md-12 d-flex">
+    <div class="mentor_load course-box course-design list-course d-flex" style="border:none !important">
+    <div class="product mentor_load">
+    <div class="product-img">
+    <a href="#">
+    <img class="img-fluid rounded-circle" style="width: 200px;height: 200px" alt src="{{asset('mentor/avatar/'. $mentor->image['avatar'])}}">
+    </a>
+    </div>
+    <div class="product-content">
+    <div class="head-course-title">
+    <h3 class="title">{{$mentor->name}}</h3>
+    <div class="all-btn all-category d-flex align-items-center">
+    <a href="checkout.html" class="btn btn-primary">See more</a>
+    </div>
+    </div>
+    <p class="text-muted">{{'@'.$mentor->username}}</p>
+    <div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+    <div class="rating-img d-flex align-items-center">
+    <img src="assets/img/icon/icon-01.svg" alt>
+    <p>{{$mentor->course->sum('total_enrollment')}} students</p>
+    </div>
+    <div class="course-view d-flex align-items-center">
+    <img src="assets/img/icon/icon-02.svg" alt>
+    <p>{{$mentor->course->count()}} courses</p>
+    </div>
+    </div>
+    <div class="course-group d-flex mb-0">
+    <div class="course-group-img d-flex">
+    <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+    <div class="course-name">
+    </div>
+    </div>
+    <div class="course-share d-flex align-items-center justify-content-center">
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+@endforeach
+@endisset
 </div>
 <div class="row">
     <div class="col-md-12 d-flex justify-content-center mb-4">
@@ -425,22 +431,98 @@ var loading = document.querySelector('#loading');
 var courses = document.querySelector('.courses_parent')
 let is_no_more = false
 let skip = 10, take = 10;
-    function loadMore(obj) {
+@isset($mentor)
+function loadMore(obj) {
         loading.style.display = 'block'
         obj.disabled = true
-fetch(`{{route("course-list")}}/${skip}/${take}`,{
-    method: "POST"
+        let formData = new FormData();
+        @isset($q)
+        formData.append('q', "{{$q}}")
+        @endisset
+fetch(`{{route("course-list")}}/${skip}/${take}/mentor`,{
+    method: "POST",
+    body: formData
 }).then(response => response.json()).then(data => {
 console.log(data);
 if(data.length == 0){
     if(!is_no_more){
-     courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex text-muted">There is no course</div>`
+     courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex text-muted">There is no mentor</div>`
     is_no_more = true       
     }
 
 }
 else {
 
+            data.forEach(element => {
+                courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex">
+    <div class="mentor_load course-box course-design list-course d-flex" style="border:none !important">
+    <div class="product mentor_load">
+    <div class="product-img">
+    <a href="#">
+    <img class="img-fluid rounded-circle" style="width: 200px;height: 200px" alt src="{{asset('mentor/avatar/')}}/${element.image['avatar']}">
+    </a>
+    </div>
+    <div class="product-content">
+    <div class="head-course-title">
+    <h3 class="title">${element.name}</h3>
+    <div class="all-btn all-category d-flex align-items-center">
+    <a href="checkout.html" class="btn btn-primary">See more</a>
+    </div>
+    </div>
+    <p class="text-muted">@${element.username}</p>
+    <div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+    <div class="rating-img d-flex align-items-center">
+    <img src="assets/img/icon/icon-01.svg" alt>
+    <p>${element['total_enrollment']} students</p>
+    </div>
+    <div class="course-view d-flex align-items-center">
+    <img src="assets/img/icon/icon-02.svg" alt>
+    <p>${element['total_course']} courses</p>
+    </div>
+    </div>
+    <div class="course-group d-flex mb-0">
+    <div class="course-group-img d-flex">
+    <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+    <div class="course-name">
+    </div>
+    </div>
+    <div class="course-share d-flex align-items-center justify-content-center">
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>`
+            skip += 10
+            });
+        }
+            loading.style.display = 'none'
+            obj.disabled = false
+})
+
+    }
+@endisset
+@isset($courses)
+    function loadMore(obj) {
+        loading.style.display = 'block'
+        obj.disabled = true;
+        let formData = new FormData();
+    @isset($q)
+        formData.append('q', "{{$is_wrong_spell == '0' ? $q : $is_wrong_spell}}")
+    @endisset;
+fetch(`{{route("course-list")}}/${skip}/${take}`,{
+    method: "POST",
+    body: formData
+}).then(response => response.json()).then(data => {
+console.log(data);
+if(data.length == 0){
+    if(!is_no_more){
+     courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex text-muted">There is no data</div>`
+    is_no_more = true       
+    }
+
+}
+else {
             data.forEach(element => {
                 courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex">
 <div class="course-box course-design list-course d-flex">
@@ -502,7 +584,7 @@ else {
 })
 
     }
-
+@endisset
 const API_KEY = 'AIzaSyBFUaOX3h_CxqI6Q6DtaMwNBj4Le3TV-NQ'
 const search_input = document.querySelector('#search')
 const is_wrong_spell = document.querySelector('#is_wrong_spell')

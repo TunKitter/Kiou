@@ -14,19 +14,86 @@ class CourseController extends Controller
 {
     public function list(Request $request)
     {
-        if ($request->q) {
-            $courses = Course::where('name', 'like', '%' . ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : $request->q) . '%')->get();
-            $courses = $this->softData($courses, count($courses) - 1);
-            return view('client.courses.course-list', ['courses' => count($courses) > 0 ? $courses : $this->getCourseData(), 'is_not_found' => count($courses) == 0, 'q' => $request->q, 'is_wrong_spell' => ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : '0')]);
+
+        // dd(Mentor::all()->first()->course->sum('total_enrollment'));
+        // dd($this->softMentorData(Mentor::all(), count(Mentor::all()) - 1));
+        // dd(Mentor::orderBy('course.total_enrollment', 'desc')->get());
+        switch ($request->type) {
+            case 'all':
+            case 'course':
+                {
+                    if ($request->q) {
+                        $q = ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : $request->q);
+                        $q = explode(' ', $q);
+                        $result = [];
+                        for ($i = 0; $i < count($q); $i++) {
+                            $result[] = ['name', 'like', '%' . $q[$i] . '%'];
+                        }
+                        $courses = Course::where($result)->get();
+                        $courses = $this->softData($courses, count($courses) - 1);
+                        return view('client.courses.course-list', ['courses' => count($courses) > 0 ? $courses : $this->getCourseData(), 'is_not_found' => count($courses) == 0, 'q' => $request->q, 'is_wrong_spell' => ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : '0'), 'type' => $request->type]);
+                    }
+                    $courses = $this->getCourseData();
+                    return view('client.courses.course-list', ['courses' => $courses, 'type' => $request->type]);
+                }
+            case 'mentor':
+                {
+                    if ($request->q) {
+                        $mentors = Mentor::where('name', 'like', '%' . $request->q . '%')->get();
+                        $mentors = $this->softMentorData($mentors, count($mentors) - 1);
+                        return view('client.courses.course-list', ['mentors' => count($mentors) > 0 ? $mentors : $this->getMentorData(), 'is_not_found' => count($mentors) == 0, 'q' => $request->q, 'type' => $request->type]);
+                    }
+                    $mentors = $this->getMentorData();
+                    return view('client.courses.course-list', ['mentors' => $this->softMentorData($mentors, count($mentors) - 1), 'type' => $request->type]);
+                }
+
         }
-        return view('client.courses.course-list', ['courses' => $this->getCourseData()]);
+        return view('client.courses.course-list', ['courses' => $this->getCourseData(), 'type' => $request->type]);
     }
     public function getCourseData($skip = 0, $take = 10, $where = [])
     {
+        if (request()->q) {
+            return Course::where('name', 'like', '%' . request()->q . '%')->skip($skip)->take($take)->get();
+        }
+
         $courses = (Course::where($where)->orderBy('complete_course_rate', 'desc')->orderBy('view', 'desc')->orderBy('click', 'desc')->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
         $a_length = count($courses) - 1;
         $courses = $this->softData($courses, $a_length);
         return $courses;
+    }
+    public function getMentorData($skip = 0, $take = 10, $where = [])
+    {
+        if (request()->q) {
+            $mentors = Mentor::where('name', 'like', '%' . request()->q . '%')->skip($skip)->take($take)->get();
+            // return $mentors->course->sum('total_enrollment');
+            for ($i = 0; $i < count($mentors); $i++) {
+                $mentors[$i]->total_enrollment = $mentors[$i]->course->sum('total_enrollment');
+                $mentors[$i]->total_course = $mentors[$i]->course->count();
+            }
+        }
+        $mentors = (Mentor::where($where)->skip($skip)->take($take)->get());
+        $a_length = count($mentors) - 1;
+        $mentors = $this->softMentorData($mentors, $a_length);
+        return $mentors;
+    }
+
+    public function softMentorData($mentors, $a_length)
+    {
+
+        for ($i = 0; $i < $a_length; $i++) {
+            $mentors[$i]->total_enrollment = $mentors[$i]->course->sum('total_enrollment');
+            $mentors[$i]->total_course = $mentors[$i]->course->count();
+            for ($j = 0; $j < $a_length - $i; $j++) {
+                $temp_j = $mentors[$j];
+                $temp_j_2 = $mentors[$j + 1];
+                if ($temp_j->course->sum('total_enrollment') < $temp_j_2->course->sum('total_enrollment')) {
+                    $temp = $mentors[$j];
+                    $mentors[$j] = $mentors[$j + 1];
+                    $mentors[$j + 1] = $temp;
+                }
+            }
+        }
+        return $mentors;
     }
     public function softData($courses, $a_length)
     {
