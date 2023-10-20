@@ -9,10 +9,21 @@ use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProfessionController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
+
+Route::prefix('professions')->name('profession.')->group(function () {
+            
+    Route::get('/list', [ProfessionController::class,'index'])->name('list');
+    Route::post('/add', [ProfessionController::class,'create'])->name('add');
+    Route::get('/edit/{id}', [ProfessionController::class,'edit'])->name('edit');
+    Route::patch('update/{id}', [ProfessionController::class,'update'])->name('update');
+    Route::get('/delete/{id}', [ProfessionController::class,'destroy'])->name('delete');
+
+});
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');

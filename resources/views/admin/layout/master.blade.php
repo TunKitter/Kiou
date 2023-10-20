@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="{{asset('/template/admin/dist/css/image-uploader.min.css')}}">
    <!-- Toastr -->
    <link rel="stylesheet" href="{{asset('/template/admin/plugins/toastr/toastr.min.css')}}">
- 
+  <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css" type="text/css">
   <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
   @stack('link')
   <style>
@@ -55,6 +55,7 @@
   <!-- ./wrapper -->
   
   <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="{{asset('/template/admin/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('/template/admin/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
@@ -68,8 +69,8 @@
 <script src="{{asset('/template/admin/dist/js/adminlte.js')}}"></script>
 <!-- Toastr -->
 <script src="{{asset('/template/admin/plugins/toastr/toastr.min.js')}}"></script>
-
-
+<script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @stack('script')
 </body>
 </html>
