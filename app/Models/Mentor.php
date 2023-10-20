@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Course;
 use MongoDB\Laravel\Eloquent\Model;
 
 class Mentor extends Model
@@ -27,4 +28,8 @@ class Mentor extends Model
             'user_face' => '',
         ],
     ];
+    public function course()
+    {
+        return $this->hasMany(Course::class);
+    }
 }

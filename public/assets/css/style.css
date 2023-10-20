@@ -18598,19 +18598,6 @@ input[type="password"]::-ms-clear {
         visibility: hidden;
         z-index: 1000;
     }
-    .main-nav li .submenu::before {
-        border: 7px solid #fff;
-        border-color: transparent transparent #fff #fff;
-        box-shadow: -2px 2px 2px -1px rgba(0, 0, 0, 0.1);
-        content: "";
-        left: 45px;
-        position: absolute;
-        top: 2px;
-        -webkit-transform-origin: 0 0;
-        transform-origin: 0 0;
-        -webkit-transform: rotate(135deg);
-        transform: rotate(135deg);
-    }
     .main-nav li.has-submenu:hover > .submenu {
         visibility: visible;
         opacity: 1;
@@ -18664,12 +18651,7 @@ input[type="password"]::-ms-clear {
         letter-spacing: 0.5px;
         padding-left: 20px;
     }
-    .main-nav > .has-submenu > .submenu > .has-submenu > .submenu::before {
-        top: 20px;
-        margin-left: -35px;
-        box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.15);
-        border-color: transparent #fff #fff transparent;
-    }
+   
     .profile-custom-list > li {
         width: 33.33%;
     }
