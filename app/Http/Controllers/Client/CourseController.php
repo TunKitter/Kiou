@@ -102,7 +102,7 @@ class CourseController extends Controller
             for ($j = 0; $j < $a_length - $i; $j++) {
                 $temp_j = $courses[$j];
                 $temp_j_2 = $courses[$j + 1];
-                if ($temp_j->complete_course_rate + (1 / ($temp_j->view - $temp_j->click + 1)) + ($temp_j->total_enrollment / 2) < $temp_j_2->complete_course_rate + (1 / ($temp_j_2->view - $temp_j_2->click + 1)) + ($temp_j_2->total_enrollment / 2)) {
+                if ($temp_j->complete_course_rate + (1 / (($temp_j->view - $temp_j->click) <= 0 ? 1 : $temp_j->view - $temp_j->click)) + (($temp_j->total_enrollment <= 0) ? 0 : $temp_j->total_enrollment / 2) < $temp_j_2->complete_course_rate + (1 / (($temp_j_2->view - $temp_j_2->click) <= 0 ? 1 : $temp_j_2->view - $temp_j_2->click)) + (($temp_j_2->total_enrollment <= 0) ? 0 : $temp_j_2->total_enrollment / 2)) {
                     $temp = $courses[$j];
                     $courses[$j] = $courses[$j + 1];
                     $courses[$j + 1] = $temp;
