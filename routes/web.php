@@ -7,6 +7,7 @@ use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
+use App\Http\Controllers\Client\BlogController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
@@ -72,3 +73,7 @@ Route::get('/mentor/success', [MentorController::class, 'success'])->name('mento
 Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
 Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
+
+
+Route::get('/blog', [BlogController::class, 'Blog']);
+
