@@ -19,7 +19,7 @@ class CourseController extends Controller
         // dd($this->softMentorData(Mentor::all(), count(Mentor::all()) - 1));
         // dd(Mentor::orderBy('course.total_enrollment', 'desc')->get());
         switch ($request->type) {
-            case 'all':
+            case 'auto':
             case 'course':
                 {
                     if ($request->q) {
@@ -39,7 +39,7 @@ class CourseController extends Controller
             case 'mentor':
                 {
                     if ($request->q) {
-                        $mentors = Mentor::where('name', 'like', '%' . $request->q . '%')->get();
+                        $mentors = Mentor::where('name', 'like', '%' . $request->q . '%')->orWhere('username', 'like', '%' . $request->q . '%')->get();
                         $mentors = $this->softMentorData($mentors, count($mentors) - 1);
                         return view('client.courses.course-list', ['mentors' => count($mentors) > 0 ? $mentors : $this->getMentorData(), 'is_not_found' => count($mentors) == 0, 'q' => $request->q, 'type' => $request->type]);
                     }
@@ -134,5 +134,11 @@ class CourseController extends Controller
         $profession_name = Profession::where('slug', $id)->first();
         $profession_name ? $profession_name = $profession_name->name : redirect()->route('course-explore');
         return view('client.courses.course-explore', $profession_name ? ['id' => $profession_name] : []);
+    }
+    public function updateInteractive()
+    {
+        $ids = rtrim(request()->ids, ',');
+        Course::whereIn('_id', explode(',', $ids))->increment(request()->type);
+        return response()->json(['status' => true]);
     }
 }

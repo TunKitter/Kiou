@@ -19,5 +19,6 @@ class VerifyCsrfToken extends Middleware
         'profile',
         'course/*/learn/bookmark/*',
         'course/list/*/*',
+        'course/list/update/course/interactive',
     ];
 }

@@ -318,4 +318,35 @@ var total_time = document.getElementById('total_time')
 
 total_time.innerHTML = parseInt(total_time.innerHTML)/60 + ' hr'
 </script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+<script>
+    
+    var ids = (Cookies.get('tracker_woman') ? (CryptoJS.AES.decrypt(Cookies.get('tracker_woman'), "Tunkit").toString(CryptoJS.enc.Utf8)) : ((Date.now()+86400000) + ',')).toString() 
+    let is_change = false
+        if(!ids.includes('{{$course->_id}}')){
+        ids += "{{$course->_id}},"
+            is_change = true
+        }
+
+    if(is_change) {
+     let encrypted = CryptoJS.AES.encrypt(ids, "Tunkit");
+Cookies.set('tracker_woman', encrypted.toString());
+    }
+    if(ids.split(',')[0] <= Date.now().toString()) {
+        let formData = new FormData()
+        formData.append('ids', ids)
+        formData.append('type', 'click')
+        fetch('{{route("update-interactive-course")}}',{
+            method: 'POST',
+            body: formData
+
+        }).then(res => res.json()).then(data => {
+            if(data['status']) {
+                Cookies.remove('tracker_woman')
+            }
+        })
+    }
+</script>
+
 @endsection

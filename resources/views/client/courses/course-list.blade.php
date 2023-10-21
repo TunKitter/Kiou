@@ -21,6 +21,8 @@
 </div>
 </div>
 </div> --}}
+<a href="#" class="text-primary">How to search better?</a>
+<br><br>
 <div class="col-lg-6">
 <div class="show-filter add-course-info ">
 <form onsubmit="return searchCourse()" id="searchInput">
@@ -35,7 +37,7 @@
 <div class="col-md-6 col-lg-6 col-item">
 <div class="form-group select-form mb-0">
 <select class="form-select select" name="type">
-<option value="all">All</option>
+<option value="auto">Auto</option>
 <option value="course">Course</option>
 <option value="mentor">Mentor</option>
 </select>
@@ -81,6 +83,7 @@
 <div class="product">
 <div class="product-img">
 <a href="{{route('course-detail',$course->slug)}}">
+<span class="d-none course-link">{{$course->_id}}</span>
 <img class="img-fluid" alt src="{{ asset($course->image)}}">
 </a>
 <div class="price">
@@ -220,130 +223,84 @@
 </div>
 </div>
 
-{{-- <div class="card search-filter categories-filter-blk">
+<div class="card search-filter categories-filter-blk">
 <div class="card-body">
 <div class="filter-widget mb-0">
 <div class="categories-head d-flex align-items-center">
-<h4>Course categories</h4>
-<i class="fas fa-angle-down"></i>
+<h4>Soft by</h4>
 </div>
 <div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> Backend (3)
+<label class="custom_check custom_one">
+<input type="radio" name="soft_by">
+<span class="checkmark"></span> Most Common
 </label>
 </div>
 <div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> CSS (2)
+<label class="custom_check custom_one">
+<input type="radio" name="soft_by">
+<span class="checkmark"></span> Buy Most
 </label>
 </div>
 <div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> Frontend (2)
-</label>
-</div>
-<div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist" checked>
-<span class="checkmark"></span> General (2)
-</label>
-</div>
-<div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist" checked>
-<span class="checkmark"></span> IT & Software (2)
-</label>
-</div>
-<div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> Photography (2)
-</label>
-</div>
-<div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> Programming Language (3)
-</label>
-</div>
-<div>
-<label class="custom_check mb-0">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> Technology (2)
-</label>
-</div>
-</div>
-</div>
-</div> --}}
-
-
-<div class="card search-filter">
-<div class="card-body">
-<div class="filter-widget mb-0">
-<div class="categories-head d-flex align-items-center">
-<h4>Instructors</h4>
-<i class="fas fa-angle-down"></i>
-</div>
-<div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> Keny White (10)
-</label>
-</div>
-<div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> Hinata Hyuga (5)
-</label>
-</div>
-<div>
-<label class="custom_check">
-<input type="checkbox" name="select_specialist">
-<span class="checkmark"></span> John Doe (3)
-</label>
-</div>
-<div>
-<label class="custom_check mb-0">
-<input type="checkbox" name="select_specialist" checked>
-<span class="checkmark"></span> Nicole Brown
+<label class="custom_check custom_one">
+<input type="radio" name="soft_by">
+<span class="checkmark"></span> High Rating Most
 </label>
 </div>
 </div>
 </div>
 </div>
-
-
 <div class="card search-filter ">
 <div class="card-body">
 <div class="filter-widget mb-0">
 <div class="categories-head d-flex align-items-center">
 <h4>Price</h4>
-<i class="fas fa-angle-down"></i>
+{{-- <i class="fas fa-angle-down"></i> --}}
 </div>
 <div>
 <label class="custom_check custom_one">
 <input type="radio" name="select_specialist">
-<span class="checkmark"></span> All (18)
+<span class="checkmark"></span> Free
 </label>
 </div>
 <div>
 <label class="custom_check custom_one">
 <input type="radio" name="select_specialist">
-<span class="checkmark"></span> Free (3)
+<span class="checkmark"></span> 900$
 </label>
 </div>
 <div>
 <label class="custom_check custom_one mb-0">
 <input type="radio" name="select_specialist" checked>
-<span class="checkmark"></span> Paid (15)
+<span class="checkmark"></span> Most expensive
 </label>
 </div>
 </div>
 </div>
 </div>
+
+<div class="card search-filter">
+<div class="card-body">
+<div class="filter-widget mb-0">
+<div class="categories-head d-flex align-items-center">
+<h4>Levels</h4>
+<i class="fas fa-angle-down"></i>
+</div>
+@inject('levels','App\Models\Level' )
+@foreach($levels::all() as $level)
+<div>
+<label class="custom_check custom_one">
+<input type="radio" name="level"  >
+<span class="checkmark"></span> {{$level->name}}
+</label>
+</div>
+@endforeach
+</div>
+</div>
+</div>
+
+
+
 
 
 <div class="card post-widget ">
@@ -606,7 +563,55 @@ output: Javascript,Laravel
 input: javascript,laravel,MongodBb
 output: Javascript, Laravel, Mongo DB 
 input:`
+const is_mentor_or_course = 
+`input: laravel
+output: course
+input: mongodb
+output: course
+input: javascript
+output: course
+input: Tunkit
+output: mentor
+input: Tuấn Kiệt
+output: mentor
+input: frontend
+output: course
+input: react
+output: course
+input: angular
+output: course
+input: John
+output: mentor
+input: golang
+output: course
+input: mobile-app
+output: course
+input: lenathon
+output: mentor
+input: dasd1231asda
+output: mentor
+input: tunkit123
+output: mentor
+input: sfda34
+output: mentor
+input:`
 function searchCourse() {
+    let keyword =document.querySelector('select[name=type]')
+    if(keyword.value == 'auto'){ 
+        fetch(`https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText`,{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            'x-goog-api-key': API_KEY
+        },
+        body: JSON.stringify({
+            prompt: { text: `${is_mentor_or_course} ${search_input.value} \n output:` },
+        })
+    }).then(res => (res.json())).then(data => {
+        document.querySelector(`option[value=${data['candidates'][0]['output']}]`).selected = true
+    // (data['candidates'][0]['output']);
+    })
+    }
     fetch(`https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText`,{
         method: 'POST',
         headers:{
@@ -627,6 +632,37 @@ function searchCourse() {
     })
  
 }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+<script>
+    
+    var ids = (Cookies.get('tracker_man') ? (CryptoJS.AES.decrypt(Cookies.get('tracker_man'), "Tunkit").toString(CryptoJS.enc.Utf8)) : ((Date.now()+86400000) + ',')).toString() 
+    let is_change = false
+    document.querySelectorAll('.course-link').forEach(e=> {
+        if(!ids.includes(e.innerText)){
+        ids += e.innerText + ","
+            is_change = true
+        }
+    });
+    if(is_change) {
+     let encrypted = CryptoJS.AES.encrypt(ids, "Tunkit");
+Cookies.set('tracker_man', encrypted.toString());
+    }
+    if(ids.split(',')[0] <= Date.now().toString()) {
+        let formData = new FormData()
+        formData.append('ids', ids)
+        formData.append('type', 'view')
+        fetch('{{route("update-interactive-course")}}',{
+            method: 'POST',
+            body: formData
+
+        }).then(res => res.json()).then(data => {
+            if(data['status']) {
+                Cookies.remove('tracker_man')
+            }
+        })
+    }
 </script>
 
 @endsection

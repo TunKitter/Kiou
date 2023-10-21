@@ -73,8 +73,10 @@ Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
 Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
 Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
+Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
 
 # ------------------------- Lesson --------------------------------
+Route::get('demo', fn() => view('client.mentor.add-course'));
 Route::get('course/{id}/learn', [LessonController::class, 'index'])->name('lesson-learn');
 Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBookmark'])->name('lesson-bookmark-add');
 Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
