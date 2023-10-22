@@ -162,263 +162,37 @@ display: block;
 <div class="container">
 <div class="row">
 <div class="col-lg-4">
-
+{{-- @php
+    dd($lessons)
+@endphp --}}
 <div class="lesson-group">
+@foreach ($chapters as $key => $value)
 <div class="course-card">
 <h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#collapseOne" aria-expanded="false">Chapter 1 <span>5 Lessons</span> </a>
+<a class="collapsed" data-bs-toggle="collapse" href="#collapse_{{$key}}" aria-expanded="false">{{$value}} <span class="ul_length">0</span> </a>
 </h6>
-<div id="collapseOne" class="card-collapse collapse" style>
-<div class="progress-stip">
-<div class="progress-bar bg-success progress-bar-striped active-stip"></div>
-</div>
-<div class="student-percent lesson-percent">
-<p>10hrs<span>50%</span></p>
-</div>
-<ul>
+<div id="collapse_{{$key}}" class="card-collapse collapse" style>
+<ul class="ul_">
 <li>
-<p class="play-intro">Introduction</p>
+<p class="play-intro">Introduction <i class="fa-solid fa-check d-inline-block m-auto"></i></p>
 <div>
 <img src="{{asset('assets/img/icon/play-icon.svg')}}" alt>
 </div>
 </li>
-<li>
-<p>Course Introduction </p>
+@foreach ($lessons as $lesson )
+    @if($lesson['chapter'][1] == $key) 
+    <li>
+<p>{{$lesson['name']}}</p>
 <div>
 <img src="{{asset('assets/img/icon/lock.svg')}}" alt>
 </div>
 </li>
-<li>
-<p>About the Exam</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Course</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Building Our Scenario</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Learnings</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
+    @endif
+@endforeach
 </ul>
 </div>
 </div>
-<div class="course-card">
-<h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#course2" aria-expanded="false">Chapter 2 <span>8 Lessons</span> </a>
-</h6>
-<div id="course2" class="card-collapse collapse" style>
-<div class="progress-stip">
-<div class="progress-bar bg-success progress-bar-striped active-stip"></div>
-</div>
-<div class="student-percent lesson-percent">
-<p>10hrs<span>50%</span></p>
-</div>
-<ul>
-<li>
-<p class="play-intro">Introduction</p>
-<div>
-<img src="{{asset('assets/img/icon/play-icon.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Course Introduction </p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Exam</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Course</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Building Our Scenario</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Learnings</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="course-card">
-<h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#course3" aria-expanded="false">Chapter 3 <span>7 Lessons</span> </a>
-</h6>
-<div id="course3" class="card-collapse collapse" style>
-<div class="progress-stip">
-<div class="progress-bar bg-success progress-bar-striped active-stip"></div>
-</div>
-<div class="student-percent lesson-percent">
-<p>12hrs<span>50%</span></p>
-</div>
-<ul>
-<li>
-<p class="play-intro">Introduction</p>
-<div>
-<img src="{{asset('assets/img/icon/play-icon.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Course Introduction </p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Exam</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Course</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Building Our Scenario</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Learnings</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="course-card">
-<h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#coursefour" aria-expanded="false">Chapter 4 <span>5 Lessons</span> </a>
-</h6>
-<div id="coursefour" class="card-collapse collapse">
-<div class="progress-stip">
-<div class="progress-bar bg-success progress-bar-striped active-stip"></div>
-</div>
-<div class="student-percent lesson-percent">
-<p>8hrs<span>50%</span></p>
-</div>
-<ul>
-<li>
-<p class="play-intro">Introduction</p>
-<div>
-<img src="{{asset('assets/img/icon/play-icon.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Course Introduction </p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Exam</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Course</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Building Our Scenario</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Learnings</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="course-card">
-<h6 class="cou-title">
-<a class="collapsed" data-bs-toggle="collapse" href="#coursefive" aria-expanded="false">Chapter 5 <span>8 Lessons</span> </a>
-</h6>
-<div id="coursefive" class="card-collapse collapse">
-<div class="progress-stip">
-<div class="progress-bar bg-success progress-bar-striped active-stip"></div>
-</div>
-<div class="student-percent lesson-percent">
-<p>15hrs<span>40%</span></p>
-</div>
-<ul>
-<li>
-<p class="play-intro">Introduction</p>
-<div>
-<img src="{{asset('assets/img/icon/play-icon.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Course Introduction </p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Exam</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>About the Course</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Building Our Scenario</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-<li>
-<p>Learnings</p>
-<div>
-<img src="{{asset('assets/img/icon/lock.svg')}}" alt>
-</div>
-</li>
-</ul>
-</div>
-</div>
+@endforeach
 </div>
 <br>
 <h4>Your Bookmark <i onclick="addBookmark()" class="fa-feather feather-bookmark float-end"><sup><i class="fa-solid fa-add fs-6"></i></sup></i></h4>
@@ -531,41 +305,6 @@ display: block;
         z-index: 3 !important;
     }
 </style>
-{{-- <div class="interactive_wrapper" style="width: max-content">
-    <div class="plan-box" style="left: 50%">
-        <div>
-        <h6 style="text-transform: capitalize" class="text-muted text-center">Hello this is Tunkit</h6>
-        <button class="btn btn-secondary">Hello this is Tunkit</button>
-        <button class="btn btn-secondary">Hello this is Tunkit</button>
-        </div>
-        </div>
-        </div> --}}
- {{-- <div class="parent_interactive">
-    <div class="interactive_wrapper" style="display: none" > <div class="plan-box" >
-        <div>
-        <h6 style="color: #249c46 ; text-transform: capitalize">Hello this is Tunkit</h6>
-        <p>Hello this is Tunkit</p>
-        </div>
-        </div>
-</div>
-<div class="interactive_wrapper select_ideal" style="width: max-content;display: none">
-    <div class="plan-box" style="left: 50%">
-        <div>
-        <h6 style="text-transform: capitalize" class="text-muted text-center">Hello this is Tunkit</h6>
-        <button class="btn btn-secondary" onclick="jumpVideo(300)">Hello this is Tunkit</button>
-        <button class="btn btn-secondary" onclick="jumpVideo()">Hello this is Tunkit</button>
-        </div>
-        </div>
-</div>
-<div class="interactive_wrapper" style="display: none" >
-            <div class="plan-box" >
-        <div>
-        <h6 style="color: #249c46 ; text-transform: capitalize">Hello this is Tunkit</h6>
-        <p>Hello this is Tunkit 3</p>
-        </div>
-        </div>
-</div>
- </div> --}}
 </div>  
 </div>
 </div>
@@ -659,7 +398,7 @@ video.volume = temp_volume / 100
         maxBufferHole: 0,
         enableWorker:true
     });
-    hls.loadSource('https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8');
+    hls.loadSource('{{$path}}');
     hls.attachMedia(video);
     const progress = document.querySelector('#progress')
 
@@ -757,7 +496,7 @@ formData.append('timeline', parseInt(video.currentTime));
 
     obj.disabled = true;
     obj.innerHTML = 'Adding';
-    fetch("{{route('lesson-bookmark-add','dsaas')}}", {
+    fetch("{{route('lesson-bookmark-add',$id_lesson)}}", {
         method: "POST",
         body: formData  
     }).then(function (response) {
@@ -823,7 +562,7 @@ function removeBookmark(index,obj,timeline) {
     if(confirm('Are you sure to remove this bookmark?')){
         let formData = new FormData();
         formData.append('timeline',timeline );
-        fetch("{{route('lesson-bookmark-delete','dsaas')}}", {
+        fetch("{{route('lesson-bookmark-delete',$id_lesson)}}", {
             method: "POST",
             body: formData
         }).then(function (response) {
@@ -860,7 +599,7 @@ function updateBookmark(btn,timeline_value) {
     formData.append('front_card', document.querySelector('#front-flash').value);
     formData.append('back_card',document.querySelector('#back-flash').value);
     formData.append('timeline', timeline_value);
-    fetch("{{route('lesson-bookmark-update','dsaas')}}", {
+    fetch("{{route('lesson-bookmark-update', $id_lesson)}}", {
        method: "POST", 
         body: formData
     }).then(function (response) {
@@ -972,6 +711,11 @@ else {
     
 }
 }, 1000);   
+})
+var uls = document.querySelectorAll('.ul_')
+var uls_length = document.querySelectorAll('.ul_length')
+uls.forEach((e,index) => {
+    uls_length[index].innerHTML = e.children.length +  ' Lessons'
 })
 </script>
 

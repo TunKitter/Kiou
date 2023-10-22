@@ -6,6 +6,9 @@ use MongoDB\Laravel\Eloquent\Model;
 class Bookmark extends Model
 {
     protected $fillable = [
+        'user_id',
+        'lesson_id',
+        'cards',
         'cards.0.front_card',
         'cards.1.front_card',
         'cards.2.front_card',

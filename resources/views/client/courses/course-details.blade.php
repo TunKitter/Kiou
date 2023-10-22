@@ -1,5 +1,10 @@
 @extends('client.layouts.master')
 @section('content')
+<style>
+    video::-webkit-media-controls-fullscreen-button,video::-webkit-media-controls-play-button,video::-webkit-media-controls-timeline,video::-webkit-media-controls-timeline-container,video::-webkit-media-controls-volume-slider,video::-webkit-media-controls-volume-slider-container,video::-webkit-media-controls-panel {
+display: none !important;
+}
+</style>
 <div class="inner-banner">
 <div class="container">
 <div class="row">
@@ -238,7 +243,7 @@
 </a>
 <div class="video-details">
 <div class="course-fee">
-<h2>FREE</h2>
+<h2>{{$course->price}}$</h2>
 <p><span>$99.00</span> 50% off</p>
 </div>
 <div class="row gx-2">
@@ -301,7 +306,7 @@ var mentor_pro_string = mentor_pro.innerHTML
 mentor_pro.innerHTML = mentor_pro_string.substring(0,mentor_pro_string.lastIndexOf(','));
 function play_overview(){
     var video = document.getElementById('video-overview');
-    video.outerHTML = '<video id="video" style="width:100%;max-height:200px" controls src="https://storage.googleapis.com/kiou_lesson/Download%20(1).mp4"></video>';
+    video.outerHTML = '<video id="video" style="width:100%;max-height:200px" autoplay controls src="{{$overview_video_path}}"></video>';
     document.getElementById('video').play();
 document.getElementsByClassName('play-icon')[0].style.display = 'none';
 

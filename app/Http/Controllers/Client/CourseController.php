@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Mentor;
@@ -119,14 +118,16 @@ class CourseController extends Controller
         $mentor_professions = implode(', ', array_map(function ($item) {
             return $item[0];
         }, $mentor_professions));
+        // dd($mentor_professions);
         $category_profession = substr($mentor_professions, strrpos($mentor_professions, ',') + 1);
         $lessons_db = (Lesson::where('course_id', $course->id)->get(['chapter', 'name'])->toArray());
+        $overview_video_path = (Lesson::where('course_id', $course->id)->first(['path'])->toArray())['path'];
         $lessons = [];
         array_map(function ($item) use (&$lessons) {
             $lessons[$item['chapter'][1]][] = $item['name'];
         }, $lessons_db);
         // dd($lessons['dasd']);
-        return $course ? view('client.courses.course-details', compact('course', 'mentor_professions', 'category_profession', 'chapter', 'lessons')) : redirect()->route('course-list');
+        return $course ? view('client.courses.course-details', compact('course', 'mentor_professions', 'category_profession', 'chapter', 'lessons', 'overview_video_path')) : redirect()->route('course-list');
     }
 
     public function explore($id = null)
