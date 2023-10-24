@@ -9,6 +9,7 @@ use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
+use App\Http\Controllers\Client\CartController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfessionController;
@@ -95,3 +96,11 @@ Route::get('course/{id}/learn', [LessonController::class, 'index'])->name('lesso
 Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBookmark'])->name('lesson-bookmark-add');
 Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
 Route::post('course/{id}/learn/bookmark/update', [LessonController::class, 'updateBookmark'])->name('lesson-bookmark-update');
+
+# ------------------------- Cart --------------------------------
+
+Route::group(['middleware' => 'auth.cart'], function () {
+    Route::get('cart', [CartController::class, 'index'])->name('cart');
+    Route::post('cart/add',[CartController::class,'store'])->name('add-to-cart');
+    Route::post('cart/delete/{id}',[CartController::class,'delete'])->name('delete-cart');
+});
