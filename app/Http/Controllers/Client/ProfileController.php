@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Http\Requests\ProfileRequest;
-
-
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -53,7 +50,6 @@ class ProfileController extends Controller
         return view('client.home.home');
     }
 
-
     public function password()
     {
         $user = Auth::user();
@@ -96,7 +92,7 @@ class ProfileController extends Controller
     public function deleteAvatar()
     {
         auth()->user()->update(['image.avatar' => 'avatar.jpg']);
-        return 1;
+        return \response()->json(['status' => 'success']);
     }
 
 }

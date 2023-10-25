@@ -231,8 +231,9 @@ function delete_avatar(){
     if(confirm('Are you sure to delete your avatar?')){
         fetch(location.href,{
             method: 'DELETE',
-        }).then(data => data.text()).then(data => {
-            if(data==1) {
+        }).then(data => data.json()).then(data => {
+            console.log(data);
+            if(data.status=='success') {
                 alert('Avatar deleted successfully')
                 setTimeout(() => {
                     location.reload()
