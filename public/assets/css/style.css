@@ -1974,6 +1974,22 @@ html.menu-opened body {
     border-color: #917cf6;
     color: #fff;
 }
+.all-cart .btn-primary {
+    color:#f66962;
+    border: 3px solid #f66962;
+    backdrop-filter: blur(151.39px);
+    border-radius: 46.9159px;
+    background: transparent;
+    border-radius: 46.9159px;
+    min-width: 150px;
+    padding: 10px 15px;
+    font-weight: 500;
+}
+.all-cart .btn-primary:hover {
+    background-color: #ff875a;
+    border-color: #ff875a;
+    color: #fff !important;
+}
 .rating {
     list-style: none;
     margin: 0 0 7px;
@@ -4829,9 +4845,10 @@ html.menu-opened body {
     margin-right: 15px;
 }
 .wish-content {
-    height: 350px;
+    height: max-content ;
+    max-height: 50vh ;
     width: 415px;
-    overflow-y: auto;
+    overflow-y: hidden;
     position: relative;
     padding-right: 0;
 }
@@ -4918,7 +4935,7 @@ html.menu-opened body {
 .wish-nav .remove-btn a {
     margin-top: 10px;
 }
-.remove-btn a {
+.remove-btn button {
     background: #ffffff;
     border: 1px solid #ff5364;
     padding: 5px 10px;
@@ -4926,7 +4943,7 @@ html.menu-opened body {
     font-weight: 500;
     font-size: 12px;
 }
-.remove-btn a:hover {
+.remove-btn button:hover {
     background: #ff5364;
     color: #fff;
 }

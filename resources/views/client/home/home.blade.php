@@ -166,83 +166,59 @@
 </div>
 @auth
 @inject('auth', 'Illuminate\Support\Facades\Auth') 
+@inject('carts', 'App\Models\Enrollment')
 <ul class="nav header-navbar-rht">
-    <li class="nav-item">
-    <a href="course-message.html"><img src="assets/img/icon/messages.svg" alt="img"></a>
-    </li>
     <li class="nav-item cart-nav">
     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
     <img src="assets/img/icon/cart.svg" alt="img">
     </a>
     <div class="wishes-list dropdown-menu dropdown-menu-right">
     <div class="wish-header">
-    <a href="#">View Cart</a>
+    <a href="{{route('cart')}}">View Cart</a>
     <a href="javascript:void(0)" class="float-end">Checkout</a>
     </div>
     <div class="wish-content">
-    <ul>
-    <li>
-    <div class="media">
-    <div class="d-flex media-wide">
-    <div class="avatar">
-    <a href="course-details.html">
-    <img alt="" src="assets/img/course/course-04.jpg">
-    </a>
-    </div>
-    <div class="media-body">
-    <h6><a href="course-details.html">Learn Angular...</a></h6>
-    <p>By Dave Franco</p>
-    <h5>$200 <span>$99.00</span></h5>
-    </div>
-    </div>
-    <div class="remove-btn">
-    <a href="#" class="btn">Remove</a>
-    </div>
-    </div>
-    </li>
-    <li>
-    <div class="media">
-    <div class="d-flex media-wide">
-    <div class="avatar">
-    <a href="course-details.html">
-    <img alt="" src="assets/img/course/course-14.jpg">
-    </a>
-    </div>
-    <div class="media-body">
-    <h6><a href="course-details.html">Build Responsive Real...</a></h6>
-    <p>Jenis R.</p>
-    <h5>$200 <span>$99.00</span></h5>
-    </div>
-    </div>
-    <div class="remove-btn">
-    <a href="#" class="btn">Remove</a>
-    </div>
-    </div>
-    </li>
-    <li>
-    <div class="media">
-    <div class="d-flex media-wide">
-    <div class="avatar">
-    <a href="course-details.html">
-    <img alt="" src="assets/img/course/course-15.jpg">
-    </a>
-    </div>
-    <div class="media-body">
-    <h6><a href="course-details.html">C# Developers Double ...</a></h6>
-    <p>Jesse Stevens</p>
-    <h5>$200 <span>$99.00</span></h5>
-    </div>
-    </div>
-    <div class="remove-btn">
-    <a href="#" class="btn">Remove</a>
-    </div>
-    </div>
-    </li>
-    </ul>
-    <div class="total-item">
-    <h6>Subtotal : $ 600</h6>
-    <h5>Total : $ 600</h5>
-    </div>
+        <ul>
+            @php
+            $total = 0;      
+          @endphp
+            @if($carts::where('user_id', auth()->id())->get()->count() > 0)
+            @foreach($carts::where('user_id', auth()->id())->get() as $cart)
+            <li>
+                <div class="media">
+                    <div class="d-flex media-wide">
+                        <div class="avatar">
+                            <a href="{{ route('course-detail', $cart->courses->slug) }}">
+                                <img alt
+                                    src="{{ asset($cart->courses->image) }}">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h6><a href="{{ route('course-detail', $cart->courses->slug) }}">{{$cart->courses->name}}</a></h6>
+                            <p>By {{$cart->courses->mentor->name}}</p>
+                            <h5>$ {{$cart->courses->price}} <span>$99.00</span></h5>
+                        </div>
+                    </div>
+                    <div class="remove-btn">
+                        <form action="{{route('delete-cart', $cart->_id)}}" method="POST">
+                            @csrf
+                            
+                            <button type="submit" class="btn">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+            @php 
+            $total += ($cart->courses->price );
+            @endphp
+            @endforeach
+        @else
+        <p class="text-center pt-2"><b>Your shopping cart is empty</b></p>
+        @endif
+        </ul>
+        <div class="total-item">
+            <h5>Total : $ {{$total}}</h5>
+        </div>
     </div>
     </div>
     </li>
@@ -834,7 +810,7 @@
                                                 <p class="text-muted mb-0">Student</p>
                                             </div>
                                         </div>
-                                        <a class="dropdown-item" href="{{ route('profile.edit', $auth::user()->id) }}"><i
+                                        <a class="dropdown-item" href="{{ route('profile') }}"><i
                                                 class="feather-user me-1"></i> Profile</a>
                                         <a class="dropdown-item" href="setting-student-subscription.html"><i
                                                 class="feather-star me-1"></i> Subscription</a>

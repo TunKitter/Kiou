@@ -96,6 +96,15 @@
 <div class="all-btn all-category d-flex align-items-center">
 <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
 </div>
+<div class="all-cart align-items-center mx-2">
+    <form action="{{route('add-to-cart')}}" method="POST">
+        @csrf
+        <input type="hidden" value="{{ $course->_id }}" name="course_id">
+        <input type="hidden" value="{{ $course->price }}" name="price">
+      
+        <button type="submit" class="btn btn-primary">Add to cart</button>
+    </form>
+</div>
 </div>
 <div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
 <div class="rating-img d-flex align-items-center">

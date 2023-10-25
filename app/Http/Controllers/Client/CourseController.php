@@ -52,7 +52,7 @@ class CourseController extends Controller
     public function getCourseData($skip = 0, $take = 10, $where = [])
     {
         if (request()->q) {
-            return Course::where('name', 'like', '%' . request()->q . '%')->skip($skip)->take($take)->get();
+            return $this->softData($course = Course::where('name', 'like', '%' . request()->q . '%')->skip($skip)->take($take)->get(), count($course) - 1);
         }
 
         $courses = (Course::where($where)->orderBy('complete_course_rate', 'desc')->orderBy('view', 'desc')->orderBy('click', 'desc')->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
@@ -79,7 +79,7 @@ class CourseController extends Controller
     public function softMentorData($mentors, $a_length)
     {
 
-        for ($i = 0; $i < $a_length; $i++) {
+        for ($i = 0; $i <= $a_length; $i++) {
             $mentors[$i]->total_enrollment = $mentors[$i]->course->sum('total_enrollment');
             $mentors[$i]->total_course = $mentors[$i]->course->count();
             for ($j = 0; $j < $a_length - $i; $j++) {
@@ -96,7 +96,7 @@ class CourseController extends Controller
     }
     public function softData($courses, $a_length)
     {
-        for ($i = 0; $i < $a_length; $i++) {
+        for ($i = 0; $i <= $a_length; $i++) {
             $courses[$i]->mentor_name = $courses[$i]->mentor->name;
             for ($j = 0; $j < $a_length - $i; $j++) {
                 $temp_j = $courses[$j];

@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\Chapter;
 use App\Models\Level;
 use App\Models\Mentor;
+use App\Models\Enrollment;
 use MongoDB\Laravel\Eloquent\Model;
 
 class Course extends Model
@@ -23,4 +24,9 @@ class Course extends Model
     {
         return $this->belongsTo(Level::class);
     }
+    public function carts()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
 }
