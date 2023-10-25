@@ -63,12 +63,14 @@ class CourseController extends Controller
     public function getMentorData($skip = 0, $take = 10, $where = [])
     {
         if (request()->q) {
-            $mentors = Mentor::where('name', 'like', '%' . request()->q . '%')->skip($skip)->take($take)->get();
+            $mentors = Mentor::where('name', 'like', '%' . request()->q . '%')->orWhere('username', 'like', '%' . request()->q . '%')->skip($skip)->take($take)->get();
             // return $mentors->course->sum('total_enrollment');
             for ($i = 0; $i < count($mentors); $i++) {
                 $mentors[$i]->total_enrollment = $mentors[$i]->course->sum('total_enrollment');
                 $mentors[$i]->total_course = $mentors[$i]->course->count();
             }
+
+            return $mentors;
         }
         $mentors = (Mentor::where($where)->skip($skip)->take($take)->get());
         $a_length = count($mentors) - 1;

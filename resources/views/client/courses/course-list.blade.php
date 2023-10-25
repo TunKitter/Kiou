@@ -7,6 +7,12 @@
         background: transparent !important;
     }
 </style>
+@if ($message = Session::get('success'))
+@include('client.section.message', ['message' => $message,'type'=>'success'])
+@endif
+@if ($message = Session::get('cart_already'))
+@include('client.section.message', ['message' => $message,'type'=>'fail'])
+@endif
 <section class="course-content">
 <div class="container">
 <div class="row">
