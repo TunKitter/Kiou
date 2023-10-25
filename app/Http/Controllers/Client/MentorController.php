@@ -27,7 +27,7 @@ class MentorController extends Controller
             }
         }
         $data = (((Profession::select('id', 'name')->get())));
-        return view('client.mentor.register', ['professions' => (implode(',', $data->pluck('name')->toArray())), 'id_professions' => (implode(',', $data->pluck('id')->toArray()))]);
+        return view('client.mentor.register', ['professions' => (implode(',', $data->pluck('name')->toArray())), 'id_professions' => (implode(',', $data->pluck('id')->toArray())), 'data' => $data]);
     }
     public function handleRegister(Request $request)
     {
@@ -45,26 +45,11 @@ class MentorController extends Controller
                 'username.alpha_dash' => 'Tên đăng nhập không được chứa ký tự đặc biệt!',
                 'username.unique' => 'Tên đăng nhập đã có người dùng!',
             ]);
-        $temp_profession = [];
-        foreach ($request->except('_token', 'username', 'name', 'profession') as $key => $value) {
-
-            if ($temp_key = Profession::find($key)) {
-                if ($temp_key->name == $value) {
-                    $temp_profession[] = $key;
-                } else {
-
-                    return redirect()->back()->with('not_found_profession', 'Chuyên ngành không hợp lệ, vui lòng thử lại');
-                }
-
-            } else {
-                return redirect()->back()->with('not_found_profession', 'Không tìm thấy chuyên ngành, vui lòng thử lại');
-            }
-        }
         Mentor::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
             'username' => $request->username,
-            'profession' => $temp_profession,
+            'profession' => explode(',', $request->profession),
         ]);
 
         return redirect()->route('mentor-upload-id-card');

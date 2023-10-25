@@ -77,7 +77,6 @@ Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMe
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
 
 # ------------------------- Lesson --------------------------------
-Route::get('demo', fn() => view('client.mentor.add-course'));
 Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');
 Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::class, 'lessonUpdate'])->name('lesson-update');
 Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBookmark'])->name('lesson-bookmark-add');
