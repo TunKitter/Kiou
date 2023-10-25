@@ -210,8 +210,7 @@ break;
                             method: 'POST',
                             body: data_form
                         }).then(res => res.text()).then(data => {
-                            console.log(data);
-                            
+                            console.log(data); 
                             if(data == 0) {
                                 location.href = location.href + '?already=1'
                             }

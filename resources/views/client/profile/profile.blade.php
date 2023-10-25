@@ -22,7 +22,7 @@
                                     @if($user->image['avatar'] == null)
                                         <a href="student-profile.html"><img src="{{asset('assets/img/user/avatar.jpg')}}" alt></a>
                                     @else
-                                         <a href="student-profile.html"><img src="{{asset('user/avatar/'. $user->image['avatar'])}}" alt></a>
+                                         <a href="student-profile.html"><img src="{{($image = auth()->user()->image['avatar']) ? ((str_starts_with($image,'http')) ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" alt></a>
                                     @endif
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                             <div class="course-group mb-0 d-flex">
                                 <div class="course-group-img d-flex align-items-center">
                                   
-                                        <a href="student-profile.html"><img src="{{$user->image['avatar']}}" alt class="img-fluid"></a>
+                                        {{-- <a href="student-profile.html"><img src="{{$user->image" alt class="img-fluid"></a> --}}
                                        
                             
                                     <div class="course-name">
