@@ -1,86 +1,26 @@
-<style>
-  .fui-loading-spinner-3 {
-  color: official;
-  display: inline-block;
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  margin: 500px 0 0 800px;
-}
-.fui-loading-spinner-3 div {
-  transform-origin: 40px 40px;
-  animation: rj9Ft 1.2s linear infinite;
-}
-.fui-loading-spinner-3 div:after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 3px;
-  left: 37px;
-  width: 6px;
-  height: 18px;
-  border-radius: 20%;
-  background: gray;
-}
-.fui-loading-spinner-3 div:nth-child(1) {
-  transform: rotate(0deg);
-  animation-delay: -1.1s;
-}
-.fui-loading-spinner-3 div:nth-child(2) {
-  transform: rotate(30deg);
-  animation-delay: -1s;
-}
-.fui-loading-spinner-3 div:nth-child(3) {
-  transform: rotate(60deg);
-  animation-delay: -0.9s;
-}
-.fui-loading-spinner-3 div:nth-child(4) {
-  transform: rotate(90deg);
-  animation-delay: -0.8s;
-}
-.fui-loading-spinner-3 div:nth-child(5) {
-  transform: rotate(120deg);
-  animation-delay: -0.7s;
-}
-.fui-loading-spinner-3 div:nth-child(6) {
-  transform: rotate(150deg);
-  animation-delay: -0.6s;
-}
-.fui-loading-spinner-3 div:nth-child(7) {
-  transform: rotate(180deg);
-  animation-delay: -0.5s;
-}
-.fui-loading-spinner-3 div:nth-child(8) {
-  transform: rotate(210deg);
-  animation-delay: -0.4s;
-}
-.fui-loading-spinner-3 div:nth-child(9) {
-  transform: rotate(240deg);
-  animation-delay: -0.3s;
-}
-.fui-loading-spinner-3 div:nth-child(10) {
-  transform: rotate(270deg);
-  animation-delay: -0.2s;
-}
-.fui-loading-spinner-3 div:nth-child(11) {
-  transform: rotate(300deg);
-  animation-delay: -0.1s;
-}
-.fui-loading-spinner-3 div:nth-child(12) {
-  transform: rotate(330deg);
-  animation-delay: 0s;
-}
-@keyframes rj9Ft {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-</style>
+
 @extends('admin.layout.master')
 @section('content')
+<style>
+    #load-more {
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: 4px solid black;
+        border-left-color: transparent;
+        border-radius: 50%;
+        margin:  auto;
+        animation: spin 1s linear infinite;
+    }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
     <div class="row">
         <div class="col-sm">
             <div class="card ">
@@ -258,7 +198,7 @@
                     </div>
                 </div>
 
-                <table class="table table-striped" id="data-table">
+                <table class="table table-striped" id="data-table" >
                     <thead>
                         <tr>
                             {{-- <th>ID</th> --}}
@@ -276,21 +216,8 @@
                     </tbody>
                 </table>
                 
-                <div id="loading-modal" class="modal" style="display: none;">
-                    <div id="loading" class="fui-loading-spinner-3">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
+                <div id="load-more" style="display: none">
+
                 </div>
             </div>
         </div>
@@ -481,7 +408,7 @@
     var scrollTriggered = false; // Biến để kiểm tra trạng thái kéo và tải dữ liệu
 
     function hideLoadingModal() {
-        $("#loading-modal").hide(); // Ẩn thông báo loading modal
+        $("#load-more").hide(); // Ẩn thông báo loading modal
     }
 
     // Hiển thị thông báo loading modal khi bạn kéo xuống
@@ -490,7 +417,7 @@
             scrollTriggered = true; // Đánh dấu trạng thái kéo và tải dữ liệu
             loading = true; // Đánh dấu trạng thái tải dữ liệu
             page++;
-            $("#loading-modal").show(); // Hiển thị thông báo loading modal
+            $("#load-more").show(); // Hiển thị thông báo loading modal
 
             // Ẩn thông báo loading modal sau 3 giây
             setTimeout(hideLoadingModal, 1000);
@@ -529,7 +456,7 @@
     // Xử lý nút "Load More"
     $("#load-more").click(function() {
         page++;
-        $("#loading-modal").show(); // Hiển thị thông báo loading modal
+        // $("#loading-modal").show(); // Hiển thị thông báo loading modal
         $("#load-more").hide(); // Ẩn nút "Load More"
         infinteLoadMore(page);
     });

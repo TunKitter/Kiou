@@ -16,7 +16,7 @@ fieldset  input:first-of-type {
 </style>
 <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css')}}">
-<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">  
+<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 <div class="page-content">
 <div class="container">
 <div class="row">
@@ -258,7 +258,7 @@ function delete_avatar(){
                 return professions[profession]
             }));
              document.querySelector('input[name=profession]').value = ids.join(',')
-             alert(document.querySelector('input[name=profession]').value)
+            //  alert(document.querySelector('input[name=profession]').value)
             // return false
             document.forms[0].submit()           
         }
