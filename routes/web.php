@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CourseController;
 use App\Http\Controllers\Client\HomeController;
@@ -11,6 +14,14 @@ use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser');
+Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser');
+Route::get('/admin/users/edit/{id}', [UserController::class, 'editUser'])->name('editUser');
+Route::post('/admin/users/update/{id}', [UserController::class, 'updateUser'])->name('updateUser');
+Route::get('/admin/users/delete/{id}', [UserController::class, 'delete'])->name('deleteUser');
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -90,3 +101,6 @@ Route::group(['middleware' => 'auth.cart'], function () {
     Route::post('cart/add', [CartController::class, 'store'])->name('add-to-cart');
     Route::post('cart/delete/{id}', [CartController::class, 'delete'])->name('delete-cart');
 });
+
+# ------------------------- Blog --------------------------------
+Route::get('/blog', [BlogController::class, 'Blog']);
