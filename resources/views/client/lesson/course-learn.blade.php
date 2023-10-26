@@ -179,7 +179,7 @@ display: block;
     <li>
         <p class="play-intro">{{$lesson['name']}} {!!(($loop->index < $check_enrollment_lesson->chapter[2]  )? '<i class="fa-solid fa-check d-inline-block m-auto"></i>' : '' )!!} </p>
         <div>
-        <img src="{{asset('assets/img/icon/play-icon.svg')}}" onclick="location.href='{{route('lesson-learn',[$id_course,$lesson['_id']])}}'"  alt>
+        <img src="{{asset('assets/img/icon/play-icon.svg')}}" onclick="location.href='{{route('lesson-learn',[$id_course->slug,$lesson['slug']])}}'" >
         </div>
         </li>
         @else
@@ -220,7 +220,7 @@ display: block;
 
 <div class="student-widget lesson-introduction">
 <div class="lesson-widget-group">
-<h4 class="tittle">{{$id_lesson_url->name}}</h4>
+<h4 class="tittle">{{$id_lesson->name}}</h4>
 <div class="introduct-video">
 {{-- <a href="#"> --}}
 {{-- <div class="play-icon">
@@ -273,7 +273,7 @@ display: block;
     <div class="controls" style="display: flex;align-items: center;">
         <i class="fa-solid feather-settings" id="setting" onclick="displayQuality()">
             <div class="video-quality" >
-                <ul>
+                <ul class="video_quality_ul">
                     <li class="fw-light" onclick="settingVideo(4,this)">1080p</li>
                     <li class="fw-light" onclick="settingVideo(3,this)">720p</li>
                     <li class="fw-light" onclick="settingVideo(2,this)">480p</li>
@@ -325,7 +325,7 @@ var current_progress_video = document.querySelector('.current-progress-video');
 var bookmarks_list = document.querySelector('#bookmarks_list');
 var video_play_icon = document.querySelector('#video-play-icon');
 var current_volume = document.getElementById('current-volume');
-var random_timeline_video = (Cookies.get('{{$id_lesson_url->_id}}_arr') ? Cookies.get('{{$id_lesson_url->_id}}_arr').split(',') : []);
+var random_timeline_video = (Cookies.get('{{$id_lesson->_id}}_arr') ? Cookies.get('{{$id_lesson->_id}}_arr').split(',') : []);
 var is_finish_video = false
 document.body.onload = function(){
 let bookmarks_string = ``;
@@ -418,8 +418,8 @@ video.volume = temp_volume / 100
 hls.on(window.Hls.Events.FRAG_LOADING, () => {
  progress.style.display = 'block'
 })
-if(Cookies.get('{{$id_lesson_url->_id}}')){
-        video.currentTime = Cookies.get('{{$id_lesson_url->_id}}')
+if(Cookies.get('{{$id_lesson->_id}}')){
+        video.currentTime = Cookies.get('{{$id_lesson->_id}}')
  }
  
  }
@@ -452,8 +452,8 @@ var lookupView = document.querySelector('#lookup');
             }
             
         }
-        Cookies.set('{{$id_lesson_url->_id}}',video.currentTime);
-        Cookies.set('{{$id_lesson_url->_id}}_arr',random_timeline_video.join(','));
+        Cookies.set('{{$id_lesson->_id}}',video.currentTime);
+        Cookies.set('{{$id_lesson->_id}}_arr',random_timeline_video.join(','));
            if(video.currentTime < current_subtitle[0] || video.currentTime > current_subtitle[1]){
             
                 let temp_subtitle = subtitle_result.find(e => (e.start <= video.currentTime && e.end >= video.currentTime) )
@@ -492,7 +492,8 @@ function settingVideo(quality,obj){
         old_quality.style.color = 'black';
     }
     old_quality = obj
-    hls.currentLevel = quality;
+    // hls.currentLevel = quality;
+     hls.currentLevel = 0;
 }
 var video_quality = document.querySelector('.video-quality');
 function displayQuality(){
@@ -527,7 +528,7 @@ formData.append('timeline', parseInt(video.currentTime));
 
     obj.disabled = true;
     obj.innerHTML = 'Adding';
-    fetch("{{route('lesson-bookmark-add',$id_lesson)}}", {
+    fetch("{{route('lesson-bookmark-add',$id_lesson->id)}}", {
         method: "POST",
         body: formData  
     }).then(function (response) {
@@ -593,7 +594,7 @@ function removeBookmark(index,obj,timeline) {
     if(confirm('Are you sure to remove this bookmark?')){
         let formData = new FormData();
         formData.append('timeline',timeline );
-        fetch("{{route('lesson-bookmark-delete',$id_lesson)}}", {
+        fetch("{{route('lesson-bookmark-delete',$id_lesson->id)}}", {
             method: "POST",
             body: formData
         }).then(function (response) {
@@ -630,7 +631,7 @@ function updateBookmark(btn,timeline_value) {
     formData.append('front_card', document.querySelector('#front-flash').value);
     formData.append('back_card',document.querySelector('#back-flash').value);
     formData.append('timeline', timeline_value);
-    fetch("{{route('lesson-bookmark-update', $id_lesson)}}", {
+    fetch("{{route('lesson-bookmark-update', $id_lesson->id)}}", {
        method: "POST", 
         body: formData
     }).then(function (response) {
@@ -729,13 +730,13 @@ if(temp_){
         else if(temp_interact.hasClass('rect')){
             temp_interact.css('left',arr[current_index][0] + 'px')
             temp_interact.css('top',arr[current_index][1] + 'px')
-            video_state = false;
-            play_video(video_play_icon)
+            // video_state = false;
+            // play_video(video_play_icon)
         }
-        else {
-            video_state = false;
-            play_video(video_play_icon)
-        }
+        // else {
+            // video_state = false;
+            // play_video(video_play_icon)
+        // }
  }
 else {
     $('.interactive_wrapper').hide()
@@ -753,12 +754,12 @@ video.onended = function(){
         document.querySelectorAll(".play-intro")[document.querySelectorAll(".play-intro").length - 1].innerHTML += '<i class="fa-solid fa-check d-inline-block m-auto"></i>'
             let formData = new FormData();
             formData.append('next_lesson', document.querySelector('.next_lesson').id);
-            if('{{$check_enrollment_lesson->_id}}' == '{{$id_lesson_url->_id}}'){
+            if('{{$check_enrollment_lesson->_id}}' == '{{$id_lesson->_id}}'){
                 
-                fetch(`${location.href}/update`,{
+                fetch(`{{route("lesson-update",[$id_course->_id,$id_lesson->_id])}}`,{
                     method:"POST",
                     body: formData
-                }).then(response => response.text()).then(data => {
+                }).then(response => response.json()).then(data => {
                     console.log(data);
                     let next_btn = document.querySelector('#next')
                     next_btn.style.display = 'block';

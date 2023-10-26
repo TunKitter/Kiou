@@ -57,10 +57,12 @@ class MentorController extends Controller
 
     public function handleProfile(ProfileRequest $request)
     {
+        // dd($request->all());
         $request->validated();
         $update_data = [];
         $request->name ? $update_data['name'] = $request->name : '';
         $request->username ? $update_data['username'] = $request->username : '';
+        $request->profession ? $update_data['profession'] = explode(',', $request->profession) : '';
         $user = Auth::user();
 
         if ($request->avatar) {
@@ -69,8 +71,12 @@ class MentorController extends Controller
             $update_data['image.avatar'] = $imagePath;
 
         }
-        Mentor::where('user_id', $user->id)->update($update_data);
-        return redirect()->route('mentor-profile')->with('success', 'Thông tin đã được cập nhật thành công.');
+        if (!(Mentor::where('username', $request->username)->count())) {
+            Mentor::where('user_id', $user->id)->update($update_data);
+            return redirect()->route('mentor-profile')->with('success', 'Thông tin đã được cập nhật thành công.');
+        } else {
+            return redirect()->route('mentor-profile')->with('already_username', 'Tên người dùng đã tồn tại');
+        }
     }
     public function profile()
     {
@@ -81,7 +87,16 @@ class MentorController extends Controller
             return redirect()->route('mentor-register');
         }
         $mentor = Mentor::where('user_id', Auth::id())->first();
-        return view('client.mentor.profile', compact('mentor'));
+        $professions = Profession::all();
+        $mentor_professions = array_map(function ($profession_id) use ($professions) {
+            return array_filter($professions->toArray(), function ($profession) use ($profession_id) {
+                return $profession['_id'] == $profession_id;
+            });
+        }, $mentor->toArray()['profession']);
+        $mentor_professions = implode(',', array_map(function ($profession) {
+            return $profession[array_key_first($profession)]['name'];
+        }, $mentor_professions));
+        return view('client.mentor.profile', compact('mentor', 'professions', 'mentor_professions'));
     }
     public function uploadIdCard(Request $request)
     {
