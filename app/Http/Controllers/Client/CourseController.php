@@ -60,6 +60,20 @@ class CourseController extends Controller
         $courses = $this->softData($courses, $a_length);
         return $courses;
     }
+    public function getCourseDataBuyMost($skip = 0, $take = 10, $where = [])
+    {
+        $courses = (Course::where('category', request()->category)->orderBy('complete_course_rate', 'desc')->skip($skip)->take($take)->get());
+        $a_length = count($courses) - 1;
+        $courses = $this->softData($courses, $a_length);
+        return $courses;
+    }
+    public function getCourseDataCostMost($skip = 0, $take = 10, $where = [])
+    {
+        $courses = (Course::where('category', request()->category)->where('total_enrollment', '>', 0)->orderBy('price', 'asc')->skip($skip)->take($take)->get());
+        $a_length = count($courses) - 1;
+        $courses = $this->softData($courses, $a_length);
+        return $courses;
+    }
     public function getMentorData($skip = 0, $take = 10, $where = [])
     {
         if (request()->q) {
@@ -135,8 +149,20 @@ class CourseController extends Controller
     public function explore($id = null)
     {
         $profession_name = Profession::where('slug', $id)->first();
+        // dd(Profession::all(['_id', 'name'])->toArray());
+        $profession_id = $profession_name->_id;
+        // dd($profession_id);
+
+        $professions_others = Profession::whereIn('parent_profession', [$profession_id])->orWhere('_id', 'IN', [$profession_name->parent_profession])->get(['slug', 'name']);
+        // dd($professions_others);
+        $courses = Course::where('category', $profession_name->_id)->take(10)->get();
+        $courses_buy_most = Course::where('category', $profession_name->_id)->orderBy('total_enrollment', 'asc')->take(10)->get();
+        $courses_cost_most = Course::where('category', $profession_name->_id)->where('total_enrollment', '>', 0)->orderBy('price', 'asc')->take(10)->get();
+        // soft $courses_buy_most sort by price asc
+        $courses = $this->softData($courses, count($courses) - 1);
+        // dd($courses);
         $profession_name ? $profession_name = $profession_name->name : redirect()->route('course-explore');
-        return view('client.courses.course-explore', $profession_name ? ['id' => $profession_name] : []);
+        return view('client.courses.course-explore', $profession_name ? ['id' => $profession_name] : [], ['courses' => $courses, 'courses_buy_most' => $courses_buy_most, 'profession_id' => $profession_id, 'professions_others' => $professions_others, 'courses_cost_most' => $courses_cost_most]);
     }
     public function updateInteractive()
     {

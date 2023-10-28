@@ -158,8 +158,8 @@
     </a>
     <div class="wishes-list dropdown-menu dropdown-menu-right">
     <div class="wish-header">
-    <a href="{{route('cart')}}">View Cart</a>
-    <a href="javascript:void(0)" class="float-end">Checkout</a>
+    <a href="{{route('cart')}}">See all</a>
+    {{-- <a href="javascript:void(0)" class="float-end">Checkout</a> --}}
     </div>
     <div class="wish-content">
         <ul>
