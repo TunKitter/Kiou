@@ -114,11 +114,11 @@
 </div>
 <div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
 <div class="rating-img d-flex align-items-center">
-<img src="assets/img/icon/icon-01.svg" alt>
+<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
 <p>{{ $course->meta['total_lesson']}} Lesson</p>
 </div>
 <div class="course-view d-flex align-items-center">
-<img src="assets/img/icon/icon-02.svg" alt>
+<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
 <p>{{round($course->meta['total_time']/60)}}hr {{round($course->meta['total_time']%60)}}min</p>
 </div>
 </div>

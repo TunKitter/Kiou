@@ -73,6 +73,7 @@
 </ul>
 </li>
 <li><a href="{{route('course-list')}}">Find Courses</a></li>
+<li><a href="{{route('roadmap')}}">Roadmap</a></li>
 </ul>
 </li>
 <li class="has-submenu">
