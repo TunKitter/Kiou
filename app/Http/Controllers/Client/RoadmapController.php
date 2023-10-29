@@ -16,18 +16,28 @@ class RoadmapController extends Controller
         $roadmap = Roadmap::all();
         $aa = '';
         $bb = '';
-        (array_map(function ($course) use (&$aa, &$bb) {
+        $cc = [];
+        (array_map(function ($course) use (&$aa, &$bb, &$cc, $roadmap) {
             $index = 0;
             foreach ($course['content'] as $value) {
                 if ($value['type'] == 'course') {
                     $aa .= $value['type_id'] . ',';
-                } else {
+                } elseif ($value['type'] == 'lesson') {
                     $bb .= $value['type_id'] . ',';
+                } else {
+                    foreach ($value['type_id'] as $value2) {
+                        $cc['multiple'][] = ["description" => $value2['type_description'], 'course_name' => $value2['type_id']];
+                        $aa .= $value2['type_id'] . ',';
+                    }
+                    $cc['description'] = $value['type_description'];
                 }
                 $index++;
             }
-            return $aa;
+            // return $aa;
         }, $roadmap->toArray()));
+        // dd($roadmap->pluck('name', '_id')->toArray());
+        // dd($cc);
+
         $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta'])->toArray());
         $course_name = [];
         array_map(function ($course) use (&$course_name, $course_database) {
@@ -44,7 +54,9 @@ class RoadmapController extends Controller
         }, $lesson_name->toArray());
         // dd(Lesson::all()->first()->course);
         $lesson_name = $aa;
+        $multiple = $cc;
+        // \dd($cc);
         // dd(Course::whereIn('_id', $roadmap)->get(['co'])->toArray());
-        return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name'));
+        return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name', 'multiple'));
     }
 }

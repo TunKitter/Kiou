@@ -124,6 +124,7 @@
 <div id="course2_{{$loop->index}}" class="card-collapse collapse" style>
 <ul>
     @foreach($item->content as $course)
+@if($course['type'] == 'course' || $course['type'] == 'lesson')
 <li>
     @php
         $temp_data_roadmap = $course['type']  == 'course' ? $course_name[$course['type_id']]['name'] : ($lesson_name[$course['type_id']]['name']. '<sup style="background:#f66962;color:white;border-radius:12px;padding: 5px;margin-left:-3.5em;line-height:1">Lesson</sup>') 
@@ -141,79 +142,45 @@
     </div>
     </div>
 </li>
+@else
+<li>
+    <div class="course-card w-100"> 
+        <h6 class="cou-title">
+            <a class="collapsed" style="background:white;border-radius:0;text-decoration: none  " data-bs-toggle="collapse" href="#course3_{{$loop->index}} " aria-expanded="false">{{$multiple['description']}}</a>
+        </h6>
+        <div id="course3_{{$loop->index}}" class="card-collapse collapse" style>
+<ul style="border: 1px solid #f06760">
+@foreach ($multiple['multiple'] as $mul)
+<li>
+<p class="play-intro w-50 d-flex align-items-center justify-content-between flex-wrap" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$mul['description']}}" >{{$course_name[$mul['course_name']]['name']}}  <img src="https://picsum.photos/200" style="width:75px"></p>
+{{-- <img src="{{asset('assets/img/icon/play-icon.svg')}}" alt> --}}
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center ps-3 pe-2 flex-fill" >
+    <div class="rating-img d-flex align-items-center">
+    <img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
+    <p>{{$course_name[$mul['course_name']]['total_lesson']}} Lesson</p>
+    </div>
+    <div class="course-view d-flex align-items-center">
+    <img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
+    <p>{{round($course_name[$mul['course_name']]['total_time']/60)}}hr {{$course_name[$mul['course_name']]['total_time']%60}}min</p>
+    </div>
+    </div>
+</li>
 @endforeach
-<li>
-<div class="course-card w-100"> 
-<h6 class="cou-title">
-<a class="collapsed" style="background:white;border-radius:0;text-decoration: none  " data-bs-toggle="collapse" href="#course3_{{$loop->index}} " aria-expanded="false">Chapter 2</a>
-</h6>
-<div id="course3_{{$loop->index}}" class="card-collapse collapse" style>
-
-<ul style="text-indent: 1em">
-<li>
-<p class="play-intro">Python for beginner</p>
-<div>
-<img src="assets/img/icon/play-icon.svg" alt>
-</div>
-</li>
-<li>
-<p>Course Introduction </p>
-<div>
-<img src="assets/img/icon/lock.svg" alt>
-</div>
-</li>
-<li>
-<p>About the Exam</p>
-<div>
-<img src="assets/img/icon/lock.svg" alt>
-</div>
-</li>
-<li>
-<p>About the Course</p>
-<div>
-<img src="assets/img/icon/lock.svg" alt>
-</div>
-</li>
-<li>
-<p>Building Our Scenario</p>
-<div>
-<img src="assets/img/icon/lock.svg" alt>
-</div>
-</li>
-<li>
-<p>Learnings</p>
-<div>
-<img src="assets/img/icon/lock.svg" alt>
-</div>
-</li>
 </ul>
 </div>
 </div>
 </li>
-<li>
+@endif
+@endforeach
+{{-- <li>
 <p>Building Our Scenario</p>
 <div>
 <img src="assets/img/icon/lock.svg" alt>
 </div>
-</li>
-<li>
-<p>Learnings</p>
-<div>
-<img src="assets/img/icon/lock.svg" alt>
-</div>
-</li>
+</li> --}}
 </ul>
 </div>
 </div>
-    </div>
-    </div>
-    <div class="course-group d-flex mb-0">
-    <div class="course-group-img d-flex">
-    <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
-    <div class="course-name">
-    </div>
-    </div>
-    <div class="course-share d-flex align-items-center justify-content-center">
     </div>
     </div>
     </div>
