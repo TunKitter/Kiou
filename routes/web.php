@@ -92,6 +92,7 @@ Route::post('course/list/update/course/interactive', [CourseController::class, '
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
+Route::get('course/roadmap/detail/{slug}', [RoadMapController::class, 'detail'])->name('roadmap-detail');
 
 # ------------------------- Lesson --------------------------------
 Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');

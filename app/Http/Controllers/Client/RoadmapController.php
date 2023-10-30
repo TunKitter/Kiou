@@ -26,8 +26,15 @@ class RoadmapController extends Controller
                     $bb .= $value['type_id'] . ',';
                 } else {
                     foreach ($value['type_id'] as $value2) {
-                        $cc['multiple'][] = ["description" => $value2['type_description'], 'course_name' => $value2['type_id']];
-                        $aa .= $value2['type_id'] . ',';
+                        if ($value2['type'] == 'course') {
+                            $cc['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
+                            $aa .= $value2['type_id'] . ',';
+                        } elseif ($value2['type'] == 'lesson') {
+                            $cc['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
+                            $bb .= $value2['type_id'] . ',';
+                        } else {
+                            $cc['multiple'][] = ['description' => $value2['type_description'], 'type' => $value2['type'], 'type_id' => ($this->showChild($value2['type_id']))];
+                        }
                     }
                     $cc['description'] = $value['type_description'];
                 }
@@ -36,7 +43,7 @@ class RoadmapController extends Controller
             // return $aa;
         }, $roadmap->toArray()));
         // dd($roadmap->pluck('name', '_id')->toArray());
-        // dd($cc);
+        dd($cc);
 
         $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta'])->toArray());
         $course_name = [];
@@ -58,5 +65,22 @@ class RoadmapController extends Controller
         // \dd($cc);
         // dd(Course::whereIn('_id', $roadmap)->get(['co'])->toArray());
         return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name', 'multiple'));
+    }
+    public function showChild($arr)
+    {
+        $result = [];
+        foreach ($arr as $value2) {
+            if ($value2['type'] == 'course' || $value2['type'] == 'lesson') {
+                $result['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
+            } else {
+                $result['multiple'][] = $this->showChild($arr['type_id']);
+            }
+        }
+        return $result;
+    }
+    public function detail(string $slug)
+    {
+        $roadmap = Roadmap::where('slug', $slug)->first();
+        return view('client.roadmap.detail', compact('roadmap'));
     }
 }

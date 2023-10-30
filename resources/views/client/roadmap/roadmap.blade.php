@@ -100,7 +100,7 @@
     <div class="head-course-title">
     <h3 class="title">{{$item->name}}</h3>
     <div class="all-btn all-category d-flex align-items-center">
-    <a href="checkout.html" class="btn btn-primary">See detail</a>
+    <a href="{{route('roadmap-detail', ['slug' => $item->slug])}}" class="btn btn-primary">See detail</a>
     </div>
     </div>
     <p class="text-muted">{{$item->description}}</p>
@@ -151,20 +151,40 @@
         <div id="course3_{{$loop->index}}" class="card-collapse collapse" style>
 <ul style="border: 1px solid #f06760">
 @foreach ($multiple['multiple'] as $mul)
+@if($mul['type'] == 'course')
 <li>
-<p class="play-intro w-50 d-flex align-items-center justify-content-between flex-wrap" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$mul['description']}}" >{{$course_name[$mul['course_name']]['name']}}  <img src="https://picsum.photos/200" style="width:75px"></p>
+<p class="play-intro w-50 d-flex align-items-center justify-content-between flex-wrap" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$mul['description']}}" >{{$course_name[$mul['type_id']]['name']}}  <img src="https://picsum.photos/200" style="width:75px"></p>
 {{-- <img src="{{asset('assets/img/icon/play-icon.svg')}}" alt> --}}
 <div class="course-info border-bottom-0 pb-0 d-flex align-items-center ps-3 pe-2 flex-fill" >
     <div class="rating-img d-flex align-items-center">
     <img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
-    <p>{{$course_name[$mul['course_name']]['total_lesson']}} Lesson</p>
+    <p>{{$course_name[$mul['type_id']]['total_lesson']}} Lesson</p>
     </div>
     <div class="course-view d-flex align-items-center">
     <img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
-    <p>{{round($course_name[$mul['course_name']]['total_time']/60)}}hr {{$course_name[$mul['course_name']]['total_time']%60}}min</p>
+    <p>{{round($course_name[$mul['type_id']]['total_time']/60)}}hr {{$course_name[$mul['type_id']]['total_time']%60}}min</p>
     </div>
     </div>
 </li>
+@elseif($mul['type'] == 'lesson')
+<li>
+    @php
+        $temp_data_roadmap =  ($lesson_name[$mul['type_id']]['name']. '<sup style="background:#f66962;color:white;border-radius:12px;padding: 5px;margin-left:-3.5em;line-height:1">Lesson</sup>') 
+    @endphp
+<p class="play-intro w-50 d-flex align-items-center justify-content-between flex-wrap" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$mul['description']}}" > {!!$temp_data_roadmap!!}  <img src="https://picsum.photos/200" style="width:75px"></p>
+{{-- <img src="{{asset('assets/img/icon/play-icon.svg')}}" alt> --}}
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center ps-3 pe-2 flex-fill" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $lesson_name[$mul['type_id']]['course_name']}}" >
+    <div class="rating-img d-flex align-items-center">
+    <img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
+    <p>{{  $lesson_name[$mul['type_id']]['total_lesson']}} Lesson</p>
+    </div>
+    <div class="course-view d-flex align-items-center">
+    <img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
+    <p>{{ round($lesson_name[$mul['type_id']]['total_time']/60)}}hr {{round($lesson_name[$mul['type_id']]['total_time']%60)}}min</p>
+    </div>
+    </div>
+</li>
+@endif
 @endforeach
 </ul>
 </div>
