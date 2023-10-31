@@ -27,23 +27,23 @@ class RoadmapController extends Controller
                 } else {
                     foreach ($value['type_id'] as $value2) {
                         if ($value2['type'] == 'course') {
-                            $cc['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
                             $aa .= $value2['type_id'] . ',';
                         } elseif ($value2['type'] == 'lesson') {
-                            $cc['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
+
                             $bb .= $value2['type_id'] . ',';
                         } else {
-                            $cc['multiple'][] = ['description' => $value2['type_description'], 'type' => $value2['type'], 'type_id' => ($this->showChild($value2['type_id']))];
+                            $aa .= $this->showChild($value2['type_id'])[0];
+                            $bb .= $this->showChild($value2['type_id'])[1];
                         }
                     }
-                    $cc['description'] = $value['type_description'];
+
                 }
                 $index++;
             }
             // return $aa;
         }, $roadmap->toArray()));
         // dd($roadmap->pluck('name', '_id')->toArray());
-        dd($cc);
+        // dd($aa, $bb);
 
         $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta'])->toArray());
         $course_name = [];
@@ -61,22 +61,29 @@ class RoadmapController extends Controller
         }, $lesson_name->toArray());
         // dd(Lesson::all()->first()->course);
         $lesson_name = $aa;
-        $multiple = $cc;
         // \dd($cc);
         // dd(Course::whereIn('_id', $roadmap)->get(['co'])->toArray());
-        return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name', 'multiple'));
+        $q = request()->q;
+        $is_wrong_spell = request()->is_wrong_spell;
+        return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name', 'q', 'is_wrong_spell'));
     }
-    public function showChild($arr)
+    public function showChild($arr, $aa = '', $bb = '')
     {
         $result = [];
         foreach ($arr as $value2) {
             if ($value2['type'] == 'course' || $value2['type'] == 'lesson') {
-                $result['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
+                // $result['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
+                if ($value2['type'] == 'course') {
+                    $aa .= $value2['type_id'] . ',';
+                } elseif ($value2['type'] == 'lesson') {
+                    $bb .= $value2['type_id'] . ',';
+                }
             } else {
-                $result['multiple'][] = $this->showChild($arr['type_id']);
+                $aa .= $this->showChild($arr['type_id'])[0];
+                $bb .= $this->showChild($arr['type_id'])[1];
             }
         }
-        return $result;
+        return [$aa, $bb];
     }
     public function detail(string $slug)
     {
