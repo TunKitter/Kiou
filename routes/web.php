@@ -11,18 +11,31 @@ use App\Http\Controllers\Client\BlogController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\CategoryPostController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
 
+// User
 Route::get('/admin/users/list',[UserController::class,'listUser'])->name('listUser');
 Route::post('/admin/users/add',[UserController::class,'store'])->name('addUser');
 Route::get('/admin/users/edit/{id}',[UserController::class,'editUser'])->name('editUser');
 Route::post('/admin/users/update/{id}',[UserController::class,'updateUser'])->name('updateUser');
 Route::get('/admin/users/delete/{id}',[UserController::class,'delete'])->name('deleteUser');
 
-
+//Post
+Route::get('/admin/posts/list',[PostController::class,'listPost'])->name('listPost');
+Route::get('/admin/posts/add',[PostController::class,'addPost'])->name('addPost'); 
+Route::post('/admin/posts/add',[PostController::class,'store'])->name('storePost');
+Route::get('/admin/posts/generate-html',[PostController::class,'generateHtml'])->name('generateHtml');
+//Category-Posts
+Route::get('/admin/category-posts/list',[CategoryPostController::class,'listCategory'])->name('listCategory');
+Route::post('/admin/category-posts/add',[CategoryPostController::class,'storeCategory'])->name('storeCategory');
+Route::get('/admin/category-posts/edit/{id}',[CategoryPostController::class,'editCategory'])->name('editCategory');
+Route::post('/admin/category-posts/update/{id}',[CategoryPostController::class,'updateCategory'])->name('updateCategory');
+Route::get('/admin/category-posts/delete/{id}',[CategoryPostController::class,'delete'])->name('deleteCategory');
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [LoginController::class, 'handleGoogleCallback']);
@@ -75,5 +88,6 @@ Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->mid
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
 
 
-Route::get('/blog', [BlogController::class, 'Blog']);
+Route::get('/blog', [BlogController::class, 'Post'])->name('blog');
+Route::get('/blog/{slug}', [BlogController::class, 'showPost'])->name('showPost');
 

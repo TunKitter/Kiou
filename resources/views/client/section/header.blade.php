@@ -17,8 +17,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/feather.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
-
+    <link rel="stylesheet" href="{{asset('assets/css/feather.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
 </head>
 
 <body>
@@ -50,41 +51,21 @@
 </div>
 <ul class="main-nav">
 <li class="has-submenu">
-<a href>Home <i class="fas fa-chevron-down"></i></a>
+<a href="{{route('home')}}">Home</a></li>
+<li class="has-submenu">
+<a href="">Courses<i class="fas fa-chevron-down"></i></a>
 <ul class="submenu">
-<li><a href="{{route('home')}}">Home</a></li>
-<li><a href="index-two.html">Home Two</a></li>
-<li><a href="index-three.html">Home Three</a></li>
-<li><a href="index-four.html">Home Four</a></li>
+<li><a href="">Explore Courses</a></li>
+<li class="has-submenu">
+<a href="#">Category Courses</a>
+<ul class="submenu">
+
+</ul>
+</li>
+<li><a href="">Find Courses</a></li>
 </ul>
 </li>
 <li class="has-submenu">
-<a href>Instructor <i class="fas fa-chevron-down"></i></a>
-<ul class="submenu">
-<li><a href="instructor-dashboard.html">Dashboard</a></li>
-<li class="has-submenu">
-<a href="instructor-list.html">Instructor</a>
-<ul class="submenu">
-<li><a href="instructor-list.html">List</a></li>
-<li><a href="instructor-grid.html">Grid</a></li>
-</ul>
-</li>
-<li><a href="instructor-course.html">My Course</a></li>
-<li><a href="instructor-reviews.html">Reviews</a></li>
-<li><a href="instructor-earnings.html">Earnings</a></li>
-<li><a href="instructor-orders.html">Orders</a></li>
-<li><a href="instructor-payouts.html">Payouts</a></li>
-<li><a href="instructor-tickets.html">Support Ticket</a></li>
-<li><a href="instructor-edit-profile.html">Instructor Profile</a></li>
-<li><a href="instructor-security.html">Security</a></li>
-<li><a href="instructor-social-profiles.html">Social Profiles</a></li>
-<li><a href="instructor-notification.html">Notifications</a></li>
-<li><a href="instructor-profile-privacy.html">Profile Privacy</a></li>
-<li><a href="instructor-delete-profile.html">Delete Profile</a></li>
-<li><a href="instructor-linked-account.html">Linked Accounts</a></li>
-</ul>
-</li>
-<li class="has-submenu active">
 <a href>Student <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu first-submenu">
 <li class="has-submenu ">
@@ -94,7 +75,7 @@
 <li><a href="students-grid.html">Grid</a></li>
 </ul>
 </li>
-<li class="active"><a href="setting-edit-profile.html">Student Profile</a></li>
+<li><a href="setting-edit-profile.html">Student Profile</a></li>
 <li><a href="setting-student-security.html">Security</a></li>
 <li><a href="setting-student-social-profile.html">Social profile</a></li>
 <li><a href="setting-student-notification.html">Notification</a></li>
@@ -145,7 +126,7 @@
 <li class="has-submenu">
 <a href>Blog <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu">
-<li><a href="blog-list.html">Blog List</a></li>
+<li><a href="{{route('blog')}}">Blog List</a></li>
 <li><a href="blog-grid.html">Blog Grid</a></li>
 <li><a href="blog-masonry.html">Blog Masonry</a></li>
 <li><a href="blog-modern.html">Blog Modern</a></li>
@@ -157,6 +138,7 @@
 </li>
 </ul>
 </div>
+@auth
 <ul class="nav header-navbar-rht">
 <li class="nav-item">
 <a href="course-message.html"><img src="{{asset('assets/img/icon/messages.svg')}}" alt="img"></a>
@@ -409,16 +391,27 @@
     </div>
 </a>
 @endif
-<div class="dropdown-item night-mode">
+{{-- <div class="dropdown-item night-mode">
 <span><i class="feather-moon me-1"></i> Night Mode </span>
 <div class="form-check form-switch check-on m-0">
 <input class="form-check-input" type="checkbox" id="night-mode">
 </div>
-</div>
+</div> --}}
 <a class="dropdown-item" href="{{route('logout')}}"><i class="feather-log-out me-1"></i> Logout</a>
 </div>
 </li>
 </ul>
+@endauth
+@guest
+<ul class="nav header-navbar-rht">
+    <li class="nav-item">
+    <a class="nav-link header-sign" href="{{route('login')}}">Signin</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link header-login" href="{{route('register')}}">Signup</a>
+    </li>
+    </ul>   
+@endguest
 </div>
 </nav>
 </div>

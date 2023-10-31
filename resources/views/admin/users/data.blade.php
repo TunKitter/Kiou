@@ -9,8 +9,8 @@
         <td>{{$user->updated_at}}</td> --}}
         <td>
             <a href="javascript::void(0);" class="btn btn-warning edit-button" data-bs-toggle="modal"
-                data-bs-target="#editUser" data-id="{{ $user->id }}">Sửa</a>
-            <a href="javascript::void(0);" class="btn btn-danger user-delete" data-id="{{ $user->_id }}">Xóa</a>
+                data-bs-target="#editUser" data-id="{{ $user->id }}">Edit</a>
+            <a href="javascript::void(0);" class="btn btn-danger user-delete" data-id="{{ $user->_id }}">Delete</a>
         </td>
     </tr>
 @endforeach

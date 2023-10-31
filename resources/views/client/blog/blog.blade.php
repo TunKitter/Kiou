@@ -1,34 +1,13 @@
 @extends('client.layouts.master')
 @section('content')
-<div class="breadcrumb-bar">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 col-12">
-                <div class="breadcrumb-list">
-                    <nav aria-label="breadcrumb" class="page-breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Pages</li>
-                            <li class="breadcrumb-item" aria-current="page">Blog List</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <section class="course-content">
     <div class="container">
         <div class="row">
             <div class="col-lg-9 col-md-12">
-
+                @foreach ($posts as $post)
                 <div class="blog">
-                    <div class="blog-image">
-                        <a href="blog-details.html"><img class="img-fluid" src="assets/img/blog/blog-05.jpg"
-                                alt="Post Image"></a>
-                    </div>
+                    
                     <div class="blog-info clearfix">
                         <div class="post-left">
                             <ul>
@@ -38,26 +17,27 @@
                                                 alt="Post Author"> <span>Ruby Perrin</span></a>
                                     </div>
                                 </li>
-                                <li><img class="img-fluid" src="assets/img/icon/icon-22.svg" alt>April 20, 2022</li>
+                                <li><img class="img-fluid" src="assets/img/icon/icon-22.svg" alt>{{$post->created_at}}</li>
                                 <li><img class="img-fluid" src="assets/img/icon/icon-23.svg" alt>Programming, Web Design
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <h3 class="blog-title"><a href="blog-details.html">Learn Webs Applications Development from
-                            Experts</a></h3>
+                    <h3 class="blog-title"><a href="blog-details.html">{{$post->title}}</a></h3>
+                    <div class="blog-image">
+                        <a href="blog-details.html"><img class="img-fluid" src="{{ asset('storage/posts/images/1698303076.png') }}"
+                                alt="Post Image"></a>
+                    </div>
                     <div class="blog-content blog-read">
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque
-                            aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed
-                            pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc
-                            tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Sed egestas, ante et vulputate
-                            volutpat, eros pede […]</p>
+                        <p>{{$post->content}}</p>
                         <a href="blog-details.html" class="read-more btn btn-primary">Read More</a>
                     </div>
                 </div>
+                @endforeach
+            
 
 
-                <div class="blog">
+                {{-- <div class="blog">
                     <div class="blog-image">
                         <a href="blog-details.html"><img class="img-fluid" src="assets/img/blog/blog-06.jpg"
                                 alt="Post Image"></a>
@@ -87,10 +67,10 @@
                             volutpat, eros pede […]</p>
                         <a href="blog-details.html" class="read-more btn btn-primary">Read More</a>
                     </div>
-                </div>
+                </div> --}}
 
 
-                <div class="blog">
+                {{-- <div class="blog">
                     <div class="blog-image">
                         <a href="blog-details.html"><img class="img-fluid" src="assets/img/blog/blog-07.jpg"
                                 alt="Post Image"></a>
@@ -120,7 +100,7 @@
                             volutpat, eros pede […]</p>
                         <a href="blog-details.html" class="read-more btn btn-primary">Read More</a>
                     </div>
-                </div>
+                </div> --}}
 
 
                 <div class="row">
