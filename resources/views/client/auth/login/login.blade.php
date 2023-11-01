@@ -79,13 +79,8 @@
                 return;
             }
         }
-
-        function giaothua(n) {
-            if (n == 1) {
-                return 1;
-            }
-            return n * giaothua(n - 1)
-        }
-        console.log(giaothua(4));
+        if(check_)    btn_login.removeAttribute('disabled');
+    
+    }
     </script>
 @endsection
