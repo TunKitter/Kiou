@@ -7,7 +7,7 @@
     @endphp
 <p class="play-intro w-50 d-flex align-items-center justify-content-between flex-wrap" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$course['type_description']}}" > {!!$temp_data_roadmap!!}  <img src="https://picsum.photos/200" style="width:75px"></p>
 {{-- <img src="{{asset('assets/img/icon/play-icon.svg')}}" alt> --}}
-<div class="course-info border-bottom-0 pb-0 d-flex align-items-center ps-3 pe-2 flex-fill" @if($course['type'] == 'lesson')data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $lesson_name[$course['type_id']]['name']}}"  @endif>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center ps-3 pe-2 flex-fill" @if($course['type'] == 'lesson') data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $lesson_name[$course['type_id']]['name']}}"  @endif>
     <div class="rating-img d-flex align-items-center">
     <img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
     <p>{{ ($course['type'] == 'course')? $course_name[$course['type_id']]['total_lesson']:  $lesson_name[$course['type_id']]['total_lesson'] }} Lesson</p>

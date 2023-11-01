@@ -168,6 +168,9 @@ class CourseController extends Controller
     {
         $ids = rtrim(request()->ids, ',');
         Course::whereIn('_id', explode(',', $ids))->increment(request()->type);
+        if (request()->type2) {
+            Course::whereIn('_id', explode(',', \request()->ids2))->increment(request()->type2);
+        }
         return response()->json(['status' => true]);
     }
 }

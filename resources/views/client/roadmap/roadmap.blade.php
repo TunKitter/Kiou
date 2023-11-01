@@ -57,7 +57,7 @@
 </div>
 @isset($q)
 @if($is_wrong_spell != '0')
-<br>
+<br>    
 <div class="col-lg-12 col-md-12 d-flex ">Is your mean: <span class="text-primary px-1">{{$is_wrong_spell}}</span> ?</div>
 @endif
 @endisset
