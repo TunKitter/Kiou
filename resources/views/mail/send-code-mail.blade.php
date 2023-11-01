@@ -33,11 +33,9 @@
                             <div>
                                 <div class="pt-2 pb-2 ps-5 pe-5 mt-4 mb-3"
                                     style="background-color: black; color: white; display: inline-block; font-size:30px; font-weight: bold; border-radius:10px;">
-                                    @if (session('send_code'))
                                         <div class="">
-                                            {{ session('send_code') }}
+                                            {{ $randomNumber}}
                                         </div>
-                                    @endif
                                 </div>
                             </div>
                         </div>

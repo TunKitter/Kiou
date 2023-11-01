@@ -7,9 +7,6 @@ use App\Http\Requests\AuthRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Response;
-use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -31,6 +28,10 @@ class LoginController extends Controller
 
     public function index()
     {
+
+        if (auth()->check()) {
+            return redirect()->route('home');
+        }
         return view('client.auth.login.login');
     }
 
@@ -52,18 +53,19 @@ class LoginController extends Controller
     public function login(AuthRequest $request)
     {
         $request->validated();
-        $findEmail =  $request->email; // tìm mail người dùng nhập vào
+        $findEmail = $request->email; // tìm mail người dùng nhập vào
         $ip = $request->ip(); //Lấy ip người dùng
         $limit = 4; // Giới hạng ip của 1 tài khoản
 
         // Lấy bản ghi đầu tiên thỏa mãn điều kiện
         $result = User::where('email', $findEmail)->first();
+        $ip_user = [];
         if ($result) {
             //lấy nhiều ip trong 1 tài khoản
             $ip_user = $result->ip;
-            $count_ip = count($ip_user);
-        } else {
-            $ip_user = null;
+        }
+        if (!$ip_user) {
+            $ip_user = [];
         }
         // Đếm số ip cử 1 tài khoản
        

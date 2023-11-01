@@ -4,6 +4,9 @@
         @if ($message = Session::get('success'))
             @include('client.section.message', ['message' => $message, 'type' => 'success'])
         @endif
+        @if($message = Session::get('deny_register'))
+            @include('client.section.message', ['message' => $message, 'type' => 'error'])
+        @endif
         <div class="loginbox">
             <div class="img-logo">
                 <img src="{{ asset('assets/img/logo.svg') }}" class="img-fluid" alt="Logo">

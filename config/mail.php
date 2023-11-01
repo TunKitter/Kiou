@@ -100,7 +100,7 @@ return [
 
     'from' => [
         'address' => 'toanweb8@gmail.com',
-        'name' => 'demo ',
+        'name' => 'demo missout',
     ],
 
     /*
