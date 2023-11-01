@@ -80,6 +80,11 @@
 @endisset
 @endif
 @isset($roadmap)
+@if(count($roadmap) ==0)
+<div class="col-lg-12 col-md-12 d-flex">
+<p class="text-muted">There is no data available</p>
+</div>
+@else
 @foreach ($roadmap as $item) 
 <div class="col-lg-12 col-md-12 d-flex">
     <div class="mentor_load course-box course-design list-course d-flex" style="border:none !important">
@@ -132,15 +137,31 @@
     </div>
     </div>
 @endforeach
+@endif
 @endisset
 </div>
 <div class="row">
-    <div class="col-md-12 d-flex justify-content-center mb-4">
-        @include('client.section.loading')
-    </div>
-    <div class="col-md-12">
+<div class="row">
+<div class="col-md-12 d-flex justify-content-center mb-4">
+<ul class="pagination lms-page">
+<li class="page-item prev">
+<a class="page-link" href="{{route('roadmap', ['page' => request()->page-1])}}" tabindex="-1"><i class="fas fa-angle-left"></i></a>
+</li>
+@for ($i = 0; $i <= $total_roadmap ; $i++ ) 
+<li class="page-item first-page {{request()->page == $i ? 'active' : ''}} {{!(request()->page) && ($i == 0) ? 'active' : ''}}">
+<a class="page-link" href="{{route('roadmap', ['page' => $i])}}">{{$i}}</a>
+</li>   
+@endfor
+
+<li class="page-item next">
+<a class="page-link" href="{{route('roadmap', ['page' => request()->page+1])}}"><i class="fas fa-angle-right"></i></a>
+</li>
+</ul>
+</div>
+</div>
+    {{-- <div class="col-md-12">
         <button class="btn btn-primary d-block m-auto border-0" onclick="loadMore(this)">Load more</button>
-    </div>
+    </div> --}}
 </div>
 </div>
 <div class="col-lg-3 theiaStickySidebar">
@@ -228,77 +249,6 @@
 <script>
 var loading = document.querySelector('#loading');
 var courses = document.querySelector('.courses_parent')
-let is_no_more = false
-let skip = 10, take = 10;
-function loadMore(obj) {
-        loading.style.display = 'block'
-        obj.disabled = true
-        let formData = new FormData();
-        @isset($q)
-        formData.append('q', "{{$q}}")
-        @endisset
-fetch(`{{route("course-list")}}/${skip}/${take}/mentor`,{
-    method: "POST",
-    body: formData
-}).then(response => response.json()).then(data => {
-console.log(data);
-if(data.length == 0){
-    if(!is_no_more){
-     courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex text-muted">There is no mentor</div>`
-    is_no_more = true       
-    }
-
-}
-else {
-
-            data.forEach(element => {
-                courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex">
-    <div class="mentor_load course-box course-design list-course d-flex" style="border:none !important">
-    <div class="product mentor_load">
-    <div class="product-img">
-    <a href="#">
-    <img class="img-fluid rounded-circle" style="width: 200px;height: 200px" alt src="{{asset('mentor/avatar/')}}/${element.image['avatar']}">
-    </a>
-    </div>
-    <div class="product-content">
-    <div class="head-course-title">
-    <h3 class="title">${element.name}</h3>
-    <div class="all-btn all-category d-flex align-items-center">
-    <a href="checkout.html" class="btn btn-primary">See more</a>
-    </div>
-    </div>
-    <p class="text-muted">@${element.username}</p>
-    <div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
-    <div class="rating-img d-flex align-items-center">
-    <img src="assets/img/icon/icon-01.svg" alt>
-    <p>${element['total_enrollment']} students</p>
-    </div>
-    <div class="course-view d-flex align-items-center">
-    <img src="assets/img/icon/icon-02.svg" alt>
-    <p>${element['total_course']} courses</p>
-    </div>
-    </div>
-    <div class="course-group d-flex mb-0">
-    <div class="course-group-img d-flex">
-    <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
-    <div class="course-name">
-    </div>
-    </div>
-    <div class="course-share d-flex align-items-center justify-content-center">
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>`
-            skip += 10
-            });
-        }
-            loading.style.display = 'none'
-            obj.disabled = false
-})
-
-    }
 
 const API_KEY = 'AIzaSyBFUaOX3h_CxqI6Q6DtaMwNBj4Le3TV-NQ'
 const search_input = document.querySelector('#search')

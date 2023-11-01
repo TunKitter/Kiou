@@ -13,7 +13,19 @@ class RoadmapController extends Controller
     {
         // $courses = Course::all();
         // dd(Roadmap::all());
-        $roadmap = Roadmap::all();
+        $perPage = 10;
+        $total_roadmap = ceil(Roadmap::count() / $perPage);
+        $index_page = request()->page ? request()->page : 0;
+        if (request()->q) {
+            $aa = request()->q;
+            if (request()->is_wrong_spell != '0') {
+                $aa = request()->is_wrong_spell;
+            }
+            $roadmap = Roadmap::where('name', 'like', '%' . $aa . '%')->orWhere('description', 'like', '%' . $aa . '%')->take($perPage)->skip(($index_page) * $perPage)->get();
+        } else {
+            $roadmap = Roadmap::select('*')->take($perPage)->skip(($index_page) * $perPage)->get();
+        }
+
         $aa = '';
         $bb = '';
         // $cc = [];
@@ -65,7 +77,7 @@ class RoadmapController extends Controller
         // dd(Course::whereIn('_id', $roadmap)->get(['co'])->toArray());
         $q = request()->q;
         $is_wrong_spell = request()->is_wrong_spell;
-        return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name', 'q', 'is_wrong_spell'));
+        return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name', 'q', 'is_wrong_spell', 'total_roadmap', 'index_page'));
     }
     public function showChild($arr, $aa = '', $bb = '')
     {
