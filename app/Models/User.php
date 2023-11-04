@@ -11,8 +11,11 @@ class User extends Model implements Authenticatable
 {
     use AuthenticableTrait;
     use SoftDeletes;
+    protected $dates = ['deleted_at'];
     protected $fillable = [
+        'id',
         'name',
+        'ip',
         'username',
         'image',
         'image.avatar',
@@ -23,6 +26,7 @@ class User extends Model implements Authenticatable
         'avatar',
         'auth',
     ];
+
     protected $attributes = [
         'phone' => '',
         'username' => '',

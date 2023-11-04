@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         MongoDB\Laravel\MongoDBServiceProvider::class,
         MongoDB\Laravel\Auth\PasswordResetServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ])->toArray(),
 
     /*

@@ -18,9 +18,9 @@
                                 <img src="{{asset('assets/img/profile-bg.jpg')}}" alt>
                                 <div class="profile-img">
                                     @if($user->image['avatar'] == null)
-                                        <a href="student-profile.html"><img src="{{asset('assets/img/user/avatar.jpg')}}" alt></a>
+                                        <a href="student-profile.html"><img src="{{asset('user/avatar/avatar.jpg')}}" alt></a>
                                     @else
-                                         <a href="student-profile.html"><img src="{{$user->image['avatar']}}" alt></a>
+                                         <a href="student-profile.html"><img src="{{($image = auth()->user()->image['avatar']) ? ((str_starts_with($image,'http')) ? $image : ( asset('user/avatar/'.$image))) :  asset('assets/img/user/avatar.jpg')}}" alt></a>
                                     @endif
                                 </div>
                             </div>

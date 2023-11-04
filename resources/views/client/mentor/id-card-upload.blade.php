@@ -70,7 +70,7 @@
     var is_both_uploaded = [false,false]
     var loader = document.querySelector('#loader')
     var professions = document.querySelector('.professions')
-    const FPT_API_KEY = 'ptWApLzUhL72YKXzCH9ZnZNbneAcROVF'
+    const FPT_API_KEY = 'MsdkyC6BhNBhmcvCFpmaStvNM9D35155'
     const btn_submit = document.querySelector('#btn_submit')
     const FPT_API_ENDPOINT = 'https://api.fpt.ai/vision/idr/vnm'
     var id_infor = document.querySelector('.id-infor')
@@ -210,8 +210,7 @@ break;
                             method: 'POST',
                             body: data_form
                         }).then(res => res.text()).then(data => {
-                            console.log(data);
-                            
+                            console.log(data); 
                             if(data == 0) {
                                 location.href = location.href + '?already=1'
                             }
