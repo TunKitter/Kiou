@@ -77,27 +77,16 @@
 </ul>
 </li>
 <li class="has-submenu">
-<a href>Student <i class="fas fa-chevron-down"></i></a>
+<a href>Enhance <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu first-submenu">
-<li class="has-submenu ">
+{{-- <li class="has-submenu ">
 <a href="students-list.html">Student</a>
 <ul class="submenu">
 <li><a href="students-list.html">List</a></li>
 <li><a href="students-grid.html">Grid</a></li>
 </ul>
-</li>
-<li><a href="setting-edit-profile.html">Student Profile</a></li>
-<li><a href="setting-student-security.html">Security</a></li>
-<li><a href="setting-student-social-profile.html">Social profile</a></li>
-<li><a href="setting-student-notification.html">Notification</a></li>
-<li><a href="setting-student-privacy.html">Profile Privacy</a></li>
-<li><a href="setting-student-accounts.html">Link Accounts</a></li>
-<li><a href="setting-student-referral.html">Referal</a></li>
-<li><a href="setting-student-subscription.html">Subscribtion</a></li>
-<li><a href="setting-student-billing.html">Billing</a></li>
-<li><a href="setting-student-payment.html">Payment</a></li>
-<li><a href="setting-student-invoice.html">Invoice</a></li>
-<li><a href="setting-support-tickets.html">Support Tickets</a></li>
+</li> --}}
+<li><a href="{{route('revision-bookmark')}}">Revise Bookmark</a></li>
 </ul>
 </li>
 <li class="has-submenu">

@@ -13,6 +13,7 @@ use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
+use App\Http\Controllers\Client\RevisionController;
 use App\Http\Controllers\Client\RoadMapController;
 use Illuminate\Support\Facades\Route;
 
@@ -94,6 +95,11 @@ Route::post('course/list/update/course/interactive', [CourseController::class, '
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
 Route::get('course/roadmap/detail/{slug}', [RoadMapController::class, 'detail'])->name('roadmap-detail');
 
+# ------------------------- Revision --------------------------------
+Route::get('revision/bookmark', [RevisionController::class, 'bookmark'])->name('revision-bookmark')->middleware('auth');
+Route::get('revision/bookmark/all', [RevisionController::class, 'all'])->name('revision-bookmark-all')->middleware('auth');
+Route::get('revision/bookmark/revise', [RevisionController::class, 'revise'])->name('revision-bookmark-revise')->middleware('auth');
+Route::post('revision/bookmark/revise/update', [RevisionController::class, 'updateRevise']);
 # ------------------------- Lesson --------------------------------
 Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');
 Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::class, 'lessonUpdate'])->name('lesson-update');
