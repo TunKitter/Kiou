@@ -24,5 +24,6 @@ class VerifyCsrfToken extends Middleware
         'course/list/update/course/interactive',
         'admin/users/update/*',
         'revision/bookmark/revise/update',
+        'revision/test/*/update',
     ];
 }

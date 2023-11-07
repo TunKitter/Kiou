@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bookmark;
+use App\Models\Category;
+use App\Models\Profession;
+use App\Models\UserSkill;
 
 class RevisionController extends Controller
 {
@@ -89,5 +92,32 @@ class RevisionController extends Controller
             $index++;
         }, $bb);
         return \response()->json(['time_interval' => $data, 'data' => $database2, 'bb' => $bb, 'demo' => $demo, 'index' => $index]);
+    }
+    public function test()
+    {
+        $user_skills = UserSkill::where('user_id', auth()->user()->id)->get();
+        // dd($user_skills);
+        $categories = Category::select(['name', 'profession_id', 'slug'])->whereIn('_id', ($user_skills->pluck('category_id')))->get();
+        $categories_id = ($categories->pluck('profession_id', '_id'));
+        $categories_slug = ($categories->pluck('slug', '_id'));
+        $professions = Profession::select('name')->whereIn('_id', $categories->pluck('profession_id'))->get()->pluck('name', '_id');
+        $categories = $categories->pluck('name', '_id');
+        return view('client.revision.test', compact('user_skills', 'categories', 'professions', 'categories_id', 'categories_slug'));
+    }
+    public function testCheck($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+        $user_skill = UserSkill::where('user_id', auth()->user()->id)->where('category_id', $category->_id)->first();
+        return view('client.revision.test_check', compact('category', 'user_skill'));
+    }
+    public function updateTestCheck($slug)
+    {
+        $aa = \json_decode(request()->data);
+        foreach ($aa as $key => $value) {
+            UserSkill::where('_id', $key)->update(['infor' => $value]);
+        }
+        return \response()->json([
+            'status' => $aa,
+        ]);
     }
 }

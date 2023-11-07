@@ -79,6 +79,7 @@
                                             </ul>
                                         </li> --}}
                                         <li><a href="{{route('revision-bookmark')}}">Revise Bookmarks</a></li>
+                                        <li><a href="{{route('revision-test')}}">Test your knowledge</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu">

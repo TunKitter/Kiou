@@ -100,6 +100,9 @@ Route::get('revision/bookmark', [RevisionController::class, 'bookmark'])->name('
 Route::get('revision/bookmark/all', [RevisionController::class, 'all'])->name('revision-bookmark-all')->middleware('auth');
 Route::get('revision/bookmark/revise', [RevisionController::class, 'revise'])->name('revision-bookmark-revise')->middleware('auth');
 Route::post('revision/bookmark/revise/update', [RevisionController::class, 'updateRevise']);
+Route::get('revision/test', [RevisionController::class, 'test'])->name('revision-test')->middleware('auth');
+Route::get('revision/test/{slug}', [RevisionController::class, 'testCheck'])->name('revision-test-test')->middleware('auth');
+Route::post('revision/test/{slug}/update', [RevisionController::class, 'updateTestCheck'])->name('revision-test-test-update')->middleware('auth');
 # ------------------------- Lesson --------------------------------
 Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');
 Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::class, 'lessonUpdate'])->name('lesson-update');
