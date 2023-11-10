@@ -53,8 +53,8 @@ class RevisionController extends Controller
                     $bookmarks_id .= '"' . $temp_bookmark . '_' . $index2 . '",';
                     $courses .= '"' . $bookmark->lesson->course->name . '",';
                     $arr_index .= $value['repetition']['index'] . ',';
-                    $index2++;
                 }
+                $index2++;
             }
 
         }
