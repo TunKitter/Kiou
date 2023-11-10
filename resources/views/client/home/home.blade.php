@@ -88,6 +88,12 @@
 </li> --}}
 <li><a href="{{route('revision-bookmark')}}">Revise Bookmark</a></li>
 <li><a href="{{route('revision-test')}}">Test your knowledge</a></li>
+<li class="has-submenu"><a href="#">CP</a>
+    <ul class="submenu">
+        <li><a href="{{route('revision-code-list')}}">Your CP</a></li>
+        <li><a href="#">Explore CP</a></li>
+    </ul>
+</li>
 </ul>
 </li>
 <li class="has-submenu">

@@ -11,6 +11,9 @@ class UserSkill extends Model
         'category_id',
         'name',
         'infor',
+        'infor.0',
+        'infor.1',
+        'infor.2',
     ];
     protected $attributes = [];
 

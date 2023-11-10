@@ -5,8 +5,13 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Bookmark;
 use App\Models\Category;
+use App\Models\Level;
+use App\Models\Mentor;
+use App\Models\MentorAssignment;
 use App\Models\Profession;
+use App\Models\UserAssignment;
 use App\Models\UserSkill;
+use Illuminate\Support\Facades\Storage;
 
 class RevisionController extends Controller
 {
@@ -119,5 +124,61 @@ class RevisionController extends Controller
         return \response()->json([
             'status' => $aa,
         ]);
+    }
+    public function code(string $id)
+    {
+        $mentor_assignment = (MentorAssignment::where('_id', $id)->first());
+        $user_asm = (UserAssignment::where('user_id', auth()->user()->_id)->where('assignment_id', $id)->first());
+        if ($user_asm->code_path) {
+            $user_asm_code = Storage::disk('local')->get('user_code/' . $user_asm->code_path);
+        } else {
+            $user_asm_code = '';
+            $user_asm->code_path = uniqid() . '.js';
+            $user_asm->state = 0;
+            $user_asm->save();
+        }
+        if ($user_asm_code) {
+            $mentor_assignment_code = $user_asm_code;
+        } else {
+            $mentor_assignment_code = (Storage::disk('local')->get('mentor_code/' . $mentor_assignment->code_path));
+        }
+        if (!$mentor_assignment) {
+            return view('client.errors.unrole', ['msg' => 'Can not find any mentor assignment!']);
+        }
+        if ($user_asm->count() == 0) {
+            return view('client.errors.unrole', ['msg' => 'Can not find any user assignment!']);
+        }
+
+        $conditions = '{';
+        $condition_code_array = $mentor_assignment->condition_code;
+        foreach ($condition_code_array as $key => $value) {
+            $conditions .= $key . ':"' . $value . '",';
+        }
+        $conditions .= '}';
+        $mentor_name = Mentor::find($mentor_assignment->mentor_id)->name;
+        return view('client.revision.code', compact('mentor_assignment', 'conditions', 'mentor_name', 'user_asm', 'mentor_assignment_code'));
+    }
+    public function codeUpdate($id)
+    {
+        $user = MentorAssignment::find($id)->category_id;
+        $user = UserSkill::where('category_id', $user)->where('user_id', auth()->user()->id)->increment('infor.2', 2);
+        UserAssignment::where('user_id', auth()->user()->_id)->where('assignment_id', $id)->update(['state' => '1']);
+        return response()->json(['status' => $user]);
+    }
+    public function codeList()
+    {
+        $user_asm = (UserAssignment::where('user_id', auth()->user()->_id)->get());
+        $mentor_asm = (MentorAssignment::whereIn('_id', $user_asm->pluck('assignment_id'))->get());
+        $category_asm = (Category::select('name')->whereIn('_id', $mentor_asm->pluck('category_id'))->get()->pluck('name', '_id'));
+        $mentor_info = (Mentor::select('name')->whereIn('_id', $mentor_asm->pluck('mentor_id'))->get()->pluck('name', '_id'));
+        $level_asm = Level::all()->pluck('name', '_id');
+        return view('client.revision.code_list', compact('user_asm', 'mentor_asm', 'mentor_info', 'category_asm', 'level_asm'));
+    }
+    public function saveCode()
+    {
+        // (Storage::disk('local')->get('mentor_code/demo.js'));
+        // Storage::disk('local')->put('user_code', 'Hello This is Tunkit', 'demo.js');
+        request()->code->storeAs('user_code', request()->code_name);
+        return response()->json(['status' => request()->all()]);
     }
 }
