@@ -172,6 +172,8 @@ class RevisionController extends Controller
         $category_asm = (Category::select('name')->whereIn('_id', $mentor_asm->pluck('category_id'))->get()->pluck('name', '_id'));
         $mentor_info = (Mentor::select('name')->whereIn('_id', $mentor_asm->pluck('mentor_id'))->get()->pluck('name', '_id'));
         $level_asm = Level::all()->pluck('name', '_id');
+        $category_asm = (Category::select('name')->whereIn('_id', $mentor_asm->pluck('category_id'))->get()->pluck('name', '_id'));
+        $mentor_asm = $mentor_asm->groupBy('_id');
         return view('client.revision.code_list', compact('user_asm', 'mentor_asm', 'mentor_info', 'category_asm', 'level_asm'));
     }
     public function saveCode()
@@ -180,5 +182,55 @@ class RevisionController extends Controller
         // Storage::disk('local')->put('user_code', 'Hello This is Tunkit', 'demo.js');
         request()->code->storeAs('user_code', request()->code_name);
         return response()->json(['status' => request()->all()]);
+    }
+    public function codeExplore()
+    {
+        $user_asm = (UserAssignment::all(['assignment_id'])->groupBy('assignment_id')->toArray());
+        \usort($user_asm, function ($a, $b) {
+            return count($b) - count($a);
+        });
+        $arr = [];
+        array_map(function ($value) use (&$arr) {
+            $arr[] = $value[0]['assignment_id'];
+        }, $user_asm);
+        $mentor_asm_db = (MentorAssignment::whereIn('_id', $arr)->get());
+        $mentor_asm = [];
+        $mentor_name = [];
+        array_map(function ($value) use (&$mentor_asm, &$mentor_name) {
+            $mentor_asm[$value['_id']] = $value;
+            $mentor_name[] = $value['mentor_id'];
+        }, $mentor_asm_db->toArray());
+        $levels = Level::all()->pluck('name', '_id');
+        $mentor_name = Mentor::whereIn('_id', $mentor_name)->pluck('name', '_id');
+        $category_name = Category::all()->pluck('name', '_id');
+        $category_profession = Category::all()->pluck('profession_id', '_id');
+        $profession_name = Profession::all()->pluck('name', '_id');
+        return view('client.revision.code_explore', compact('mentor_asm', 'user_asm', 'levels', 'mentor_name', 'category_name', 'profession_name', 'category_profession'));
+    }
+    public function codeExploreList()
+    {
+        $mentor_asm_db = (MentorAssignment::where('level_id', request()->level)->where('category_id', request()->category)->get());
+        $mentor_asm = [];
+        $mentor_name = [];
+        array_map(function ($value) use (&$mentor_asm, &$mentor_name) {
+            $mentor_asm[$value['_id']] = $value;
+            $mentor_name[] = $value['mentor_id'];
+        }, $mentor_asm_db->toArray());
+        $levels = Level::all()->pluck('name', '_id');
+        $mentor_name = Mentor::whereIn('_id', $mentor_name)->pluck('name', '_id');
+        $category_name = Category::all()->pluck('name', '_id');
+        $category_profession = Category::all()->pluck('profession_id', '_id');
+        $profession_name = Profession::all()->pluck('name', '_id');
+        return response()->json(['mentor_asm' => $mentor_asm, 'levels' => $levels, 'mentor_name' => $mentor_name, 'category_name' => $category_name, 'category_profession' => $category_profession]);
+    }
+    public function codeExploreSave()
+    {
+        UserAssignment::insert([
+            'user_id' => auth()->user()->_id,
+            'assignment_id' => request()->assignment,
+            'state' => -1,
+            'code_path' => '',
+        ]);
+        return response()->json(['status' => "Success"]);
     }
 }

@@ -22,14 +22,15 @@
 @foreach ($user_asm as $asm )
 @php
     $temp_state = $asm->state;
+// dd($mentor_asm[$asm->assignment_id][0]->_id);
 @endphp
 <tr>
 <td class="instruct-orders-info">
-<p><a href="{{  route('revision-code',$mentor_asm[$index])}}">{{$mentor_asm[$index]->description }}</a></p>
+<p><a href="{{ route('revision-code',$mentor_asm[$asm->assignment_id][0])}}">{{$mentor_asm[$asm->assignment_id][0]->description}}</a></p>
 </td>
-<td>{{$mentor_info[$mentor_asm[$index]->mentor_id]}}</td>
-<td>{{$category_asm[$mentor_asm[$index]->category_id]}}</td>
-<td>{{$level_asm[$mentor_asm[$index]->level_id]}}</td>
+<td>{{$mentor_info[$mentor_asm[$asm->assignment_id][0]->mentor_id]}}</td>
+<td>{{$category_asm[$mentor_asm[$asm->assignment_id][0]->category_id]}}</td>
+<td>{{$level_asm[$mentor_asm[$asm->assignment_id][0]->level_id]}}</td>
 @php
     $temp_title = '';
     switch ($temp_state) {
@@ -43,7 +44,7 @@
             $temp_title = "Passed";
             break;
     }
-
+$index++;
 @endphp
 <td> <span class="badge badge-{{ ($temp_state == 1) ? 'green' : (($temp_state == 0) ? 'warning' : 'danger')}}">{{$temp_title}}</span></td>
 </tr>

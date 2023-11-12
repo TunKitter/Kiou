@@ -107,6 +107,9 @@ Route::get('revision/code/list', [RevisionController::class, 'codeList'])->name(
 Route::get('revision/code/list/{id}', [RevisionController::class, 'code'])->name('revision-code')->middleware('auth');
 Route::post('revision/code/list/{id}', [RevisionController::class, 'codeUpdate']);
 Route::post('revision/code/list/{id}/saveCode', [RevisionController::class, 'saveCode'])->name('revision-code-save-code');
+Route::get('revision/code/explore', [RevisionController::class, 'codeExplore'])->name('revision-code-explore');
+Route::post('revision/code/explore/list', [RevisionController::class, 'codeExploreList'])->name('revision-code-explore-list');
+Route::post('revision/code/explore/list/save', [RevisionController::class, 'codeExploreSave'])->name('revision-code-explore-save');
 # ------------------------- Lesson --------------------------------
 Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');
 Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::class, 'lessonUpdate'])->name('lesson-update');

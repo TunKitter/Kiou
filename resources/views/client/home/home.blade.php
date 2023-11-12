@@ -91,7 +91,7 @@
 <li class="has-submenu"><a href="#">CP</a>
     <ul class="submenu">
         <li><a href="{{route('revision-code-list')}}">Your CP</a></li>
-        <li><a href="#">Explore CP</a></li>
+        <li><a href="{{route('revision-code-explore')}}">Explore CP</a></li>
     </ul>
 </li>
 </ul>
