@@ -492,8 +492,7 @@ function settingVideo(quality,obj){
         old_quality.style.color = 'black';
     }
     old_quality = obj
-    // hls.currentLevel = quality;
-     hls.currentLevel = 0;
+    hls.currentLevel = quality;
 }
 var video_quality = document.querySelector('.video-quality');
 function displayQuality(){
@@ -653,7 +652,7 @@ var subtitle_result = null
 fetch("{{asset('course/lesson/subtitle/tunkit.srt')}}").then(response => response.text()).then(data => {
     let formData = new FormData();
     formData.append('srt', data);
-    fetch("https://kiou-subtitle-90168a6941e4.herokuapp.com/api/subtitle",{
+    fetch("https://kiou-subtitle-2-45833d111266.herokuapp.com/api/subtitle",{
         method: "POST",
         body: formData
     }).then(response => response.json()).then(result => {

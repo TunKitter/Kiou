@@ -84,7 +84,7 @@ display: none !important;
 <h5 class="subs-title">Course Content</h5>
 </div>
 <div class="col-sm-6 text-sm-end">
-<h6>{{$course->meta['total_lesson']}} Lectures <span id="total_time">{{$course->meta['total_time']}}</span></h6>
+<h6>{{$course->meta['total_lesson']}} Lectures <span id="total_time">{{round($course->meta['total_time']/60)}}hr</span></h6>
 </div>
 </div>
 @foreach ($chapter->infor as $key => $value )
@@ -322,7 +322,7 @@ fetch('{{asset("course/overview/".$course->content_path)}}').then(response => re
 })
 var total_time = document.getElementById('total_time')
 
-total_time.innerHTML = parseInt(total_time.innerHTML)/60 + ' hr'
+// total_time.innerHTML = parseInt(total_time.innerHTML)/60 + ' hr'
 </script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>

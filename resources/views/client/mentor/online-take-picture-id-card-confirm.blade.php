@@ -86,7 +86,7 @@ const btn_back_id = document.querySelector('#btn_back_id');
 const id_infor = document.querySelector('.id-infor');
 const ok_cccd_post = []
 var data_form = new FormData()
-const API_KEY = 'ptWApLzUhL72YKXzCH9ZnZNbneAcROVF';
+const API_KEY = 'BNvTJhvPdCDnUNsm0qgG9KmWpKVAAXQl';
 Webcam.attach( '#my_camera' );
 Webcam.attach( '#my_camera2' );
 		function take_snapshot(camera_id) {
@@ -120,7 +120,6 @@ let formData = new FormData();
                             }
                         }
                 if(ok_cccd_post.length == 2){
-                    document.querySelector('#btn_submit').removeAttribute('disabled')
                     save_data_card()
                 }
             }
@@ -141,7 +140,6 @@ let formData = new FormData();
                 id_infor.style.display = 'block'
                 ok_cccd_post[ok_cccd_post.length] = file
                 if(ok_cccd_post.length == 2){
-                    document.querySelector('#btn_submit').removeAttribute('disabled')
                     save_data_card()
                 }
             }
@@ -229,9 +227,12 @@ function save_data_card() {
     fetch('http://127.0.0.1:8000/mentor/save-id-card-data', {
         method: 'POST',
         body: data_form
-        }).then(res => res.text()).then(data => {
-            if(data == 0) {
+        }).then(res => res.json()).then(data => {
+            if(data.status == '0') {
                 location.href = location.href + '?already=1'
+            }
+            else {
+                document.querySelector('#btn_submit').removeAttribute('disabled')
             }
         })
 }

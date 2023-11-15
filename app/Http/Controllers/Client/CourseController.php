@@ -130,12 +130,8 @@ class CourseController extends Controller
     {
         $course = Course::where('slug', $id)->first();
         $chapter = $course->chapter;
-        $mentor_professions = Profession::whereIn('_id', $course->mentor->profession)->orWhere('_id', $course->category)->distinct('name')->get()->toArray();
-        $mentor_professions = implode(', ', array_map(function ($item) {
-            return $item[0];
-        }, $mentor_professions));
-        // dd($mentor_professions);
-        $category_profession = substr($mentor_professions, strrpos($mentor_professions, ',') + 1);
+        $mentor_professions = implode(',', Profession::whereIn('_id', $course->mentor->profession)->pluck('name')->toArray());
+        $category_profession = Profession::where('_id', $course->category)->first()->name;
         $lessons_db = (Lesson::where('course_id', $course->id)->get(['chapter', 'name'])->toArray());
         $overview_video_path = (Lesson::where('course_id', $course->id)->first(['path'])->toArray())['path'];
         $lessons = [];
