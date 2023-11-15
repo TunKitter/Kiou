@@ -14,7 +14,7 @@ class CourseController extends Controller
     public function list(Request $request)
     {
 
-        // dd(Mentor::all()->first()->course->sum('total_enrollment'));
+        //dd(Mentor::all());
         // dd($this->softMentorData(Mentor::all(), count(Mentor::all()) - 1));
         // dd(Mentor::orderBy('course.total_enrollment', 'desc')->get());
         switch ($request->type) {
