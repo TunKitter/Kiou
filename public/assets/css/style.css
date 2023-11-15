@@ -15336,8 +15336,8 @@ input[type="password"]::-ms-clear {
     color: #fff;
 }
 .lms-page .page-item.active .page-link {
-    background-color: #ff5364;
-    border-color: #ff5364;
+    background-color: #ff875a;
+    border-color: #ff875a;
 }
 .page-item:first-child .page-link {
     border-top-left-radius: 5px;
