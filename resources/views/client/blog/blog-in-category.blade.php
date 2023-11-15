@@ -21,13 +21,14 @@
             </div>
         </div>
     </div>
+
     <section class="course-content">
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
                     <div class="row">
-                        @if(count($blogs))
-                            @foreach($blogs as $blog)
+                        @if(count($blogInCategory))
+                            @foreach($blogInCategory as $blog)
                                 <div class="col-md-6 col-sm-12 mt-3">
                                     <div class="blog grid-blog">
                                         <div class="blog-grid-box">
@@ -65,14 +66,18 @@
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="pagination lms-page">
-                                {{ $blogs->links() }}
+                                {{ $blogInCategory->links() }}
                               
                             </ul>
+
+
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-12 sidebar-right theiaStickySidebar">
+
+
                     <div class="card category-widget blog-widget">
                         <div class="card-header">
                             <h4 class="card-title">Categories</h4>
@@ -89,6 +94,8 @@
                             </ul>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
