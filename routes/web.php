@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CourseController;
@@ -25,7 +25,6 @@ Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser
 Route::get('/admin/users/edit/{id}', [UserController::class, 'editUser'])->name('editUser');
 Route::post('/admin/users/update/{id}', [UserController::class, 'updateUser'])->name('updateUser');
 Route::get('/admin/users/delete/{id}', [UserController::class, 'delete'])->name('deleteUser');
-
 
 Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
 Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
@@ -134,5 +133,5 @@ Route::group(['middleware' => 'auth.cart'], function () {
 
 # ------------------------- Blog --------------------------------
 Route::get('/blog', [BlogController::class, 'Blog']);
-Route::get('/blog/{slug}',[BlogController::class,'blogDetail'])->name('blog.detail');
-Route::get('/blog/category/{id}',[BlogController::class,'blogInCategory'])->name('blog-in-category');
+Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
+Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');
