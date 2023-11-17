@@ -89,6 +89,9 @@ const no_more = document.querySelector('#no_more');
         no_more.style.display = 'block';
           return
         }
+        if(loading.style.display == 'block'){
+            return 
+        }
       loading.style.display = 'block';
       fetch('{{route("listUser")}}/'+take+'/'+skip,{
         method:'POST',
