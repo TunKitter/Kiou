@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser');
+Route::post('/admin/users/list/{take}/{skip}', [UserController::class, 'userMore']);
 Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser');
 Route::get('/admin/users/edit/{id}', [UserController::class, 'editUser'])->name('editUser');
-Route::post('/admin/users/update/{id}', [UserController::class, 'updateUser'])->name('updateUser');
-Route::get('/admin/users/delete/{id}', [UserController::class, 'delete'])->name('deleteUser');
-
+Route::post('/admin/users/update', [UserController::class, 'updateUser'])->name('updateUser');
+Route::post('/admin/users/delete', [UserController::class, 'delete'])->name('deleteUser');
 Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
 Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
 Route::post('/admin/posts/list', [PostController::class, 'create'])->name('post.create');
