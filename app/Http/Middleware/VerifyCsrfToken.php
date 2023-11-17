@@ -31,5 +31,6 @@ class VerifyCsrfToken extends Middleware
         '/admin/users/list/*/*',
         '/admin/users/delete',
         '/admin/users/update',
+        '/admin/users/add',
     ];
 }

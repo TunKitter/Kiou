@@ -1,6 +1,47 @@
 @extends('admin.layout.master')
 @section('content')
 <link rel="stylesheet" href="{{asset('assets/vendor/jquery-toast-plugin/jquery.toast.min.css')}}">
+<div id="add-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="auth-brand text-center mt-2 mb-4 position-relative top-0">
+                                                            <h4>Add User</h4>
+                                                        </div>
+    
+                                                        <form class="ps-3 pe-3" onsubmit="return createUser()" id="addUser">
+                                                            <div class="mb-3">
+                                                                <label for="name" class="form-label">Name</label>
+                                                                <input class="form-control" id="name" type="text" placeholder="Enter your name" name="name">
+                                                            </div>
+    
+                                                            <div class="mb-3">
+                                                                <label for="username" class="form-label">Username</label>
+                                                                <input class="form-control" type="text" placeholder="Enter your username" name="username" id="username">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="phone" class="form-label">Phone</label>
+                                                                <input class="form-control" id="phone" type="text" placeholder="Enter your phone" name="phone">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="email" class="form-label">Email</label>
+                                                                <input class="form-control" id="email" type="text" name="email" id="email" placeholder="Enter your password">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="password" class="form-label">Password</label>
+                                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter your password">
+                                                            </div>
+    
+                                                            <div class="mb-3 text-center">
+                                                                <button class="btn btn-primary" type="submit">Create User</button>
+                                                            </div>
+    
+                                                        </form>
+    
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div>
 <div class="toast toast-delete position-fixed" style="z-index: 5;right:1em;top:6em" role="alert" aria-live="assertive" aria-atomic="true">
                                         <div class="toast-body">
                                             Are you sure to delete this user?
@@ -16,7 +57,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="header-title mb-4">User Database</h4>
+                                    <h4 class="header-title mb-4">User Database <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add-modal">Add user</button> </h4>
                                     <div class="table-responsive">
                                         <table class="table table-centered mb-0 table-nowrap" id="inline-editable">
                                             <thead>
@@ -173,6 +214,32 @@ function deletedUser(obj) {
         
     })
     // alert(user_id_delete)
+}
+function createUser(){
+    let formData = new FormData(document.querySelector('#addUser'));
+    // console.log(formData);
+    fetch('{{route("addUser")}}',{
+        method: 'POST',
+        body: formData
+    }).then(res => res.json()).then(user => {
+    user = user.data
+        $('tbody').prepend(`<tr id="${user._id}" class="new_tr">
+            <td class="text-white" style="font-size: 0"><span class="tabledit-span tabledit-identifier">${user._id}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="${user._id}" disabled=""></td>
+            <td class="tabledit-view-mode" style="cursor: pointer;"><span class="tabledit-span">${user.name}</span><input class="tabledit-input form-control form-control-sm" type="text" name="name" value="${user.name}" style="display: none;" disabled=""></td>
+            <td class="tabledit-view-mode" style="cursor: pointer;"><span class="tabledit-span">${user.email}</span><input class="tabledit-input form-control form-control-sm" type="text" name="email" value="${user.email}" style="display: none;" disabled=""></td>
+            <td class="tabledit-view-mode" style="cursor: pointer;"><span class="tabledit-span">${user.phone}</span><input class="tabledit-input form-control form-control-sm" type="text" name="phone" value="${user.phone}" style="display: none;" disabled=""></td>
+            <td>${ user.created_at}</td>
+            <td><button class="btn btn-danger btn-delete" onclick="deleteUser('${user._id}',0)">Delete</button></td>
+            <td><button class="btn btn-secondary">More</button></td>
+            </tr>`)
+            $('#add-modal').modal('hide')
+            $('.new_tr td').addClass('text-primary')
+            setTimeout(() => {
+                $('.new_tr td').removeClass('text-primary')
+            },4000)
+            // document.querySelector('.new_tr td').classList.add('bg-primary')
+    })
+    return false
 }
 </script>
  @endsection     
