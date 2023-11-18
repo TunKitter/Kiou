@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
@@ -20,12 +21,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+# --------------------------- Admin User --------------------------------
 Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser');
 Route::post('/admin/users/list/{take}/{skip}', [UserController::class, 'userMore']);
 Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser');
-Route::get('/admin/users/edit/{id}', [UserController::class, 'editUser'])->name('editUser');
 Route::post('/admin/users/update', [UserController::class, 'updateUser'])->name('updateUser');
 Route::post('/admin/users/delete', [UserController::class, 'delete'])->name('deleteUser');
+
+# --------------------------- Admin Category --------------------------------
+Route::get('/admin/category/list', [CategoryController::class, 'index'])->name('list-category-admin');
+Route::post('/admin/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
+Route::post('/admin/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
+Route::post('/admin/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
+
+# --------------------------- Admin Post --------------------------------
+
 Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
 Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
 Route::post('/admin/posts/list', [PostController::class, 'create'])->name('post.create');

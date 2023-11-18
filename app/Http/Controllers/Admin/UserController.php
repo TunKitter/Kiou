@@ -31,13 +31,6 @@ class UserController extends Controller
         // $data = User::create($input);
         return response()->json(['data' => $new_user]);
     }
-    public function editUser()
-    {
-
-        $data = User::find($id);
-
-        return response()->json(['status' => true, 'message' => 'Cập nhật tài khoản thành công', 'data' => $data, 'url' => route('updateUser', $id)]);
-    }
     public function updateUser()
     {
         $key = array_keys(request()->all())[1];

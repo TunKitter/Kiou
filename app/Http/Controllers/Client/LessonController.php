@@ -72,6 +72,7 @@ class LessonController extends Controller
                         'front_card' => $request->front_card,
                         'back_card' => $request->back_card,
                         'timeline' => $request->timeline,
+                        'repetition' => ["interval" => strval(round(microtime(true) * 1000)), 'index' => '0'],
                     ],
                 ],
             ]);
