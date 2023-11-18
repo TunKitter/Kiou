@@ -87,6 +87,7 @@ Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->midd
 Route::get('/mentor/dashboard', [MentorController::class, 'dashboard'])->name('mentor-dashboard')->middleware('auth');
 
 # ------------------------- Course --------------------------------
+Route::get('course/add', [CourseController::class, 'create'])->name('course-add');
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
@@ -111,5 +112,5 @@ Route::group(['middleware' => 'auth.cart'], function () {
 
 # ------------------------- Blog --------------------------------
 Route::get('/blog', [BlogController::class, 'Blog']);
-Route::get('/blog/{slug}',[BlogController::class,'blogDetail'])->name('blog.detail');
+Route::get('/blog/{slug}',[BlogController::class,'blogDetail'])->name('blog-detail');
 Route::get('/blog/category/{id}',[BlogController::class,'blogInCategory'])->name('blog-in-category');
