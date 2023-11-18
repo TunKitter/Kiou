@@ -39,7 +39,11 @@ class HomeController extends Controller
         
         // dd($buylot);
         
-
+        $categorie = Categorie::where([])
+        ->orderBy('total_enrollment','desc')
+        ->take(10)
+        ->get();
+        dd();
 
         return view('client.home.home', compact('CourseCount','MentorCount','RoadmapCount','EnrollmentCount','buylot','courses'));
     }
