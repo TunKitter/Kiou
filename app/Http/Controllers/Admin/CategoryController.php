@@ -10,7 +10,8 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Profession::all();
-        return view('admin.category.category', compact('categories'));
+        $categories_name = $categories->pluck('name', 'id');
+        return view('admin.category.category', compact('categories', 'categories_name'));
     }
     public function delete()
     {

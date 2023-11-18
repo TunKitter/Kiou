@@ -15,7 +15,10 @@
                                                                 <label for="name" class="form-label">Name</label>
                                                                 <input class="form-control" id="name" type="text" placeholder="Enter the name" name="name">
                                                             </div>
-    
+                                                            <div class="mb-3">
+                                                                <label for="name" class="form-label">Profession</label>
+                                                                <input class="form-control" id="name" type="text" placeholder="Enter the name" name="name">
+                                                            </div>
                                                             <div class="mb-3 text-center">
                                                                 <button class="btn btn-primary" type="submit">Create Category</button>
                                                             </div>
@@ -48,6 +51,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
+                                                    <th>Parent Category</th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -57,6 +61,11 @@
                                                 <tr>
                                                     <td class="text-white" style="font-size: 0">{{$category->_id}}</td>
                                                     <td>{{$category->name}}</td>
+                                                    @php
+                                                        $temp_ = implode(',',array_map(function ($item) use($categories_name) {return $categories_name[$item];}, $category->parent_profession)) ;
+                                                        $temp_ = $temp_ ? $temp_ : ($categories_name[$category->id] . '<sup class="badge bg-info">Parent</sup>')
+                                                    @endphp
+                                                    <td>{!! $temp_!!}</td>
                                                     <td><button class="btn btn-danger btn-delete" onclick="deleteCategory('{{$category->id}}',{{$loop->index}})">Delete</button></td>
                                                     <td><button class="btn btn-secondary">More</button></td>
                                                 </tr>
