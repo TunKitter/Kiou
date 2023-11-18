@@ -33,9 +33,6 @@ Route::get('/admin/category/list', [CategoryController::class, 'index'])->name('
 Route::post('/admin/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
 Route::post('/admin/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
 Route::post('/admin/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
-Route::get('/demo', function () {
-    return view('admin.category.demo');
-});
 
 # --------------------------- Admin Post --------------------------------
 

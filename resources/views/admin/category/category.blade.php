@@ -21,7 +21,7 @@
                                                                 <label for="name" class="form-label">Profession</label>
 
                                                                     <select class="select2 form-control select2-multiple" data-toggle="select2"
-                                                multiple="multiple" data-placeholder="Choose ..." name="profession">
+                                                multiple="multiple" data-placeholder="Choose ..." name="profession" id="profession_select">
                                                                     @foreach ($categories as $category)  
                                                                         <option value="{{$category->_id}}">{{$category->name}}</option>
                                                                     @endforeach
@@ -70,10 +70,21 @@
                                                     <td class="text-white" style="font-size: 0">{{$category->_id}}</td>
                                                     <td>{{$category->name}}</td>
                                                     @php
-                                                        $temp_ = implode(',',array_map(function ($item) use($categories_name) {return $categories_name[$item];}, $category->parent_profession)) ;
-                                                        $temp_ = $temp_ ? $temp_ : ($categories_name[$category->id] . '<sup class="badge bg-info">Parent</sup>')
+                                                        // $temp_ = implode(',',array_map(function ($item) use($categories_name) {return $item;}, $category->parent_profession)) ;
+                                                        // $temp_ = $temp_ ? $temp_ : ($categories_name[$category->id] . '<sup class="badge bg-info">Parent</sup>')
                                                     @endphp
-                                                    <td>{!! $temp_!!}</td>
+                                                    {{-- <td>{!! $temp_!!}</td> --}}
+<td>
+    <select class="select2 form-control select2-multiple profession_edit" data-toggle="select2"
+                                                multiple="multiple" data-placeholder="Choose ..." name="profession" onchange="changeProfession({{$loop->index}},'{{$category->id}}')">
+                                                                    @foreach ($categories as $category_child)  
+                                                                    @php
+                                                                        $temp_is_select = in_array($category_child->_id, $category->parent_profession) ? 'selected' : ''
+                                                                    @endphp
+                                                                        <option value="{{$category_child->_id}}" {{ $temp_is_select}} >{{$category_child->name}}</option>
+                                                                    @endforeach
+                                            </select>
+</td>
                                                     <td><button class="btn btn-danger btn-delete" onclick="deleteCategory('{{$category->id}}',{{$loop->index}})">Delete</button></td>
                                                     <td><button class="btn btn-secondary">More</button></td>
                                                 </tr>
@@ -165,11 +176,22 @@ function createCategory(){
     })
     return false
 }
+function changeProfession(index,id) {
+    let temp_profession = $('.profession_edit:eq(' + index + ')').val() 
+    let formData = new FormData();
+    formData.append('id', id)
+    formData.append('parent_profession', JSON.stringify(temp_profession))
+    formData.append('action', 'edit')
+    // console.log(formData);
+    fetch('{{route("update-category-admin")}}',{
+        method: 'POST',
+        body: formData
+    }).then(res => res.json()).then(category => {
+        console.log(category);
+    })
+}
 </script>
 <script src="{{asset('assets/js/vendor.min.js')}}"></script>
 <script src="{{asset('assets/vendor/select2/js/select2.min.js')}}"></script>
 <script src="{{asset('assets/js/app.min.js')}}"></script>
-</body>
-
-</html> 
  @endsection     
