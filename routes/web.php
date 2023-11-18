@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CourseController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\LessonController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
@@ -8,17 +11,17 @@ use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\BlogController;
-
+use App\Http\Controllers\Client\CheckoutController;
+use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CategoryPostController;
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
 
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
-
-// User
 Route::get('/admin/users/list',[UserController::class,'listUser'])->name('listUser');
 Route::post('/admin/users/add',[UserController::class,'store'])->name('addUser');
 Route::get('/admin/users/edit/{id}',[UserController::class,'editUser'])->name('editUser');
@@ -36,12 +39,19 @@ Route::post('/admin/category-posts/add',[CategoryPostController::class,'storeCat
 Route::get('/admin/category-posts/edit/{id}',[CategoryPostController::class,'editCategory'])->name('editCategory');
 Route::post('/admin/category-posts/update/{id}',[CategoryPostController::class,'updateCategory'])->name('updateCategory');
 Route::get('/admin/category-posts/delete/{id}',[CategoryPostController::class,'delete'])->name('deleteCategory');
+
+
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
 # --------------------------- Home ---------------------------------
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+# --------------------------- Errors ---------------------------------
+Route::fallback(function () {
+    return view('client.errors.unrole', ['msg' => 'Page not found']);
+});
 
 # ------------------------- Auth --------------------------------
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -88,6 +98,46 @@ Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->mid
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
 
 
-Route::get('/blog', [BlogController::class, 'Post'])->name('blog');
-Route::get('/blog/{slug}', [BlogController::class, 'showPost'])->name('showPost');
+# ------------------------- Course --------------------------------
+Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
+Route::get('course/explore', [CourseController::class, 'exploreUser'])->name('course-explore-user');
+Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
+Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
+Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
+Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getCourseDataBuyMost'])->name('course-data-buy-most');
+Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');
+Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
+Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
 
+# ------------------------- Lesson --------------------------------
+Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');
+Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::class, 'lessonUpdate'])->name('lesson-update');
+Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBookmark'])->name('lesson-bookmark-add');
+Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
+Route::post('course/{id}/learn/bookmark/update', [LessonController::class, 'updateBookmark'])->name('lesson-bookmark-update');
+
+# ------------------------- Cart --------------------------------
+
+Route::group(['middleware' => 'auth.cart'], function () {
+    Route::get('cart', [CartController::class, 'index'])->name('cart');
+    Route::post('cart/add', [CartController::class, 'store'])->name('add-to-cart');
+    Route::post('cart/delete/{id}', [CartController::class, 'delete'])->name('delete-cart');
+});
+
+# ------------------------- Blog --------------------------------
+Route::get('/blog', [BlogController::class, 'Blog']);
+
+
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+
+//paypal
+// Route::controller(PaymentController::class)
+//     ->prefix('paypal')
+//     ->group(function () {
+//         Route::view('payment', 'cart')->name('create.payment');
+//         Route::get('handle-payment', 'handlePayment')->name('make.payment');
+//         Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
+//         Route::get('payment-success', 'paymentSuccess')->name('success.payment');
+//     });
+//Cổng thanh toán vnpay
+Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
