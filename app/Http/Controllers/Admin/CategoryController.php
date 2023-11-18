@@ -28,6 +28,10 @@ class CategoryController extends Controller
     }
     public function add()
     {
-        return response()->json(['data' => Profession::create(request()->all())]);
+        $aa = Profession::create([
+            'name' => request()->name,
+            'parent_profession' => \json_decode(request()->profession),
+        ]);
+        return response()->json(['data' => $aa]);
     }
 }
