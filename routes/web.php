@@ -16,6 +16,7 @@ use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
 use App\Http\Controllers\Client\RoadMapController;
+use App\Http\Controllers\Client\MyCoursesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
