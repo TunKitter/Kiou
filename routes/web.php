@@ -10,14 +10,12 @@ use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
-use App\Http\Controllers\Client\BlogController;
+use App\Http\Controllers\Client\MyCoursesController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CategoryPostController;
-use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -28,11 +26,6 @@ Route::get('/admin/users/edit/{id}',[UserController::class,'editUser'])->name('e
 Route::post('/admin/users/update/{id}',[UserController::class,'updateUser'])->name('updateUser');
 Route::get('/admin/users/delete/{id}',[UserController::class,'delete'])->name('deleteUser');
 
-//Post
-Route::get('/admin/posts/list',[PostController::class,'listPost'])->name('listPost');
-Route::get('/admin/posts/add',[PostController::class,'addPost'])->name('addPost'); 
-Route::post('/admin/posts/add',[PostController::class,'store'])->name('storePost');
-Route::get('/admin/posts/generate-html',[PostController::class,'generateHtml'])->name('generateHtml');
 //Category-Posts
 Route::get('/admin/category-posts/list',[CategoryPostController::class,'listCategory'])->name('listCategory');
 Route::post('/admin/category-posts/add',[CategoryPostController::class,'storeCategory'])->name('storeCategory');
@@ -81,6 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/password', [ProfileController::class, 'handlePassword'])->name('profile-password');
 });
 
+Route::get('/profile/mycourses', [MyCoursesController::class, 'index'])->name('mycourses');
+
 # ------------------------- Mentor --------------------------------
 
 Route::get('/mentor/overview', [MentorController::class, 'overview'])->name('mentor-overview')->middleware('auth');
@@ -124,20 +119,10 @@ Route::group(['middleware' => 'auth.cart'], function () {
     Route::post('cart/delete/{id}', [CartController::class, 'delete'])->name('delete-cart');
 });
 
-# ------------------------- Blog --------------------------------
-Route::get('/blog', [BlogController::class, 'Blog']);
+
 
 
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
-//paypal
-// Route::controller(PaymentController::class)
-//     ->prefix('paypal')
-//     ->group(function () {
-//         Route::view('payment', 'cart')->name('create.payment');
-//         Route::get('handle-payment', 'handlePayment')->name('make.payment');
-//         Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
-//         Route::get('payment-success', 'paymentSuccess')->name('success.payment');
-//     });
 //Cổng thanh toán vnpay
 Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');

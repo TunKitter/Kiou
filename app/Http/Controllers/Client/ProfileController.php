@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Http\Requests\ProfileRequest;
-
-
+use App\Models\Profession;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +16,17 @@ class ProfileController extends Controller
     {
 
         $user = Auth::user();
-        return view('client.profile.profile', compact('user'));
+        $professions = Profession::all();
+        // dd($user->toArray()['profession']);
+        $user_professions = array_map(function ($profession_id) use ($professions) {
+            return array_filter($professions->toArray(), function ($profession) use ($profession_id) {
+                return $profession['_id'] == $profession_id;
+            });
+        }, $user->toArray()['profession']);
+        $user_professions = implode(',', array_map(function ($profession) {
+            return $profession[array_key_first($profession)]['name'];
+        }, $user_professions));
+        return view('client.profile.profile', compact('user', 'professions', 'user_professions'));
     }
 
     public function update(ProfileRequest $request)
@@ -28,6 +36,7 @@ class ProfileController extends Controller
         $request->username ? $data['username'] = $request->username : '';
         $request->phone ? $data['phone'] = $request->phone : '';
         $request->email ? $data['email'] = $request->email : '';
+        $request->profession ? $data['profession'] = explode(',', $request->profession) : '';
         $imagePath = '';
 
         $request->validated();
@@ -52,7 +61,6 @@ class ProfileController extends Controller
 
         return view('client.home.home');
     }
-
 
     public function password()
     {
@@ -96,7 +104,7 @@ class ProfileController extends Controller
     public function deleteAvatar()
     {
         auth()->user()->update(['image.avatar' => 'avatar.jpg']);
-        return 1;
+        return \response()->json(['status' => 'success']);
     }
 
 }

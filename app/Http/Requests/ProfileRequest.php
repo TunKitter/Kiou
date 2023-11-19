@@ -30,6 +30,7 @@ class ProfileRequest extends FormRequest
             'phone' => $this->phone ? ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:9', 'max:10'] : '',
             'email' => $this->email ? ['required', 'string', 'email', 'max:40', Rule::unique('users')] : '',
             'avatar' => $this->avatar ? ['image', 'mimes:png,jpg', 'max:2048'] : '',
+            'profession' => $this->profession ? ['required'] : '',
         ];
     }
     public function messages()

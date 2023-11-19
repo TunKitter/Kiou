@@ -27,7 +27,7 @@ class MentorController extends Controller
             }
         }
         $data = (((Profession::select('id', 'name')->get())));
-        return view('client.mentor.register', ['professions' => (implode(',', $data->pluck('name')->toArray())), 'id_professions' => (implode(',', $data->pluck('id')->toArray()))]);
+        return view('client.mentor.register', ['professions' => (implode(',', $data->pluck('name')->toArray())), 'id_professions' => (implode(',', $data->pluck('id')->toArray())), 'data' => $data]);
     }
     public function handleRegister(Request $request)
     {
@@ -45,26 +45,11 @@ class MentorController extends Controller
                 'username.alpha_dash' => 'Tên đăng nhập không được chứa ký tự đặc biệt!',
                 'username.unique' => 'Tên đăng nhập đã có người dùng!',
             ]);
-        $temp_profession = [];
-        foreach ($request->except('_token', 'username', 'name', 'profession') as $key => $value) {
-
-            if ($temp_key = Profession::find($key)) {
-                if ($temp_key->name == $value) {
-                    $temp_profession[] = $key;
-                } else {
-
-                    return redirect()->back()->with('not_found_profession', 'Chuyên ngành không hợp lệ, vui lòng thử lại');
-                }
-
-            } else {
-                return redirect()->back()->with('not_found_profession', 'Không tìm thấy chuyên ngành, vui lòng thử lại');
-            }
-        }
         Mentor::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
             'username' => $request->username,
-            'profession' => $temp_profession,
+            'profession' => explode(',', $request->profession),
         ]);
 
         return redirect()->route('mentor-upload-id-card');
@@ -72,10 +57,12 @@ class MentorController extends Controller
 
     public function handleProfile(ProfileRequest $request)
     {
+        // dd($request->all());
         $request->validated();
         $update_data = [];
         $request->name ? $update_data['name'] = $request->name : '';
         $request->username ? $update_data['username'] = $request->username : '';
+        $request->profession ? $update_data['profession'] = explode(',', $request->profession) : '';
         $user = Auth::user();
 
         if ($request->avatar) {
@@ -84,8 +71,12 @@ class MentorController extends Controller
             $update_data['image.avatar'] = $imagePath;
 
         }
-        Mentor::where('user_id', $user->id)->update($update_data);
-        return redirect()->route('mentor-profile')->with('success', 'Thông tin đã được cập nhật thành công.');
+        if (!(Mentor::where('username', $request->username)->count())) {
+            Mentor::where('user_id', $user->id)->update($update_data);
+            return redirect()->route('mentor-profile')->with('success', 'Thông tin đã được cập nhật thành công.');
+        } else {
+            return redirect()->route('mentor-profile')->with('already_username', 'Tên người dùng đã tồn tại');
+        }
     }
     public function profile()
     {
@@ -96,7 +87,16 @@ class MentorController extends Controller
             return redirect()->route('mentor-register');
         }
         $mentor = Mentor::where('user_id', Auth::id())->first();
-        return view('client.mentor.profile', compact('mentor'));
+        $professions = Profession::all();
+        $mentor_professions = array_map(function ($profession_id) use ($professions) {
+            return array_filter($professions->toArray(), function ($profession) use ($profession_id) {
+                return $profession['_id'] == $profession_id;
+            });
+        }, $mentor->toArray()['profession']);
+        $mentor_professions = implode(',', array_map(function ($profession) {
+            return $profession[array_key_first($profession)]['name'];
+        }, $mentor_professions));
+        return view('client.mentor.profile', compact('mentor', 'professions', 'mentor_professions'));
     }
     public function uploadIdCard(Request $request)
     {

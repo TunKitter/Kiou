@@ -25,8 +25,7 @@ class PasswordController extends Controller
             $randomNumber = mt_rand(100000, 999999);
             $token_id = uniqid();
             Session::push($token_id, [$request_mail, $randomNumber]);
-            $name = $randomNumber;
-            Mail::send('mail.send-code-mail', compact('name'), function ($email) use ($user_from_request_mail) {
+            Mail::send('mail.send-code-mail', compact('randomNumber'), function ($email) use ($user_from_request_mail) {
                 $email->subject('demo');
                 $email->to($user_from_request_mail->email, 'Ma xac nhan mat khau');
             });
@@ -48,7 +47,6 @@ class PasswordController extends Controller
     {
         $confirmCode = $request->confirmCode;
         if ($confirmCode == session($request->token_id)[0][1]) {
-            session([$request->token_id => true]);
             return redirect(route('new-password', ['token_id' => $request->token_id]));
         } else {
             return redirect()->route('confirm-code', ['token_id' => $request->token_id])->with('wrong_code', 'Mã xác nhận không chính xác');
@@ -63,7 +61,7 @@ class PasswordController extends Controller
     //Hàm xử lý đổi mật khẩu khi nhập đúng mã xác nhận(send code)
     public function handleNewPassword(Request $request)
     {
-        $findEmail = $request->id_token;
+        $findEmail = \session($request->id_token)[0][0];
         $checkmail = User::where('email', $findEmail)->first();
         //Bắt lỗi nhập input
         $validator = Validator::make($request->all(), [
@@ -82,7 +80,7 @@ class PasswordController extends Controller
                 ->withInput();
         } else {
             //tìm mail lúc đầu người dùng nhập để lấy mã xác nhận(send code) để đổi mật khẩu
-
+            session([$request->id_token => true]);
             $data = [
                 'password' => Hash::make($request->confirmPassword),
             ];

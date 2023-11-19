@@ -136,11 +136,11 @@
                         .removeClass('invalid-feedback').html('');
                     $('#add-category')[0].reset();
                     $('#addCategory').modal('hide');
-                    var html = '<tr id="category-' + response.responseJSON.data._id + '">' +
-                        '<td class="user_tr_0">' + response.responseJSON.data.name + '</td>' +
-                        '<td class="user_tr_1">' + response.responseJSON.data.slug + '</td>' +
-                        '<td class="user_tr_2">' + response.responseJSON.data.created_at + '</td>' +
-                        '<td class="user_tr_3">' + response.responseJSON.data.updated_at + '</td>' +
+                    var html = '<tr id="category-' + response.responseJSON.data._id + '" class="category_tr">' +
+                        '<td class="category_tr_0">' + response.responseJSON.data.name + '</td>' +
+                        '<td class="category_tr_1">' + response.responseJSON.data.slug + '</td>' +
+                        '<td class="category_tr_2">' + response.responseJSON.data.created_at + '</td>' +
+                        '<td class="category_tr_3">' + response.responseJSON.data.updated_at + '</td>' +
                         '<td>' +
                         '<a href="javascript:void(0);" class="btn btn-warning edit-button" data-bs-toggle="modal" data-bs-target="#editCategory"' +
                         'data-id="' + response.responseJSON.data._id + '">Edit</a>' +
@@ -149,7 +149,7 @@
                         .responseJSON.data._id + '">Delete</a>' +
                         '</td>' +
                         '</tr>';
-                    $('#data-table').prepend(html);
+                    $('#data').prepend(html);
                     swal("success", response.responseJSON.message, "success");
                 }
             }
@@ -185,6 +185,7 @@
 
         $('body').on('click', '.edit-button', function(event) {
             var id = $(this).data('id');
+          
             indexUpdate = $('.edit-button').index(this);
 
             $.ajax({
@@ -236,7 +237,8 @@
         $('body').on('click', '.category-edit', function(event) {
             let formEdit = $('#edit-category');
             let formData = new FormData(formEdit[0]);
-            formData.append('slug', createSlug(formEdit.find('#name').val()));
+            let slug = createSlug(formEdit.find('#name').val())
+            formData.append('slug',slug);
 
             fetch("/admin/category-posts/update/" + idUpdate, {
                 method: "POST",
@@ -244,6 +246,8 @@
             }).then(response => response.json()).then(data => {
                     document.querySelector('#close_modal').click();
                     swal("success", 'Cập nhật danh mục thành công', "success");
+                    document.querySelectorAll(".category_tr_0")[indexUpdate].innerHTML= formEdit.find('#name').val()
+                    document.querySelectorAll(".category_tr_1")[indexUpdate].innerHTML= slug
             }).catch(err => console.log(err));
         });
 

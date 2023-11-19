@@ -28,6 +28,10 @@ class LoginController extends Controller
 
     public function index()
     {
+
+        if (auth()->check()) {
+            return redirect()->route('home');
+        }
         return view('client.auth.login.login');
     }
 
@@ -49,12 +53,40 @@ class LoginController extends Controller
     public function login(AuthRequest $request)
     {
         $request->validated();
+        $findEmail = $request->email; // tìm mail người dùng nhập vào
+        $ip = $request->ip(); //Lấy ip người dùng
+        $limit = 4; // Giới hạng ip của 1 tài khoản
+
+        // Lấy bản ghi đầu tiên thỏa mãn điều kiện
+        $result = User::where('email', $findEmail)->first();
+        $ip_user = [];
+        if ($result) {
+            //lấy nhiều ip trong 1 tài khoản
+            $ip_user = $result->ip;
+        }
+        if (!$ip_user) {
+            $ip_user = [];
+        }
+        // Đếm số ip cử 1 tài khoản
+        $count_ip = count($ip_user);
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('home')->with('success', 'Đăng nhập thành công');
+            if (!(in_array($ip, $ip_user))) {
+                if ($count_ip < $limit) {
+                    User::where('email', $findEmail)->push(
+                        'ip',
+                        [$request->ip()]
+                    );
+                } else {
+                    User::where('email', $findEmail)->update(
+                        ['role' => ['652a9a45835ceedb746a99ef']]
+                    );
+                }
+            }
         } else {
             return redirect()->back()->withInput($request->only('email'))->withErrors([
                 'email' => 'Thông tin đăng nhập không đúng.',
             ]);
         }
+        return redirect()->route('home')->with('success', 'Đăng nhập thành công');
     }
 }

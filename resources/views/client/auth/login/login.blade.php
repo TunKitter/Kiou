@@ -3,7 +3,9 @@
 @if ($message = Session::get('success'))
 @include('client.section.message', ['message' => $message,'type'=>'success'])
 @endif
-
+@if ($message = Session::get('need_login'))
+@include('client.section.message', ['message' => $message,'type'=>'fail'])
+@endif
 <div class="login-wrapper">
 <div class="loginbox">
 <div class="w-100">
