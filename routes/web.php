@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RoadMapController as AdminRoadmapController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CartController;
@@ -36,6 +37,11 @@ Route::post('/admin/category/list/delete', [CategoryController::class, 'delete']
 Route::post('/admin/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
 Route::post('/admin/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
 
+# --------------------------- Admin Roadmap --------------------------------
+Route::get('/admin/roadmap/list', [AdminRoadmapController::class, 'index'])->name('list-roadmap-admin');
+Route::get('/admin/roadmap/list/{id}', [AdminRoadmapController::class, 'detail'])->name('detail-roadmap-admin');
+
+Route::post('/admin/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
 # --------------------------- Admin Course --------------------------------
 Route::get('/admin/course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
 Route::get('/admin/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
