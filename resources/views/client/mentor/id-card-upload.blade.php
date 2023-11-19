@@ -209,9 +209,9 @@ break;
             fetch("{{route('mentor-save-id-card')}}", {
                             method: 'POST',
                             body: data_form
-                        }).then(res => res.text()).then(data => {
+                        }).then(res => res.json()).then(data => {
                             console.log(data); 
-                            if(data == 0) {
+                            if(data.status == '0') {
                                 location.href = location.href + '?already=1'
                             }
                         })

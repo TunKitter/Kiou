@@ -31,7 +31,32 @@ class Bookmark extends Model
         'cards.8.back_card',
         'cards.9.back_card',
         'cards.10.back_card',
+        'cards.0.repetition.interval',
+        'cards.0.repetition.index',
+        'cards.1.repetition.interval',
+        'cards.1.repetition.index',
+        'cards.2.repetition.interval',
+        'cards.2.repetition.index',
+        'cards.3.repetition.interval',
+        'cards.3.repetition.index',
+        'cards.4.repetition.interval',
+        'cards.4.repetition.index',
+        'cards.5.repetition.interval',
+        'cards.5.repetition.index',
+        'cards.6.repetition.interval',
+        'cards.6.repetition.index',
+        'cards.7.repetition.interval',
+        'cards.7.repetition.index',
+        'cards.8.repetition.interval',
+        'cards.8.repetition.index',
+        'cards.9.repetition.interval',
+        'cards.9.repetition.index',
+        'cards.10.repetition.interval',
+        'cards.10.repetition.index',
     ];
     protected $attributes = [];
-
+    public function lesson()
+    {
+        return $this->belongsTo(Lesson::class);
+    }
 }

@@ -65,6 +65,9 @@ class ProfileController extends Controller
     public function password()
     {
         $user = Auth::user();
+        if ($user->password == null) {
+            return \redirect()->route('profile');
+        }
         return view('client.profile.update-pass', compact('user'));
     }
 

@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CourseController;
 use App\Http\Controllers\Client\HomeController;
@@ -10,12 +14,8 @@ use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
-use App\Http\Controllers\Client\MyCoursesController;
-use App\Http\Controllers\Client\CheckoutController;
-use App\Http\Controllers\Client\PaymentController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\CategoryPostController;
+use App\Http\Controllers\Client\RevisionController;
+use App\Http\Controllers\Client\RoadMapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -33,6 +33,10 @@ Route::get('/admin/category-posts/edit/{id}',[CategoryPostController::class,'edi
 Route::post('/admin/category-posts/update/{id}',[CategoryPostController::class,'updateCategory'])->name('updateCategory');
 Route::get('/admin/category-posts/delete/{id}',[CategoryPostController::class,'delete'])->name('deleteCategory');
 
+
+Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
+Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
+Route::post('/admin/posts/list', [PostController::class, 'create'])->name('post.create');
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -91,6 +95,7 @@ Route::get('/mentor/success', [MentorController::class, 'success'])->name('mento
 Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
 Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
+Route::get('/mentor/dashboard', [MentorController::class, 'dashboard'])->name('mentor-dashboard')->middleware('auth');
 
 
 # ------------------------- Course --------------------------------
@@ -104,6 +109,25 @@ Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'get
 Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
 
+# ------------------------- Roadmap --------------------------------
+Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
+Route::get('course/roadmap/detail/{slug}', [RoadMapController::class, 'detail'])->name('roadmap-detail');
+
+# ------------------------- Revision --------------------------------
+Route::get('revision/bookmark', [RevisionController::class, 'bookmark'])->name('revision-bookmark')->middleware('auth');
+Route::get('revision/bookmark/all', [RevisionController::class, 'all'])->name('revision-bookmark-all')->middleware('auth');
+Route::get('revision/bookmark/revise', [RevisionController::class, 'revise'])->name('revision-bookmark-revise')->middleware('auth');
+Route::post('revision/bookmark/revise/update', [RevisionController::class, 'updateRevise']);
+Route::get('revision/test', [RevisionController::class, 'test'])->name('revision-test')->middleware('auth');
+Route::get('revision/test/{slug}', [RevisionController::class, 'testCheck'])->name('revision-test-test')->middleware('auth');
+Route::post('revision/test/{slug}/update', [RevisionController::class, 'updateTestCheck'])->name('revision-test-test-update')->middleware('auth');
+Route::get('revision/code/list', [RevisionController::class, 'codeList'])->name('revision-code-list')->middleware('auth');
+Route::get('revision/code/list/{id}', [RevisionController::class, 'code'])->name('revision-code')->middleware('auth');
+Route::post('revision/code/list/{id}', [RevisionController::class, 'codeUpdate']);
+Route::post('revision/code/list/{id}/saveCode', [RevisionController::class, 'saveCode'])->name('revision-code-save-code');
+Route::get('revision/code/explore', [RevisionController::class, 'codeExplore'])->name('revision-code-explore');
+Route::post('revision/code/explore/list', [RevisionController::class, 'codeExploreList'])->name('revision-code-explore-list');
+Route::post('revision/code/explore/list/save', [RevisionController::class, 'codeExploreSave'])->name('revision-code-explore-save');
 # ------------------------- Lesson --------------------------------
 Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');
 Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::class, 'lessonUpdate'])->name('lesson-update');
@@ -119,10 +143,7 @@ Route::group(['middleware' => 'auth.cart'], function () {
     Route::post('cart/delete/{id}', [CartController::class, 'delete'])->name('delete-cart');
 });
 
-
-
-
-Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-
-//Cổng thanh toán vnpay
-Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
+# ------------------------- Blog --------------------------------
+Route::get('/blog', [BlogController::class, 'Blog']);
+Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
+Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');
