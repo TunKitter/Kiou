@@ -241,7 +241,11 @@
                                                 </div>
                                                 @endforeach
                                                 </div>
-                                                
+                                                <br>
+                                                {{-- <p class="text-primary" id="timeline_feedback" style="display: none">45:02</p> --}}
+                                                {{-- <input type="text" class="form-control" placeholder="Enter your feedback" style="display: none" id="feedback"> --}}
+                                                {{-- <br> --}}
+                                                {{-- <button class="btn btn-primary d-block m-auto" onclick="reportForMentor(this)">Report for mentor</button> --}}
                                                 </div>
                                                 <div class="col-lg-8">
                                                 
@@ -290,6 +294,7 @@
                                                         <i class="fa-solid fa-backward" onclick="backWardVideo()"></i>
                                                         <i class="fa-solid fa-play" id="video-play-icon" onclick="play_video(this)"></i>
                                                         <i class="fa-solid fa-forward" onclick="forwardVideo()"></i>
+                                                        <i style="font-style: normal;font-size: 0.9em" id="timeline">00:00</i>
                                                     </div>
                                                     <div class="progress-video" style="flex-grow: 1; position: relative;">
                                                         <div style="height: 10px;background: #fff;border-radius: 10px;" onclick="changeVideoTime(this)">
@@ -639,6 +644,11 @@ let current_index = 0
 // let start_ = arr[current_index][0]
 // let end_ = arr[current_index][1]
 setInterval(() => {
+    let minutes = Math.floor((parseInt(video.currentTime) % 3600) / 60);
+    let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    let seconds = (parseInt(video.currentTime) % 60).toFixed(0);
+    let formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    document.querySelector('#timeline').innerHTML  = `${formattedMinutes}:${formattedSeconds}`
 $('.interactive_wrapper').hide()
 let temp_ = arr.find((item,index) => {
     current_index = index
@@ -676,6 +686,38 @@ function jumpVideo(timeline) {
     video_state = false;
     play_video(video_play_icon)
 }
+var feedback = document.getElementById('feedback');
+var timeline_feedback = document.getElementById('timeline_feedback');
+var is_submit = false
+// function reportForMentor(obj) {
+//     if(is_submit){
+//         obj.innerHTML = '<span class="spinner-border text-white spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+//         obj.disabled = true;
+//         let formData = new FormData();
+//         formData.append('user_id', '{!!$course->mentor_id!!}');
+//         formData.append('content', document.querySelector('#feedback').value);
+//         fetch('{{route("create-notification")}}',{
+//             method: "POST",
+//             body: formData
+//         }).then(response => response.json()).then(result => {
+//             obj.innerHTML = 'Submited'
+//         })
+//     }
+//     else {
+//     video_state = true;
+//     play_video(video_play_icon)
+//     is_submit = true
+//     feedback.style.display = 'block'
+//     let minutes = Math.floor((parseInt(video.currentTime) % 3600) / 60);
+//     let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+//     let seconds = (parseInt(video.currentTime) % 60).toFixed(0);
+//     let formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+//     timeline_feedback.innerHTML  = `${formattedMinutes}:${formattedSeconds}`
+//     timeline_feedback.style.display = 'block'
+//     }
+// }
+
+
 </script>
 
 @endsection

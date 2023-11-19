@@ -18,6 +18,7 @@ use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
 use App\Http\Controllers\Client\RoadMapController;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -38,6 +39,14 @@ Route::post('/admin/category/add', [CategoryController::class, 'add'])->name('ad
 # --------------------------- Admin Course --------------------------------
 Route::get('/admin/course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
 Route::get('/admin/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
+Route::post('/admin/notification', function () {
+    return response()->json([
+        'data' => Notification::create([
+            "user_id" => request()->user_id,
+            'content' => request()->content,
+        ]),
+    ]);
+})->name('create-notification');
 # --------------------------- Admin Post --------------------------------
 
 Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
