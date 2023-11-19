@@ -1,8 +1,6 @@
 @extends('admin.layout.master')
 @section('content')
                 <div class="container-fluid">
-
-
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card p-0">
@@ -280,13 +278,16 @@
                                                                 </ul>
                                                             </div>
                                                         </i>
+                                                        <i class="fa-solid feather-file-text" onclick="changeCaption(this)" ></i>
                                                         <i class="fa-solid feather-volume-2" id="volume"></i>
                                                         <div style="width: 80px;height:10px;background: white;margin:0 15px 0 -2px;border-radius:12px" onclick="changeVideoVolume(this)">
                                                             <div style="width:100%;height:100%;background: #3bc0c3;border-radius: 12px" id="current-volume"></div>
                                                         </div>
                                                         <i class="fa-solid feather-maximize" onclick="fullscreenVideo()"></i>
                                                     </div>
-                                                </div></div>
+                                                </div>
+                                                <p class="bg-black w-100 text-white text-center position-absolute p-2" style="bottom: 1.5em;z-index: 1; cursor: pointer;" id="subtitle" onmouseover="hoverCaption(this)" onmouseout="hoverOutCaption(this)"></p>
+                                            </div>
                                                 </a>
                                                 </div>
                                                 </div>
@@ -546,6 +547,63 @@
         hls.loadSource(url);
         title.innerHTML = text;
     }
+    var subtitle = document.querySelector('#subtitle');
+    var is_caption_on = false
+subtitle.style.display = 'none';
+var subtitle_result = null
+fetch("{{asset('course/lesson/subtitle/tunkit.srt')}}").then(response => response.text()).then(data => {
+    let formData = new FormData();
+    formData.append('srt', data);
+    fetch("https://kiou-subtitle-2-45833d111266.herokuapp.com/api/subtitle",{
+        method: "POST",
+        body: formData
+    }).then(response => response.json()).then(result => {
+        subtitle_result = result['message']
+
+    })
+});
+function changeCaption(obj) {
+    is_caption_on = !is_caption_on
+    if(is_caption_on){
+        subtitle.style.display = 'block'       
+        obj.style.color = '#ff4667';
+    }
+    else{
+        subtitle.style.display = 'none'
+            obj.style.color = 'white';
+    }
+}
+function hoverCaption(obj) {
+video_state = true;
+play_video(video_play_icon)
+}
+function hoverOutCaption(obj) {
+    video_state = false;
+    play_video(video_play_icon)
+}
+  video.onplaying = function(){
+    if(subtitle_result){
+        let current_subtitle =[0,0]
+        setInterval(() => {
+           if(video.currentTime <= current_subtitle[0] || video.currentTime >= current_subtitle[1]){
+            
+                let temp_subtitle = subtitle_result.find(e => (e.start <= video.currentTime && e.end >= video.currentTime) )
+                if(is_caption_on){
+                    temp_subtitle ? subtitle.style.display = 'block' : subtitle.style.display = 'none'
+                }
+                current_subtitle = [temp_subtitle.start,temp_subtitle.end]
+                if(temp_subtitle){
+                    // let temp_ =''
+                    // temp_subtitle.content.split(' ').map(e => {
+                        // let replace_e = e.replace("'",'___');
+                        // temp_ += `<span onclick='lookUpWord(\`${replace_e}\`,this)'>${e}</span> `
+                    // })
+                    subtitle.innerHTML =  temp_subtitle.content
+           } 
+        }
+        }, 1000);
+}
+  }
 </script>
 
 @endsection

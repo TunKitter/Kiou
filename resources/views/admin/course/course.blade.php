@@ -51,7 +51,7 @@
                                         </div>          
                                                     </td>
                                                     <td>{{$course->total_enrollment}}</td>
-                                                    <td>{{$course->price}}</td>
+                                                    <td>{{$course->price}} $</td>
 
                                                     <td><button class="btn text-primary" onclick="location.href='{{route('detail-course-admin', $course->_id)}}'">More Infor</button></td>
                                                 </tr>
