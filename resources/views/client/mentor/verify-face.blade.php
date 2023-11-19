@@ -55,7 +55,7 @@ function take_snapshot() {
         fetch('https://api.fpt.ai/dmp/checkface/v1',{
             method: 'POST',
             headers: {
-                'api_key': 'sHvXRNu2Kyi3TB30IcOnkDZDmChuyWO3'
+                'api_key': 'BNvTJhvPdCDnUNsm0qgG9KmWpKVAAXQl'
               },
             body: formData
         }).then(res => res.json()).then(data => {
@@ -117,6 +117,9 @@ function success_cccd() {
         Object.assign(btn_verify.style, successStyle)
         btn_verify.innerHTML = 'Verified Successfully';
         btn_id.disabled = false;
+        setTimeout(() => {
+            location.reload()
+        },1000)
 }
 function fail_cccd() {
     document.querySelector('.user_image').style.border = '5px solid #f66962';

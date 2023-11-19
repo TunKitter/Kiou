@@ -119,8 +119,8 @@
                             <div class="col-lg-6">
                             </div>
                             <div class="update-profile">
-                                <button disabled type="submit" class="btn btn-primary border-0" id="btn-submit"
-                                    onclick="getProfession()">Update Profile</button>
+                                <button disabled type="submit" class="btn btn-primary border-0 d-block m-auto" id="btn-submit"
+                                    onclick="getProfession()">Update Profile</button><br>
                             </div>
                         </div>
                         </form>

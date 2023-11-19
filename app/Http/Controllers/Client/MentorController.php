@@ -176,11 +176,15 @@ class MentorController extends Controller
     public function saveIdCardData(Request $request)
     {
         if (IdCard::where('id', $request->id)->exists()) {
-            return 0;
+            return response()->json([
+                'status' => '0',
+            ]);
         }
 
         IdCard::create(array_merge(['mentor_id' => auth()->user()->mentor->id], $request->all()));
-        return 1;
+        return response()->json([
+            'status' => '1',
+        ]);
 
     }
 

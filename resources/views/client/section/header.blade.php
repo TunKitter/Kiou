@@ -65,30 +65,27 @@
                                             </ul>
                                         </li>
                                         <li><a href="{{ route('course-list') }}">Find Courses</a></li>
+                                        <li><a href="{{ route('roadmap') }}">Roadmap</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu">
-                                    <a href>Student <i class="fas fa-chevron-down"></i></a>
+                                    <a href>Enhance <i class="fas fa-chevron-down"></i></a>
                                     <ul class="submenu first-submenu">
-                                        <li class="has-submenu ">
+                                        {{-- <li class="has-submenu ">
                                             <a href="students-list.html">Student</a>
                                             <ul class="submenu">
                                                 <li><a href="students-list.html">List</a></li>
                                                 <li><a href="students-grid.html">Grid</a></li>
                                             </ul>
+                                        </li> --}}
+                                        <li><a href="{{route('revision-bookmark')}}">Revise Bookmarks</a></li>
+                                        <li><a href="{{route('revision-test')}}">Test your knowledge</a></li>
+                                        <li class="has-submenu"><a href="{{route('revision-code-list')}}">CP</a>
+                                            <ul class="submenu">
+                                                <li><a href="{{route('revision-code-list')}}">Your CP</a></li>
+                                                <li><a href="{{route('revision-code-explore')}}">Explore CP</a></li>
+                                            </ul>
                                         </li>
-                                        <li><a href="setting-edit-profile.html">Student Profile</a></li>
-                                        <li><a href="setting-student-security.html">Security</a></li>
-                                        <li><a href="setting-student-social-profile.html">Social profile</a></li>
-                                        <li><a href="setting-student-notification.html">Notification</a></li>
-                                        <li><a href="setting-student-privacy.html">Profile Privacy</a></li>
-                                        <li><a href="setting-student-accounts.html">Link Accounts</a></li>
-                                        <li><a href="setting-student-referral.html">Referal</a></li>
-                                        <li><a href="setting-student-subscription.html">Subscribtion</a></li>
-                                        <li><a href="setting-student-billing.html">Billing</a></li>
-                                        <li><a href="setting-student-payment.html">Payment</a></li>
-                                        <li><a href="setting-student-invoice.html">Invoice</a></li>
-                                        <li><a href="setting-support-tickets.html">Support Tickets</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu">
@@ -149,8 +146,8 @@
                                     </a>
                                     <div class="wishes-list dropdown-menu dropdown-menu-right">
                                         <div class="wish-header">
-                                            <a href="{{route('cart')}}">View Cart</a>
-                                            <a href="javascript:void(0)" class="float-end">Checkout</a>
+                                            <a href="{{route('cart')}}">See all</a>
+                                            {{-- <a href="javascript:void(0)" class="float-end">See all</a> --}}
                                         </div>
                                         <div class="wish-content">
                                             <ul>
