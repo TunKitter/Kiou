@@ -255,7 +255,36 @@
                                                 </div> --}}
                                                 {{-- <img class src="{{asset('assets/img/video-img-01.jpg')}}" id="video"> --}}
                                                 
-                                                <div class="wrapper-video"> <div id="progress" ></div> <video ondblclick="fullscreenVideo()" id="video" src="https://storage.googleapis.com/kiou_lesson/tunkit/tunkit.m3u8" width="100%"></video><div class="video-player">
+                                                <div class="wrapper-video"> 
+                                                    <div class="rect interactive_wrapper" style="width: 20px;height: 20px;background: red;position:absolute;display:none;z-index:100;left:14%;top:15%" onclick="alert(99)"></div>
+<div class="parent_interactive position-absolute " style="left: 7%;bottom:4em;">
+    <div class="interactive_wrapper" style="display: none" > <div class="plan-box" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize">Hello this is Tunkit</h6>
+        <p>Hello this is Tunkit</p>
+        </div>
+        </div>
+</div>
+<div class="interactive_wrapper select_ideal" style="width: max-content;display: none">
+    <div class="plan-box">
+        <div>
+        <h6 style="text-transform: capitalize" class="text-muted text-center">Hello this is Tunkit</h6>
+        <button class="btn btn-secondary" onclick="jumpVideo(300)">Hello this is Tunkit</button>
+        <button class="btn btn-secondary" onclick="jumpVideo()">Hello this is Tunkit</button>
+        </div>
+        </div>
+</div>
+<div class="interactive_wrapper" style="display: none" >
+            <div class="plan-box" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize">Hello this is Tunkit</h6>
+        <p>Hello this is Tunkit 3</p>
+        </div>
+        </div>
+</div>
+ </div>
+
+                                                    <div id="progress" ></div> <video ondblclick="fullscreenVideo()" id="video" src="https://storage.googleapis.com/kiou_lesson/tunkit/tunkit.m3u8" width="100%"></video><div class="video-player">
                                                 
                                                     <div class="controls">
                                                         <i class="fa-solid fa-backward" onclick="backWardVideo()"></i>
@@ -604,6 +633,49 @@ function hoverOutCaption(obj) {
         }, 1000);
 }
   }
+  video.addEventListener('playing', () => {
+let arr = [[7,10],[12,16],[20,22]]
+let current_index = 0
+// let start_ = arr[current_index][0]
+// let end_ = arr[current_index][1]
+setInterval(() => {
+$('.interactive_wrapper').hide()
+let temp_ = arr.find((item,index) => {
+    current_index = index
+return video.currentTime >= item[0] && video.currentTime <= item[1]   
+})
+if(temp_){
+        let temp_interact =  $('.interactive_wrapper:eq('+current_index+')')
+        temp_interact.show()
+        if(temp_interact.hasClass('select_ideal')){
+            video_state = true;
+            play_video(video_play_icon)
+        }
+        else if(temp_interact.hasClass('rect')){
+            // temp_interact.css('left',arr[current_index][0] + 'px')
+            // temp_interact.css('top',arr[current_index][1] + 'px')
+            // video_state = false;
+            // play_video(video_play_icon)
+        }
+        // else {
+            // video_state = false;
+            // play_video(video_play_icon)
+        // }
+ }
+else {
+    $('.interactive_wrapper').hide()
+    
+}
+}, 1000);   
+})  
+function jumpVideo(timeline) {
+    if(!timeline) {
+        timeline = video.currentTime;
+    }
+    video.currentTime = timeline
+    video_state = false;
+    play_video(video_play_icon)
+}
 </script>
 
 @endsection
