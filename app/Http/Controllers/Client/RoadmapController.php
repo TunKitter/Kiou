@@ -57,10 +57,10 @@ class RoadmapController extends Controller
         // dd($roadmap->pluck('name', '_id')->toArray());
         // dd($aa, $bb);
 
-        $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta'])->toArray());
+        $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta', 'image'])->toArray());
         $course_name = [];
         array_map(function ($course) use (&$course_name, $course_database) {
-            $course_name[$course['_id']] = ['name' => $course['name'], 'total_lesson' => $course['meta']['total_lesson'], 'total_time' => $course['meta']['total_time']];
+            $course_name[$course['_id']] = ['name' => $course['name'], 'total_lesson' => $course['meta']['total_lesson'], 'total_time' => $course['meta']['total_time'], 'image' => $course['image']];
         }, $course_database);
         $lesson_name = (Lesson::whereIn('_id', explode(',', rtrim($bb, ',')))->get());
         $aa = [];

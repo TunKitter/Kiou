@@ -57,7 +57,7 @@
                                 <li class="has-submenu">
                                     <a href="{{ route('course-list') }}">Courses<i class="fas fa-chevron-down"></i></a>
                                     <ul class="submenu">
-                                        <li><a href="{{ route('course-explore') }}">Explore Courses</a></li>
+                                        {{-- <li><a href="{{ route('course-explore') }}">Explore Courses</a></li> --}}
                                         <li class="has-submenu">
                                             <a href="#">Category Courses</a>
                                             <ul class="submenu">

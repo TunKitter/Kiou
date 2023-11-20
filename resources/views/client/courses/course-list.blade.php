@@ -228,7 +228,7 @@
 <div class="product-img">
 <a href="{{route('course-detail',$course->slug)}}">
 <span class="d-none course-link">{{$course->_id}}</span>
-<img class="img-fluid" alt src="{{ asset($course->image)}}">
+<img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
 </a>
 <div class="price">
 <h3>{{ $course->price}} <span>$99.00</span></h3>
@@ -629,7 +629,7 @@ else {
     </div>
     </div>
     </div>`
-            skip += 10
+            skip += take
             });
         }
             loading.style.display = 'none'
@@ -665,7 +665,7 @@ else {
 <div class="product">
 <div class="product-img">
 <a href="list/${element._id}">
-<img class="img-fluid" alt src="${element.image}">
+<img class="img-fluid" alt src="{{asset('course/thumbnail/')}}/${element.image}">
 </a>
 <div class="price">
 <h3>${element.price} <span>$99.00</span></h3>
@@ -720,7 +720,7 @@ else {
 </div>
 </div>
 </div>`
-            skip += 10
+            skip += take
             });
         }
             loading.style.display = 'none'

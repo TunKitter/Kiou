@@ -29,7 +29,7 @@
                                             <div class="tab-pane active" id="aboutme" role="tabpanel"
                                                 aria-labelledby="home-tab" tabindex="0">
                                                 <div class="profile-desk">
-                                                    <img src="{{$course->image}}" class="rounded rounded-circle">
+                                                    <img src="{{asset('course/thumbnail/'. $course->image)}}" class="rounded rounded-circle">
 <br><br>
                                                     <h5 class="text-uppercase fs-17 text-dark">{{$course->name}}</h5>
                                                     <div class="designation mb-4">{{$course->description}}</div>

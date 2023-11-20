@@ -72,7 +72,7 @@ body {
 <div class="product">
 <div class="product-img">
 <a href="course-details.html">
-<img class="img-fluid" alt src="{{$course->image}}">
+<img class="img-fluid" alt src="{{asset('course/thumbnail/'.$course->image)}}">
 </a>
 <div class="price">
 <h3 class="free-color">FREE</h3>
@@ -420,7 +420,7 @@ body {
    <div class="product-img">
    <a href="{{route('course-detail',$course->slug)}}">
    <span class="d-none course-link">{{$course->_id}}</span>
-   <img class="img-fluid" alt src="{{ asset($course->image)}}">
+   <img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
    </a>
    <div class="price">
    <h3>{{ $course->price}} <span>$99.00</span></h3>
@@ -505,7 +505,7 @@ body {
    <div class="product-img">
    <a href="{{route('course-detail',$course->slug)}}">
    <span class="d-none course-link">{{$course->_id}}</span>
-   <img class="img-fluid" alt src="{{ asset($course->image)}}">
+   <img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
    </a>
    <div class="price">
    <h3>{{ $course->price}} <span>$99.00</span></h3>
@@ -659,7 +659,7 @@ body {
 <div class="product">
 <div class="product-img">
 <a href="course-details.html">
-<img class="img-fluid" alt src="${element.image}">
+<img class="img-fluid" alt src="{{asset('course/thumbnail/')}}/${element.image}">
 </a>
 <div class="price">
 <h3 class="free-color">FREE</h3>

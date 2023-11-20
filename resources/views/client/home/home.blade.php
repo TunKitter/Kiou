@@ -66,7 +66,7 @@
 <li class="has-submenu">
 <a href="{{route('course-list')}}">Courses <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu">
-<li><a href="{{route('course-explore')}}">Explore Courses</a></li>
+{{-- <li><a href="{{route('course-explore')}}">Explore Courses</a></li> --}}
 <li class="has-submenu">
 <a href="instructor-list.html">Category Courses</a>
 <ul class="submenu">
@@ -128,7 +128,7 @@
                         <div class="avatar">
                             <a href="{{ route('course-detail', $cart->courses->slug) }}">
                                 <img alt
-                                    src="{{ asset($cart->courses->image) }}">
+                                    src="{{ asset('course/thumbnail/'.$cart->courses->image) }}">
                             </a>
                         </div>
                         <div class="media-body">
@@ -735,7 +735,7 @@
                                     
                                         <a href="{{route('course-detail',$course->slug)}}">
                                             <span class="d-none course-link">{{$course->_id}}</span>
-                                            <img class="img-fluid" style="width:300px" alt src="{{ asset($course->image)}}">
+                                            <img class="img-fluid" style="width:300px" alt src="{{asset('course/thumbnail/'.$course->image)}}">
                                         </a>
                                         <div class="price combo">
                                             <h3>{{ $course->price}} <span>$99.00</span></h3>
@@ -892,7 +892,7 @@
                         <div class="product trend-product">
                             <div class="product-img">
                                 <a href="{{route('course-detail',$course->slug)}}">
-                                    <img class="img-fluid" alt src="{{ asset($course->image)}}">
+                                    <img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
                                 </a>
                                 <div class="price">
                                     <h3>{{ $course->price}}<span>$99.00</span></h3>

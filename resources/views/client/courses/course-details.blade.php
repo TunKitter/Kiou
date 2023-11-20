@@ -239,7 +239,7 @@ display: none !important;
 <div class="play-icon">
 <i class="fa-solid fa-play" onclick="play_overview()"></i>
 </div>
-<img class src="{{asset('assets/img/video.jpg')}}"  id="video-overview">
+<img class src="{{asset('course/thumbnail/'. $course->image)}}"  id="video-overview">
 </a>
 <div class="video-details">
 <div class="course-fee">
@@ -298,16 +298,22 @@ display: none !important;
 </div>
 </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-
 [... document.querySelectorAll('#loading')].map(e => e.style.display = 'block')
 var mentor_pro = (document.querySelector('#mentor_profession'));
 var mentor_pro_string = mentor_pro.innerHTML
+var videoSrc = '{{$overview_video_path}}';
 mentor_pro.innerHTML = mentor_pro_string.substring(0,mentor_pro_string.lastIndexOf(','));
+var video = document.getElementById('video-overview');
 function play_overview(){
-    var video = document.getElementById('video-overview');
-    video.outerHTML = '<video id="video" style="width:100%;max-height:200px" autoplay controls src="{{$overview_video_path}}"></video>';
-    document.getElementById('video').play();
+    video.outerHTML = '<video id="video" style="width:100%;max-height:200px" autoplay controls></video>';
+  if (Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(document.getElementById('video'));
+  }
+// video.play();
 document.getElementsByClassName('play-icon')[0].style.display = 'none';
 
 }

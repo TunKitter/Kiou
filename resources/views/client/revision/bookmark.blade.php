@@ -304,7 +304,7 @@ $is_any_relearn = false;
 <div class="sell-table-group d-flex align-items-center">
 <div class="sell-group-img">
 <a href="course-details.html">
-<img src="https://picsum.photos/200" class="img-fluid " alt>
+<img src="{{asset('course/thumbnail/'.$bookmark[0][2])}}" class="img-fluid " alt>
 </a>
 </div>
 <div class="sell-tabel-info" style="max-width: 100%">

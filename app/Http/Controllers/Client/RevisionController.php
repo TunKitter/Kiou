@@ -22,7 +22,7 @@ class RevisionController extends Controller
         $bookmarks = (Bookmark::where('user_id', auth()->user()->id)->get());
         $result = [];
         foreach ($bookmarks as $bookmark) {
-            $result[$bookmark->lesson->course->name][] = [$bookmark->lesson->name, $bookmark->cards];
+            $result[$bookmark->lesson->course->name][] = [$bookmark->lesson->name, $bookmark->cards, $bookmark->lesson->course->image];
         }
         // dd($result);
         return view('client.revision.bookmark', compact('bookmarks', 'result'));
