@@ -88,49 +88,8 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <a href>Pages <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="notifications.html">Notification</a></li>
-                                        <li><a href="pricing-plan.html">Pricing Plan</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li class="has-submenu">
-                                            <a href="course-list.html">Course</a>
-                                            <ul class="submenu">
-                                                <li><a href="add-course.html">Add Course</a></li>
-                                                <li><a href="course-list.html">Course List</a></li>
-                                                <li><a href="course-grid.html">Course Grid</a></li>
-                                                <li><a href="course-details.html">Course Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="has-submenu">
-                                            <a href="come-soon.html">Error</a>
-                                            <ul class="submenu">
-                                                <li><a href="come-soon.html">Comeing soon</a></li>
-                                                <li><a href="error-404.html">404</a></li>
-                                                <li><a href="error-500.html">500</a></li>
-                                                <li><a href="under-construction.html">Under Construction</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="faq.html">FAQ</a></li>
-                                        <li><a href="support.html">Support</a></li>
-                                        <li><a href="job-category.html">Category</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="forgot-password.html">Forgot Password</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu">
-                                    <a href>Blog <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="blog-list.html">Blog List</a></li>
-                                        <li><a href="blog-grid.html">Blog Grid</a></li>
-                                        <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                        <li><a href="blog-modern.html">Blog Modern</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
+                                <li>
+                                    <a href="{{ route('blog')}}">Documentation</a>
                                 </li>
                                 <li class="login-link">
                                     <a href="login.html">Login / Signup</a>

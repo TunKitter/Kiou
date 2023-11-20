@@ -161,6 +161,6 @@ Route::group(['middleware' => 'auth.cart'], function () {
 });
 
 # ------------------------- Blog --------------------------------
-Route::get('/blog', [BlogController::class, 'Blog']);
+Route::get('/blog', [BlogController::class, 'Blog'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
 Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');
