@@ -45,6 +45,11 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="/moderation" class="nav-link">
+                                        <i class="feather-lock"></i> Profile Privacy
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="setting-student-security.html" class="nav-link">
                                         <i class="feather-user"></i> Security
                                     </a>
@@ -59,11 +64,7 @@
                                         <i class="feather-bell"></i> Notifications
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="setting-student-privacy.html" class="nav-link">
-                                        <i class="feather-lock"></i> Profile Privacy
-                                    </a>
-                                </li>
+                               
                                 <li class="nav-item">
                                     <a href="" class="nav-link">
                                         <i class="feather-trash-2"></i> Delete Profile

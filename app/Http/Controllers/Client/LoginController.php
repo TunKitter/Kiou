@@ -68,7 +68,7 @@ class LoginController extends Controller
             $ip_user = [];
         }
         // Đếm số ip cử 1 tài khoản
-       
+        $count_ip = count($ip_user);
         if (Auth::attempt($request->only('email', 'password'))) {
             //Kiểm tra thông tin trong ip user có ip đó chưa
             if (!(in_array($ip, $ip_user))) {
