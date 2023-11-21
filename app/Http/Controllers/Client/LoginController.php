@@ -84,9 +84,9 @@ class LoginController extends Controller
             }
         } else {
             return redirect()->back()->withInput($request->only('email'))->withErrors([
-                'email' => 'Thông tin đăng nhập không đúng.',
+                'email' => 'Login information is incorrect.',
             ]);
         }
-        return redirect()->route('home')->with('success', 'Đăng nhập thành công');
+        return redirect()->route('home')->with('success', 'Logged in successfully');
     }
 }

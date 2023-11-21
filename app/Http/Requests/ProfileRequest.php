@@ -33,12 +33,12 @@ class ProfileRequest extends FormRequest
             'profession' => $this->profession ? ['required'] : '',
         ];
     }
-    public function messages()
-    {
-        return (new AuthRequest())->messages();
-    }
-    public function attributes()
-    {
-        return (new AuthRequest())->attributes();
-    }
+    // public function messages()
+    // {
+    //     return (new AuthRequest())->messages();
+    // }
+    // public function attributes()
+    // {
+    //     return (new AuthRequest())->attributes();
+    // }
 }
