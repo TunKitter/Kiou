@@ -21,6 +21,9 @@ class CategoryController extends Controller
     {
         $key = array_keys(request()->all())[1];
         $value = request()->all()[array_keys(request()->all())[1]];
+        if ($key == 'parent_profession') {
+            $value = json_decode($value);
+        }
         Profession::find(request()->id)->update([
             $key => $value,
         ]);
@@ -28,6 +31,10 @@ class CategoryController extends Controller
     }
     public function add()
     {
-        return response()->json(['data' => Profession::create(request()->all())]);
+        $aa = Profession::create([
+            'name' => request()->name,
+            'parent_profession' => \json_decode(request()->profession),
+        ]);
+        return response()->json(['data' => $aa]);
     }
 }

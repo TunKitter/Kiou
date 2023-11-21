@@ -35,5 +35,6 @@ class VerifyCsrfToken extends Middleware
         '/admin/category/list/delete',
         '/admin/category/update',
         '/admin/category/add',
+        '/admin/notification',
     ];
 }

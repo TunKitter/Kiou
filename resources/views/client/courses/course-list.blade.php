@@ -142,23 +142,23 @@
     .mentor_load {
         border: none !important;
 
-        background: transparent !important;
-    }
-</style>
-@if ($message = Session::get('success'))
-@include('client.section.message', ['message' => $message,'type'=>'success'])
-@endif
-@if ($message = Session::get('cart_already'))
-@include('client.section.message', ['message' => $message,'type'=>'fail'])
-@endif
-<section class="course-content">
-<div class="container">
-<div class="row">
-<div class="col-lg-9">
+            background: transparent !important;
+        }
+    </style>
+    @if ($message = Session::get('success'))
+        @include('client.section.message', ['message' => $message, 'type' => 'success'])
+    @endif
+    @if ($message = Session::get('cart_already'))
+        @include('client.section.message', ['message' => $message, 'type' => 'fail'])
+    @endif
+    <section class="course-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
 
-<div class="showing-list">
-<div class="row">
-{{-- <div class="col-lg-6">
+                    <div class="showing-list">
+                        <div class="row">
+                            {{-- <div class="col-lg-6">
 <div class="d-flex align-items-center">
 <div class="show-result">
 <h4>Showing 1-9 of 50 results</h4>
@@ -203,22 +203,22 @@
 @endisset
 </div>
 
-<div class="col-lg-3">
-    <input type="submit" form="searchInput" class="btn btn-primary" value="Search"/>
-</div>
-</div>
-</div>
+                            <div class="col-lg-3">
+                                <input type="submit" form="searchInput" class="btn btn-primary" value="Search" />
+                            </div>
+                        </div>
+                    </div>
 
 
-<div class="row courses_parent">
-@isset($is_not_found)
-@if($is_not_found == true)
-<div class="text-danger text-center">There is no data available</div>
-<br><br><br>
-<h4>Some others you may like</h4>
-<br><br>
-@endisset
-@endif
+                    <div class="row courses_parent">
+                        @isset($is_not_found)
+                            @if ($is_not_found == true)
+                                <div class="text-danger text-center">There is no data available</div>
+                                <br><br><br>
+                                <h4>Some others you may like</h4>
+                                <br><br>
+                            @endisset
+                        @endif
 
 @isset($courses)
 @foreach ($courses as $course)
@@ -228,7 +228,7 @@
 <div class="product-img">
 <a href="{{route('course-detail',$course->slug)}}">
 <span class="d-none course-link">{{$course->_id}}</span>
-<img class="img-fluid" alt src="{{ asset($course->image)}}">
+<img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
 </a>
 <div class="price">
 <h3>{{ $course->price}} <span>$99.00</span></h3>
@@ -586,16 +586,15 @@ if(data.length == 0){
     is_no_more = true      
     }
 
-}
-else {
+                    } else {
 
-            data.forEach(element => {
-                courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex">
+                        data.forEach(element => {
+                            courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex">
     <div class="mentor_load course-box course-design list-course d-flex" style="border:none !important">
     <div class="product mentor_load">
     <div class="product-img">
     <a href="#">
-    <img class="img-fluid rounded-circle" style="width: 200px;height: 200px" alt src="{{asset('mentor/avatar/')}}/${element.image['avatar']}">
+    <img class="img-fluid rounded-circle" style="width: 200px;height: 200px" alt src="{{ asset('mentor/avatar/') }}/${element.image['avatar']}">
     </a>
     </div>
     <div class="product-content">
@@ -629,43 +628,43 @@ else {
     </div>
     </div>
     </div>`
-            skip += 10
+            skip += take
             });
         }
             loading.style.display = 'none'
             obj.disabled = false
 })
 
-    }
-@endisset
-@isset($courses)
-    function loadMore(obj) {
-        loading.style.display = 'block'
-        obj.disabled = true;
-        let formData = new FormData();
-    @isset($q)
-        formData.append('q', "{{$is_wrong_spell == '0' ? $q : $is_wrong_spell}}")
-    @endisset;
-fetch(`{{route("course-list")}}/${skip}/${take}`,{
-    method: "POST",
-    body: formData
-}).then(response => response.json()).then(data => {
-console.log(data);
-if(data.length == 0){
-    if(!is_no_more){
-     courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex text-muted">There is no data</div>`
-    is_no_more = true       
-    }
+            }
+        @endisset
+        @isset($courses)
+            function loadMore(obj) {
+                loading.style.display = 'block'
+                obj.disabled = true;
+                let formData = new FormData();
+                @isset($q)
+                    formData.append('q', "{{ $is_wrong_spell == '0' ? $q : $is_wrong_spell }}")
+                @endisset ;
+                fetch(`{{ route('course-list') }}/${skip}/${take}`, {
+                    method: "POST",
+                    body: formData
+                }).then(response => response.json()).then(data => {
+                    console.log(data);
+                    if (data.length == 0) {
+                        if (!is_no_more) {
+                            courses.innerHTML +=
+                                `<div class="col-lg-12 col-md-12 d-flex text-muted">There is no data</div>`
+                            is_no_more = true
+                        }
 
-}
-else {
-            data.forEach(element => {
-                courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex">
+                    } else {
+                        data.forEach(element => {
+                            courses.innerHTML += `<div class="col-lg-12 col-md-12 d-flex">
 <div class="course-box course-design list-course d-flex">
 <div class="product">
 <div class="product-img">
 <a href="list/${element._id}">
-<img class="img-fluid" alt src="${element.image}">
+<img class="img-fluid" alt src="{{asset('course/thumbnail/')}}/${element.image}">
 </a>
 <div class="price">
 <h3>${element.price} <span>$99.00</span></h3>
@@ -720,19 +719,19 @@ else {
 </div>
 </div>
 </div>`
-            skip += 10
+            skip += take
             });
         }
             loading.style.display = 'none'
             obj.disabled = false
 })
 
-    }
-@endisset
-const API_KEY = 'AIzaSyBFUaOX3h_CxqI6Q6DtaMwNBj4Le3TV-NQ'
-const search_input = document.querySelector('#search')
-const is_wrong_spell = document.querySelector('#is_wrong_spell')
-const training_senteces = `
+            }
+        @endisset
+        const API_KEY = 'AIzaSyBFUaOX3h_CxqI6Q6DtaMwNBj4Le3TV-NQ'
+        const search_input = document.querySelector('#search')
+        const is_wrong_spell = document.querySelector('#is_wrong_spell')
+        const training_senteces = `
 input: Pithon and Vietnemae
 output: Python and Vietnamese
 input: Englisdhsh
@@ -750,8 +749,8 @@ output: Javascript,Laravel
 input: javascript,laravel,MongodBb
 output: Javascript, Laravel, Mongo DB 
 input:`
-const is_mentor_or_course = 
-`input: laravel
+        const is_mentor_or_course =
+            `input: laravel
 output: course
 input: mongodb
 output: course

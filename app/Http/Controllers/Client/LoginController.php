@@ -70,22 +70,28 @@ class LoginController extends Controller
         // Đếm số ip cử 1 tài khoản
         $count_ip = count($ip_user);
         if (Auth::attempt($request->only('email', 'password'))) {
+            //Kiểm tra thông tin trong ip user có ip đó chưa
             if (!(in_array($ip, $ip_user))) {
+                //Kiểm tra số lượng ip người dùng đã đến giới hạn chưa
                 if ($count_ip < $limit) {
                     User::where('email', $findEmail)->push(
                         'ip',
                         [$request->ip()]
                     );
                 } else {
+                    //Bắt lỗi tài khoảng cộng đồng
                     User::where('email', $findEmail)->update(
                         ['role' => ['652a9a45835ceedb746a99ef']]
                     );
                 }
             }
+           
         } else {
+
             return redirect()->back()->withInput($request->only('email'))->withErrors([
                 'email' => 'Login information is incorrect.',
             ]);
+
         }
         return redirect()->route('home')->with('success', 'Logged in successfully');
     }

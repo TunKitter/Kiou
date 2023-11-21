@@ -12,9 +12,6 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    public function create () {
-        return view('client.courses.create-course');
-    }
     public function list(Request $request)
     {
         // dd(request()->all());

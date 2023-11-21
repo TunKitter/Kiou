@@ -13,6 +13,7 @@ class Enrollment extends Model
         "lesson_id",
         "user_id",
         "price",
+        "state"
 
     ];
 

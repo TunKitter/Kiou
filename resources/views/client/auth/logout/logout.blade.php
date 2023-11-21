@@ -23,7 +23,7 @@
     <form method="POST">
         @csrf
 
-<button class="btn btn-primary">Yes</button>
+<button class="btn btn-primary" id="submitButton">Yes</button>
     </form>
 </div>
 </div>
@@ -35,4 +35,11 @@
 </div>
 </div>
 </div>
+<script>
+    const submitButton = document.getElementById('submitButton');
+        submitButton.addEventListener('click', function() {
+            document.cookie = 'requestCount=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'start_time=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        });
+</script>
 @endsection
