@@ -12336,6 +12336,9 @@ input[type="password"]::-ms-clear {
 .course-design .price h3 {
     font-size: 20px;
 }
+.course-design .price h4{
+    font-size: 13px;
+}
 .price {
     min-width: 140px;
     padding: 6px 15px;
@@ -15392,6 +15395,13 @@ input[type="password"]::-ms-clear {
     width: 240px;
     position: relative;
 }
+.list-course .product-checkout{
+    -ms-flex: 0 0 240px;
+    flex: 0 0 160px;
+    margin-right: 24px;
+    width: 240px;
+    position: relative;
+}
 .head-course-title {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -17178,6 +17188,7 @@ input[type="password"]::-ms-clear {
 }
 .plan-header {
     background: #392c7d;
+    border-radius: 8px;
 }
 .plan-header h4 {
     font-size: 24px;
@@ -17277,6 +17288,11 @@ input[type="password"]::-ms-clear {
     font-weight: 700;
     margin-bottom: 30px;
 }
+.benifits-feature h4{
+    font-size: 15px;
+
+}
+
 .benifits-feature ul li {
     font-size: 14px;
     color: #685f78;

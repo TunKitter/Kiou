@@ -14,7 +14,6 @@ class CartController extends Controller
 
         $userId = Auth::id();
         $carts = Enrollment::where('user_id', $userId)->get();
-
         return view('client.cart.cart', compact('carts'));
     }
 
@@ -35,7 +34,6 @@ class CartController extends Controller
             return redirect()->back()->with('cart_already', 'The course already exists in the shopping cart.');
         } else {
             Enrollment::create($data);
-
             return redirect()->back()->with('success', 'Add to cart successfully');
         }
     }

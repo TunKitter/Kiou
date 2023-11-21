@@ -98,6 +98,9 @@
                         </div>
                         @auth
                             @inject('carts', 'App\Models\Enrollment')
+                            @php
+                                $total = 0;
+                            @endphp
                             <ul class="nav header-navbar-rht">
                                 <li class="nav-item cart-nav">
                                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
@@ -105,50 +108,68 @@
                                     </a>
                                     <div class="wishes-list dropdown-menu dropdown-menu-right">
                                         <div class="wish-header">
-                                            <a href="{{route('cart')}}">See all</a>
-                                            {{-- <a href="javascript:void(0)" class="float-end">See all</a> --}}
+                                            <a href="{{ route('cart') }}">View Cart</a>
+                                            {{-- <a href="javascript:void(0)" class="float-end">Checkout</a> --}}
+                                            @if ($carts::where('user_id', auth()->id())->get()->count() > 0)
+                                                    <form action="{{ route('checkout') }}" method="POST" style="display: contents">
+                                                        @csrf
+                                                        <input type="hidden" id="inputInsideForm" name="information_cart">
+                                                        <button type="submit" class="btn float-end" onclick="chuyenDuLieu()">Checkout</button>
+                                                    </form>
+                                            @endif
                                         </div>
                                         <div class="wish-content">
                                             <ul>
-                                                @php
-                                                $total = 0;      
-                                              @endphp
-                                              @if($carts::where('user_id', auth()->id())->get()->count() > 0)
-                                                    @foreach($carts::where('user_id', auth()->id())->get() as $cart)
-                                                    <li>
-                                                        <div class="media">
-                                                            <div class="d-flex media-wide">
-                                                                <div class="avatar">
-                                                                    <a href="{{ route('course-detail', $cart->courses->slug) }}">
-                                                                        <img alt
-                                                                            src="{{ asset($cart->courses->image) }}">
-                                                                    </a>
+                                                @if (
+                                                    $carts
+                                                        ::where('user_id', auth()->id())->get()->count() > 0)
+                                                    @foreach ($carts::where('user_id', auth()->id())->get() as $cart)
+                                                        @php
+                                                            $tempCart = $cart;
+                                                            $tempCart['img'] = $cart->courses->image;
+                                                        @endphp
+                                                        <input type="hidden" class="inputOutsideForm" id="inputOutsideForm" name="inputOutsideForm" value="{{$tempCart}}">
+                                                        <li>
+                                                            <div class="media">
+                                                                <div class="d-flex media-wide">
+                                                                    <div class="avatar">
+                                                                        <a
+                                                                            href="{{ route('course-detail', $cart->courses->slug) }}">
+                                                                            <img alt
+                                                                                src="{{ asset('course/thumbnail/'.$cart->courses->image) }}">
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <h6><a
+                                                                                href="{{ route('course-detail', $cart->courses->slug) }}">{{ $cart->courses->name }}</a>
+                                                                        </h6>
+                                                                        <p>By {{ $cart->courses->mentor->name }}</p>
+                                                                        <h5>$ {{ $cart->courses->price }}
+                                                                            <span>$99.00</span>
+                                                                        </h5>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="media-body">
-                                                                    <h6><a href="{{ route('course-detail', $cart->courses->slug) }}">{{$cart->courses->name}}</a></h6>
-                                                                    <p>By {{$cart->courses->mentor->name}}</p>
-                                                                    <h5>$ {{$cart->courses->price}} <span>$99.00</span></h5>
+                                                                <div class="remove-btn">
+                                                                    <form action="{{ route('delete-cart', $cart->_id) }}"
+                                                                        method="POST">
+                                                                        @csrf
+
+                                                                        <button type="submit"
+                                                                            class="btn">Remove</button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
-                                                            <div class="remove-btn">
-                                                                <form action="{{route('delete-cart', $cart->_id)}}" method="POST">
-                                                                    @csrf
-                                                                    
-                                                                    <button type="submit" class="btn">Remove</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    @php 
-                                                    $total += ($cart->courses->price );
-                                                    @endphp
+                                                        </li>
+                                                        @php
+                                                            $total += $cart->courses->price;
+                                                        @endphp
                                                     @endforeach
                                                 @else
-                                                <p class="text-center pt-2"><b>Your shopping cart is empty</b></p>
+                                                    <p class="text-center pt-2"><b>Your shopping cart is empty</b></p>
                                                 @endif
                                             </ul>
                                             <div class="total-item">
-                                                <h5>Total : $ {{$total}}</h5>
+                                                <h5>Total : $ {{ $total }}</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -340,6 +361,7 @@
                                         </div>
                                         <a class="dropdown-item" href="{{ route('profile') }}"><i
                                                 class="feather-user me-1"></i>Profile</a>
+
                                         @if (auth()->user()->mentor)
                                             <a class="dropdown-item" href="{{ route('mentor-profile') }}"><i
                                                     class="feather-user me-1"></i> Mentor Profile <img
@@ -353,6 +375,22 @@
                                                 </div>
                                             </a>
                                         @endif
+                                        @php
+                                            $test = false;
+                                            foreach (auth()->user()->role as $role) {
+                                                if ($role == '65531d75139d10c7eb364114') {
+                                                    $test = true;
+                                                }
+                                            }
+                                        @endphp
+
+                                        @if ($test)
+                                            <a class="dropdown-item" href="{{ route('moderation') }}"><i
+                                                    class="feather-clipboard"></i>Moderation</a>
+                                        @endif
+
+
+
                                         {{-- <div class="dropdown-item night-mode">
 <span><i class="feather-moon me-1"></i> Night Mode </span>
 <div class="form-check form-switch check-on m-0">
@@ -379,3 +417,16 @@
                 </nav>
             </div>
         </header>
+        <script>
+            function chuyenDuLieu() {
+            // Lấy giá trị từ tất cả các trường ngoài form và phân tách chúng bằng dấu phẩy
+            var giaTriNgoaiFormList = document.querySelectorAll('.inputOutsideForm');
+            var giaTriChuoi = Array.from(giaTriNgoaiFormList).map(function(element) {
+                return element.value;
+            }).join(',');
+
+            // Thiết lập giá trị cho trường trong form
+            document.getElementById("inputInsideForm").value = giaTriChuoi;
+        }
+    
+        </script>

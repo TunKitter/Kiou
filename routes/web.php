@@ -8,17 +8,20 @@ use App\Http\Controllers\Admin\RoadMapController as AdminRoadmapController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\CourseController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\LessonController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
+use App\Http\Controllers\Client\ModerationController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
 use App\Http\Controllers\Client\RoadMapController;
+use App\Http\Controllers\Client\StripeController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -158,6 +161,24 @@ Route::group(['middleware' => 'auth.cart'], function () {
     Route::get('cart', [CartController::class, 'index'])->name('cart');
     Route::post('cart/add', [CartController::class, 'store'])->name('add-to-cart');
     Route::post('cart/delete/{id}', [CartController::class, 'delete'])->name('delete-cart');
+});
+# ------------------------- Pay Stripe --------------------------------
+Route::group(['middleware' => 'auth.cart'], function () {
+    Route::post('checkout', [CheckoutController::class, 'index'])->name('checkout');
+});
+
+# ------------------------- Pay Stripe --------------------------------
+
+Route::controller(StripeController::class)->group(function () {
+    Route::post('/stripe', 'stripe')->name('stripe');
+    Route::get('/success', 'success')->name('success');
+    Route::get('/cancel', 'cancel')->name('cancel');
+
+});
+
+# ------------------------- Moderation --------------------------------
+Route::middleware('auth')->group(function () {
+    Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation');
 });
 
 # ------------------------- Blog --------------------------------
