@@ -52,7 +52,7 @@
                                                 <p>
                                                 {{$blog->description}}
                                                 </p>
-                                                <a href="{{route('blog.detail',['slug' => $blog->slug])}}" class="read-more btn btn-primary">Read More</a>
+                                                <a href="{{route('blog-detail',['slug' => $blog->slug])}}" class="read-more btn btn-primary">Read More</a>
                                             </div>
                                         </div>
                                     </div>

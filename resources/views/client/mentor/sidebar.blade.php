@@ -15,7 +15,7 @@
                     <p>Mentor</p>
                 </div>
                 <div class="go-dashboard text-center">
-                    <a href="deposit-student-dashboard.html" class="btn btn-primary">Create New Course</a>
+                    <a href="{{route('course-add')}}" class="btn btn-primary">Create New Course</a>
                 </div>
             </div>
         </div>

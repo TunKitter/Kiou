@@ -47,7 +47,7 @@
                                 </span>
                             </a>
                             <a href="index.html" class="navbar-brand logo">
-                                <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+                                <img src="{{asset('assets/img/logo.png')}}" class="img-fluid" alt="Logo">
                             </a>
                         </div>
                         <div class="main-menu-wrapper">
@@ -1716,11 +1716,22 @@
 
                             <div class="footer-widget footer-about">
                                 <div class="footer-logo">
-                                    <img src="assets/img/logo.svg" alt="logo">
+                                    <img src="assets/img/logo.png" alt="logo">
                                 </div>
-                                <div class="footer-about-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
+                                <div class="footer-contact-info">
+                                    <div class="footer-address">
+                                        <img src="assets/img/icon/icon-20.svg" alt class="img-fluid">
+                                        <p>Đ. So 22, Thuong Thanh, Cai Rang,<br> Can Tho, Vietnam </p>
+                                    </div>
+                                    <p>
+                                        <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
+                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                            data-cfemail="d9bdabbcb8b4aab5b4aa99bca1b8b4a9b5bcf7bab6b4">haudxpc04339@fpt.edu.vn</a>
+                                    </p>
+                                    <p class="mb-0">
+                                        <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
+                                        +0377 531 342
+                                    </p>
                                 </div>
                             </div>
 
@@ -1763,21 +1774,7 @@
                                             placeholder="Enter your email address" name="email">
                                     </form>
                                 </div>
-                                <div class="footer-contact-info">
-                                    <div class="footer-address">
-                                        <img src="assets/img/icon/icon-20.svg" alt class="img-fluid">
-                                        <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                    </div>
-                                    <p>
-                                        <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
-                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                            data-cfemail="d9bdabbcb8b4aab5b4aa99bca1b8b4a9b5bcf7bab6b4">[email&#160;protected]</a>
-                                    </p>
-                                    <p class="mb-0">
-                                        <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
-                                        +19 123-456-7890
-                                    </p>
-                                </div>
+                               
                             </div>
 
                         </div>
@@ -1791,17 +1788,10 @@
 
                     <div class="copyright">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="privacy-policy">
-                                    <ul>
-                                        <li><a href="term-condition.html">Terms</a></li>
-                                        <li><a href="privacy-policy.html">Privacy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="copyright-text">
-                                    <p class="mb-0">&copy; 2023 DreamsLMS. All rights reserved.</p>
+                           
+                            <div class="col-md-12 ">
+                                <div class="copyright-text ">
+                                    <p class="mb-0 text-center">&copy; 2023 KIOU</p>
                                 </div>
                             </div>
                         </div>

@@ -43,10 +43,10 @@
                         <!-- Logo light -->
                         <a href="index.html" class="logo-light">
                             <span class="logo-lg">
-                                <img src="{{asset('assets/images/logo.png')}}" alt="logo">
+                                <img src="{{asset('assets/img/logo.png')}}" alt="logo">
                             </span>
                             <span class="logo-sm">
-                                <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
+                                <img src="{{asset('assets/img/logo.png')}}" alt="small logo">
                             </span>
                         </a>
 
@@ -389,7 +389,7 @@
                                     class="rounded-circle">
                             </span>
                             <span class="d-lg-block d-none">
-                                <h5 class="my-0 fw-normal">Thomson <i
+                                <h5 class="my-0 fw-normal">Xuân Hậu <i
                                         class="ri-arrow-down-s-line d-none d-sm-inline-block align-middle"></i></h5>
                             </span>
                         </a>
@@ -440,13 +440,14 @@
         <div class="leftside-menu">
 
             <!-- Brand Logo Light -->
-            <a href="index.html" class="logo logo-light">
-                <span class="logo-lg">
-                    <img src="{{asset('assets/images/logo.png')}}" alt="logo">
+            <a href="index.html" class="logo logo-light h1">
+                KIOU
+                {{-- <span class="logo-lg">
+                    <img src="{{asset('assets/img/logo.png')}}" alt="logo">
                 </span>
                 <span class="logo-sm">
-                    <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
-                </span>
+                    <img src="{{asset('assets/img/logo.png')}}" alt="small logo">
+                </span> --}}
             </a>
 
             <!-- Brand Logo Dark -->

@@ -15,6 +15,7 @@ use App\Http\Controllers\Client\LessonController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
+use App\Http\Controllers\Client\MentorVideoController;
 use App\Http\Controllers\Client\ModerationController;
 use App\Http\Controllers\Client\PasswordController;
 use App\Http\Controllers\Client\ProfileController;
@@ -60,7 +61,11 @@ Route::post('/admin/notification', function () {
 
 Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
 Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
-Route::post('/admin/posts/list', [PostController::class, 'create'])->name('post.create');
+Route::get('/admin/posts/create', [PostController::class, 'create'])->name('post-create');
+Route::post('/admin/posts/create', [PostController::class, 'store'])->name('post-store');
+Route::get('/admin/posts/edit/{slug}', [PostController::class, 'edit'])->name('post-edit');
+Route::post('/admin/posts/edit/{slug}', [PostController::class, 'update'])->name('post-update');
+Route::post('/admin/posts/list/{id}', [PostController::class, 'delete'])->name('post-delete');
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -117,9 +122,10 @@ Route::get('/mentor/success', [MentorController::class, 'success'])->name('mento
 Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
 Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
-Route::get('/mentor/dashboard', [MentorController::class, 'dashboard'])->name('mentor-dashboard')->middleware('auth');
+Route::get('/mentor/dashboard', [MentorVideoController::class, 'dashboard'])->name('mentor-dashboard')->middleware('auth');
 
 # ------------------------- Course --------------------------------
+Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
@@ -183,5 +189,5 @@ Route::middleware('auth')->group(function () {
 
 # ------------------------- Blog --------------------------------
 Route::get('/blog', [BlogController::class, 'Blog'])->name('blog');
-Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
+Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog-detail');
 Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');

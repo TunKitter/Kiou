@@ -229,10 +229,8 @@
     <script src="{{asset('assets/js/app.min.js')}}"></script>
 <script src="{{assert('assets/vendor/jquery-toast-plugin/jquery.toast.min.js')}}"></script>
 <script src="{{asset('assets/js/pages/toastr.init.js')}}"></script>
-
-<script src="{{asset('assets/vendor/select2/js/select2.min.js')}}"></script>
-
 @stack('script')
+<script src="{{asset('assets/vendor/select2/js/select2.min.js')}}"></script>
 </body>
 
 </html>
