@@ -47,7 +47,7 @@
 </span>
 </a>
 <a href="index.html" class="navbar-brand logo">
-<img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
 </a>
 </div>
 <div class="main-menu-wrapper">
@@ -97,40 +97,7 @@
 </li>
 </ul>
 </li>
-<li class="has-submenu">
-<a href>Pages <i class="fas fa-chevron-down"></i></a>
-<ul class="submenu">
-<li><a href="notifications.html">Notification</a></li>
-<li><a href="pricing-plan.html">Pricing Plan</a></li>
-<li><a href="wishlist.html">Wishlist</a></li>
-<li class="has-submenu">
-<a href="course-list.html">Course</a>
-<ul class="submenu">
-<li><a href="add-course.html">Add Course</a></li>
-<li><a href="course-list.html">Course List</a></li>
-<li><a href="course-grid.html">Course Grid</a></li>
-<li><a href="course-details.html">Course Details</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a href="come-soon.html">Error</a>
-<ul class="submenu">
-<li><a href="come-soon.html">Comeing soon</a></li>
-<li><a href="error-404.html">404</a></li>
-<li><a href="error-500.html">500</a></li>
-<li><a href="under-construction.html">Under Construction</a></li>
-</ul>
-</li>
-<li><a href="faq.html">FAQ</a></li>
-<li><a href="support.html">Support</a></li>
-<li><a href="job-category.html">Category</a></li>
-<li><a href="cart.html">Cart</a></li>
-<li><a href="checkout.html">Checkout</a></li>
-<li><a href="login.html">Login</a></li>
-<li><a href="register.html">Register</a></li>
-<li><a href="forgot-password.html">Forgot Password</a></li>
-</ul>
-</li>
+
 <li class="has-submenu">
 <a href>Blog <i class="fas fa-chevron-down"></i></a>
 <ul class="submenu">
@@ -141,6 +108,40 @@
 <li><a href="blog-details.html">Blog Details</a></li>
 </ul>
 </li>
+<li class="has-submenu">
+    <a href>More<i class="fas fa-chevron-down"></i></a>
+    <ul class="submenu">
+    <li><a href="notifications.html">Notification</a></li>
+    <li><a href="pricing-plan.html">Pricing Plan</a></li>
+    <li><a href="wishlist.html">Wishlist</a></li>
+    <li class="has-submenu">
+    <a href="course-list.html">Course</a>
+    <ul class="submenu">
+    <li><a href="add-course.html">Add Course</a></li>
+    <li><a href="course-list.html">Course List</a></li>
+    <li><a href="course-grid.html">Course Grid</a></li>
+    <li><a href="course-details.html">Course Details</a></li>
+    </ul>
+    </li>
+    <li class="has-submenu">
+    <a href="come-soon.html">Error</a>
+    <ul class="submenu">
+    <li><a href="come-soon.html">Comeing soon</a></li>
+    <li><a href="error-404.html">404</a></li>
+    <li><a href="error-500.html">500</a></li>
+    <li><a href="under-construction.html">Under Construction</a></li>
+    </ul>
+    </li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="support.html">Support</a></li>
+    <li><a href="job-category.html">Category</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li><a href="checkout.html">Checkout</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="register.html">Register</a></li>
+    <li><a href="forgot-password.html">Forgot Password</a></li>
+    </ul>
+    </li>
 <li class="login-link">
 <a href="login.html">Login / Signup</a>
 </li>
@@ -1689,11 +1690,22 @@
 
                             <div class="footer-widget footer-about">
                                 <div class="footer-logo">
-                                    <img src="assets/img/logo.svg" alt="logo">
+                                    <img src="assets/img/logo.png" alt="logo">
                                 </div>
-                                <div class="footer-about-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
+                                <div class="footer-contact-info">
+                                    <div class="footer-address">
+                                        <img src="assets/img/icon/icon-20.svg" alt class="img-fluid">
+                                        <p>Đ. So 22, Thuong Thanh, Cai Rang,<br> Can Tho, Vietnam </p>
+                                    </div>
+                                    <p>
+                                        <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
+                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                            data-cfemail="d9bdabbcb8b4aab5b4aa99bca1b8b4a9b5bcf7bab6b4">haudxpc04339@fpt.edu.vn</a>
+                                    </p>
+                                    <p class="mb-0">
+                                        <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
+                                        +0377 531 342
+                                    </p>
                                 </div>
                             </div>
 
@@ -1736,21 +1748,7 @@
                                             placeholder="Enter your email address" name="email">
                                     </form>
                                 </div>
-                                <div class="footer-contact-info">
-                                    <div class="footer-address">
-                                        <img src="assets/img/icon/icon-20.svg" alt class="img-fluid">
-                                        <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                    </div>
-                                    <p>
-                                        <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
-                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                            data-cfemail="d9bdabbcb8b4aab5b4aa99bca1b8b4a9b5bcf7bab6b4">[email&#160;protected]</a>
-                                    </p>
-                                    <p class="mb-0">
-                                        <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
-                                        +19 123-456-7890
-                                    </p>
-                                </div>
+                               
                             </div>
 
                         </div>
@@ -1764,17 +1762,10 @@
 
                     <div class="copyright">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="privacy-policy">
-                                    <ul>
-                                        <li><a href="term-condition.html">Terms</a></li>
-                                        <li><a href="privacy-policy.html">Privacy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="copyright-text">
-                                    <p class="mb-0">&copy; 2023 DreamsLMS. All rights reserved.</p>
+                           
+                            <div class="col-md-12 ">
+                                <div class="copyright-text ">
+                                    <p class="mb-0 text-center">&copy; 2023 KIOU</p>
                                 </div>
                             </div>
                         </div>

@@ -38,7 +38,11 @@ Route::post('/admin/category/add', [CategoryController::class, 'add'])->name('ad
 
 Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
 Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
-Route::post('/admin/posts/list', [PostController::class, 'create'])->name('post.create');
+Route::get('/admin/posts/create', [PostController::class, 'create'])->name('post-create');
+Route::post('/admin/posts/create', [PostController::class, 'store'])->name('post-store');
+Route::get('/admin/posts/edit/{slug}', [PostController::class, 'edit'])->name('post-edit');
+Route::post('/admin/posts/edit/{slug}', [PostController::class, 'update'])->name('post-update');
+Route::post('/admin/posts/list/{id}', [PostController::class, 'delete'])->name('post-delete');
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -144,5 +148,5 @@ Route::group(['middleware' => 'auth.cart'], function () {
 
 # ------------------------- Blog --------------------------------
 Route::get('/blog', [BlogController::class, 'Blog']);
-Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
+Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog-detail');
 Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');

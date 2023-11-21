@@ -16,7 +16,7 @@
 
     <!-- App css -->
     <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" id="app-style" />
-
+   
     <!-- Icons css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
         integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg=="
@@ -39,10 +39,10 @@
                         <!-- Logo light -->
                         <a href="index.html" class="logo-light">
                             <span class="logo-lg">
-                                <img src="{{asset('assets/images/logo.png')}}" alt="logo">
+                                <img src="{{asset('assets/img/logo.png')}}" alt="logo">
                             </span>
                             <span class="logo-sm">
-                                <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
+                                <img src="{{asset('assets/img/logo.png')}}" alt="small logo">
                             </span>
                         </a>
 
@@ -385,7 +385,7 @@
                                     class="rounded-circle">
                             </span>
                             <span class="d-lg-block d-none">
-                                <h5 class="my-0 fw-normal">Thomson <i
+                                <h5 class="my-0 fw-normal">Xuân Hậu <i
                                         class="ri-arrow-down-s-line d-none d-sm-inline-block align-middle"></i></h5>
                             </span>
                         </a>
@@ -436,13 +436,14 @@
         <div class="leftside-menu">
 
             <!-- Brand Logo Light -->
-            <a href="index.html" class="logo logo-light">
-                <span class="logo-lg">
-                    <img src="{{asset('assets/images/logo.png')}}" alt="logo">
+            <a href="index.html" class="logo logo-light h1">
+                KIOU
+                {{-- <span class="logo-lg">
+                    <img src="{{asset('assets/img/logo.png')}}" alt="logo">
                 </span>
                 <span class="logo-sm">
-                    <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
-                </span>
+                    <img src="{{asset('assets/img/logo.png')}}" alt="small logo">
+                </span> --}}
             </a>
 
             <!-- Brand Logo Dark -->
