@@ -126,6 +126,7 @@ Route::get('/mentor/dashboard', [MentorVideoController::class, 'dashboard'])->na
 
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
+Route::post('course/add', [MentorVideoController::class, 'uploadVideo']);
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');

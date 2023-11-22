@@ -1,5 +1,6 @@
 @extends('client.layouts.master')
 @section('content')
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 <section class="page-content course-sec">
     <div class="container">
       <div class="row align-items-center">
@@ -66,28 +67,43 @@
                             >Courses Category</label
                           >
                           <select class="form-control select">
-                            <option>Category 01</option>
-                            <option>Category 02</option>
-                            <option>Category 03</option>
-                            <option>Category 04</option>
+                              @foreach ($professions as $profession)
+                                <option value="{{$profession->id}}}}">{{$profession->name}}</option>
+                              @endforeach
                           </select>
+                        </div>
+<div class="form-group mb-0">
+                          <label class="add-course-label">Price</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="10.00"
+                          />
                         </div>
                         <div class="form-group">
                           <label class="add-course-label"
                             >Courses Level</label
                           >
                           <select class="form-control select">
-                            <option>Level 01</option>
-                            <option>Level 02</option>
-                            <option>Level 03</option>
-                            <option>Level 04</option>
+                            @foreach ($levels as $level )
+                              <option value="{{$level->id}}">{{$level->name}}</option>
+                            @endforeach
                           </select>
                         </div>
                         <div class="form-group mb-0">
                           <label class="add-course-label"
-                            >Course Description</label
-                          >
-                          <div id="editor"></div>
+                            >Course Description</label>
+                          <textarea name="description" class="form-control" cols="30" rows="10"></textarea>
+                        </div>
+<br>
+                        <div class="form-group mb-0">
+                          <label class="add-course-label">Requirements</label>
+                          <textarea name="requirements" class="form-control"  cols="30" rows="10"></textarea>
+                        </div>
+<br>
+                        <div class="form-group mb-0">
+                          <label class="add-course-label">What students will learn</label>
+                          <textarea name="will_learn" class="form-control" cols="30" rows="10"></textarea>
                         </div>
                       </form>
                     </div>
@@ -109,31 +125,8 @@
                             >Course cover image</label
                           >
                           <div class="relative-form">
-                            <span>No File Selected</span>
-                            <label class="relative-file-upload">
-                              Upload File <input type="file" />
+                              <input type="file"  class="form-control"/>
                             </label>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="add-image-box">
-                            <a href="javascript:void(0);">
-                              <i class="far fa-image"></i>
-                            </a>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Video URL"
-                          />
-                        </div>
-                        <div class="form-group">
-                          <div class="add-image-box add-video-box">
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-circle-play"></i>
-                            </a>
                           </div>
                         </div>
                       </form>
@@ -150,383 +143,26 @@
                       <h4>Curriculum</h4>
                     </div>
                     <div class="add-course-section">
-                      <a href="javascript:void(0);" class="btn"
-                        >Add Section</a
-                      >
+                      <button class="btn" onclick="addSection(this)">Add Section</button>
                     </div>
-                    <div class="add-course-form">
-                      <div class="curriculum-grid">
-                        <div class="curriculum-head">
-                          <p>Section 1: Introduction</p>
-                          <a href="javascript:void(0);" class="btn"
-                            >Add Lecture</a
-                          >
-                        </div>
-                        <div class="curriculum-info">
-                          <div id="accordion">
-                            <div class="faq-grid">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapseOne"
-                                >
-                                  <i class="fas fa-align-justify"></i>
-                                  Introduction
-                                </a>
-                                <div class="faq-right">
-                                  <a href="javascript:void(0);">
-                                    <i
-                                      class="far fa-pen-to-square me-1"
-                                    ></i>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapseOne"
-                                class="collapse"
-                                data-bs-parent="#accordion"
-                              >
-                                <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn"
-                                      >Add Article</a
-                                    >
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn me-0"
-                                      >Add Description</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="faq-grid">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapseTwo"
-                                >
-                                  <i class="fas fa-align-justify"></i>
-                                  Installing Development Software
-                                </a>
-                                <div class="faq-right">
-                                  <a href="javascript:void(0);">
-                                    <i
-                                      class="far fa-pen-to-square me-1"
-                                    ></i>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapseTwo"
-                                class="collapse"
-                                data-bs-parent="#accordion"
-                              >
-                                <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn"
-                                      >Add Article</a
-                                    >
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn me-0"
-                                      >Add Description</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="faq-grid mb-0">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapseThree"
-                                >
-                                  <i class="fas fa-align-justify"></i> Hello
-                                  World Project from GitHub
-                                </a>
-                                <div class="faq-right">
-                                  <a href="javascript:void(0);">
-                                    <i
-                                      class="far fa-pen-to-square me-1"
-                                    ></i>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapseThree"
-                                class="collapse"
-                                data-bs-parent="#accordion"
-                              >
-                                <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn"
-                                      >Add Article</a
-                                    >
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn me-0"
-                                      >Add Description</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="curriculum-grid mb-0">
-                        <div class="curriculum-head">
-                          <p>Section 1: JavaScript Beginnings</p>
-                          <a href="javascript:void(0);" class="btn"
-                            >Add Lecture</a
-                          >
-                        </div>
-                        <div class="curriculum-info">
-                          <div id="accordion-one">
-                            <div class="faq-grid">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapseFour"
-                                >
-                                  <i class="fas fa-align-justify"></i>
-                                  Introduction
-                                </a>
-                                <div class="faq-right">
-                                  <a href="javascript:void(0);">
-                                    <i
-                                      class="far fa-pen-to-square me-1"
-                                    ></i>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapseFour"
-                                class="collapse"
-                                data-bs-parent="#accordion-one"
-                              >
-                                <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn"
-                                      >Add Article</a
-                                    >
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn me-0"
-                                      >Add Description</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="faq-grid">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapseFive"
-                                >
-                                  <i class="fas fa-align-justify"></i>
-                                  Installing Development Software
-                                </a>
-                                <div class="faq-right">
-                                  <a href="javascript:void(0);">
-                                    <i
-                                      class="far fa-pen-to-square me-1"
-                                    ></i>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapseFive"
-                                class="collapse"
-                                data-bs-parent="#accordion-one"
-                              >
-                                <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn"
-                                      >Add Article</a
-                                    >
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn me-0"
-                                      >Add Description</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="faq-grid">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapseSix"
-                                >
-                                  <i class="fas fa-align-justify"></i> Hello
-                                  World Project from GitHub
-                                </a>
-                                <div class="faq-right">
-                                  <a href="javascript:void(0);">
-                                    <i
-                                      class="far fa-pen-to-square me-1"
-                                    ></i>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapseSix"
-                                class="collapse"
-                                data-bs-parent="#accordion-one"
-                              >
-                                <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn"
-                                      >Add Article</a
-                                    >
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn me-0"
-                                      >Add Description</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="faq-grid mb-0">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapseSeven"
-                                >
-                                  <i class="fas fa-align-justify"></i> Our
-                                  Sample Website
-                                </a>
-                                <div class="faq-right">
-                                  <a href="javascript:void(0);">
-                                    <i
-                                      class="far fa-pen-to-square me-1"
-                                    ></i>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapseSeven"
-                                class="collapse"
-                                data-bs-parent="#accordion-one"
-                              >
-                                <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn"
-                                      >Add Article</a
-                                    >
-                                    <a
-                                      href="javascript:void(0);"
-                                      class="btn me-0"
-                                      >Add Description</a
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="add-course-form chapter_videos">
+                      
                     </div>
                     <div class="widget-btn">
                       <a class="btn btn-black prev_btn">Previous</a>
-                      <a class="btn btn-info-light next_btn">Continue</a>
+                      <a class="btn btn-info-light next_btn" onclick="getCourseInfo()">Continue</a>
                     </div>
                   </div>
                 </fieldset>
                 <fieldset class="field-card">
                   <div class="add-course-info">
                     <div class="add-course-inner-header">
-                      <h4>Requirements</h4>
+                      <h4>Uploading</h4>
+                      <p class="text-muted">Please wait while we upload your files</p>
                     </div>
                     <div class="add-course-form">
-                      <form action="#">
-                        <div class="form-group form-group-tagsinput">
-                          <input
-                            type="text"
-                            data-role="tagsinput"
-                            class="input-tags form-control"
-                            name="html"
-                            value="jquery, bootstrap"
-                            id="html"
-                          />
-                        </div>
-                        <div class="form-group mb-0">
-                          <label class="add-course-label">Price</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="10.00"
-                          />
-                        </div>
-                      </form>
+                      <ul class="list-unstyled courses_ne d-flex flex-column gap-3">
+                      </ul>
                     </div>
                     <div class="widget-btn">
                       <a class="btn btn-black prev_btn">Previous</a>
@@ -550,4 +186,102 @@
       </div>
     </div>
   </section>
+<script>
+  var index = 0 
+  function addSection(obj){
+    document.querySelector('.chapter_videos').innerHTML += `
+    <div class="curriculum-grid mt-4 chapter_video chapter_${index} ">
+                        <div class="curriculum-head">
+                          <p contenteditable>Chapter name</p>
+                          <a href="javascript:void(0);"><span class="btn" onclick="addLecture('accordion-${index}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('chapter_${index}')">Remove section</button></a> 
+                        </div>
+                        <div class="curriculum-info">
+                          <div id="accordion-${index}">
+                            
+                          </div>
+                        </div>
+                      </div>
+    `
+    var el = document.querySelector('.chapter_video:last-child');
+    el.scrollIntoView(true);
+    index++;
+  }
+  function removeSection(index){
+    // document.querySelector('.chapter_videos').innerHTML = '';
+    $('.' + index).remove();
+  }
+  function makeid() {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < 4) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+  function addLecture(lecture) {
+  document.querySelector('#'+ lecture).innerHTML+= `
+    <div class="faq-grid" id="${a = lecture + '_' + makeid()}">
+                              <div class="faq-header">
+                                <a
+                                  class="collapsed faq-collapse"
+                                  data-bs-toggle="collapse"
+                                  href="#collapse${a}"
+                                >
+                                  <i class="fas fa-align-justify"></i>
+                                  <span contenteditable class="lesson_name">Lesson name</span>
+                                </a>
+                                <div class="faq-right">
+                              
+                                  <a
+                                    href="javascript:void(0);"
+                                    class="me-0"
+                                  >
+                                    <i class="far fa-trash-can" onclick="removeLecture('${a}')"></i>
+                                  </a>
+                                </div>
+                              </div>
+                              <div
+                                id="collapse${a}"
+                                class="collapse"
+                                data-bs-parent="#accordion-one"
+                              >
+                                <div class="faq-body">
+                                  <div class="add-article-btns">
+                                    <input type="file" class="form-control mb-2" name="lesson[]" />
+                                    <div class="form-group">
+                                      <label class="add-course-label">Lesson Description</label>
+                                    <input class="me-0 mb-2 form-control" style="width:100%" placeholder="Enter the description">
+                                      </div>
+                                    <div class="form-group">
+                          <label class="add-course-label"
+                            >Courses Category</label
+                          >
+                          <select class="form-control select">
+                              @foreach ($professions as $profession)
+                                <option value="{{$profession->id}}}}">{{$profession->name}}</option>
+                              @endforeach
+                          </select>
+                        </div>
+                        <div class="form-group">
+                                      <label class="add-course-label">Subtitle</label>
+                                    <input class="me-0 mb-2 form-control" name="subtitle[]" style="width:100%" type="file">
+                                      </div>  
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+    `
+  }
+  function removeLecture(id){
+    $('#'+ id).remove();
+  }
+  function getCourseInfo() {
+    [...document.querySelectorAll('input[name="lesson[]"]')].map((e,index) => {
+    document.querySelector('.courses_ne').innerHTML+= '<li><span style="min-width:200px;display:inline-block;">'+document.querySelectorAll('.lesson_name')[index].textContent + `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span style="width:43%;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
+})
+  }
+</script>
 @endsection

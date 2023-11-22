@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Level;
 use App\Models\Mentor;
 use App\Models\Profession;
 use Illuminate\Support\Carbon;
@@ -14,7 +15,14 @@ class MentorVideoController extends Controller
 {
     public function create()
     {
-        return view('client.courses.create-course');
+        $professions = Profession::all();
+        $levels = Level::all();
+        return view('client.courses.create-course', compact('professions', 'levels'));
+    }
+    public function uploadVideo()
+    {
+        dd(request()->all());
+        return view('client.courses.create-course', compact('professions', 'levels'));
     }
     public function dashboard()
     {
