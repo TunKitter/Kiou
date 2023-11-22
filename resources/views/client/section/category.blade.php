@@ -17,7 +17,12 @@ function recur($id, $aa)
         return $bb;
     }
         $aa = (Profession::all());
-        $cc = (Profession::where('parent_profession', [])->get());
+        $cc = [];
+    for($i = 0; $i < count($aa); $i++){
+        if($aa[$i]->parent_profession == []){
+            $cc[] = $aa[$i];
+        }
+    }
         $bb = '';
         for ($i = 0; $i < count($cc); $i++) {
             $temp = recur($cc[$i]->id, $aa);

@@ -57,7 +57,7 @@
                                 <li class="has-submenu">
                                     <a href="{{ route('course-list') }}">Courses<i class="fas fa-chevron-down"></i></a>
                                     <ul class="submenu">
-                                        <li><a href="{{ route('course-explore') }}">Explore Courses</a></li>
+                                        {{-- <li><a href="{{ route('course-explore') }}">Explore Courses</a></li> --}}
                                         <li class="has-submenu">
                                             <a href="#">Category Courses</a>
                                             <ul class="submenu">
@@ -65,75 +65,31 @@
                                             </ul>
                                         </li>
                                         <li><a href="{{ route('course-list') }}">Find Courses</a></li>
+                                        <li><a href="{{ route('roadmap') }}">Roadmap</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu">
-                                    <a href>Student <i class="fas fa-chevron-down"></i></a>
+                                    <a href>Enhance <i class="fas fa-chevron-down"></i></a>
                                     <ul class="submenu first-submenu">
-                                        <li class="has-submenu ">
+                                        {{-- <li class="has-submenu ">
                                             <a href="students-list.html">Student</a>
                                             <ul class="submenu">
                                                 <li><a href="students-list.html">List</a></li>
                                                 <li><a href="students-grid.html">Grid</a></li>
                                             </ul>
-                                        </li>
-                                        <li><a href="setting-edit-profile.html">Student Profile</a></li>
-                                        <li><a href="setting-student-security.html">Security</a></li>
-                                        <li><a href="setting-student-social-profile.html">Social profile</a></li>
-                                        <li><a href="setting-student-notification.html">Notification</a></li>
-                                        <li><a href="setting-student-privacy.html">Profile Privacy</a></li>
-                                        <li><a href="setting-student-accounts.html">Link Accounts</a></li>
-                                        <li><a href="setting-student-referral.html">Referal</a></li>
-                                        <li><a href="setting-student-subscription.html">Subscribtion</a></li>
-                                        <li><a href="setting-student-billing.html">Billing</a></li>
-                                        <li><a href="setting-student-payment.html">Payment</a></li>
-                                        <li><a href="setting-student-invoice.html">Invoice</a></li>
-                                        <li><a href="setting-support-tickets.html">Support Tickets</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu">
-                                    <a href>Pages <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="notifications.html">Notification</a></li>
-                                        <li><a href="pricing-plan.html">Pricing Plan</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li class="has-submenu">
-                                            <a href="course-list.html">Course</a>
+                                        </li> --}}
+                                        <li><a href="{{route('revision-bookmark')}}">Revise Bookmarks</a></li>
+                                        <li><a href="{{route('revision-test')}}">Test your knowledge</a></li>
+                                        <li class="has-submenu"><a href="{{route('revision-code-list')}}">CP</a>
                                             <ul class="submenu">
-                                                <li><a href="add-course.html">Add Course</a></li>
-                                                <li><a href="course-list.html">Course List</a></li>
-                                                <li><a href="course-grid.html">Course Grid</a></li>
-                                                <li><a href="course-details.html">Course Details</a></li>
+                                                <li><a href="{{route('revision-code-list')}}">Your CP</a></li>
+                                                <li><a href="{{route('revision-code-explore')}}">Explore CP</a></li>
                                             </ul>
                                         </li>
-                                        <li class="has-submenu">
-                                            <a href="come-soon.html">Error</a>
-                                            <ul class="submenu">
-                                                <li><a href="come-soon.html">Comeing soon</a></li>
-                                                <li><a href="error-404.html">404</a></li>
-                                                <li><a href="error-500.html">500</a></li>
-                                                <li><a href="under-construction.html">Under Construction</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="faq.html">FAQ</a></li>
-                                        <li><a href="support.html">Support</a></li>
-                                        <li><a href="job-category.html">Category</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="forgot-password.html">Forgot Password</a></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <a href>Blog <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="blog-list.html">Blog List</a></li>
-                                        <li><a href="blog-grid.html">Blog Grid</a></li>
-                                        <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                        <li><a href="blog-modern.html">Blog Modern</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
+                                <li>
+                                    <a href="{{ route('blog')}}">Documentation</a>
                                 </li>
                                 <li class="login-link">
                                     <a href="login.html">Login / Signup</a>
@@ -180,7 +136,7 @@
                                                                         <a
                                                                             href="{{ route('course-detail', $cart->courses->slug) }}">
                                                                             <img alt
-                                                                                src="{{ asset($cart->courses->image) }}">
+                                                                                src="{{ asset('course/thumbnail/'.$cart->courses->image) }}">
                                                                         </a>
                                                                     </div>
                                                                     <div class="media-body">

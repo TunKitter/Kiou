@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Level;
 use App\Models\Mentor;
 use App\Models\Profession;
 use Illuminate\Http\Request;
@@ -13,26 +14,48 @@ class CourseController extends Controller
 {
     public function list(Request $request)
     {
-
-        // dd(Mentor::all()->first()->course->sum('total_enrollment'));
+        // dd(request()->all());
         // dd($this->softMentorData(Mentor::all(), count(Mentor::all()) - 1));
         // dd(Mentor::orderBy('course.total_enrollment', 'desc')->get());
+        //
         switch ($request->type) {
             case 'auto':
             case 'course':
                 {
                     if ($request->q) {
-                        $q = ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : $request->q);
+                        $q = ($request->is_wrong_spell != '0' && $request->is_wrong_spell != '' ? $request->is_wrong_spell : $request->q);
                         $q = explode(' ', $q);
                         $result = [];
                         for ($i = 0; $i < count($q); $i++) {
                             $result[] = ['name', 'like', '%' . $q[$i] . '%'];
                         }
-                        $courses = Course::where($result)->get();
-                        $courses = $this->softData($courses, count($courses) - 1);
+                        $is_free = false;
+                        if ($request->price == 'free') {
+                            $result[] = ['price', 0];
+                            $is_free = true;
+                        }
+                        if (!$is_free) {
+                            if ($request->min_value || $request->max_value) {
+                                $result[] = ['price', '>=', (int) $request->min_value];
+                                $result[] = ['price', '<=', (int) $request->max_value];
+                            }
+                        }
+
+                        if ($request->level) {
+                            if ($request->level != 'all') {
+                                $result[] = ['level_id', (Level::select('_id')->where('name', 'like', '%' . ucfirst($request->level) . '%')->first()->_id)];
+                            }
+                        }
+                        // dd($request->all());
+                        $courses = $this->courseSoftCondition(request(), $result);
+
+                        // $courses = Course::where([['price', '>=', (int) $request->min_value], ['price', '<=', ]])->get();
+                        // dd($courses, $result);
                         return view('client.courses.course-list', ['courses' => count($courses) > 0 ? $courses : $this->getCourseData(), 'is_not_found' => count($courses) == 0, 'q' => $request->q, 'is_wrong_spell' => ($request->is_wrong_spell != '0' ? $request->is_wrong_spell : '0'), 'type' => $request->type]);
                     }
-                    $courses = $this->getCourseData();
+
+                    $courses = $this->courseSoftCondition(request(), []);
+
                     return view('client.courses.course-list', ['courses' => $courses, 'type' => $request->type]);
                 }
             case 'mentor':
@@ -47,7 +70,41 @@ class CourseController extends Controller
                 }
 
         }
-        return view('client.courses.course-list', ['courses' => $this->getCourseData(), 'type' => $request->type]);
+        $result = [];
+        $is_free = false;
+        if ($request->price == 'free') {
+            $result[] = ['price', 0];
+            $is_free = true;
+        }
+        if (!$is_free) {
+            if ($request->min_value || $request->max_value) {
+                $result[] = ['price', '>=', (int) $request->min_value];
+                $result[] = ['price', '<=', (int) $request->max_value];
+            }
+        }
+
+        if ($request->level) {
+            if ($request->level != 'all') {
+                $result[] = ['level_id', (Level::select('_id')->where('name', 'like', '%' . ucfirst($request->level) . '%')->first()->_id)];
+            }
+        }
+        return view('client.courses.course-list', ['courses' => $this->courseSoftCondition(request(), $result), 'type' => $request->type]);
+    }
+    public function courseSoftCondition($request, $result)
+    {
+        if ($request->soft_by || $request->soft_by != 'most_common') {
+            if ($request->soft_by == 'buy_most') {
+                $courses = Course::where($result)->orderBy('total_enrollment', 'desc')->get();
+            } elseif ($request->soft_by == 'high_rating') {
+                $courses = Course::where($result)->orderBy('complete_course_rate', 'desc')->get();
+
+            } else {
+                $courses = Course::where($result)->orderBy('total_enrollment', 'desc')->get();
+            }
+        } else {
+            $courses = $this->getCourseData(0, 10, $result);
+        }
+        return $courses;
     }
     public function getCourseData($skip = 0, $take = 10, $where = [])
     {
@@ -56,6 +113,20 @@ class CourseController extends Controller
         }
 
         $courses = (Course::where($where)->orderBy('complete_course_rate', 'desc')->orderBy('view', 'desc')->orderBy('click', 'desc')->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
+        $a_length = count($courses) - 1;
+        $courses = $this->softData($courses, $a_length);
+        return $courses;
+    }
+    public function getCourseDataBuyMost($skip = 0, $take = 10, $where = [])
+    {
+        $courses = (Course::where('category', request()->category)->where($where)->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
+        // $a_length = count($courses) - 1;
+        // $courses = $this->softData($courses_buy_most, $a_length);
+        return $courses;
+    }
+    public function getCourseDataCostMost($skip = 0, $take = 10, $where = [])
+    {
+        $courses = (Course::where('category', request()->category)->where('total_enrollment', '>', 0)->orderBy('price', 'asc')->skip($skip)->take($take)->get());
         $a_length = count($courses) - 1;
         $courses = $this->softData($courses, $a_length);
         return $courses;
@@ -116,12 +187,8 @@ class CourseController extends Controller
     {
         $course = Course::where('slug', $id)->first();
         $chapter = $course->chapter;
-        $mentor_professions = Profession::whereIn('_id', $course->mentor->profession)->orWhere('_id', $course->category)->distinct('name')->get()->toArray();
-        $mentor_professions = implode(', ', array_map(function ($item) {
-            return $item[0];
-        }, $mentor_professions));
-        // dd($mentor_professions);
-        $category_profession = substr($mentor_professions, strrpos($mentor_professions, ',') + 1);
+        $mentor_professions = implode(',', Profession::whereIn('_id', $course->mentor->profession)->pluck('name')->toArray());
+        $category_profession = Profession::where('_id', $course->category)->first()->name;
         $lessons_db = (Lesson::where('course_id', $course->id)->get(['chapter', 'name'])->toArray());
         $overview_video_path = (Lesson::where('course_id', $course->id)->first(['path'])->toArray())['path'];
         $lessons = [];
@@ -135,13 +202,28 @@ class CourseController extends Controller
     public function explore($id = null)
     {
         $profession_name = Profession::where('slug', $id)->first();
+        // dd(Profession::all(['_id', 'name'])->toArray());
+        $profession_id = $profession_name->_id;
+        // dd($profession_id);
+
+        $professions_others = Profession::whereIn('parent_profession', [$profession_id])->orWhere('_id', 'IN', [$profession_name->parent_profession])->get(['slug', 'name']);
+        // dd($professions_others);
+        $courses = Course::where('category', $profession_name->_id)->take(10)->get();
+        $courses_buy_most = Course::where('category', $profession_name->_id)->orderBy('total_enrollment', 'asc')->take(10)->get();
+        $courses_cost_most = Course::where('category', $profession_name->_id)->where('total_enrollment', '>', 0)->orderBy('price', 'asc')->take(10)->get();
+        // soft $courses_buy_most sort by price asc
+        $courses = $this->softData($courses, count($courses) - 1);
+        // dd($courses);
         $profession_name ? $profession_name = $profession_name->name : redirect()->route('course-explore');
-        return view('client.courses.course-explore', $profession_name ? ['id' => $profession_name] : []);
+        return view('client.courses.course-explore', $profession_name ? ['id' => $profession_name] : [], ['courses' => $courses, 'courses_buy_most' => $courses_buy_most, 'profession_id' => $profession_id, 'professions_others' => $professions_others, 'courses_cost_most' => $courses_cost_most]);
     }
     public function updateInteractive()
     {
         $ids = rtrim(request()->ids, ',');
         Course::whereIn('_id', explode(',', $ids))->increment(request()->type);
+        if (request()->type2) {
+            Course::whereIn('_id', explode(',', \request()->ids2))->increment(request()->type2);
+        }
         return response()->json(['status' => true]);
     }
 }

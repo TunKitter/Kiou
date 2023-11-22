@@ -1,5 +1,9 @@
 {
-    "description": "This is Tunkit and today i will share with you about my self",
-    "objective": ["Hihi", "Hahah", "sdasds"],
-    "requirements": ["asA", "DASDS", "DASDS", "DASDA"]
+    "description": "Learning How to install Python in your computer",
+    "objective": [
+        "How to install Python",
+        "Basic Command Line",
+        "Hello world in Python in command line"
+    ],
+    "requirements": ["Internet", "Basic Command Line"]
 }

@@ -55,7 +55,7 @@
     <div class="footer-contact-info">
     <div class="footer-address">
     <img src="{{asset('assets/img/icon/icon-20.svg')}}" alt class="img-fluid">
-    <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+    <p> Toà nhà FPT Polytechnic, Đ. Số 22, Thường Thạnh, Cái Răng<br> Cần Thơ, Vietnam </p>
     </div>
     <p>
     <img src="{{asset('assets/img/icon/icon-19.svg')}}" alt class="img-fluid">

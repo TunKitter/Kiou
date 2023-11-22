@@ -29,17 +29,17 @@
                                 <h4>Payment Method</h4>
                             </div>
                             <div class="checkout-form">
-                                <form id="checkoutForm" method="post" onsubmit="return handleCheckout()">
+                                <form id="checkoutForm" method="post" onsubmit="return handleCheckout()" action="stripe">
                                     @csrf
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="wallet-method">
                                                 <label class="radio-inline custom_radio me-4">
-                                                    <input type="radio" name="optradio" value="stripe" checked>
+                                                    <input type="radio" name="pay_method" value="stripe" checked>
                                                     <span class="checkmark"></span> Stripe
                                                 </label>
                                                 <label class="radio-inline custom_radio">
-                                                    <input type="radio" name="optradio" value="vnpt">
+                                                    <input type="radio" name="pay_method" value="vnpay">
                                                     <span class="checkmark"></span> VN Pay
                                                 </label>
                                             </div>
@@ -50,8 +50,8 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label class="form-control-label">Full name</label>
-                                                        <input type="text" class="form-control"
-                                                            value="{{ auth()->user()->username }}" disabled>
+                                                        <input type="text" class="form-control" name="nane"
+                                                            value="{{ auth()->user()->name }}" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -79,11 +79,7 @@
 
                                         </div>
                                         <div class="payment-btn">
-                                            {{-- <form action="{{ route('stripe')}}" method="post">
-                                                @csrf --}}
-                                            {{-- <input type="text" value="{{}}"> --}}
                                             <button class="btn btn-primary" type="submit">Make a Payment</button>
-                                            {{-- </form> --}}
                                         </div>
 
                                     </div>
@@ -110,10 +106,10 @@
                                                 <div class="product-img product-checkout">
                                                     <a href="{{ route('course-detail', $cart->courses->slug) }}">
                                                         <img class="img-fluid" alt
-                                                            src="{{ asset($cart->courses->image) }}" />
+                                                            src="{{ asset('course/thumbnail/'.$cart->courses->image) }}" />
                                                     </a>
-                                                    <div class="price">
-                                                        <h4>${{ $cart->courses->price }}</h4>
+                                                    <div class="price p-1 pt-2">
+                                                        <h4 class="fw-bold p-0 text-primary">${{ $cart->courses->price }}</h4>
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
@@ -154,12 +150,9 @@
         </div>
     </section>
     <script>
-        document.getElementById("checkoutForm").action = "toan.html";
-
         function handleCheckout() {
             // Lấy giá trị của input radio được chọn
-            var selectedValue = document.querySelector('input[name="optradio"]:checked').value;
-
+            var selectedValue = document.querySelector('input[name="pay_method"]:checked').value;
             // Thay đổi giá trị của action theo radio được chọn
             document.getElementById("checkoutForm").action = selectedValue;
 

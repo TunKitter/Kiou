@@ -1,31 +1,80 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CategoryPostController;
+use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RoadMapController as AdminRoadmapController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\CourseController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\LessonController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
+use App\Http\Controllers\Client\MentorVideoController;
+use App\Http\Controllers\Client\ModerationController;
+use App\Http\Controllers\Client\MyCoursesController;
 use App\Http\Controllers\Client\PasswordController;
+use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
+use App\Http\Controllers\Client\RevisionController;
+use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\StripeController;
-use App\Http\Controllers\Client\CheckoutController;
-use App\Http\Controllers\Client\ModerationController;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+# --------------------------- Admin User --------------------------------
 Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser');
+Route::post('/admin/users/list/{take}/{skip}', [UserController::class, 'userMore']);
 Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser');
-Route::get('/admin/users/edit/{id}', [UserController::class, 'editUser'])->name('editUser');
-Route::post('/admin/users/update/{id}', [UserController::class, 'updateUser'])->name('updateUser');
-Route::get('/admin/users/delete/{id}', [UserController::class, 'delete'])->name('deleteUser');
+Route::post('/admin/users/update', [UserController::class, 'updateUser'])->name('updateUser');
+Route::post('/admin/users/delete', [UserController::class, 'delete'])->name('deleteUser');
+
+# --------------------------- Admin Category --------------------------------
+Route::get('/admin/category/list', [CategoryController::class, 'index'])->name('list-category-admin');
+Route::post('/admin/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
+Route::post('/admin/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
+Route::post('/admin/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
+
+# --------------------------- Admin Roadmap --------------------------------
+Route::get('/admin/roadmap/list', [AdminRoadmapController::class, 'index'])->name('list-roadmap-admin');
+Route::get('/admin/roadmap/list/{id}', [AdminRoadmapController::class, 'detail'])->name('detail-roadmap-admin');
+
+Route::post('/admin/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
+# --------------------------- Admin Course --------------------------------
+Route::get('/admin/course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
+Route::get('/admin/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
+Route::post('/admin/notification', function () {
+    return response()->json([
+        'data' => Notification::create([
+            "user_id" => request()->user_id,
+            'content' => request()->content,
+        ]),
+    ]);
+})->name('create-notification');
+
+# --------------------------- Admin Category --------------------------------
+Route::get('/admin/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');
+Route::post('/admin/category-posts/add', [CategoryPostController::class, 'storeCategory'])->name('storeCategory');
+Route::get('/admin/category-posts/edit/{id}', [CategoryPostController::class, 'editCategory'])->name('editCategory');
+Route::post('/admin/category-posts/update/{id}', [CategoryPostController::class, 'updateCategory'])->name('updateCategory');
+Route::get('/admin/category-posts/delete/{id}', [CategoryPostController::class, 'delete'])->name('deleteCategory');
+
+Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
+Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
+Route::get('/admin/posts/create', [PostController::class, 'create'])->name('post-create');
+Route::post('/admin/posts/create', [PostController::class, 'store'])->name('post-store');
+Route::get('/admin/posts/edit/{slug}', [PostController::class, 'edit'])->name('post-edit');
+Route::post('/admin/posts/edit/{slug}', [PostController::class, 'update'])->name('post-update');
+Route::post('/admin/posts/list/{id}', [PostController::class, 'delete'])->name('post-delete');
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -67,6 +116,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/password', [ProfileController::class, 'handlePassword'])->name('profile-password');
 });
 
+Route::get('/profile/mycourses', [MyCoursesController::class, 'index'])->name('mycourses');
+
 # ------------------------- Mentor --------------------------------
 
 Route::get('/mentor/overview', [MentorController::class, 'overview'])->name('mentor-overview')->middleware('auth');
@@ -82,15 +133,40 @@ Route::get('/mentor/success', [MentorController::class, 'success'])->name('mento
 Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mentor-profile')->middleware('auth');
 Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
+Route::get('/mentor/dashboard', [MentorVideoController::class, 'dashboard'])->name('mentor-dashboard')->middleware('auth');
 
 # ------------------------- Course --------------------------------
+Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
+Route::post('course/add', [MentorVideoController::class, 'uploadVideo']);
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
+Route::get('course/explore', [CourseController::class, 'exploreUser'])->name('course-explore-user');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
 Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
+Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getCourseDataBuyMost'])->name('course-data-buy-most');
+Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');
 Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
 
+# ------------------------- Roadmap --------------------------------
+Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
+Route::get('course/roadmap/detail/{slug}', [RoadMapController::class, 'detail'])->name('roadmap-detail');
+
+# ------------------------- Revision --------------------------------
+Route::get('revision/bookmark', [RevisionController::class, 'bookmark'])->name('revision-bookmark')->middleware('auth');
+Route::get('revision/bookmark/all', [RevisionController::class, 'all'])->name('revision-bookmark-all')->middleware('auth');
+Route::get('revision/bookmark/revise', [RevisionController::class, 'revise'])->name('revision-bookmark-revise')->middleware('auth');
+Route::post('revision/bookmark/revise/update', [RevisionController::class, 'updateRevise']);
+Route::get('revision/test', [RevisionController::class, 'test'])->name('revision-test')->middleware('auth');
+Route::get('revision/test/{slug}', [RevisionController::class, 'testCheck'])->name('revision-test-test')->middleware('auth');
+Route::post('revision/test/{slug}/update', [RevisionController::class, 'updateTestCheck'])->name('revision-test-test-update')->middleware('auth');
+Route::get('revision/code/list', [RevisionController::class, 'codeList'])->name('revision-code-list')->middleware('auth');
+Route::get('revision/code/list/{id}', [RevisionController::class, 'code'])->name('revision-code')->middleware('auth');
+Route::post('revision/code/list/{id}', [RevisionController::class, 'codeUpdate']);
+Route::post('revision/code/list/{id}/saveCode', [RevisionController::class, 'saveCode'])->name('revision-code-save-code');
+Route::get('revision/code/explore', [RevisionController::class, 'codeExplore'])->name('revision-code-explore');
+Route::post('revision/code/explore/list', [RevisionController::class, 'codeExploreList'])->name('revision-code-explore-list');
+Route::post('revision/code/explore/list/save', [RevisionController::class, 'codeExploreSave'])->name('revision-code-explore-save');
 # ------------------------- Lesson --------------------------------
 Route::get('course/{id_course}/{id_lesson}/learn', [LessonController::class, 'index'])->name('lesson-learn')->middleware('auth');
 Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::class, 'lessonUpdate'])->name('lesson-update');
@@ -112,12 +188,15 @@ Route::group(['middleware' => 'auth.cart'], function () {
 
 # ------------------------- Pay Stripe --------------------------------
 
-Route::controller(StripeController::class)->group(function(){
+Route::controller(StripeController::class)->group(function () {
     Route::post('/stripe', 'stripe')->name('stripe');
     Route::get('/success', 'success')->name('success');
     Route::get('/cancel', 'cancel')->name('cancel');
 
 });
+
+# ------------------------- Pay VnPay --------------------------------
+Route::post('/vnpay', [PaymentController::class, 'vnpay_payment']);
 
 # ------------------------- Moderation --------------------------------
 Route::middleware('auth')->group(function () {
@@ -125,4 +204,6 @@ Route::middleware('auth')->group(function () {
 });
 
 # ------------------------- Blog --------------------------------
-Route::get('/blog', [BlogController::class, 'Blog']);
+Route::get('/blog', [BlogController::class, 'Blog'])->name('blog');
+Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog-detail');
+Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');

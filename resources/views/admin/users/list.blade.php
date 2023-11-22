@@ -1,4 +1,3 @@
-
 @extends('admin.layout.master')
 @section('content')
 <style>
@@ -25,7 +24,7 @@
         <div class="col-sm">
             <div class="card ">
                 <div class="card-header">
-                    <h3 class="card-title">Danh sách khách hàng</h3>
+                    <h3 class="card-title">List User</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -50,6 +49,7 @@
                                 <!-- Modal Header -->
                                 <div class="modal-header">
                                     <h4 class="modal-title">Add User</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <!-- Modal body -->
                                 <div class="modal-body">
@@ -58,26 +58,26 @@
                                         <div class="form-group">
                                             <label class="form-control-label">Full name</label>
                                             <input type="text" id="name" name="name" value="{{ old('name') }}"
-                                                class="form-control" placeholder="Nhập họ và tên">
+                                                class="form-control">
                                                 <p></p>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-control-label">Username</label>
                                             <input type="text" id="username" name="username" value="{{ old('name') }}"
-                                                class="form-control" placeholder="Nhập họ và tên">
+                                                class="form-control">
                                             <p></p>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-control-label">Number Phone</label>
                                             <input type="text" id="phone" pattern="[0-9]{10}" name="phone"
                                                 value="{{ old('phone') }}" class="form-control"
-                                                placeholder="Nhập số điện thoại">
+                                               >
                                             <p></p>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-control-label">Email</label>
                                             <input type="email" id="email" name="email" value="{{ old('email') }}"
-                                                class="form-control" placeholder="Nhập địa chỉ email"
+                                                class="form-control" 
                                             >
                                             <p></p>
                                         </div>
@@ -105,10 +105,7 @@
                                                     <button class="btn btn-primary user-save"
                                                         type="submit">Register</button>
                                                 </div>
-                                                <div class="col-sm-4">
-                                                    <button type="button" class="btn btn-danger"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                 </div>
@@ -126,6 +123,7 @@
                             <!-- Modal Header -->
                             <div class="modal-header">
                                 <h4 class="modal-title">Updated User</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
@@ -168,27 +166,12 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label class="form-control-label">Password</label>
-                
-                                        <input type="text" name="password" class="form-control"
-                                            placeholder="Enter your password" >
-                                        <div class="error_message">
-                                            @error('password')
-                                                <span style="color: red;font-weight:lighter">{{ $message }}</span>
-                                                <br>
-                                            @enderror
-                                        </div>
-                                    </div> --}}
                                     <div class="modal-footer">
                                         <div class="row">
                                             <div class="col-sm-8">
                                                 <button class="btn btn-primary user-edit" type="submit">Updated</button>
                                             </div>
-                                            <div class="col-sm-4">
-                                                <button type="button" class="btn btn-danger" id="close_modal"
-                                                    data-bs-dismiss="modal">Close</button>
-                                            </div>
+                                           
                                         </div>
                                     </div>
 
@@ -201,14 +184,11 @@
                 <table class="table table-striped" id="data-table" >
                     <thead>
                         <tr>
-                            {{-- <th>ID</th> --}}
                             <th>Username</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            {{-- <th>Created_at</th>
-                                <th>Updated_at</th> --}}
-                            <th style="width: 200px">Hoạt động</th>
+                            <th style="width: 200px">Activate</th>
                         </tr>
                     </thead>
                     <tbody id="data">
@@ -358,7 +338,7 @@
         }).then(response => response.json()).then(data =>  {
             // if(data['status']) {
                 // console.log(document.getElementsByClassName('user_tr')[index_update]);
-                document.getElementsByClassName('user_tr_0')[index_update].innerHTML = formEdit.find('#username').val()
+                
                 document.getElementsByClassName('user_tr_1')[index_update].innerHTML = formEdit.find('#name').val()
                 document.getElementsByClassName('user_tr_2')[index_update].innerHTML = formEdit.find('#email').val()
                 document.getElementsByClassName('user_tr_3')[index_update].innerHTML = formEdit.find('#phone').val()

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +47,7 @@
                                 </span>
                             </a>
                             <a href="index.html" class="navbar-brand logo">
-                                <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+                                <img src="{{asset('assets/img/logo.png')}}" class="img-fluid" alt="Logo">
                             </a>
                         </div>
                         <div class="main-menu-wrapper">
@@ -59,89 +60,45 @@
                                 </a>
                             </div>
                             <ul class="main-nav">
-                                <li class="has-submenu active">
-                                    <a class href>Home</a>
+                                <li class="has-submenu">
+                                    <a href="{{ route('home') }}">Home</a>
                                 </li>
                                 <li class="has-submenu">
-                                    <a href="{{ route('course-list') }}">Courses <i class="fas fa-chevron-down"></i></a>
+                                    <a href="{{ route('course-list') }}">Courses<i class="fas fa-chevron-down"></i></a>
                                     <ul class="submenu">
-                                        <li><a href="{{ route('course-explore') }}">Explore Courses</a></li>
+                                        {{-- <li><a href="{{ route('course-explore') }}">Explore Courses</a></li> --}}
                                         <li class="has-submenu">
-                                            <a href="instructor-list.html">Category Courses</a>
+                                            <a href="#">Category Courses</a>
                                             <ul class="submenu">
                                                 @include('client.section.category')
                                             </ul>
                                         </li>
                                         <li><a href="{{ route('course-list') }}">Find Courses</a></li>
+                                        <li><a href="{{ route('roadmap') }}">Roadmap</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu">
-                                    <a href>Student <i class="fas fa-chevron-down"></i></a>
+                                    <a href>Enhance <i class="fas fa-chevron-down"></i></a>
                                     <ul class="submenu first-submenu">
-                                        <li class="has-submenu ">
+                                        {{-- <li class="has-submenu ">
                                             <a href="students-list.html">Student</a>
                                             <ul class="submenu">
                                                 <li><a href="students-list.html">List</a></li>
                                                 <li><a href="students-grid.html">Grid</a></li>
                                             </ul>
-                                        </li>
-                                        <li><a href="setting-edit-profile.html">Student Profile</a></li>
-                                        <li><a href="setting-student-security.html">Security</a></li>
-                                        <li><a href="setting-student-social-profile.html">Social profile</a></li>
-                                        <li><a href="setting-student-notification.html">Notification</a></li>
-                                        <li><a href="setting-student-privacy.html">Profile Privacy</a></li>
-                                        <li><a href="setting-student-accounts.html">Link Accounts</a></li>
-                                        <li><a href="setting-student-referral.html">Referal</a></li>
-                                        <li><a href="setting-student-subscription.html">Subscribtion</a></li>
-                                        <li><a href="setting-student-billing.html">Billing</a></li>
-                                        <li><a href="setting-student-payment.html">Payment</a></li>
-                                        <li><a href="setting-student-invoice.html">Invoice</a></li>
-                                        <li><a href="setting-support-tickets.html">Support Tickets</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu">
-                                    <a href>Pages <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="notifications.html">Notification</a></li>
-                                        <li><a href="pricing-plan.html">Pricing Plan</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li class="has-submenu">
-                                            <a href="course-list.html">Course</a>
+                                        </li> --}}
+                                        <li><a href="{{route('revision-bookmark')}}">Revise Bookmarks</a></li>
+                                        <li><a href="{{route('revision-test')}}">Test your knowledge</a></li>
+                                        <li class="has-submenu"><a href="{{route('revision-code-list')}}">CP</a>
                                             <ul class="submenu">
-                                                <li><a href="add-course.html">Add Course</a></li>
-                                                <li><a href="course-list.html">Course List</a></li>
-                                                <li><a href="course-grid.html">Course Grid</a></li>
-                                                <li><a href="course-details.html">Course Details</a></li>
+                                                <li><a href="{{route('revision-code-list')}}">Your CP</a></li>
+                                                <li><a href="{{route('revision-code-explore')}}">Explore CP</a></li>
                                             </ul>
                                         </li>
-                                        <li class="has-submenu">
-                                            <a href="come-soon.html">Error</a>
-                                            <ul class="submenu">
-                                                <li><a href="come-soon.html">Comeing soon</a></li>
-                                                <li><a href="error-404.html">404</a></li>
-                                                <li><a href="error-500.html">500</a></li>
-                                                <li><a href="under-construction.html">Under Construction</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="faq.html">FAQ</a></li>
-                                        <li><a href="support.html">Support</a></li>
-                                        <li><a href="job-category.html">Category</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="forgot-password.html">Forgot Password</a></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu">
-                                    <a href>Blog <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="blog-list.html">Blog List</a></li>
-                                        <li><a href="blog-grid.html">Blog Grid</a></li>
-                                        <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                        <li><a href="blog-modern.html">Blog Modern</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
+                                <li>
+                                    <a href="{{ route('blog')}}">Documentation</a>
                                 </li>
                                 <li class="login-link">
                                     <a href="login.html">Login / Signup</a>
@@ -194,7 +151,7 @@
                                                                         <a
                                                                             href="{{ route('course-detail', $cart->courses->slug) }}">
                                                                             <img alt
-                                                                                src="{{ asset($cart->courses->image) }}">
+                                                                                src="{{ asset('course/thumbnail/'.$cart->courses->image) }}">
                                                                         </a>
                                                                     </div>
                                                                     <div class="media-body">
@@ -546,7 +503,7 @@
                                             <img src="assets/img/pencil-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>10</span>K</h4>
+                                            <h4><span>{{$CourseCount}}</span>+</h4>
                                             <p>Online Courses</p>
                                         </div>
                                     </div>
@@ -561,7 +518,7 @@
                                             <img src="assets/img/cources-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>200</span>+</h4>
+                                            <h4><span>{{$MentorCount}}</span>+</h4>
                                             <p>Expert Tutors</p>
                                         </div>
                                     </div>
@@ -576,8 +533,8 @@
                                             <img src="assets/img/certificate-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>6</span>K+</h4>
-                                            <p>Ceritified Courses</p>
+                                            <h4><span>{{$RoadmapCount}}</span><i class="bi bi-clock-history"></i></h4>
+                                            <p>Learning Roadmap</p>
                                         </div>
                                     </div>
                                 </div>
@@ -591,8 +548,8 @@
                                             <img src="assets/img/gratuate-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>60</span>K +</h4>
-                                            <p>Online Students</p>
+                                            <h4><span>{{$EnrollmentCount}}</span><i class="bi bi-file-earmark-slides-fill"></i></h4>
+                                            <p>Online Purchase</p>
                                         </div>
                                     </div>
                                 </div>
@@ -835,277 +792,24 @@
                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
                         bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                 </div>
+
+                
+                
                 <div class="course-feature">
                     <div class="row">
+                    @isset($courses)
+                @foreach ($courses as $course)
                         <div class="col-lg-4 col-md-6 d-flex">
                             <div class="course-box d-flex aos" data-aos="fade-up">
                                 <div class="product">
                                     <div class="product-img">
-                                        <a href="course-details.html">
-                                            <img class="img-fluid" alt src="assets/img/course/course-01.jpg">
-                                        </a>
-                                        <div class="price">
-                                            <h3>$300 <span>$99.00</span></h3>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="course-group d-flex">
-                                            <div class="course-group-img d-flex">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user1.jpg"
-                                                        alt class="img-fluid"></a>
-                                                <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">Nicole Brown</a></h4>
-                                                    <p>Instructor</p>
-                                                </div>
-                                            </div>
-                                            <div class="course-share d-flex align-items-center justify-content-center">
-                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                        <h3 class="title instructor-text"><a href="course-details.html">Information
-                                                About UI/UX Design Degree</a></h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt>
-                                                <p>12+ Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt>
-                                                <p>9hr 30min</p>
-                                            </div>
-                                        </div>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                        </div>
-                                        <div class="all-btn all-category d-flex align-items-center">
-                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 d-flex">
-                            <div class="course-box d-flex aos" data-aos="fade-up">
-                                <div class="product">
-                                    <div class="product-img">
-                                        <a href="course-details.html">
-                                            <img class="img-fluid" alt src="assets/img/course/course-02.jpg">
-                                        </a>
-                                        <div class="price">
-                                            <h3>$400 <span>$99.00</span></h3>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="course-group d-flex">
-                                            <div class="course-group-img d-flex">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg"
-                                                        alt class="img-fluid"></a>
-                                                <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">Jenis R.</a></h4>
-                                                    <p>Instructor</p>
-                                                </div>
-                                            </div>
-                                            <div class="course-share d-flex align-items-center justify-content-center">
-                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                        <h3 class="title instructor-text"><a href="course-details.html">Wordpress for
-                                                Beginners - Master Wordpress Quickly</a></h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt>
-                                                <p>11+ Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt>
-                                                <p>6hr 30min</p>
-                                            </div>
-                                        </div>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating"><span>4.3</span> (15)</span>
-                                        </div>
-                                        <div class="all-btn all-category d-flex align-items-center">
-                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 d-flex">
-                            <div class="course-box d-flex aos" data-aos="fade-up">
-                                <div class="product">
-                                    <div class="product-img">
-                                        <a href="course-details.html">
-                                            <img class="img-fluid" alt src="assets/img/course/course-03.jpg">
+                                    
+                                        <a href="{{route('course-detail',$course->slug)}}">
+                                            <span class="d-none course-link">{{$course->_id}}</span>
+                                            <img class="img-fluid" style="width:300px" alt src="{{asset('course/thumbnail/'.$course->image)}}">
                                         </a>
                                         <div class="price combo">
-                                            <h3>FREE</h3>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="course-group d-flex">
-                                            <div class="course-group-img d-flex">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user5.jpg"
-                                                        alt class="img-fluid"></a>
-                                                <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">Jesse Stevens</a></h4>
-                                                    <p>Instructor</p>
-                                                </div>
-                                            </div>
-                                            <div class="course-share d-flex align-items-center justify-content-center">
-                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                        <h3 class="title instructor-text"><a href="course-details.html">Sketch from A
-                                                to Z (2022): Become an app designer</a></h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt>
-                                                <p>16+ Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt>
-                                                <p>12hr 30min</p>
-                                            </div>
-                                        </div>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating"><span>4.5</span> (15)</span>
-                                        </div>
-                                        <div class="all-btn all-category d-flex align-items-center">
-                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 d-flex">
-                            <div class="course-box d-flex aos" data-aos="fade-up">
-                                <div class="product">
-                                    <div class="product-img">
-                                        <a href="course-details.html">
-                                            <img class="img-fluid" alt src="assets/img/course/course-04.jpg">
-                                        </a>
-                                        <div class="price">
-                                            <h3>$500 <span>$99.00</span></h3>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="course-group d-flex">
-                                            <div class="course-group-img d-flex">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user4.jpg"
-                                                        alt class="img-fluid"></a>
-                                                <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">Nicole Brown</a></h4>
-                                                    <p>Instructor</p>
-                                                </div>
-                                            </div>
-                                            <div class="course-share d-flex align-items-center justify-content-center">
-                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                        <h3 class="title instructor-text"><a href="course-details.html">Learn Angular
-                                                Fundamentals From beginning to advance lavel</a></h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt>
-                                                <p>10+ Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt>
-                                                <p>8hr 30min</p>
-                                            </div>
-                                        </div>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating"><span>4.2</span> (15)</span>
-                                        </div>
-                                        <div class="all-btn all-category d-flex align-items-center">
-                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 d-flex">
-                            <div class="course-box d-flex aos" data-aos="fade-up">
-                                <div class="product">
-                                    <div class="product-img">
-                                        <a href="course-details.html">
-                                            <img class="img-fluid" alt src="assets/img/course/course-05.jpg">
-                                        </a>
-                                        <div class="price">
-                                            <h3>$300 <span>$99.00</span></h3>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="course-group d-flex">
-                                            <div class="course-group-img d-flex">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg"
-                                                        alt class="img-fluid"></a>
-                                                <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">John Smith</a></h4>
-                                                    <p>Instructor</p>
-                                                </div>
-                                            </div>
-                                            <div class="course-share d-flex align-items-center justify-content-center">
-                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                        <h3 class="title instructor-text"><a href="course-details.html">Build
-                                                Responsive Real World Websites with HTML5 and CSS3</a></h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt>
-                                                <p>13+ Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt>
-                                                <p>10hr 30min</p>
-                                            </div>
-                                        </div>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                        </div>
-                                        <div class="all-btn all-category d-flex align-items-center">
-                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 d-flex">
-                            <div class="course-box d-flex aos" data-aos="fade-up">
-                                <div class="product">
-                                    <div class="product-img">
-                                        <a href="course-details.html">
-                                            <img class="img-fluid" alt src="assets/img/course/course-06.jpg">
-                                        </a>
-                                        <div class="price combo">
-                                            <h3>FREE</h3>
+                                            <h3>{{ $course->price}} <span>$99.00</span></h3>
                                         </div>
                                     </div>
                                     <div class="product-content">
@@ -1114,7 +818,7 @@
                                                 <a href="instructor-profile.html"><img src="assets/img/user/user6.jpg"
                                                         alt class="img-fluid"></a>
                                                 <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">Stella Johnson</a></h4>
+                                                    <h4><a href="instructor-profile.html">{{$course->mentor->name}}</a></h4>
                                                     <p>Instructor</p>
                                                 </div>
                                             </div>
@@ -1122,25 +826,24 @@
                                                 <a href="#"><i class="fa-regular fa-heart"></i></a>
                                             </div>
                                         </div>
-                                        <h3 class="title instructor-text"><a href="course-details.html">C# Developers
-                                                Double Your Coding Speed with Visual Studio</a></h3>
+                                        <h3 class="title instructor-text">{{ $course->name}}</h3>
                                         <div class="course-info d-flex align-items-center">
                                             <div class="rating-img d-flex align-items-center">
                                                 <img src="assets/img/icon/icon-01.svg" alt>
-                                                <p>7+ Lesson</p>
+                                                <p>{{ $course->meta['total_lesson']}} Lesson</p>
                                             </div>
                                             <div class="course-view d-flex align-items-center">
                                                 <img src="assets/img/icon/icon-02.svg" alt>
-                                                <p>7hr 30min</p>
+                                                <p>{{round($course->meta['total_time']/60)}}hr {{round($course->meta['total_time']%60)}}min</p>
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating"><span>4.6</span> (15)</span>
+                                                <i class="fas fa-star filled"></i> 
+                                                <i class="fas fa-star filled"></i> 
+                                                <i class="fas fa-star filled"></i> 
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star"></i> 
+                                            <span class="d-inline-block average-rating"><span>{{$course->complete_course_rate}}</span></span>
                                         </div>
                                         <div class="all-btn all-category d-flex align-items-center">
                                             <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
@@ -1149,8 +852,11 @@
                                 </div>
                             </div>
                         </div>
+                        @endforeach
+                @endisset
                     </div>
                 </div>
+               
             </div>
         </section>
 
@@ -1248,115 +954,19 @@
                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
                         bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                 </div>
+                
+                
                 <div class="owl-carousel trending-course owl-theme aos" data-aos="fade-up">
+                @isset($courses)
+                @foreach ($buylot as $course)              
                     <div class="course-box trend-box">
                         <div class="product trend-product">
                             <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-07.jpg">
+                                <a href="{{route('course-detail',$course->slug)}}">
+                                    <img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
                                 </a>
                                 <div class="price">
-                                    <h3>$200 <span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">John Michael</a></h4>
-                                            <p>Instructor</p>
-                                        </div>
-                                    </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                    </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">Learn JavaScript and Express to
-                                        become a professional JavaScript</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>13+ Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>10hr 30min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-08.jpg">
-                                </a>
-                                <div class="price">
-                                    <h3>$300 <span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">John Smith</a></h4>
-                                            <p>Instructor</p>
-                                        </div>
-                                    </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                    </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">Responsive Web Design Essentials
-                                        HTML5 CSS3 and Bootstrap</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>10+ Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>11hr 30min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-05.jpg">
-                                </a>
-                                <div class="price">
-                                    <h3>$100 <span>$99.00</span></h3>
+                                    <h3>{{ $course->price}}<span>$99.00</span></h3>
                                 </div>
                             </div>
                             <div class="product-content">
@@ -1365,7 +975,7 @@
                                         <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg" alt
                                                 class="img-fluid"></a>
                                         <div class="course-name">
-                                            <h4><a href="instructor-profile.html">Lavern M.</a></h4>
+                                            <h4><a href="instructor-profile.html">{{$course->mentor->name}}</a></h4>
                                             <p>Instructor</p>
                                         </div>
                                     </div>
@@ -1373,16 +983,15 @@
                                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                                     </div>
                                 </div>
-                                <h3 class="title"><a href="course-details.html">The Complete App Design Course - UX,
-                                        UI and Design Thinking</a></h3>
+                                <h3 class="title"><a href="course-details.html">{{ $course->name}}</a></h3>
                                 <div class="course-info d-flex align-items-center">
                                     <div class="rating-img d-flex align-items-center">
                                         <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>8+ Lesson</p>
+                                        <p>{{ $course->meta['total_lesson']}} Lesson</p>
                                     </div>
                                     <div class="course-view d-flex align-items-center">
                                         <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>8hr 30min</p>
+                                        <p>{{round($course->meta['total_time']/60)}}hr {{round($course->meta['total_time']%60)}}min</p>
                                     </div>
                                 </div>
                                 <div class="rating">
@@ -1391,7 +1000,7 @@
                                     <i class="fas fa-star filled"></i>
                                     <i class="fas fa-star filled"></i>
                                     <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                                    <span class="d-inline-block average-rating"><span>{{$course->complete_course_rate}}</span></span>
                                 </div>
                                 <div class="all-btn all-category d-flex align-items-center">
                                     <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
@@ -1399,257 +1008,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-08.jpg">
-                                </a>
-                                <div class="price">
-                                    <h3>$200 <span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user5.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">John Smith</a></h4>
-                                            <p>Instructor</p>
-                                        </div>
-                                    </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                    </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">Build Responsive Real World Websites
-                                        with HTML5 and CSS3</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>13+ Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>10hr 30min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-07.jpg">
-                                </a>
-                                <div class="price">
-                                    <h3>$300 <span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">John Smith</a></h4>
-                                            <p>Instructor</p>
-                                        </div>
-                                    </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                    </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">Responsive Web Design Essentials
-                                        HTML5 CSS3 and Bootstrap</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>10+ Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>11hr 30min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-09.jpg">
-                                </a>
-                                <div class="price">
-                                    <h3>$100 <span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user4.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">Lavern M.</a></h4>
-                                            <p>Instructor</p>
-                                        </div>
-                                    </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                    </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">The Complete App Design Course -
-                                        UX, UI and Design Thinking</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>8+ Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>8hr 30min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-08.jpg">
-                                </a>
-                                <div class="price">
-                                    <h3>$200 <span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user1.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">John Michael</a></h4>
-                                            <p>Instructor</p>
-                                        </div>
-                                    </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                    </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">Learn JavaScript and Express to
-                                        become a professional JavaScript</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>13+ Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>10hr 30min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="course-details.html">
-                                    <img class="img-fluid" alt src="assets/img/course/course-09.jpg">
-                                </a>
-                                <div class="price">
-                                    <h3>$300 <span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">John Smith</a></h4>
-                                            <p>Instructor</p>
-                                        </div>
-                                    </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                    </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">Responsive Web Design Essentials
-                                        HTML5 CSS3 and Bootstrap</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>10+ Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>11hr 30min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+                @endisset
                 </div>
+                
+               
 
                 <div class="feature-instructors">
                     <div class="section-header aos" data-aos="fade-up">
@@ -2091,7 +1454,7 @@
                     <div class="instructors-widget blog-widget">
                         <div class="instructors-img">
                             <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-04.jpg">
+                                <img class="img-fluid" alt src="assets/img/blog/blog-02.jpg">
                             </a>
                         </div>
                         <div class="instructors-content text-center">
@@ -2353,11 +1716,22 @@
 
                             <div class="footer-widget footer-about">
                                 <div class="footer-logo">
-                                    <img src="assets/img/logo.svg" alt="logo">
+                                    <img src="assets/img/logo.png" alt="logo">
                                 </div>
-                                <div class="footer-about-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
+                                <div class="footer-contact-info">
+                                    <div class="footer-address">
+                                        <img src="assets/img/icon/icon-20.svg" alt class="img-fluid">
+                                        <p>Đ. So 22, Thuong Thanh, Cai Rang,<br> Can Tho, Vietnam </p>
+                                    </div>
+                                    <p>
+                                        <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
+                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                            data-cfemail="d9bdabbcb8b4aab5b4aa99bca1b8b4a9b5bcf7bab6b4">haudxpc04339@fpt.edu.vn</a>
+                                    </p>
+                                    <p class="mb-0">
+                                        <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
+                                        +0377 531 342
+                                    </p>
                                 </div>
                             </div>
 
@@ -2400,21 +1774,7 @@
                                             placeholder="Enter your email address" name="email">
                                     </form>
                                 </div>
-                                <div class="footer-contact-info">
-                                    <div class="footer-address">
-                                        <img src="assets/img/icon/icon-20.svg" alt class="img-fluid">
-                                        <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                    </div>
-                                    <p>
-                                        <img src="assets/img/icon/icon-19.svg" alt class="img-fluid">
-                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                            data-cfemail="d9bdabbcb8b4aab5b4aa99bca1b8b4a9b5bcf7bab6b4">[email&#160;protected]</a>
-                                    </p>
-                                    <p class="mb-0">
-                                        <img src="assets/img/icon/icon-21.svg" alt class="img-fluid">
-                                        +19 123-456-7890
-                                    </p>
-                                </div>
+                               
                             </div>
 
                         </div>
@@ -2428,17 +1788,10 @@
 
                     <div class="copyright">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="privacy-policy">
-                                    <ul>
-                                        <li><a href="term-condition.html">Terms</a></li>
-                                        <li><a href="privacy-policy.html">Privacy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="copyright-text">
-                                    <p class="mb-0">&copy; 2023 DreamsLMS. All rights reserved.</p>
+                           
+                            <div class="col-md-12 ">
+                                <div class="copyright-text ">
+                                    <p class="mb-0 text-center">&copy; 2023 KIOU</p>
                                 </div>
                             </div>
                         </div>
@@ -2482,3 +1835,9 @@
     <script src="assets/js/script.js"></script>
     <script src="{{ asset('assets/plugins/feather/feather.min.js') }}"></script>
 </body>
+<style>
+    body{
+        overflow-x : hidden;
+    }
+</style>
+

@@ -58,8 +58,8 @@
                                                 <div class="product">
                                                     <div class="product-img">
                                                         <a href="{{ route('course-detail', $cart->courses->slug) }}">
-                                                            <img class="img-fluid" alt
-                                                                src="{{ asset($cart->courses->image) }}" />
+                                                            <img class="img-fluid" alt style="width: 200px"
+                                                                src="{{ asset('course/thumbnail/'.$cart->courses->image) }}"  />
                                                         </a>
                                                         <div class="price">
                                                             <h3>${{ $cart->courses->price }}</h3>
@@ -124,7 +124,7 @@
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12">
                                             <div class="cart-subtotal">
-                                                <p>Subtotal <span>${{ $total }}</span></p>
+                                                <p>Total price <span>${{ $total }}</span></p>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
