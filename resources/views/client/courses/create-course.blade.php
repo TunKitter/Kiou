@@ -3,6 +3,14 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
+<div class="recover" style="background: #de416b;display: flex;justify-content: space-around;align-items:center;color:white;height:50px;display: none">
+<span>Maybe you've been uploading before . Do you want to recover it ?</span>
+<div>
+<button class="btn border border-white text-white" onclick="recover()">Recover</button>
+<button class="btn border border-white text-white" onclick="no_recover()">No</button>
+</div>
+
+</div>
 <section class="page-content course-sec">
     <div class="container">
       <div class="row align-items-center">
@@ -56,10 +64,9 @@
                       <form action="#">
                         <div class="form-group">
                           <label class="add-course-label"
-                            >Course Title</label
-                          >
+                            >Course Title</label>
                           <input
-                            type="text"
+                            type="text" name="title_course"
                             class="form-control"
                             placeholder="Course Title"
                           />
@@ -68,9 +75,9 @@
                           <label class="add-course-label"
                             >Courses Category</label
                           >
-                          <select class="form-control select">
+                          <select class="form-control select" name="category_course" id="category">
                               @foreach ($professions as $profession)
-                                <option value="{{$profession->id}}}}">{{$profession->name}}</option>
+                                <option value="{{$profession->id}}">{{$profession->name}}</option>
                               @endforeach
                           </select>
                         </div>
@@ -79,14 +86,14 @@
                           <input
                             type="text"
                             class="form-control"
-                            placeholder="10.00"
+                            placeholder="10.00" name="price_course"
                           />
                         </div>
                         <div class="form-group">
                           <label class="add-course-label"
                             >Courses Level</label
                           >
-                          <select class="form-control select">
+                          <select class="form-control select" name="level_course" id="level">
                             @foreach ($levels as $level )
                               <option value="{{$level->id}}">{{$level->name}}</option>
                             @endforeach
@@ -95,23 +102,23 @@
                         <div class="form-group mb-0">
                           <label class="add-course-label"
                             >Course Description</label>
-                          <textarea name="description" class="form-control" cols="30" rows="10"></textarea>
+                          <textarea name="course_description" class="form-control" cols="30" rows="10"></textarea>
                         </div>
 <br>
                         <div class="form-group mb-0">
                           <label class="add-course-label">Requirements</label>
-                          <textarea name="requirements" class="form-control"  cols="30" rows="10"></textarea>
+                          <textarea name="course_requirement" class="form-control"  cols="30" rows="10"></textarea>
                         </div>
 <br>
                         <div class="form-group mb-0">
                           <label class="add-course-label">What students will learn</label>
-                          <textarea name="will_learn" class="form-control" cols="30" rows="10"></textarea>
+                          <textarea name="course_will_learn" class="form-control" cols="30" rows="10"></textarea>
                         </div>
                       </form>
                     </div>
                     <div class="widget-btn">
                       <a class="btn btn-black">Back</a>
-                      <a class="btn btn-info-light next_btn">Continue</a>
+                      <a class="btn btn-info-light next_btn" onclick="saveTemp()">Continue</a>
                     </div>
                   </div>
                 </fieldset>
@@ -221,6 +228,7 @@ var currentProgress = 0;
     resumable.on('fileSuccess', function (file, response) { 
       if(currentProgress == document.querySelectorAll('.current_progress_upload').length - 1) {
         document.querySelector('.upload-btn').style.display = 'block';
+        localStorage.clear();
       }
       currentProgress++
     });
@@ -342,6 +350,35 @@ var currentProgress = 0;
     // [...document.querySelectorAll('input[name="lesson[]"]')].map((e,index) => {
     // document.querySelector('.courses_ne').innerHTML+= '<li><span style="min-width:200px;display:inline-block;">'+document.querySelectorAll('.lesson_name')[index].textContent + `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span style="width:43%;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
 // })
+  }
+  function saveTemp() {
+    localStorage.setItem('title', document.querySelector('input[name="title_course"]').value );
+    localStorage.setItem('category', $('#category').select2('data')[0].id );
+    localStorage.setItem('price', document.querySelector('input[name="price_course"]').value );
+    localStorage.setItem('level', $('#level').select2('data')[0].id );
+    localStorage.setItem('description', document.querySelector('textarea[name="course_description"]').value );
+    localStorage.setItem('requirement', document.querySelector('textarea[name="course_requirement"]').value );
+    localStorage.setItem('will_learn', document.querySelector('textarea[name="course_will_learn"]').value );
+    document.querySelector('.recover').style.display = 'none';
+  }
+</script>
+<script>
+  if(localStorage.getItem('title')) {
+    document.querySelector('.recover').style.display = 'flex';
+  }
+  function recover() {
+    document.querySelector('.recover').style.display = 'none';
+    document.querySelector('input[name="title_course"]').value = localStorage.getItem('title');
+    document.querySelector('input[name="price_course"]').value = localStorage.getItem('price');
+    document.querySelector('textarea[name="course_description"]').value = localStorage.getItem('description');
+    document.querySelector('textarea[name="course_requirement"]').value = localStorage.getItem('requirement');
+    document.querySelector('textarea[name="course_will_learn"]').value = localStorage.getItem('will_learn');
+    $('#category').val(localStorage.getItem('category')).trigger('change');
+    $('#level').val(localStorage.getItem('level')).trigger('change');
+  }
+  function no_recover() {
+    document.querySelector('.recover').style.display = 'none';
+    localStorage.clear()
   }
 </script>
 @endsection
