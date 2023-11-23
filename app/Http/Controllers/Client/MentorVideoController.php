@@ -8,8 +8,12 @@ use App\Models\Enrollment;
 use App\Models\Level;
 use App\Models\Mentor;
 use App\Models\Profession;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class MentorVideoController extends Controller
 {
@@ -17,11 +21,6 @@ class MentorVideoController extends Controller
     {
         $professions = Profession::all();
         $levels = Level::all();
-        return view('client.courses.create-course', compact('professions', 'levels'));
-    }
-    public function uploadVideo()
-    {
-        dd(request()->all());
         return view('client.courses.create-course', compact('professions', 'levels'));
     }
     public function dashboard()
@@ -117,6 +116,45 @@ class MentorVideoController extends Controller
         $best_courses = (implode(',', $best_courses));
 
         return view('client.mentor.dashboard', compact('mentor', 'professions', 'mentor_professions', 'instructorRevenue', 'studentsEnrollment', 'earnings', 'courses_ratting', 'best_courses', 'courses_name'));
+
+    }
+    public function uploadResumable(Request $request)
+    {
+        //save a file into public folder in laravl
+
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+
+        if (!$receiver->isUploaded()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No file was uploaded.',
+            ]);
+        }
+
+        $fileReceived = $receiver->receive(); // receive file
+        if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
+            $file = $fileReceived->getFile(); // get file
+            $extension = $file->getClientOriginalExtension();
+            $fileName = str_replace('.' . $extension, '', $file->getClientOriginalName()); //file name without extenstion
+            $fileName .= '_' . md5(time()) . '.' . $extension; // a unique file name
+
+            $disk = Storage::disk('public');
+            $path = $disk->putFileAs('videos', $file, $fileName);
+
+            // delete chunked file
+            unlink($file->getPathname());
+            return [
+                'path' => asset('storage/' . $path),
+                'filename' => $fileName,
+            ];
+        }
+
+        // otherwise return percentage information
+        $handler = $fileReceived->handler();
+        return [
+            'done' => $handler->getPercentageDone(),
+            'status' => true,
+        ];
 
     }
 }

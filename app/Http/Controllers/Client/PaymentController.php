@@ -9,7 +9,7 @@ class PaymentController extends Controller
 {
     public function vnpay_payment()
     {
-        dd(request())->all();
+        // dd(request())->all();
         $user = auth()->user();
         $data = session($user->username);
         $count_data = count($data[0]);

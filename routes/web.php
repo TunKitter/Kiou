@@ -137,7 +137,6 @@ Route::get('/mentor/dashboard', [MentorVideoController::class, 'dashboard'])->na
 
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
-Route::post('course/add', [MentorVideoController::class, 'uploadVideo']);
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/explore', [CourseController::class, 'exploreUser'])->name('course-explore-user');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
@@ -147,6 +146,7 @@ Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getC
 Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');
 Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
+Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
