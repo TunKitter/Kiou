@@ -261,7 +261,7 @@ var currentProgress = 0;
     document.querySelector('.chapter_videos').innerHTML += `
     <div class="curriculum-grid mt-4 chapter_video chapter_${index} ">
                         <div class="curriculum-head">
-                          <p contenteditable>Chapter name</p>
+                          <p class="chapter_name" contenteditable>Chapter name</p>
                           <a href="javascript:void(0);"><span class="btn" onclick="addLecture('accordion-${index}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('chapter_${index}')">Remove section</button></a> 
                         </div>
                         <div class="curriculum-info">
@@ -402,6 +402,7 @@ video.addEventListener('loadedmetadata', () => {
     formData.append('category', $('#category').select2('data')[0].id );
     formData.append('level', $('#level').select2('data')[0].id );
     formData.append('total_chapter', document.querySelectorAll('.chapter_video').length );
+    formData.append('chapters', ([...document.querySelectorAll('.chapter_name')].map(e => e.innerText)).join('_$_'));
     formData.append('total_lesson', document.querySelectorAll('.lesson_name').length );
     formData.append('total_time', total_time );
     formData.append('content', document.querySelector('textarea[name="course_content"]').value );

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Level;
@@ -169,7 +170,7 @@ class MentorVideoController extends Controller
         ]));
         $image_name = md5(uniqid() . \request()->image->getClientOriginalName()) . '.' . request()->image->getClientOriginalExtension();
         request()->image->move('course/thumbnail/', $image_name);
-        Course::create([
+        $new_course = Course::create([
             'name' => request()->name,
             'description' => request()->description,
             'content_path' => $random_content_path . '.json',
@@ -184,9 +185,14 @@ class MentorVideoController extends Controller
             'mentor_id' => auth()->user()->mentor->_id,
             'level_id' => request()->level,
         ]);
+        $chapter_infor = ['course_id' => $new_course->_id];
+        foreach (explode('_$_', request()->chapters) as $item) {
+            $chapter_infor['infor'][uniqid()] = $item;
+        }
+        Chapter::create($chapter_infor);
         return response()->json([
             'status' => true,
-            'message' => request()->all(),
+            'message' => 'OK',
         ]);
     }
 }
