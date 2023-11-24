@@ -87,6 +87,7 @@ display: none !important;
 <h6>{{$course->meta['total_lesson']}} Lectures <span id="total_time">{{round($course->meta['total_time']/60)}}hr</span></h6>
 </div>
 </div>
+@if($chapter)
 @foreach ($chapter->infor as $key => $value )
    <div class="course-card">
     <h6 class="cou-title">
@@ -113,6 +114,7 @@ display: none !important;
     </div>
     </div> 
 @endforeach
+@endif
 </div>
 </div>
 

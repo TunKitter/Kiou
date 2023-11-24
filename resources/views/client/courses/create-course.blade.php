@@ -73,6 +73,15 @@
                         </div>
                         <div class="form-group">
                           <label class="add-course-label"
+                            >Course Description</label>
+                          <input
+                            type="text" name="description_course"
+                            class="form-control"
+                            placeholder="Course description"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label class="add-course-label"
                             >Courses Category</label
                           >
                           <select class="form-control select" name="category_course" id="category">
@@ -101,8 +110,8 @@
                         </div>
                         <div class="form-group mb-0">
                           <label class="add-course-label"
-                            >Course Description</label>
-                          <textarea name="course_description" class="form-control" cols="30" rows="10"></textarea>
+                            >Course Content</label>
+                          <textarea name="course_content" class="form-control" cols="30" rows="10"></textarea>
                         </div>
 <br>
                         <div class="form-group mb-0">
@@ -134,7 +143,7 @@
                             >Course cover image</label
                           >
                           <div class="relative-form">
-                              <input type="file"  class="form-control"/>
+                              <input type="file" name="image" class="form-control"/>
                             </label>
                           </div>
                         </div>
@@ -175,7 +184,7 @@
                     </div>
                     <div class="widget-btn">
                       <a class="btn btn-black prev_btn">Previous</a>
-                      <a class="btn btn-info-light next_btn upload-btn" style="display: none">Continue</a>
+                      <a class="btn btn-info-light next_btn upload-btn" style="display: none" onclick="saveCourse()">Continue</a>
                     </div>
                   </div>
                 </fieldset>
@@ -196,6 +205,7 @@
     </div>
   </section>
 <script>
+    var total_time = 0;
    var resumable = new Resumable({
         target: '{{route("upload-resumable")}}',
         query:{_token:'{{ csrf_token() }}'} ,// CSRF token
@@ -339,24 +349,26 @@ var currentProgress = 0;
   }
   function getCourseInfo() {
     let lesson_name_file = document.querySelectorAll('.lesson_name');
+    let video = '';
      [...document.querySelectorAll('input[name="lesson[]"')].map((e,index) => {
+video = document.createElement('video');
+video.src = URL.createObjectURL(e.files[0]);
+video.addEventListener('loadedmetadata', () => {
+  // const duration = video.duration;
+  // console.log('Video duration:', duration);
+  total_time += parseInt(video.duration);
+});  
       document.querySelector('.courses_ne').innerHTML+= '<li><span style="min-width:200px;display:inline-block;">'+lesson_name_file[index].textContent + `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span class="current_progress_upload" style="width:0;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
       resumable.addFile(e.files[0]);
      });
-    // resumable.assignDrop(a);
-    // alert('uplading');
-      // demo()
-    // console.log(a);
-    // [...document.querySelectorAll('input[name="lesson[]"]')].map((e,index) => {
-    // document.querySelector('.courses_ne').innerHTML+= '<li><span style="min-width:200px;display:inline-block;">'+document.querySelectorAll('.lesson_name')[index].textContent + `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span style="width:43%;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
-// })
   }
   function saveTemp() {
     localStorage.setItem('title', document.querySelector('input[name="title_course"]').value );
+    localStorage.setItem('description', document.querySelector('input[name="description_course"]').value );
     localStorage.setItem('category', $('#category').select2('data')[0].id );
     localStorage.setItem('price', document.querySelector('input[name="price_course"]').value );
     localStorage.setItem('level', $('#level').select2('data')[0].id );
-    localStorage.setItem('description', document.querySelector('textarea[name="course_description"]').value );
+    localStorage.setItem('content', document.querySelector('textarea[name="course_content"]').value );
     localStorage.setItem('requirement', document.querySelector('textarea[name="course_requirement"]').value );
     localStorage.setItem('will_learn', document.querySelector('textarea[name="course_will_learn"]').value );
     document.querySelector('.recover').style.display = 'none';
@@ -369,8 +381,9 @@ var currentProgress = 0;
   function recover() {
     document.querySelector('.recover').style.display = 'none';
     document.querySelector('input[name="title_course"]').value = localStorage.getItem('title');
+    document.querySelector('input[name="description_course"]').value = localStorage.getItem('description');
     document.querySelector('input[name="price_course"]').value = localStorage.getItem('price');
-    document.querySelector('textarea[name="course_description"]').value = localStorage.getItem('description');
+    document.querySelector('textarea[name="course_content"]').value = localStorage.getItem('content');
     document.querySelector('textarea[name="course_requirement"]').value = localStorage.getItem('requirement');
     document.querySelector('textarea[name="course_will_learn"]').value = localStorage.getItem('will_learn');
     $('#category').val(localStorage.getItem('category')).trigger('change');
@@ -379,6 +392,27 @@ var currentProgress = 0;
   function no_recover() {
     document.querySelector('.recover').style.display = 'none';
     localStorage.clear()
+  }
+  function saveCourse() {
+    let formData = new FormData();
+    formData.append('name', document.querySelector('input[name="title_course"]').value );
+    formData.append('description', document.querySelector('input[name="description_course"]').value );
+    formData.append('price', document.querySelector('input[name="price_course"]').value );
+    formData.append('image', document.querySelector('input[name="image"]').files[0] );
+    formData.append('category', $('#category').select2('data')[0].id );
+    formData.append('level', $('#level').select2('data')[0].id );
+    formData.append('total_chapter', document.querySelectorAll('.chapter_video').length );
+    formData.append('total_lesson', document.querySelectorAll('.lesson_name').length );
+    formData.append('total_time', total_time );
+    formData.append('content', document.querySelector('textarea[name="course_content"]').value );
+    formData.append('requirement', document.querySelector('textarea[name="course_requirement"]').value.split('\n').join('_$_') );
+    formData.append('will_learn', document.querySelector('textarea[name="course_will_learn"]').value.split('\n').join('_$_') );
+    fetch('{{route("handle-upload")}}',{
+      method: 'POST',
+      body: formData
+    }).then(response => response.text()).then(data => {
+      console.log(data);
+    })
   }
 </script>
 @endsection

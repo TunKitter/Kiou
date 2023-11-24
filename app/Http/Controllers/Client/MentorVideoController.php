@@ -11,7 +11,9 @@ use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
@@ -156,5 +158,35 @@ class MentorVideoController extends Controller
             'status' => true,
         ];
 
+    }
+    public function handleUpload()
+    {
+        $random_content_path = \uniqid();
+        File::put(public_path('course/overview/' . $random_content_path . '.json'), json_encode([
+            'description' => request()->content,
+            'requirements' => explode('_$_', request()->requirement),
+            'objective' => explode('_$_', request()->will_learn),
+        ]));
+        $image_name = md5(uniqid() . \request()->image->getClientOriginalName()) . '.' . request()->image->getClientOriginalExtension();
+        request()->image->move('course/thumbnail/', $image_name);
+        Course::create([
+            'name' => request()->name,
+            'description' => request()->description,
+            'content_path' => $random_content_path . '.json',
+            'category' => request()->category,
+            'price' => request()->price,
+            'image' => $image_name,
+            'price' => request()->price,
+            'meta.total_chapter' => request()->total_chapter,
+            'meta.total_lesson' => request()->total_lesson,
+            'meta.total_time' => request()->total_time,
+            'slug' => Str::slug(request()->name),
+            'mentor_id' => auth()->user()->mentor->_id,
+            'level_id' => request()->level,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => request()->all(),
+        ]);
     }
 }

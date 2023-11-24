@@ -147,6 +147,7 @@ Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'get
 Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
 Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
+Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
