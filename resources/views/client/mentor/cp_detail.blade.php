@@ -12,6 +12,21 @@
         font-family: monospace;
         word-break: break-all;
     }
+#output {
+    word-break: break-all;
+    border: 1px solid #ccc;
+    width: 30%;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 1.2em;
+}
+#success {
+    /* width: 100vw; */
+    /* height: 100vh;    */
+    position: absolute;
+    z-index: 99;
+}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <section class="page-content course-sec">
@@ -126,7 +141,14 @@
                       <h4>Test</h4>
                     </div>
                     <div class="add-course-section">
-                      {{-- <div id="editor"></div> --}}
+<p class="text-green" style="display: none" id="correct"><i class="fas fa-check"></i> Passed</p>   
+                      <div class="d-flex">
+                        <div class="editor" id="test_code"></div>
+                        <div id="output"></div>
+                        </div>
+<br>
+                        <button class="btn btn-primary ms-2" onclick="runCode()">Run</button>
+                        <button class="btn btn-primary ms-2" onclick="clearOutput()">Clear Output</button>
                     </div>
                   </div>
                 </fieldset>
@@ -184,6 +206,8 @@ else if(index_tab ==1) {
 <script>
     var base_code = null
     var condition_code = null
+    var test_code = null
+    var conditions = {}
     document.body.onload = function() {
          base_code= ace.edit("base_code");
         base_code.setTheme("ace/theme/lib/xcode");
@@ -193,6 +217,104 @@ else if(index_tab ==1) {
         condition_code.setTheme("ace/theme/lib/xcode");
         condition_code.session.setMode("ace/mode/json");
         condition_code.setShowPrintMargin(false);
+        condition_code.getSession().setUseWorker(false);
+        test_code = ace.edit("test_code");
+        test_code.setTheme("ace/theme/lib/xcode");
+        test_code.session.setMode("ace/mode/javascript");
+        test_code.setShowPrintMargin(false);
+        test_code.setValue(base_code.getValue());
+condition_code.getValue().replaceAll('"','').trim().split('\n').map((key) => {
+    conditions[key.split(':')[0]] =  key.split(':')[1].trim()
+})
     }
+    console.stdlog = console.log.bind(console);
+console.logs = [];
+console.log = function(){
+    console.logs.push(Array.from(arguments));
+    console.stdlog.apply(console, arguments);
+}
+const output = document.getElementById('output')
+var is_nothing = false
+    function runCode() {
+      conditions = {}
+condition_code.getValue().replaceAll('"','').trim().split('\n').map((key) => {
+    conditions[key.split(':')[0]] =  key.split(':')[1].trim()
+})
+        let code = test_code.getValue();      
+        try {
+            
+     eval(code);
+        } catch (error) {
+            output.innerHTML = '<span style="color:red">'+ error +'</span>'
+        }
+        // if(!aa) alert(99)
+if(is_nothing) {
+    clearOutput()
+    is_nothing = false
+}
+let check_result = checkCondition(code) 
+     if(console.logs.length > 0 || check_result) {
+        console.log(check_result);
+        if(check_result) {
+            output.innerHTML = '<span style="color:red">'+ check_result +'</span>'
+            is_nothing = true
+            console.logs = []
+        }
+        else {
+            output.innerHTML= console.logs.map(log => {
+            if(log == '{{$asm->condition_code["output"]}}') {
+                document.getElementById('correct').style.display = 'block'
+                  setTimeout(() => {
+                    document.getElementById('correct').style.display = 'none'
+                  }, 4000);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                test_editor.setReadOnly(true);
+                return '<span class="text-green">'+ log +'</span>'
+            }
+                return log.join(' ')
+            }).join('<br>')
+
+            is_nothing = false
+        }
+     }
+     else {
+         if(is_nothing) {
+      output.innerHTML = '<span style="color:red">There are nothing to display</span>'
+          is_nothing = true
+        }
+     }
+    }
+    function clearOutput() {
+        is_nothing = true
+        console.logs = []
+        output.innerHTML = ''
+    }
+</script>
+<script>
+function checkCondition(myCode) {
+    for(let key in conditions) {
+        switch (key) {
+            case 'not_if':
+                {
+                if(myCode.includes('if')) {
+                    return 'You cannot use if statement'
+                }
+                break;
+                }
+            case 'max_char': {
+                if(myCode.length > conditions[key]) {
+                    return 'Your character code is exceed ' + conditions[key]
+                }
+                break;
+            }
+            case 'max_line': {
+                if(myCode.split('\n').length > conditions[key]) {
+                    return 'Your line code is exceed ' + conditions[key]
+                }
+                break;
+            }
+        }
+    }
+}
 </script>
 @endsection
