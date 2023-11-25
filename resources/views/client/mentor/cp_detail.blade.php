@@ -1,5 +1,18 @@
 @extends('client.layouts.master')
 @section('content')
+<style>
+    .editor {
+        width: 100%;
+        height: 300px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 5px;
+        box-sizing: border-box;
+        font-size: 1.2em;
+        font-family: monospace;
+        word-break: break-all;
+    }
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <section class="page-content course-sec">
     <div class="container">
@@ -95,14 +108,13 @@
                       <div class="form-group mb-0">
                           <label class="add-course-label"
                             >Base Code</label>
-                          <textarea name="base_code" class="form-control" cols="30" rows="10">{!!$code!!}</textarea>
+                          <div name="base_code" id="base_code" class="editor" class="form-control" >{!!$code!!}</div>
                         </div>
                         <div class="form-group mb-0 mt-2">
                           <label class="add-course-label"
                             >Condition</label>
-                          <textarea name="condition_code" class="form-control" cols="30" rows="10">@foreach ($asm->condition_code as $key => $value ){{$key}}: {{$value}}
-@endforeach
-                          </textarea>
+                          <div name="condition_code" class="editor" id="condition_code" class="form-control">@foreach ($asm->condition_code as $key => $value )"{{$key}}": "{{$value}}"
+@endforeach</div>
                         </div>
                     </div>
                     
@@ -114,7 +126,7 @@
                       <h4>Test</h4>
                     </div>
                     <div class="add-course-section">
-                        {{-- something --}}
+                      {{-- <div id="editor"></div> --}}
                     </div>
                   </div>
                 </fieldset>
@@ -152,13 +164,11 @@ function saveData(obj) {
   })
 }
 else if(index_tab ==1) {
-  console.log(document.querySelector('textarea[name="base_code"]').value, document.querySelector('textarea[name="condition_code"]').value);
    let formData = new FormData();
-
   formData.append('name_file', '{{$asm->code_path}}');
   formData.append('asm_id', '{{$asm->_id}}');
-  formData.append('base_code', document.querySelector('textarea[name="base_code"]').value);
-  formData.append('condition_code',document.querySelector('textarea[name="condition_code"').value.split('\n').join(',').trim().replace(/,*$/, ''));
+  formData.append('base_code', base_code.getValue());
+  formData.append('condition_code',condition_code.getValue().split('\n').join(',').trim().replace(/,*$/, '').replaceAll('"',""));
   fetch('{{route("mentor-cp-update",$asm->_id)}}',{
     method: 'POST',
     body: formData
@@ -168,5 +178,21 @@ else if(index_tab ==1) {
 
 }
 }
+</script>
+<script src="{{asset('lib/ace.js')}}"></script>
+<script src="{{asset('lib/theme-xcode.js')}}" type="text/javascript" charset="utf-8"></script>
+<script>
+    var base_code = null
+    var condition_code = null
+    document.body.onload = function() {
+         base_code= ace.edit("base_code");
+        base_code.setTheme("ace/theme/lib/xcode");
+        base_code.session.setMode("ace/mode/javascript");
+        base_code.setShowPrintMargin(false);
+      condition_code = ace.edit("condition_code");
+        condition_code.setTheme("ace/theme/lib/xcode");
+        condition_code.session.setMode("ace/mode/json");
+        condition_code.setShowPrintMargin(false);
+    }
 </script>
 @endsection
