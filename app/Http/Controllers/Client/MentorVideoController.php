@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Level;
 use App\Models\Mentor;
+use App\Models\MentorAssignment;
 use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -193,6 +195,46 @@ class MentorVideoController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'OK',
+        ]);
+    }
+    public function cp()
+    {
+        $mentor = auth()->user()->mentor;
+        $asm = MentorAssignment::where('mentor_id', $mentor->_id)->get();
+        $categories = Category::whereIn('_id', $asm->pluck('category_id'))->get()->pluck('name', '_id');
+        $level = Level::whereIn('_id', $asm->pluck('level_id'))->get()->pluck('name', '_id');
+        return view('client.mentor.cp', compact('mentor', 'asm', 'categories', 'level'));
+    }
+    public function cp_detail($id)
+    {
+        $code = (Storage::get('mentor_code/demo.js'));
+        $mentor = auth()->user()->mentor;
+        $asm = MentorAssignment::where('mentor_id', $mentor->_id)->where('_id', $id)->first();
+        $categories = Category::all();
+        $level = Level::all();
+        $condition_code = '';
+        foreach ($asm->condition_code as $key => $value) {
+            $condition_code .= $key . '=' . $value . ' </br>';
+        }
+        return view('client.mentor.cp_detail', compact('mentor', 'asm', 'categories', 'level', 'code', 'condition_code'));
+    }
+    public function cp_update()
+    {
+        if (request()->base_code) {
+            Storage::put('mentor_code/' . request()->name_file, request()->base_code);
+            $condition_code = explode(',', request()->condition_code);
+            $result = [];
+            foreach ($condition_code as $pair) {
+                list($key, $value) = explode(":", $pair);
+                $result[$key] = trim($value);
+            }
+            MentorAssignment::find(request()->asm_id)->update(['condition_code' => $result]);
+        } else {
+            MentorAssignment::find(request()->id)->update(request()->all());
+        }
+        return response()->json([
+            'status' => true,
+            'message' => request()->all(),
         ]);
     }
 }

@@ -134,6 +134,9 @@ Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mento
 Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
 Route::get('/mentor/dashboard', [MentorVideoController::class, 'dashboard'])->name('mentor-dashboard')->middleware('auth');
+Route::get('/mentor/cp', [MentorVideoController::class, 'cp'])->name('mentor-cp')->middleware('auth');
+Route::get('/mentor/cp/{id}', [MentorVideoController::class, 'cp_detail'])->name('mentor-cp-detail')->middleware('auth');
+Route::post('/mentor/cp/update', [MentorVideoController::class, 'cp_update'])->name('mentor-cp-update');
 
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');

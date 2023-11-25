@@ -14,8 +14,7 @@
                     <h4><a href="#">{{ $mentor->name }}</a></h4>
                     <p>Mentor</p>
                 </div>
-                <div class="go-dashboard text-center">
-                    <a href="{{route('course-add')}}" class="btn btn-primary">Create New Course</a>
+                <div class="go-dashboard text-center"> <a href="{{route('course-add')}}" class="btn btn-primary">Create New Course</a>
                 </div>
             </div>
         </div>
@@ -30,8 +29,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="instructor-reviews.html" class="nav-link">
-                        <i class="feather-star"></i> Reviews
+                    <a href="{{route('mentor-cp')}}" class="nav-link">
+                        <i class="feather-star"></i> CP
                     </a>
                 </li>
                 <li class="nav-item">
