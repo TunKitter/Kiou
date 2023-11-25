@@ -7,5 +7,7 @@ class MentorAssignment extends Model
 {
     public $collection = 'mentor_assignments';
     protected $fillable = [];
-    protected $attributes = [];
+    protected $attributes = [
+        'total_enrollment' => 0,
+    ];
 }

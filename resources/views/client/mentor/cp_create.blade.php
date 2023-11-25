@@ -33,7 +33,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-12">
-<button class="btn btn-success-dark float-end d-block px-5 mb-2 save-btn" onclick="saveData(this)">Save</button>
+<button class="btn btn-success-dark float-end d-block px-5 mb-2 save-btn" disabled onclick="saveData(this)">Save</button>
           {{-- <div class="add-course-header">
             <h2>Detail</h2>
             <div class="add-course-btns">
@@ -83,14 +83,14 @@
                           <input
                             type="text" name="description"
                             class="form-control"
-                            placeholder="Enter description" value="{{$asm->description}}"
+                            placeholder="Enter description" 
                           />
                         </div>
                         <div class="form-group">
                           <label class="add-course-label">Category</label>
                           <select class="form-control select" name="category" id="category">
                               @foreach ($categories as $category)
-                                <option value="{{$category->id}}" {{$asm->category_id == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
+                                <option value="{{$category->id}}">{{$category->name}}</option>
                               @endforeach
                           </select>
                         </div>
@@ -98,19 +98,10 @@
                           <label class="add-course-label">Level</label>
                           <select class="form-control select" name="level" id="level">
                               @foreach ($level as $item)
-                                <option value="{{$item->id}}" {{$asm->level_id == $item->id ? 'selected' : ''}}>{{$item->name}}</option>
+                                <option value="{{$item->id}}" >{{$item->name}}</option>
                               @endforeach
                           </select>
-                        </div>
-                            <div class="form-group">
-                          <label class="add-course-label"
-                            >Total enrollment</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            disabled value="{{$asm->total_enrollment}}"
-                          />
-                        </div>
+                        </div> 
                       </form>
                   </div>
                 </fieldset>
@@ -123,13 +114,12 @@
                       <div class="form-group mb-0">
                           <label class="add-course-label"
                             >Base Code</label>
-                          <div name="base_code" id="base_code" class="editor" class="form-control" >{!!$code!!}</div>
+                          <div name="base_code" id="base_code" class="editor" class="form-control" ></div>
                         </div>
                         <div class="form-group mb-0 mt-2">
                           <label class="add-course-label"
                             >Condition</label>
-                          <div name="condition_code" class="editor" id="condition_code" class="form-control">@foreach ($asm->condition_code as $key => $value )"{{$key}}": "{{$value}}"
-@endforeach</div>
+                          <div name="condition_code" class="editor" id="condition_code" class="form-control"></div>
                         </div>
                     </div>
                     
@@ -163,10 +153,11 @@
   var index_tab = 0;
 function showScreen(n) {
   index_tab = n;
+  document.querySelector('.save-btn').disabled = true;
   if(n == 2) {
-    test_code.setValue(base_code.getValue());
-  }
   document.querySelector('.save-btn').disabled = false;
+  test_code.setValue(base_code.getValue());
+  }
     $('.field-card').css('display', 'none');
     $('.field-card').eq(n).css('display', 'block');
     $('.progress_demo').removeClass('progress-active');
@@ -175,33 +166,19 @@ function showScreen(n) {
 function saveData(obj) {
   obj.disabled = true;
   obj.innerHTML = 'Saving...'
-  if(index_tab == 0){
   let formData = new FormData();
-  formData.append('id', '{{$asm->_id}}');
   formData.append('category_id', document.querySelector('select[name="category"]').value);
   formData.append('level_id', document.querySelector('select[name="level"]').value);
   formData.append('description', document.querySelector('input[name="description"]').value);
-  fetch('{{route("mentor-cp-update",$asm->_id)}}',{
-    method: 'POST',
-    body: formData
-  }).then(res => res.json()).then(data => {
-    obj.innerHTML = 'Saved'
-  })
-}
-else if(index_tab ==1) {
-   let formData = new FormData();
-  formData.append('name_file', '{{$asm->code_path}}');
-  formData.append('asm_id', '{{$asm->_id}}');
   formData.append('base_code', base_code.getValue());
   formData.append('condition_code',condition_code.getValue().split('\n').join(',').trim().replace(/,*$/, '').replaceAll('"',""));
-  fetch('{{route("mentor-cp-update",$asm->_id)}}',{
+  fetch('{{route("mentor-cp-create")}}',{
     method: 'POST',
     body: formData
-  }).then(res => res.json()).then(data => {
+  }).then(res => res.text()).then(data => {
+    console.log(data);
     obj.innerHTML = 'Saved'
   })
-
-}
 }
 </script>
 <script src="{{asset('lib/ace.js')}}"></script>
@@ -271,7 +248,6 @@ let check_result = checkCondition(code)
                     document.getElementById('correct').style.display = 'none'
                   }, 4000);
                 window.scrollTo({ top: 0, behavior: "smooth" });
-                // test_editor.setReadOnly(true);
                 return '<span class="text-green">'+ log +'</span>'
             }
                 return log.join(' ')

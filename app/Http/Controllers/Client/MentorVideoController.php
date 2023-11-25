@@ -230,8 +230,38 @@ class MentorVideoController extends Controller
             }
             MentorAssignment::find(request()->asm_id)->update(['condition_code' => $result]);
         } else {
-            MentorAssignment::find(request()->id)->update(request()->all());
+            MentorAssignment::find(request()->id)->update(request()->only('description', 'level_id', 'category_id', 'condition_code'));
         }
+        return response()->json([
+            'status' => true,
+            'message' => request()->all(),
+        ]);
+    }
+    public function cp_create()
+    {
+        $mentor = auth()->user()->mentor;
+        $categories = Category::all();
+        $level = Level::all();
+        return view('client.mentor.cp_create', compact('mentor', 'categories', 'level'));
+    }
+    public function handle_cp_create()
+    {
+        $file_name = uniqid() . '.js';
+        Storage::put('mentor_code/' . $file_name, request()->base_code);
+        $condition_code = explode(',', request()->condition_code);
+        $result = [];
+        foreach ($condition_code as $pair) {
+            list($key, $value) = explode(":", $pair);
+            $result[$key] = trim($value);
+        }
+        MentorAssignment::create([
+            'mentor_id' => auth()->user()->mentor->_id,
+            'category_id' => request()->category_id,
+            'level_id' => request()->level_id,
+            'description' => request()->description,
+            'code_path' => $file_name,
+            'condition_code' => $result,
+        ]);
         return response()->json([
             'status' => true,
             'message' => request()->all(),
