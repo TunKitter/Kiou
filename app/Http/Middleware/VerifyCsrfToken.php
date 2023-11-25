@@ -39,5 +39,6 @@ class VerifyCsrfToken extends Middleware
         '/course/add/upload',
         'mentor/cp/update',
         'mentor/create/cp',
+        'mentor/delete/cp',
     ];
 }

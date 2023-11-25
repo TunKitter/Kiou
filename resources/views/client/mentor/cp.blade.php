@@ -20,11 +20,12 @@
                                             <th>Level</th>
                                             <th>Total enrollment</th>
                                             <th>More</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($asm  as $item )
-                                        <tr>
+                                        <tr id="{{$item->id}}">
                                             <td class="instruct-orders-info">
                                                 <p class="text-truncate d-inline-block" style="max-width: 150px">{{$item->description}}</p>
                                             </td>
@@ -32,6 +33,7 @@
                                             <td>{{$level[$item->level_id]}}</td>
                                             <td>{{$item->total_enrollment}}</td>
                                             <td><button class="text-primary bg-white border-0" onclick="location.href='{{route('mentor-cp-detail',$item->id)}}'">More</button></td>
+                                            <td><button class="text-white border-0 px-2 py-1 rounded-2" style="background: #fc7f50" onclick="deleteCp('{{$item->id}}')">Delete</button></td>
                                         </tr>    
                                         @endforeach
                                         
@@ -46,4 +48,18 @@
     </div>
 
 </div>
+<script>
+    function deleteCp(id){
+        if(confirm('Are you sure to delete this CP?')){
+            let formData = new FormData();
+            formData.append('id',id)
+            fetch(`{{route('mentor-cp-delete')}}`, {
+                method: 'POST',
+                body: formData
+            }).then(res => res.text()).then(data => {
+                $('#'+id).remove();
+            })
+        }
+    }
+</script>
 @endsection

@@ -267,4 +267,14 @@ class MentorVideoController extends Controller
             'message' => request()->all(),
         ]);
     }
+    public function cp_delete()
+    {
+        $result = MentorAssignment::find(request()->id);
+        Storage::delete('mentor_code/' . $result->code_path);
+        $result->delete();
+        return response()->json([
+            'status' => true,
+            'message' => request()->all(),
+        ]);
+    }
 }

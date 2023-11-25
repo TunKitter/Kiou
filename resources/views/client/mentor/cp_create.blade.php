@@ -178,6 +178,9 @@ function saveData(obj) {
   }).then(res => res.text()).then(data => {
     console.log(data);
     obj.innerHTML = 'Saved'
+      setTimeout(() => {
+      location.href = '{{route("mentor-cp")}}'
+      }, 2000);
   })
 }
 </script>
