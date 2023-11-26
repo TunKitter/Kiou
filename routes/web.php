@@ -26,7 +26,7 @@ use App\Http\Controllers\Client\StripeController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 # --------------------------- Admin User --------------------------------
 Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser');
