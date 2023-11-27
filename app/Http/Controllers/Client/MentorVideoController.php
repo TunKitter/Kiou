@@ -7,10 +7,12 @@ use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Lesson;
 use App\Models\Level;
 use App\Models\Mentor;
 use App\Models\MentorAssignment;
 use App\Models\Profession;
+use App\Models\Roadmap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -276,5 +278,86 @@ class MentorVideoController extends Controller
             'status' => true,
             'message' => request()->all(),
         ]);
+    }
+    public function roadmap()
+    {
+        $mentor = auth()->user()->mentor;
+        $roadmap = Roadmap::where('mentor_id', $mentor->_id)->get();
+        return view('client.mentor.roadmap', compact('mentor', 'roadmap'));
+    }
+    public function detailRoadmap($id)
+    {
+        $mentor = auth()->user()->mentor;
+        $roadmap = Roadmap::where('mentor_id', $mentor->_id)->where('_id', $id)->first();
+        $aa = '';
+        $bb = '';
+        $index = 0;
+        foreach ($roadmap['content'] as $value) {
+            if ($value['type'] == 'course') {
+                $aa .= $value['type_id'] . ',';
+            } elseif ($value['type'] == 'lesson') {
+                $bb .= $value['type_id'] . ',';
+            } else {
+                foreach ($value['type_id'] as $value2) {
+                    if ($value2['type'] == 'course') {
+                        $aa .= $value2['type_id'] . ',';
+                    } elseif ($value2['type'] == 'lesson') {
+
+                        $bb .= $value2['type_id'] . ',';
+                    } else {
+                        $aa .= $this->showChild($value2['type_id'])[0];
+                        $bb .= $this->showChild($value2['type_id'])[1];
+                    }
+                }
+
+            }
+        }
+        // return $aa;
+        // dd($roadmap->pluck('name', '_id')->toArray());
+        // dd($aa, $bb);
+        $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta', 'image', 'complete_course_rate', 'total_enrollment', 'mentor_id'])->toArray());
+        $mentor_id = [];
+        array_map(function ($course) use (&$course_name, $course_database, &$mentor_id) {
+            $course_name[$course['_id']] = ['name' => $course['name'], 'total_lesson' => $course['meta']['total_lesson'], 'total_time' => $course['meta']['total_time'], 'image' => $course['image'], 'complete_course_rate' => $course['complete_course_rate'], 'total_enrollment' => $course['total_enrollment'], 'mentor_id' => $course['mentor_id']];
+            $mentor_id[] = $course['mentor_id'];
+        }, $course_database);
+        $lesson_name = (Lesson::whereIn('_id', explode(',', rtrim($bb, ',')))->get());
+        $aa = [];
+        // dd($lesson_name->toArray());
+        $index_lesson = 0;
+        array_map(function ($lesson) use (&$aa, $lesson_name, &$index_lesson, &$mentor_id) {
+            $temp_course = $lesson_name[$index_lesson]->course;
+            $aa[$lesson['_id']] = ['name' => $lesson['name'], 'course_name' => $temp_course->name, 'total_lesson' => $temp_course->meta['total_lesson'], 'total_time' => $temp_course->meta['total_time'], 'image' => $temp_course->image, 'complete_course_rate' => $temp_course->complete_course_rate, 'total_enrollment' => $temp_course->total_enrollment, 'mentor_id' => $temp_course->mentor_id];
+            $index_lesson++;
+            $mentor_id[] = $temp_course->mentor_id;
+        }, $lesson_name->toArray());
+        // dd(Lesson::all()->first()->course);
+        $lesson_name = $aa;
+        $mentor_name = Mentor::select(['name', '_id'])->whereIn('_id', $mentor_id)->get()->pluck('name', '_id');
+        // dd($mentor_name);
+        // dd(Course::whereIn('_id', $roadmap)->get(['co'])->toArray());
+        $q = request()->q;
+        $is_wrong_spell = request()->is_wrong_spell;
+        // dd($course_name, $lesson_name);
+        // return view('client.roadmap.roadmap', compact('roadmap', 'course_name', 'lesson_name', 'q', 'is_wrong_spell', 'total_roadmap', 'index_page'));
+        return view('client.mentor.detail_roadmap', compact('mentor', 'roadmap', 'course_name', 'lesson_name', 'mentor_name'));
+    }
+    public function showChild($arr, $aa = '', $bb = '')
+    {
+        $result = [];
+        foreach ($arr as $value2) {
+            if ($value2['type'] == 'course' || $value2['type'] == 'lesson') {
+                // $result['multiple'][] = ["description" => $value2['type_description'], 'type' => $value2['type'], 'type_id' => $value2['type_id']];
+                if ($value2['type'] == 'course') {
+                    $aa .= $value2['type_id'] . ',';
+                } elseif ($value2['type'] == 'lesson') {
+                    $bb .= $value2['type_id'] . ',';
+                }
+            } else {
+                $aa .= $this->showChild($arr['type_id'])[0];
+                $bb .= $this->showChild($arr['type_id'])[1];
+            }
+        }
+        return [$aa, $bb];
     }
 }

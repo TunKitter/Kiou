@@ -1,3 +1,6 @@
+@php
+    $route_name= (\Illuminate\Support\Facades\Route::currentRouteName());
+@endphp
 <div class="col-xl-3 col-md-4 theiaStickySidebar">
     <div class="settings-widget dash-profile mb-3">
         <div class="settings-menu p-0">
@@ -23,19 +26,19 @@
         <div class="settings-menu">
             <h3>DASHBOARD</h3>
             <ul>
-                <li class="nav-item active">
+                <li class="nav-item {{$route_name == 'mentor-dashboard' ? 'active' : ''}}">
                     <a href="{{route('mentor-dashboard')}}" class="nav-link">
                         <i class="feather-home"></i> My Dashboard
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{$route_name == 'mentor-cp' ? 'active' : ''}}">
                     <a href="{{route('mentor-cp')}}" class="nav-link">
                         <i class="feather-star"></i> CP
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="instructor-earnings.html" class="nav-link">
-                        <i class="feather-pie-chart"></i> Earnings
+                <li class="nav-item {{$route_name == 'mentor-roadmap' ? 'active' : ''}}">
+                    <a href="{{route('mentor-roadmap')}}" class="nav-link">
+                        <i class="feather-pie-chart"></i> Roadmap
                     </a>
                 </li>
                 <li class="nav-item">
