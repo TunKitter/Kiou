@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CategoryPostController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController;
@@ -17,7 +18,9 @@ use App\Http\Controllers\Client\LogoutController;
 use App\Http\Controllers\Client\MentorController;
 use App\Http\Controllers\Client\MentorVideoController;
 use App\Http\Controllers\Client\ModerationController;
+use App\Http\Controllers\Client\MyCoursesController;
 use App\Http\Controllers\Client\PasswordController;
+use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
@@ -57,7 +60,13 @@ Route::post('/admin/notification', function () {
         ]),
     ]);
 })->name('create-notification');
-# --------------------------- Admin Post --------------------------------
+
+# --------------------------- Admin Category --------------------------------
+Route::get('/admin/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');
+Route::post('/admin/category-posts/add', [CategoryPostController::class, 'storeCategory'])->name('storeCategory');
+Route::get('/admin/category-posts/edit/{id}', [CategoryPostController::class, 'editCategory'])->name('editCategory');
+Route::post('/admin/category-posts/update/{id}', [CategoryPostController::class, 'updateCategory'])->name('updateCategory');
+Route::get('/admin/category-posts/delete/{id}', [CategoryPostController::class, 'delete'])->name('deleteCategory');
 
 Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
 Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
@@ -107,6 +116,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/password', [ProfileController::class, 'handlePassword'])->name('profile-password');
 });
 
+Route::get('/profile/mycourses', [MyCoursesController::class, 'index'])->name('mycourses');
+
 # ------------------------- Mentor --------------------------------
 
 Route::get('/mentor/overview', [MentorController::class, 'overview'])->name('mentor-overview')->middleware('auth');
@@ -123,10 +134,19 @@ Route::get('/mentor/profile', [MentorController::class, 'profile'])->name('mento
 Route::delete('/mentor/profile', [MentorController::class, 'deleteAvatar'])->middleware('auth');
 Route::post('/mentor/profile', [MentorController::class, 'handleProfile'])->middleware('auth');
 Route::get('/mentor/dashboard', [MentorVideoController::class, 'dashboard'])->name('mentor-dashboard')->middleware('auth');
+Route::get('/mentor/cp', [MentorVideoController::class, 'cp'])->name('mentor-cp')->middleware('auth');
+Route::get('/mentor/cp/{id}', [MentorVideoController::class, 'cp_detail'])->name('mentor-cp-detail')->middleware('auth');
+Route::post('/mentor/cp/update', [MentorVideoController::class, 'cp_update'])->name('mentor-cp-update');
+Route::get('/mentor/create/cp', [MentorVideoController::class, 'cp_create'])->name('mentor-cp-create');
+Route::post('/mentor/create/cp', [MentorVideoController::class, 'handle_cp_create']);
+Route::post('/mentor/delete/cp', [MentorVideoController::class, 'cp_delete'])->name('mentor-cp-delete');
+Route::get('/mentor/roadmap', [MentorVideoController::class, 'roadmap'])->name('mentor-roadmap');
+Route::get('/mentor/roadmap/{id}', [MentorVideoController::class, 'detailRoadmap'])->name('mentor-roadmap-detail');
 
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
+Route::get('course/explore', [CourseController::class, 'exploreUser'])->name('course-explore-user');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
 Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
@@ -134,6 +154,8 @@ Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getC
 Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');
 Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
+Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
+Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
@@ -181,6 +203,9 @@ Route::controller(StripeController::class)->group(function () {
     Route::get('/cancel', 'cancel')->name('cancel');
 
 });
+
+# ------------------------- Pay VnPay --------------------------------
+Route::post('/vnpay', [PaymentController::class, 'vnpay_payment']);
 
 # ------------------------- Moderation --------------------------------
 Route::middleware('auth')->group(function () {

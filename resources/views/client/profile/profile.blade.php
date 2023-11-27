@@ -44,9 +44,14 @@
                         <div class="settings-menu">
                             <h3>ACCOUNT SETTINGS</h3>
                             <ul>
-                                <li class="nav-item active">
-                                    <a href="setting-edit-profile.html" class="nav-link">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
                                         <i class="feather-settings"></i> Edit Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('mycourses')}}" class="nav-link">
+                                        <i class="feather-book"></i> My Courses
                                     </a>
                                 </li>
                                 <li class="nav-item">

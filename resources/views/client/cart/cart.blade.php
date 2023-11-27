@@ -124,7 +124,7 @@
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12">
                                             <div class="cart-subtotal">
-                                                <p>Subtotal <span>${{ $total }}</span></p>
+                                                <p>Total price <span>${{ $total }}</span></p>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">

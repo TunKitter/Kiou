@@ -257,7 +257,7 @@
 </div>
 <div class="course-view d-flex align-items-center">
 <img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
-<p>{{round($course->meta['total_time']/60)}}hr {{round($course->meta['total_time']%60)}}min</p>
+<p>{{round(round($course->meta['total_time']/60)/60)}}hr {{(round($course->meta['total_time']/60)%60)}}min</p>
 </div>
 </div>
 <div class="rating">
