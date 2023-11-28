@@ -123,7 +123,7 @@
                                                 @if (
                                                     $carts
                                                         ::where('user_id', auth()->id())->get()->count() > 0)
-                                                    @foreach ($carts::where('user_id', auth()->id())->get() as $cart)
+                                                    @foreach ($carts::where('user_id', auth()->id())->where('state','65337ecc289241e845e578d9')->get() as $cart)
                                                         @php
                                                             $tempCart = $cart;
                                                             $tempCart['img'] = $cart->courses->image;
@@ -397,6 +397,11 @@
 <input class="form-check-input" type="checkbox" id="night-mode">
 </div>
 </div> --}}
+                                        @if(Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d')
+                                        <a class="dropdown-item" href="{{route('listUser')}}"><i
+                                            class="feather-log-in me-1"></i>Go to Admin</a>
+                                        @endif
+                                        
                                         <a class="dropdown-item" href="{{ route('logout') }}"><i
                                                 class="feather-log-out me-1"></i> Logout</a>
                                     </div>
