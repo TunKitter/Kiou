@@ -354,8 +354,8 @@ class MentorVideoController extends Controller
                     $bb .= $value2['type_id'] . ',';
                 }
             } else {
-                $aa .= $this->showChild($arr['type_id'])[0];
-                $bb .= $this->showChild($arr['type_id'])[1];
+                $aa .= $this->showChild($value2['type_id'])[0];
+                $bb .= $this->showChild($value2['type_id'])[1];
             }
         }
         return [$aa, $bb];

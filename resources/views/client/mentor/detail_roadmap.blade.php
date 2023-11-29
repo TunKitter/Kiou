@@ -24,6 +24,14 @@
     @else
     addSection('lesson',document.querySelector('#add-section-btn'),'{{$item["type"]}}','{{$item["type_description"]}}','{{$lesson_name[$item["type_id"]]["name"]}}','{{$lesson_name[$item["type_id"]]["total_lesson"]}}','{{$lesson_name[$item["type_id"]]["total_time"]}}','{{$lesson_name[$item["type_id"]]["image"]}}','{{$lesson_name[$item["type_id"]]["complete_course_rate"]}}','{{$lesson_name[$item["type_id"]]["total_enrollment"]}}','{{$mentor_name[$lesson_name[$item["type_id"]]["mentor_id"]]}}','{{$lesson_name[$item["type_id"]]["course_name"]}}');  
     @endif
+    @else
+    let multiple_class = (addSection('multiple',document.querySelector('#add-section-btn'),'{{$item["type"]}}','{{$item["type_description"]}}','something','somwthing1','something2','something4','smehtin','dsasdas','sdaasd'));
+    @foreach ($item['type_id'] as $key => $value)
+      addLecture(multiple_class);
+      @if($value['type'] == 'multiple')
+      
+      @endif
+    @endforeach
       @endif
     @endforeach
 }
@@ -46,25 +54,13 @@
      var index = 0 
   function addSection(type,obj,name,desc,type_name,total_lesson,total_time,image,complete_course_rate,total_enrollment,mentor_name,course_name){
     let is_multiple = ''
+    let data_load = ''
     if(name == 'multiple'){
         is_multiple = `<span class="btn" onclick="addLecture('accordion-${index}')">Add Lecture</span>`
     }
-    document.querySelector('.chapter_videos').innerHTML += `
-    <div class="curriculum-grid mt-4 chapter_video chapter_${index} ">
-                        <div class="curriculum-head">
-                        <div class="form-group">
-                          <label class="add-course-label" contenteditable>${desc}</label>
-                          <select class="form-control select" style="max-width:max-content  ">
-                                <option value="course" ${name == 'course' ? 'selected' : ''}>Course</option>
-                                <option value="lesson" ${name == 'lesson' ? 'selected' : ''}>Lesson</option>
-                                <option value="multiple" ${name == 'multiple' ? 'selected' : ''}>Multiple</option>
-                          </select>
-                        </div>
-                          <a href="javascript:void(0);">${is_multiple} <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('chapter_${index}')">Remove section</button></a> 
-                        </div>
-                        <div class="curriculum-info">
-                          <div id="accordion-${index}">
-                            <div class="col-lg-12 col-md-12 d-flex">
+    else {
+      data_load = `
+      <div class="col-lg-12 col-md-12 d-flex">
 <div class="course-box course-design list-course d-flex">
 <div class="product">
 <div class="product-img">
@@ -113,6 +109,24 @@ ${type == 'lesson' ? type_name : ''}
 </div>
 </div>
 </div>
+      `
+    }
+    document.querySelector('.chapter_videos').innerHTML += `
+    <div class="curriculum-grid mt-4 chapter_video chapter_${index} ">
+                        <div class="curriculum-head">
+                        <div class="form-group">
+                          <label class="add-course-label" contenteditable>${desc}</label>
+                          <select class="form-control select" style="max-width:max-content  ">
+                                <option value="course" ${name == 'course' ? 'selected' : ''}>Course</option>
+                                <option value="lesson" ${name == 'lesson' ? 'selected' : ''}>Lesson</option>
+                                <option value="multiple" ${name == 'multiple' ? 'selected' : ''}>Multiple</option>
+                          </select>
+                        </div>
+                          <a href="javascript:void(0);">${is_multiple} <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('chapter_${index}')">Remove section</button></a> 
+                        </div>
+                        <div class="curriculum-info">
+                          <div id="accordion-${index}">
+                            ${data_load}
                           </div>
                         </div>
                       </div>
@@ -120,6 +134,7 @@ ${type == 'lesson' ? type_name : ''}
     var el = document.querySelector('.chapter_video:last-child');
     el.scrollIntoView(true);
     index++;
+    return 'accordion-' + (index-1)
   }
   function removeSection(index){
     // document.querySelector('.chapter_videos').innerHTML = '';
@@ -146,7 +161,7 @@ ${type == 'lesson' ? type_name : ''}
                                   href="#collapse${a}"
                                 >
                                   <i class="fas fa-align-justify"></i>
-                                  <span contenteditable class="lesson_name">Lesson name</span>
+                                  <span class="lesson_name">Child</span>
                                 </a>
                                 <div class="faq-right">
                               
@@ -164,21 +179,12 @@ ${type == 'lesson' ? type_name : ''}
                                 data-bs-parent="#accordion-one"
                               >
                                 <div class="faq-body">
-                                  <div class="add-article-btns">
-                                    <input type="file" class="form-control mb-2"  name="lesson[]" />
-                                    <div class="form-group">
-                                      <label class="add-course-label">Lesson Description</label>
-                                    <input class="me-0 mb-2 form-control" style="width:100%" placeholder="Enter the description">
-                                      </div>
-                        <div class="form-group">
-                                      <label class="add-course-label">Subtitle</label>
-                                    <input class="me-0 mb-2 form-control" name="subtitle[]" style="width:100%" type="file">
-                                      </div>  
-                                  </div>
+                                  sdasdadasadasdasd
                                 </div>
                               </div>
                             </div>
     `
+    return a
   }
   function removeLecture(id){
     $('#'+ id).remove();
