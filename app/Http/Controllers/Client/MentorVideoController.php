@@ -315,10 +315,10 @@ class MentorVideoController extends Controller
         // return $aa;
         // dd($roadmap->pluck('name', '_id')->toArray());
         // dd($aa, $bb);
-        $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta', 'image', 'complete_course_rate', 'total_enrollment', 'mentor_id'])->toArray());
+        $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta', 'image', 'complete_course_rate', 'total_enrollment', 'mentor_id', 'price'])->toArray());
         $mentor_id = [];
         array_map(function ($course) use (&$course_name, $course_database, &$mentor_id) {
-            $course_name[$course['_id']] = ['name' => $course['name'], 'total_lesson' => $course['meta']['total_lesson'], 'total_time' => $course['meta']['total_time'], 'image' => $course['image'], 'complete_course_rate' => $course['complete_course_rate'], 'total_enrollment' => $course['total_enrollment'], 'mentor_id' => $course['mentor_id']];
+            $course_name[$course['_id']] = ['name' => $course['name'], 'total_lesson' => $course['meta']['total_lesson'], 'total_time' => $course['meta']['total_time'], 'image' => $course['image'], 'complete_course_rate' => $course['complete_course_rate'], 'total_enrollment' => $course['total_enrollment'], 'mentor_id' => $course['mentor_id'], 'price' => $course['price']];
             $mentor_id[] = $course['mentor_id'];
         }, $course_database);
         $lesson_name = (Lesson::whereIn('_id', explode(',', rtrim($bb, ',')))->get());
@@ -327,7 +327,7 @@ class MentorVideoController extends Controller
         $index_lesson = 0;
         array_map(function ($lesson) use (&$aa, $lesson_name, &$index_lesson, &$mentor_id) {
             $temp_course = $lesson_name[$index_lesson]->course;
-            $aa[$lesson['_id']] = ['name' => $lesson['name'], 'course_name' => $temp_course->name, 'total_lesson' => $temp_course->meta['total_lesson'], 'total_time' => $temp_course->meta['total_time'], 'image' => $temp_course->image, 'complete_course_rate' => $temp_course->complete_course_rate, 'total_enrollment' => $temp_course->total_enrollment, 'mentor_id' => $temp_course->mentor_id];
+            $aa[$lesson['_id']] = ['name' => $lesson['name'], 'course_name' => $temp_course->name, 'total_lesson' => $temp_course->meta['total_lesson'], 'total_time' => $temp_course->meta['total_time'], 'image' => $temp_course->image, 'complete_course_rate' => $temp_course->complete_course_rate, 'total_enrollment' => $temp_course->total_enrollment, 'mentor_id' => $temp_course->mentor_id, 'price' => $temp_course->price];
             $index_lesson++;
             $mentor_id[] = $temp_course->mentor_id;
         }, $lesson_name->toArray());

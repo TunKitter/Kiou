@@ -15,30 +15,9 @@
                             <div class="add-course-info">
                     <div class="add-course-section">
                       <button class="btn" id="add-section-btn" onclick="addSection(this)">Add Section</button>
-                      <script>
-                          document.body.onload = function() {
-    @foreach ($roadmap->content as $item )
-   @if($item['type'] != 'multiple')
-    @if($item['type'] == 'course')
-    addSection('course',document.querySelector('#add-section-btn'),'{{$item["type"]}}','{{$item["type_description"]}}','{{$course_name[$item["type_id"]]["name"]}}','{{$course_name[$item["type_id"]]["total_lesson"]}}','{{$course_name[$item["type_id"]]["total_time"]}}','{{$course_name[$item["type_id"]]["image"]}}','{{$course_name[$item["type_id"]]["complete_course_rate"]}}','{{$course_name[$item["type_id"]]["total_enrollment"]}}','{{$mentor_name[$course_name[$item["type_id"]]["mentor_id"]]}}');
-    @else
-    addSection('lesson',document.querySelector('#add-section-btn'),'{{$item["type"]}}','{{$item["type_description"]}}','{{$lesson_name[$item["type_id"]]["name"]}}','{{$lesson_name[$item["type_id"]]["total_lesson"]}}','{{$lesson_name[$item["type_id"]]["total_time"]}}','{{$lesson_name[$item["type_id"]]["image"]}}','{{$lesson_name[$item["type_id"]]["complete_course_rate"]}}','{{$lesson_name[$item["type_id"]]["total_enrollment"]}}','{{$mentor_name[$lesson_name[$item["type_id"]]["mentor_id"]]}}','{{$lesson_name[$item["type_id"]]["course_name"]}}');  
-    @endif
-    @else
-    let multiple_class = (addSection('multiple',document.querySelector('#add-section-btn'),'{{$item["type"]}}','{{$item["type_description"]}}','something','somwthing1','something2','something4','smehtin','dsasdas','sdaasd'));
-    @foreach ($item['type_id'] as $key => $value)
-      addLecture(multiple_class);
-      @if($value['type'] == 'multiple')
-      
-      @endif
-    @endforeach
-      @endif
-    @endforeach
-}
-</script>
                     </div>
                     <div class="add-course-form chapter_videos">
-                      
+                      @include('client.mentor.item_roadmap',['roadmap'=>$roadmap->content])
                     </div>
                   </div>
                             </div>
