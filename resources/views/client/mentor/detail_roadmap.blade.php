@@ -40,7 +40,7 @@
                         <div class="curriculum-head">
                         <div class="form-group">
                           <label class="add-course-label" contenteditable>Enter the name of the section</label>
-                          <select class="form-control" onchange="updateSelect(this.value)" style="max-width:max-content  ">
+                          <select class="form-control" onchange="updateSelect(this.value,'#${accordion}')" style="max-width:max-content  ">
                                 <option value="course" selected>Course</option>
                                 <option value="lesson">Lesson</option>
                                 <option value="multiple">Multiple</option>
@@ -50,8 +50,6 @@
                         </div>
                         <div class="curriculum-info">
                           <div id="${accordion}">
-                            <div class="col-lg-12 col-md-12 d-flex">  
-z</div>
                           </div>
                         </div>
                       </div>
@@ -115,8 +113,46 @@ z</div>
   function removeLecture(id){
     $('#'+ id).remove();
   }
-function updateSelect(value) {
-  alert(value);
+function updateSelect(value,class_name) {
+  let random_id = makeid();
+  let accordion = makeid();
+  if(value == 'multiple'){
+    document.querySelector(class_name).innerHTML = `
+    <div class="faq-grid" id="${a = makeid()}">
+                              <div class="faq-header">
+                                <a
+                                  class="collapsed faq-collapse"
+                                  data-bs-toggle="collapse"
+                                  href="#collapse${a}"
+                                >
+                                  <i class="fas fa-align-justify"></i>
+                                  <span class="lesson_name">Child</span>
+                                </a>
+                                <div class="faq-right">
+                              
+                                  <a
+                                    href="javascript:void(0);"
+                                    class="me-0"
+                                  >
+                                    <i class="far fa-trash-can" onclick="removeLecture('${a}')"></i>
+                                  </a>
+<span class="btn btn-outline-info" style="min-width: initial;width: max-content;height: max-content;padding:10px" onclick="addLecture('${a}')">Add Lecture</span>
+                                </div>
+                              </div>
+                              <div
+                                id="collapse${a}"
+                                class="collapse"
+                                data-bs-parent="#accordion-one"
+                              >
+                                <div class="faq-body">
+                                </div>
+                              </div>
+                            </div>
+  `;
+  }
+  else {
+    document.querySelector(class_name).innerHTML = ''
+  }
 }
 </script>
 @endsection
