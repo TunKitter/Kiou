@@ -1,19 +1,19 @@
 @foreach ($roadmap as $item )
 @if($item['type'] != 'multiple')
-<div class="curriculum-grid mt-4 chapter_video chapter_{{$loop->index}} ">
+<div class="curriculum-grid mt-4 chapter_video {{$chapter = '_'.uniqid()}} ">
                         <div class="curriculum-head">
                         <div class="form-group">
                           <label class="add-course-label" contenteditable>{{$item['type_description']}}</label>
-                          <select class="form-control select" style="max-width:max-content  ">
+                          <select class="form-control" onchange="updateSelect(this.value)" style="max-width:max-content  ">
                                 <option value="course" {{$item['type'] == 'course' ? 'selected' : ''}}>Course</option>
                                 <option value="lesson" {{$item['type'] == 'lesson' ? 'selected' : ''}}>Lesson</option>
                                 <option value="multiple">Multiple</option>
                           </select>
                         </div>
-                          <a href="javascript:void(0);"><span class="btn d-none" onclick="addLecture('accordion-{{$loop->index}}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('chapter_{{$loop->index}}')">Remove section</button></a> 
+                          <a href="javascript:void(0);"><span class="btn d-none" onclick="addLecture('{{$accordion = '_'.uniqid()}}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('{{$chapter}}')">Remove section</button></a> 
                         </div>
                         <div class="curriculum-info">
-                          <div id="accordion-{{$loop->index}}">
+                          <div id="{{$accordion}}">
 <div class="col-lg-12 col-md-12 d-flex">
 <div class="course-box course-design list-course d-flex">
 <div class="product">
@@ -67,20 +67,20 @@
                         </div>
                       </div>
 @else
-<div class="curriculum-grid mt-4 chapter_video chapter_{{$loop->index}} ">
+<div class="curriculum-grid mt-4 chapter_video {{$chapter = '_'. uniqid()}} ">
     <div class="curriculum-head">
     <div class="form-group">
       <label class="add-course-label" contenteditable>{{$item['type_description']}}</label>
-      <select class="form-control select" style="max-width:max-content  ">
+      <select class="form-control" onchange="updateSelect(this.value)" style="max-width:max-content  ">
             <option value="course" {{$item['type'] == 'course' ? 'selected' : ''}}>Course</option>
             <option value="lesson" {{$item['type'] == 'lesson' ? 'selected' : ''}}>Lesson</option>
             <option value="multiple" {{$item['type'] == 'multiple' ? 'selected' : ''}}>Multiple</option>
       </select>
     </div>
-      <a href="javascript:void(0);"><span class="btn d-none" onclick="addLecture('accordion-{{$loop->index}}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('chapter_{{$loop->index}}')">Remove section</button></a> 
+      <a href="javascript:void(0);"><span class="btn d-none" onclick="addLecture('{{$accordion = '_'. uniqid()}}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('{{$chapter}}')">Remove section</button></a> 
     </div>
     <div class="curriculum-info">
-      <div id="accordion-{{$loop->index}}">
+      <div id="{{$accordion}}">
         <div class="faq-grid" id="{{$a = '_' . uniqid()}}">
                               <div class="faq-header">
                                 <a

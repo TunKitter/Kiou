@@ -14,7 +14,7 @@
                             <div class="card-body">
                             <div class="add-course-info">
                     <div class="add-course-section">
-                      <button class="btn" id="add-section-btn" onclick="addSection(this)">Add Section</button>
+                      <button class="btn" id="add-section-btn" onclick="addSection()">Add Section</button>
                     </div>
                     <div class="add-course-form chapter_videos">
                       @include('client.mentor.item_roadmap',['roadmap'=>$roadmap->content])
@@ -31,89 +31,36 @@
 </div>
 <script>
      var index = 0 
-  function addSection(type,obj,name,desc,type_name,total_lesson,total_time,image,complete_course_rate,total_enrollment,mentor_name,course_name){
-    let is_multiple = ''
-    let data_load = ''
-    if(name == 'multiple'){
-        is_multiple = `<span class="btn" onclick="addLecture('accordion-${index}')">Add Lecture</span>`
-    }
-    else {
-      data_load = `
-      <div class="col-lg-12 col-md-12 d-flex">
-<div class="course-box course-design list-course d-flex">
-<div class="product">
-<div class="product-img">
-<a href="#">
-<img class="img-fluid" alt src="{{asset('course/thumbnail')}}/${image}">
-</a>
-<div class="price">
-<h3>99 <span>$99.00</span></h3>
-</div>
-</div>
-<div class="product-content">
-<div class="head-course-title">
-<h3 class="title ${type == 'lesson' ? 'fw-normal' : ''}">${type == 'lesson' ? course_name : type_name}</h3>
-<div class="all-btn all-category d-flex align-items-center">
-  ${type == 'lesson' ? '<span class="badge bg-info">Lesson</span>' :''}
-</div>
-</div>
-<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
-<div class="rating-img d-flex align-items-center">
-<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
-<p>${total_lesson} Lesson </p>
-</div>
-<div class="course-view d-flex align-items-center">
-<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
-<p>${parseInt(total_time/60)}hr ${parseInt(total_time%60)}min</p>
-</div>
-</div>
-<div class="rating">
-<i class="fas fa-star filled"></i>
-<span class="d-inline-block average-rating"><span>${complete_course_rate}</span> <span>( ${total_enrollment} enrolled)</span></span>
-</div>
-
-<div class="course-group d-flex mb-0">
-<div class="course-group-img d-flex">
-<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
-<div class="course-name">
-<h4><a href="instructor-profile.html">${mentor_name}</a></h4>
-<p>Instructor</p>
-</div>
-</div>
-<div class="course-share d-flex align-items-center justify-content-center ${type == 'lesson' ? 'fw-bold' : ''}">
-${type == 'lesson' ? type_name : ''}
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-      `
-    }
-    document.querySelector('.chapter_videos').innerHTML += `
-    <div class="curriculum-grid mt-4 chapter_video chapter_${index} ">
+  function addSection(class_add = '.chapter_videos', allow_scroll = true) {
+    let chapter = '_'+ makeid();
+    let accordion ='_'+ makeid();
+    console.log(class_add);
+    document.querySelector(class_add).innerHTML += `
+    <div class="curriculum-grid mt-4 chapter_video ${chapter} ">
                         <div class="curriculum-head">
                         <div class="form-group">
-                          <label class="add-course-label" contenteditable>${desc}</label>
-                          <select class="form-control select" style="max-width:max-content  ">
-                                <option value="course" ${name == 'course' ? 'selected' : ''}>Course</option>
-                                <option value="lesson" ${name == 'lesson' ? 'selected' : ''}>Lesson</option>
-                                <option value="multiple" ${name == 'multiple' ? 'selected' : ''}>Multiple</option>
+                          <label class="add-course-label" contenteditable>Enter the name of the section</label>
+                          <select class="form-control" onchange="updateSelect(this.value)" style="max-width:max-content  ">
+                                <option value="course" selected>Course</option>
+                                <option value="lesson">Lesson</option>
+                                <option value="multiple">Multiple</option>
                           </select>
                         </div>
-                          <a href="javascript:void(0);">${is_multiple} <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('chapter_${index}')">Remove section</button></a> 
+                          <a href="javascript:void(0);"><span class="btn" onclick="addLecture('${accordion}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('${chapter}')">Remove section</button></a> 
                         </div>
                         <div class="curriculum-info">
-                          <div id="accordion-${index}">
-                            ${data_load}
+                          <div id="${accordion}">
+                            <div class="col-lg-12 col-md-12 d-flex">  
+z</div>
                           </div>
                         </div>
                       </div>
     `
-    var el = document.querySelector('.chapter_video:last-child');
-    el.scrollIntoView(true);
-    index++;
-    return 'accordion-' + (index-1)
+    if(allow_scroll){
+        var el = document.querySelector('.'+ chapter);
+      window.scrollTo(0, el.offsetTop - document.querySelector('header').offsetHeight);     
+    }
+
   }
   function removeSection(index){
     // document.querySelector('.chapter_videos').innerHTML = '';
@@ -131,6 +78,7 @@ ${type == 'lesson' ? type_name : ''}
     return result;
 }
   function addLecture(lecture) {
+  let lecture_id = '_'+ makeid();
   document.querySelector('#'+ lecture).innerHTML+= `
     <div class="faq-grid" id="${a = lecture + '_' + makeid()}">
                               <div class="faq-header">
@@ -157,17 +105,18 @@ ${type == 'lesson' ? type_name : ''}
                                 class="collapse"
                                 data-bs-parent="#accordion-one"
                               >
-                                <div class="faq-body">
-                                  sdasdadasadasdasd
+                                <div class="faq-body" id="${lecture_id}">
                                 </div>
                               </div>
                             </div>
     `
-    return a
+    addSection('#'+ lecture_id,false);
   }
   function removeLecture(id){
     $('#'+ id).remove();
   }
-
+function updateSelect(value) {
+  alert(value);
+}
 </script>
 @endsection
