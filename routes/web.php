@@ -28,6 +28,7 @@ use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\StripeController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Client\UserchartController;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -201,6 +202,11 @@ Route::post('/vnpay', [PaymentController::class, 'vnpay_payment']);
 # ------------------------- Moderation --------------------------------
 Route::middleware('auth')->group(function () {
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation');
+});
+
+# ------------------------- Moderation --------------------------------
+Route::middleware('auth')->group(function () {
+    Route::get('/userskill', [UserchartController::class, 'index'])->name('userskill');
 });
 
 # ------------------------- Blog --------------------------------

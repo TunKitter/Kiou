@@ -55,8 +55,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="setting-student-security.html" class="nav-link">
-                                        <i class="feather-user"></i> Security
+                                    <a href="{{ route('userskill') }}" class="nav-link">
+                                        <i class="feather-user"></i>  User Chart
                                     </a>
                                 </li>
                                 <li class="nav-item">
