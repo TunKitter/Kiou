@@ -1,5 +1,26 @@
 @extends('client.layouts.master')
 @section('content')
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="title_modal">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+    <div class="modal-body">
+<div class="search-group">
+<input type="text" class="form-control" placeholder="Search here" id="search_modal" >
+<div class="modal_content"> 
+</div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="removeData()">Close</button>
+        <button type="button" class="btn btn-primary" onclick="searchCourse(this)">Search</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="page-content">
     <div class="container">
         <div class="row">
@@ -31,6 +52,7 @@
 </div>
 <script>
      var index = 0 
+     var select_type = ''
   function addSection(class_add = '.chapter_videos', allow_scroll = true) {
     let chapter = '_'+ makeid();
     let accordion ='_'+ makeid();
@@ -152,7 +174,189 @@ function updateSelect(value,class_name) {
   }
   else {
     document.querySelector(class_name).innerHTML = ''
+    $('#exampleModal').modal('show')
+    $('#title_modal').text('Choosse ' + value)
+    select_type = value
   }
 }
+function searchCourse(obj) {
+  if(select_type == 'course') {
+    searchCourse2(obj)
+  }
+  else {
+  searchLesson(obj)   
+  }
+}
+function searchCourse2(obj) { 
+  obj.disabled = true
+  obj.innerText = 'Searching...'
+  let search_modal = (document.querySelector('#search_modal').value)
+  document.querySelector('.modal_content').innerHTML = ''
+    let formData = new FormData();
+    formData.append('q', search_modal)
+    fetch(`{{ route('course-list') }}/0/10`, {
+                    method: "POST",
+                    body: formData
+                }).then(response => response.json()).then(data => {
+                  console.log(data);
+                  obj.disabled = false
+                  obj.innerText = 'Search'
+                  data.forEach(element => {
+                    let mentor_name = element.mentor_name
+                    if(!mentor_name) {
+                      let formName = new FormData()
+                      formName.append('id',element.mentor_id)
+                      fetch('{{route("get-mentor-name")}}',{
+                        method: "POST",
+                        body: formName
+                      }).then(response => response.json()).then(data2 => {
+                        mentor_name = data2.name
+                        renderData(element,mentor_name)
+                                              })
+                    }
+else {
+renderData(element,mentor_name)
+}
+                  })
+                  
+                })
+  }
+  function renderData(element,mentor_name) {
+    document.querySelector('.modal_content').innerHTML+= `
+  <div class="col-lg-12 col-md-12 d-flex">
+<div class="course-box course-design list-course d-flex">
+<div class="product">
+<div class="product-img">
+<a href="#">
+<img class="img-fluid" alt src="{{asset('course/thumbnail/${element.image}')}}">
+</a>
+<div class="price">
+<h3>${element.price}<span>$99.00</span></h3>
+</div>
+</div>
+<div class="product-content">
+<div class="head-course-title">
+<h3 class="title">${element.name}</h3>
+<div class="all-btn all-category d-flex align-items-center">
+<a href="checkout.html" class="btn btn-primary">Choose it</a>
+</div>
+</div>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+<div class="rating-img d-flex align-items-center">
+<img src="assets/img/icon/icon-01.svg" alt>
+<p> ${element.meta['total_lesson']} Lesson</p>
+</div>
+<div class="course-view d-flex align-items-center">
+<img src="assets/img/icon/icon-02.svg" alt>
+<p>${(element.meta['total_time']/60).toFixed(1)}hr ${element.meta['total_time']%60}min</p>
+</div>
+</div>
+<div class="rating">
+<i class="fas fa-star filled"></i>
+<span class="d-inline-block average-rating"><span>${element.complete_course_rate}</span> <span>(  ${element.total_enrollment} enrolled)</span></span>
+</div>
+
+<div class="course-group d-flex mb-0">
+<div class="course-group-img d-flex">
+<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+<div class="course-name">
+<h4><a href="instructor-profile.html">${mentor_name}</a></h4>
+<p>Instructor</p>
+</div>
+</div>
+<div class="course-share d-flex align-items-center justify-content-center">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+  `    
+  }
+  function searchLesson(obj) {
+  obj.disabled = true
+  obj.innerText = 'Searching...'
+  let search_modal = (document.querySelector('#search_modal').value)
+  document.querySelector('.modal_content').innerHTML = ''
+    let formData = new FormData();
+    formData.append('name', search_modal)
+    fetch(`{{ route('lesson-data') }}`, {
+      method: "POST",
+      body: formData
+    }).then(response => response.json()).then(data => {
+      console.log(data);
+      data.result.forEach(element => {
+        renderData2(element)
+      })
+      obj.disabled = false
+      obj.innerText = 'Search'
+    })
+  }
+function renderData2(element) {
+  let formName = new FormData()
+  let mentor_name = ''
+                      formName.append('id',element.course.mentor_id)
+                      fetch('{{route("get-mentor-name")}}',{
+                        method: "POST",
+                        body: formName
+                      }).then(response => response.json()).then(data2 => {
+                        mentor_name = data2.name
+    document.querySelector('.modal_content').innerHTML+= `
+  <div class="col-lg-12 col-md-12 d-flex">
+<div class="course-box course-design list-course d-flex">
+<div class="product">
+<div class="product-img">
+<a href="#">
+<img class="img-fluid" alt src="{{asset('course/thumbnail')}}/${element.course.image}">
+</a>
+<div class="price">
+<h3>${element.course.price}<span>$99.00</span></h3>
+</div>
+</div>
+<div class="product-content">
+<div class="head-course-title">
+<h3 class="title fw-normal">${element.course.name}</h3>
+<div class="all-btn all-category d-flex align-items-center">
+<span class="badge bg-info">Lesson</span>
+</div>
+</div>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+<div class="rating-img d-flex align-items-center">
+<img src="assets/img/icon/icon-01.svg" alt>
+<p>${element.course.meta['total_lesson']} Lesson</p>
+</div>
+<div class="course-view d-flex align-items-center">
+<img src="assets/img/icon/icon-02.svg" alt>
+<p>${(element.course.meta['total_time']/60).toFixed(1)}hr ${element.course.meta['total_time']%60}min</p>
+</div>
+</div>
+<div class="rating">
+<i class="fas fa-star filled"></i>
+<span class="d-inline-block average-rating"><span>${element.course.complete_course_rate}</span> <span>(  ${element.course.total_enrollment} enrolled)</span></span>
+</div>
+
+<div class="course-group d-flex mb-0">
+<div class="course-group-img d-flex">
+<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+<div class="course-name">
+<h4><a href="instructor-profile.html">${mentor_name}</a></h4>
+<p>Instructor</p>
+</div>
+</div>
+<div class="course-share d-flex align-items-center justify-content-center">
+  ${element.name} 
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+  `    
+})
+  }
+  function removeData() {
+    document.querySelector('.modal_content').innerHTML = ''
+    document.querySelector('#search_modal').value = ''
+  }
 </script>
 @endsection

@@ -230,4 +230,10 @@ class CourseController extends Controller
         }
         return response()->json(['status' => true]);
     }
+    public function getMentorName()
+    {
+        return response()->json([
+            'name' => Mentor::select('name')->where('_id', request()->id)->first()->name,
+        ]);
+    }
 }

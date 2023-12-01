@@ -154,6 +154,7 @@ Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getC
 Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');
 Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMentorData'])->name('mentor-data');
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
+Route::post('/course/mentor/name', [CourseController::class, 'getMentorName'])->name('get-mentor-name');
 Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
 Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
 
@@ -182,6 +183,7 @@ Route::post('course/{id_course}/{id_lesson}/learn/update', [LessonController::cl
 Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBookmark'])->name('lesson-bookmark-add');
 Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
 Route::post('course/{id}/learn/bookmark/update', [LessonController::class, 'updateBookmark'])->name('lesson-bookmark-update');
+Route::post('lessons/get', [LessonController::class, 'getLessonData'])->name('lesson-data');
 
 # ------------------------- Cart --------------------------------
 

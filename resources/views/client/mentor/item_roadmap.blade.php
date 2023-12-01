@@ -77,7 +77,7 @@
     <div class="curriculum-head">
     <div class="form-group">
       <label class="add-course-label" contenteditable>{{$item['type_description']}}</label>
-      <select class="form-control" onchange="updateSelect(this.value),'#{{$accordion}}'" style="max-width:max-content  ">
+      <select class="form-control" onchange="updateSelect(this.value,'#{{$accordion}}')" style="max-width:max-content  ">
             <option value="course" {{$item['type'] == 'course' ? 'selected' : ''}}>Course</option>
             <option value="lesson" {{$item['type'] == 'lesson' ? 'selected' : ''}}>Lesson</option>
             <option value="multiple" {{$item['type'] == 'multiple' ? 'selected' : ''}}>Multiple</option>
