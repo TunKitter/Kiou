@@ -309,7 +309,7 @@ function renderData2(element) {
 <div class="product">
 <div class="product-img">
 <a href="#">
-<img class="img-fluid" alt src="{{asset('course/thumbnail')}}/${element.course.image}">
+<img class="img-fluid" alt src="{{asset('course/thumbnail')}}/${element.course.image}" onclick="insertLesson('${element.course._id}','${element.course.image}','${element.course.price}','${element.course.name}','${element.course.meta['total_lesson']}','${element.course.meta['total_time']}','${element.course.complete_course_rate}','${element.course.total_enrollment}','${mentor_name}','${element.name}','${element._id}')">
 </a>
 <div class="price">
 <h3>${element.course.price}<span>$99.00</span></h3>
@@ -361,6 +361,7 @@ function renderData2(element) {
     document.querySelector('#search_modal').value = ''
   }
   function insertCourse(id,image,price,name,total_lesson,total_time,complete_course_rate,total_enrollment,mentor_name) {
+    removeData()
     $('#exampleModal').modal('hide')
     let accordion ='_'+ makeid();
     document.querySelector(select_id).innerHTML = `
@@ -405,6 +406,61 @@ function renderData2(element) {
 </div>
 </div>
 <div class="course-share d-flex align-items-center justify-content-center">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    `
+  }
+  function insertLesson(id_course,image,price,course_name,total_lesson,total_time,complete_course_rate,total_enrollment,mentor_name,name,id_lesson) {
+    removeData()
+    $('#exampleModal').modal('hide')
+    document.querySelector(select_id).innerHTML = `
+    <div class="col-lg-12 col-md-12 d-flex">
+<div class="course-box course-design list-course d-flex">
+<div class="product">
+<div class="product-img">
+<a href="#">
+<img class="img-fluid" alt src="{{asset('course/thumbnail')}}/${image}">
+</a>
+<div class="price">
+<h3>${price}<span>$99.00</span></h3>
+</div>
+</div>
+<div class="product-content">
+<div class="head-course-title">
+<h3 class="title fw-normal">${course_name}</h3>
+<div class="all-btn all-category d-flex align-items-center">
+  <span class="badge bg-info">Lesson</span>
+</div>
+</div>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+<div class="rating-img d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
+<p>${total_lesson} Lesson </p>
+</div>
+<div class="course-view d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
+<p>${Math.floor(total_time/60).toFixed(0)}hr ${total_time%60}min</p>
+</div>
+</div>
+<div class="rating">
+<i class="fas fa-star filled"></i>
+<span class="d-inline-block average-rating"><span>${complete_course_rate}</span> <span>( ${total_enrollment} enrolled)</span></span>
+</div>
+
+<div class="course-group d-flex mb-0">
+<div class="course-group-img d-flex">
+<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+<div class="course-name">
+<h4><a href="instructor-profile.html">${mentor_name}</a></h4>
+<p>Instructor</p>
+</div>
+</div>
+<div class="course-share d-flex align-items-center justify-content-center fw-bold">
+  ${name}
 </div>
 </div>
 </div>
