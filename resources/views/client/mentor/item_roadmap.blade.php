@@ -6,12 +6,13 @@
 <div class="curriculum-grid mt-4 chapter_video {{$chapter = '_'.uniqid()}} ">
                         <div class="curriculum-head">
                         <div class="form-group">
-                          <label class="add-course-label" contenteditable>{{$item['type_description']}}</label>
+                          <label class="add-course-label" contenteditable oninput="changeDescription('.data_{{$accordion}}',this.innerHTML)">{{$item['type_description']}}</label>
                           <select class="form-control" onchange="updateSelect(this.value,'#{{$accordion}}')" style="max-width:max-content  ">
                                 <option value="course" {{$item['type'] == 'course' ? 'selected' : ''}}>Course</option>
                                 <option value="lesson" {{$item['type'] == 'lesson' ? 'selected' : ''}}>Lesson</option>
                                 <option value="multiple">Multiple</option>
                           </select>
+<span class="type_id d-none data_{{$accordion}}" type_name="{{$item['type']}}" description_name="{{$item['type_description']}}">{{$item['type'] == 'course' ? $course_name[$item["type_id"]]['id'] : $item["type_id"]}}</span>
                         </div>
                           <a href="javascript:void(0);"><span class="btn d-none" onclick="addLecture('{{$accordion}}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('{{$chapter}}')">Remove section</button></a> 
                         </div>
@@ -76,12 +77,13 @@
 <div class="curriculum-grid mt-4 chapter_video {{$chapter = '_'. uniqid()}} ">
     <div class="curriculum-head">
     <div class="form-group">
-      <label class="add-course-label" contenteditable>{{$item['type_description']}}</label>
+      <label class="add-course-label" contenteditable onchange="changeDescription('.data_{{$accordion}}',this.innerHTML)">{{$item['type_description']}}</label>
       <select class="form-control" onchange="updateSelect(this.value,'#{{$accordion}}')" style="max-width:max-content  ">
             <option value="course" {{$item['type'] == 'course' ? 'selected' : ''}}>Course</option>
             <option value="lesson" {{$item['type'] == 'lesson' ? 'selected' : ''}}>Lesson</option>
             <option value="multiple" {{$item['type'] == 'multiple' ? 'selected' : ''}}>Multiple</option>
       </select>
+<span class="type_id d-none data_{{$accordion}}" type_name="{{$item['type']}}" description_name="{{$item['type_description']}}" id="{{$chapter}}"></span>
     </div>
       <a href="javascript:void(0);"><span class="btn d-none" onclick="addLecture('{{$accordion}}')">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('{{$chapter}}')">Remove section</button></a> 
     </div>

@@ -31,6 +31,7 @@
                         <div class="card instructor-card">
                             <div class="card-header">
                                 <h4 class="d-flex justify-content-between w-100">{{$roadmap->name}}</h4>
+                                <button class="btn btn-primary" onclick="updateRoadmap()">Update</button>
                             </div>
                             <div class="card-body">
                             <div class="add-course-info">
@@ -44,6 +45,7 @@
                             </div>
                         </div>
                     </div>
+<button class="btn btn-primary" onclick="updateRoadmap()">Update</button>
                 </div>
             </div>
         </div>
@@ -62,12 +64,13 @@
     <div class="curriculum-grid mt-4 chapter_video ${chapter} ">
                         <div class="curriculum-head">
                         <div class="form-group">
-                          <label class="add-course-label" contenteditable>Enter the name of the section</label>
+                          <label class="add-course-label" contenteditable oninput="changeDescription('.data_${accordion}',this.innerHTML)">Enter the name of the section</label>
                           <select class="form-control" onchange="updateSelect(this.value,'#${accordion}')" style="max-width:max-content  ">
                                 <option value="course" selected>Course</option>
                                 <option value="lesson">Lesson</option>
                                 <option value="multiple">Multiple</option>
                           </select>
+                          <span class="type_id d-none data_${accordion}" type_name="course" description_name="Enter the description here">adasd123</span>
                         </div>
                           <a href="javascript:void(0);"><span class="btn" onclick="updateSelect('course','#${accordion}');this.style.display='none';">Add Lecture</span> <button class="btn text-white border-0" style="background:#ff4667" onclick="removeSection('${chapter}')">Remove section</button></a> 
                         </div>
@@ -137,6 +140,7 @@
     $('#'+ id).remove();
   }
 function updateSelect(value,class_name) {
+  (document.querySelector('.data_'+ (class_name).substr(1)).setAttribute('type_name',value));
   select_type = value
   let random_id = makeid();
   let accordion = makeid();
@@ -362,6 +366,7 @@ function renderData2(element) {
   }
   function insertCourse(id,image,price,name,total_lesson,total_time,complete_course_rate,total_enrollment,mentor_name) {
     removeData()
+    document.querySelector('.data_'+ (select_id.substr(1))).innerHTML = id
     $('#exampleModal').modal('hide')
     let accordion ='_'+ makeid();
     document.querySelector(select_id).innerHTML = `
@@ -417,6 +422,7 @@ function renderData2(element) {
   function insertLesson(id_course,image,price,course_name,total_lesson,total_time,complete_course_rate,total_enrollment,mentor_name,name,id_lesson) {
     removeData()
     $('#exampleModal').modal('hide')
+    document.querySelector('.data_'+ (select_id.substr(1))).innerHTML = id_lesson
     document.querySelector(select_id).innerHTML = `
     <div class="col-lg-12 col-md-12 d-flex">
 <div class="course-box course-design list-course d-flex">
@@ -469,5 +475,49 @@ function renderData2(element) {
 </div>
     `
   }
+  var data_update =[];
+  function updateRoadmap() {
+  [...document.querySelector('.chapter_videos').children].map((e,index) => {
+    data_update[index] = {}
+ data_update[index] = getChild(e) 
+ })
+  let data_send = {
+    'data': data_update,
+    'id' : '{{$roadmap->_id}}'
+  }
+ data_send = JSON.stringify(data_send)
+ console.log(data_send);
+ fetch(`{{ route('update-roadmap') }}`, {
+   method: "POST",
+   headers: {                              
+    "Content-Type": "application/json"  
+  } ,
+   body: data_send,
+ }).then(res => res.json()).then(data => {
+   console.log(data)
+ })
+ }
+  // var index_result = 0
+  function getChild(parent_class) {
+    let result = {}
+    if(parent_class.querySelector('.type_id').getAttribute('type_name') != 'multiple') {
+    result['type']= parent_class.querySelector('.type_id').getAttribute('type_name')
+    result['type_id'] = parent_class.querySelector('.type_id').innerHTML
+    result['type_description'] = parent_class.querySelector('.type_id').getAttribute('description_name')
+    return result
+  }
+  else {
+  result['type']= parent_class.querySelector('.type_id').getAttribute('type_name')
+  result['type_description'] = parent_class.querySelector('.type_id').getAttribute('description_name')
+ result['type_id'] = [...(parent_class.querySelector('.faq-body')).children].map(e => {
+  return getChild(e)
+ })
+ return result
+  }
+}
+
+function changeDescription(obj,text) {
+  document.querySelector(obj).setAttribute('description_name',text)
+}
 </script>
 @endsection

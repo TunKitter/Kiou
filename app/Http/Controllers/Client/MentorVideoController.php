@@ -318,7 +318,7 @@ class MentorVideoController extends Controller
         $course_database = (Course::whereIn('_id', explode(',', rtrim($aa, ',')))->get(['_id', 'name', 'meta', 'image', 'complete_course_rate', 'total_enrollment', 'mentor_id', 'price'])->toArray());
         $mentor_id = [];
         array_map(function ($course) use (&$course_name, $course_database, &$mentor_id) {
-            $course_name[$course['_id']] = ['name' => $course['name'], 'total_lesson' => $course['meta']['total_lesson'], 'total_time' => $course['meta']['total_time'], 'image' => $course['image'], 'complete_course_rate' => $course['complete_course_rate'], 'total_enrollment' => $course['total_enrollment'], 'mentor_id' => $course['mentor_id'], 'price' => $course['price']];
+            $course_name[$course['_id']] = ['name' => $course['name'], 'total_lesson' => $course['meta']['total_lesson'], 'total_time' => $course['meta']['total_time'], 'image' => $course['image'], 'complete_course_rate' => $course['complete_course_rate'], 'total_enrollment' => $course['total_enrollment'], 'mentor_id' => $course['mentor_id'], 'price' => $course['price'], 'id' => $course['_id']];
             $mentor_id[] = $course['mentor_id'];
         }, $course_database);
         $lesson_name = (Lesson::whereIn('_id', explode(',', rtrim($bb, ',')))->get());
@@ -327,7 +327,7 @@ class MentorVideoController extends Controller
         $index_lesson = 0;
         array_map(function ($lesson) use (&$aa, $lesson_name, &$index_lesson, &$mentor_id) {
             $temp_course = $lesson_name[$index_lesson]->course;
-            $aa[$lesson['_id']] = ['name' => $lesson['name'], 'course_name' => $temp_course->name, 'total_lesson' => $temp_course->meta['total_lesson'], 'total_time' => $temp_course->meta['total_time'], 'image' => $temp_course->image, 'complete_course_rate' => $temp_course->complete_course_rate, 'total_enrollment' => $temp_course->total_enrollment, 'mentor_id' => $temp_course->mentor_id, 'price' => $temp_course->price];
+            $aa[$lesson['_id']] = ['name' => $lesson['name'], 'course_name' => $temp_course->name, 'total_lesson' => $temp_course->meta['total_lesson'], 'total_time' => $temp_course->meta['total_time'], 'image' => $temp_course->image, 'complete_course_rate' => $temp_course->complete_course_rate, 'total_enrollment' => $temp_course->total_enrollment, 'mentor_id' => $temp_course->mentor_id, 'price' => $temp_course->price, 'course_id' => $temp_course->_id];
             $index_lesson++;
             $mentor_id[] = $temp_course->mentor_id;
         }, $lesson_name->toArray());
@@ -359,5 +359,12 @@ class MentorVideoController extends Controller
             }
         }
         return [$aa, $bb];
+    }
+    public function updateRoadmap()
+    {
+        Roadmap::where('_id', request()->id)->update(['content' => json_decode(html_entity_decode(stripslashes(json_encode(request()->data))))]);
+        return response()->json([
+            'data' => 'ok',
+        ]);
     }
 }

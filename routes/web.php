@@ -142,6 +142,7 @@ Route::post('/mentor/create/cp', [MentorVideoController::class, 'handle_cp_creat
 Route::post('/mentor/delete/cp', [MentorVideoController::class, 'cp_delete'])->name('mentor-cp-delete');
 Route::get('/mentor/roadmap', [MentorVideoController::class, 'roadmap'])->name('mentor-roadmap')->middleware('auth');
 Route::get('/mentor/roadmap/{id}', [MentorVideoController::class, 'detailRoadmap'])->name('mentor-roadmap-detail')->middleware('auth');
+Route::post('course/roadmap/detail', [MentorVideoController::class, 'updateRoadmap'])->name('update-roadmap');
 
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
