@@ -42,7 +42,8 @@ class UserchartController extends Controller
         for ($i = 0; $i < count($categorys); $i++) {
             $array_profession[] =  $categorys[$i]->profession_id;
         };
-        $professions_categorys = Profession::select('name')->whereIn('_id', $array_profession)->get();
+        $professions_categorys = Profession::whereIn('_id', $array_profession)->get();
+        // dd($professions_categorys);
 
         $user = Auth::user();
         $professions = Profession::all();
@@ -57,10 +58,11 @@ class UserchartController extends Controller
 
         return view('client.profile.table-category', compact('categorys', 'user', 'professions', 'user_professions', 'professions_categorys'));
     }
-    public function postTableCategory(Request $request, $id)
+    public function postTableCategory(Request $request, $slug)
     {
+        $professions_categorys = Profession::where('slug',  $slug)->get();
         $user_skills = UserSkill::where('user_id', auth()->user()->_id)->get();
-        $categorys = Category::where('profession_id', $id)->get();
+        $categorys = Category::where('profession_id', $professions_categorys[0]->_id)->get();
         $count_data = count($user_skills);
         if (count($user_skills) != 0) {
             for ($i = 0; $i < $count_data; $i++) {

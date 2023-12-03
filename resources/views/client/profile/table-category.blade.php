@@ -207,7 +207,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="{{ route('userskill-category', $professions_category->_id) }}"
+                                            <a href="{{ route('userskill-category', $professions_category->slug) }}"
                                                 class="btn btn-primary">Detail</a>
                                         </td>
                                     </tr>
