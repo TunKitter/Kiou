@@ -207,6 +207,8 @@ Route::middleware('auth')->group(function () {
 # ------------------------- Moderation --------------------------------
 Route::middleware('auth')->group(function () {
     Route::get('/userskill', [UserchartController::class, 'index'])->name('userskill');
+    Route::get('/table/category', [UserchartController::class, 'tableCategory'])->name('table-category');
+    Route::get('/table/category/{id}', [UserchartController::class, 'postTableCategory'])->name('userskill-category');
 });
 
 # ------------------------- Blog --------------------------------

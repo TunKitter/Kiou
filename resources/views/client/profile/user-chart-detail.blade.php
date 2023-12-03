@@ -169,7 +169,7 @@
                     </div>
                 </div>
                 <div class="col-xl-9 col-md-8">
-                    
+
                     @php
                         //Lấy ký tự viết tắc
                         function acronyms($str)
@@ -187,43 +187,38 @@
                         $randomx = 1;
                         $randomy = 1;
                         $array[] = 0;
-
-                        $count_data = count($user_skills);
-
-                        if (count($user_skills) != 0) {
-                            for ($i = 0; $i < $count_data; $i++) {
-                                $array_data[] = $user_skills[$i]->category_id;
-                            }
-                        }
+                        
                         $i = 0;
+                        $increase = 1;
 
                     @endphp
                     @if (count($user_skills) != 0)
-                        @foreach ($category_skills as $category_skill)
+                        @foreach ($categorys as $category)
                             @php
-                                if (in_array($category_skill->_id, $array_data)) {
+                                if (in_array($category->_id, $array_data)) {
                                     if ($user_skills) {
-                                        if ($i < $count_data) {
-                                            $total = array_sum($user_skills[$i]->infor);
-                                            $count = count($user_skills[$i]->infor);
+                                        if ($i < $increase) {
+                                            $total = array_sum($user_skill_cate[$i][0]->infor);
+                                            $count = count($user_skill_cate[$i][0]->infor);
                                             $average = $total / $count;
-                                            $value = $average;
-                                            $array[] = ['hc-a2' => acronyms($category_skill->name), 'name' => $category_skill->name, 'region' => 'South', 'x' => $randomy, 'y' => $randomx, 'value' => $value];
+                                            $value = round($average);
+                                            $array[] = ['hc-a2' => acronyms($category->name), 'name' => $category->name, 'region' => 'South', 'x' => $randomy, 'y' => $randomx, 'value' => $value];
                                             $i++;
+                                            $increase++;
                                         }
                                     }
                                 } else {
                                     $value = 0;
-                                    $array[] = ['hc-a2' => acronyms($category_skill->name), 'name' => $category_skill->name, 'region' => 'South', 'x' => $randomy, 'y' => $randomx, 'value' => $value];
+                                    $array[] = ['hc-a2' => acronyms($category->name), 'name' => $category->name, 'region' => 'South', 'x' => $randomy, 'y' => $randomx, 'value' => $value];
                                 }
                                 $randomx++;
                                 if ($randomx % 2 == 0) {
                                     $randomy++;
                                 }
+
                             @endphp
                         @endforeach
                         @php
-                            // dd($array);
                             if ($array == 0) {
                                 $jsonData = 0;
                             } else {
@@ -305,17 +300,17 @@
                     from: 1,
                     to: 50,
                     color: '#FF8F8F',
-                    name: '1 - 50'
+                    name: '1 - 49'
                 }, {
                     from: 50,
                     to: 70,
                     color: '#F3B664',
-                    name: '50 - 70'
+                    name: '50 - 69'
                 }, {
                     from: 70,
                     to: 90,
                     color: '#EEF296',
-                    name: '70 - 90'
+                    name: '70 - 89'
                 }, {
                     from: 90,
                     to: 100,
@@ -354,7 +349,9 @@
                 })
             }]
         });
+
     </script>
+
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.js') }}"></script>

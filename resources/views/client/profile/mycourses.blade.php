@@ -44,7 +44,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('userskill') }}" class="nav-link">
+                                <a href="{{ route('table-category') }}" class="nav-link">
                                     <i class="feather-user"></i> User Chart
                                 </a>
                             </li>

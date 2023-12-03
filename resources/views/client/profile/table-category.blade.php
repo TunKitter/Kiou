@@ -169,194 +169,61 @@
                     </div>
                 </div>
                 <div class="col-xl-9 col-md-8">
-                    
-                    @php
-                        //Lấy ký tự viết tắc
-                        function acronyms($str)
-                        {
-                            $words = explode(' ', $str);
-                            $result = '';
-                            foreach ($words as $word) {
-                                if (!empty($word)) {
-                                    $result .= strtoupper($word[0]);
-                                }
-                            }
-                            return $result;
-                        }
+                    {{-- <button class="btn float-end d-block"
+                        style="margin-right: 0.5em;border: 1px solid #fc7f50;color: #fc7f50"
+                        onclick="location.href='{{ route('revision-bookmark-revise') }}'">Revise all</button> --}}
+                    @if (!empty($categorys))
+                        <table class="table table-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $i = 0;
+                                @endphp
+                                @foreach ($professions_categorys as $professions_category)
+                                    <tr>
+                                        <td>
+                                            <a>
+                                                @php
+                                                    $i++;
+                                                    echo $i;
+                                                @endphp
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{ $professions_category->name }}
+                                        </td>
+                                        <td>
+                                            <span class="">
+                                                <div class="text-success" style="margin: none; padding:none;">
+                                                    Complete
+                                                </div>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('userskill-category', $professions_category->_id) }}"
+                                                class="btn btn-primary">Detail</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                        $randomx = 1;
-                        $randomy = 1;
-                        $array[] = 0;
 
-                        $count_data = count($user_skills);
-
-                        if (count($user_skills) != 0) {
-                            for ($i = 0; $i < $count_data; $i++) {
-                                $array_data[] = $user_skills[$i]->category_id;
-                            }
-                        }
-                        $i = 0;
-
-                    @endphp
-                    @if (count($user_skills) != 0)
-                        @foreach ($category_skills as $category_skill)
-                            @php
-                                if (in_array($category_skill->_id, $array_data)) {
-                                    if ($user_skills) {
-                                        if ($i < $count_data) {
-                                            $total = array_sum($user_skills[$i]->infor);
-                                            $count = count($user_skills[$i]->infor);
-                                            $average = $total / $count;
-                                            $value = $average;
-                                            $array[] = ['hc-a2' => acronyms($category_skill->name), 'name' => $category_skill->name, 'region' => 'South', 'x' => $randomy, 'y' => $randomx, 'value' => $value];
-                                            $i++;
-                                        }
-                                    }
-                                } else {
-                                    $value = 0;
-                                    $array[] = ['hc-a2' => acronyms($category_skill->name), 'name' => $category_skill->name, 'region' => 'South', 'x' => $randomy, 'y' => $randomx, 'value' => $value];
-                                }
-                                $randomx++;
-                                if ($randomx % 2 == 0) {
-                                    $randomy++;
-                                }
-                            @endphp
-                        @endforeach
-                        @php
-                            // dd($array);
-                            if ($array == 0) {
-                                $jsonData = 0;
-                            } else {
-                                $jsonData = json_encode($array);
-                            }
-                        @endphp
+                            </tbody>
+                        </table>
                     @else
-                        <h3 class="text-center">
-                            Bạn chưa mua khóa học nào vui lòng mua và học để có thể xem được biểu đồ tiến trình học tập !!!
-                        </h3>
+                        <h3 class="text-center">Dử liệu chưa được cập nhật</h3>
                     @endif
 
-                    <figure class="highcharts-figure">
-                        <div id="container"></div>
-                        <p class="highcharts-description text-center">
-                            Biểu đồ thể hiện tốc độ học, ghi nhớ và thực hành của người dùng
-                        </p>
-                    </figure>
                 </div>
             </div>
 
         </div>
     </div>
     </div>
-    <script>
-        var phpData = <?php if ($array == 0) {
-            $jsonData = 0;
-        } else {
-            $jsonData = json_encode($array);
-        }
-        echo $jsonData;
-        ?>;
-        Highcharts.chart('container', {
-            chart: {
-                type: 'tilemap',
-                inverted: true,
-                height: '80%'
-            },
-
-            accessibility: {
-                description: 'A tile map represents the states of the USA by population in 2016. The hexagonal tiles are positioned to geographically echo the map of the USA. A color-coded legend states the population levels as below 1 million (beige), 1 to 5 million (orange), 5 to 20 million (pink) and above 20 million (hot pink). The chart is interactive, and the individual state data points are displayed upon hovering. Three states have a population of above 20 million: California (39.3 million), Texas (27.9 million) and Florida (20.6 million). The northern US region from Massachusetts in the Northwest to Illinois in the Midwest contains the highest concentration of states with a population of 5 to 20 million people. The southern US region from South Carolina in the Southeast to New Mexico in the Southwest contains the highest concentration of states with a population of 1 to 5 million people. 6 states have a population of less than 1 million people; these include Alaska, Delaware, Wyoming, North Dakota, South Dakota and Vermont. The state with the lowest population is Wyoming in the Northwest with 584,153 people.',
-                screenReaderSection: {
-                    beforeChartFormat: '<h5>{chartTitle}</h5>' +
-                        '<div>{chartSubtitle}</div>' +
-                        '<div>{chartLongdesc}</div>' +
-                        '<div>{viewTableButton}</div>'
-                },
-                point: {
-                    valueDescriptionFormat: '{index}. {xDescription}, {point.value}.'
-                }
-            },
-
-            title: {
-                text: 'Biều đồ thể hiện mức độ hiểu bài của người dùng',
-                style: {
-                    fontSize: '1em'
-                }
-            },
-
-            subtitle: {
-                text: 'Source:<a href="https://simple.wikipedia.org/wiki/List_of_U.S._states_by_population">Wikipedia</a>'
-            },
-
-            xAxis: {
-                visible: false
-            },
-
-            yAxis: {
-                visible: false
-            },
-
-            colorAxis: {
-                dataClasses: [{
-                    from: 0,
-                    to: 0,
-                    color: '#e6e6e6',
-                    name: 'Block'
-                }, {
-                    from: 1,
-                    to: 50,
-                    color: '#FF8F8F',
-                    name: '1 - 50'
-                }, {
-                    from: 50,
-                    to: 70,
-                    color: '#F3B664',
-                    name: '50 - 70'
-                }, {
-                    from: 70,
-                    to: 90,
-                    color: '#EEF296',
-                    name: '70 - 90'
-                }, {
-                    from: 90,
-                    to: 100,
-                    color: '#9ADE7B',
-                    name: '90 - 100'
-                }]
-            },
-
-            tooltip: {
-                headerFormat: '',
-                pointFormat: '<b> {point.name}</b> is <b>{point.value}</b>'
-            },
-
-            plotOptions: {
-                series: {
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.hc-a2}',
-                        color: '#000000',
-                        style: {
-                            textOutline: false
-                        }
-                    }
-                }
-            },
-            series: [{
-                data: phpData.map(function(item) {
-                    return {
-                        'hc-a2': item['hc-a2'],
-                        name: item.name,
-                        region: item.region,
-                        x: item.x,
-                        y: item.y,
-                        value: item.value
-                    };
-                })
-            }]
-        });
-    </script>
-    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.js') }}"></script>
-    <script src="{{ asset('assets/js/script.js') }}"></script>
 @endsection
