@@ -374,4 +374,23 @@ class MentorVideoController extends Controller
             'data' => 'ok',
         ]);
     }
+    public function addRoadmap()
+    {
+        $mentor = auth()->user()->mentor;
+        return view('client.mentor.add_roadmap', compact('mentor'));
+    }
+    public function handleAddRoadmap()
+    {
+        $random_name = \uniqid() . '.' . request()->thumbnail->getClientOriginalExtension();
+        request()->thumbnail->move(public_path('roadmap'), $random_name);
+        $new_roadmap = Roadmap::create([
+            'mentor_id' => auth()->user()->mentor->_id,
+            'name' => request()->name,
+            'slug' => Str::slug(request()->name),
+            'thumbnail' => $random_name,
+        ]);
+        return \response()->json([
+            'roadmap_id' => $new_roadmap->_id,
+        ]);
+    }
 }

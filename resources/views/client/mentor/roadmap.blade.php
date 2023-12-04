@@ -9,7 +9,7 @@
                     <div class="col-md-12">
                         <div class="card instructor-card">
                             <div class="card-header">
-                                <h4 class="d-flex justify-content-between w-100">Your Roadmap  <button class="btn btn-primary d-block" style="width: 100px" onclick="location.href='{{route('mentor-cp-create')}}'">Add new</button></h4>
+                                <h4 class="d-flex justify-content-between w-100">Your Roadmap  <button class="btn btn-primary d-block" style="width: 100px" onclick="location.href='{{route('mentor-roadmap-add')}}'">Add new</button></h4>
                             </div>
                             <div class="card-body">
                                 <table class="table table-nowrap mb-0">
