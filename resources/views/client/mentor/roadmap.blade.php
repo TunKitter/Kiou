@@ -27,7 +27,7 @@
                                             <td>{{$loop->index+1}}</td>
                                             <td>{{$item->name}}</td>
                                             <td><button class="text-primary bg-white border-0" onclick="location.href='{{route('mentor-roadmap-detail',$item->id)}}'">More</button></td>
-                                            <td><button class="text-white border-0 px-2 py-1 rounded-2" style="background: #fc7f50" onclick="deleteCp('{{$item->id}}')">Delete</button></td>
+                                            <td><button class="text-white border-0 px-2 py-1 rounded-2" style="background: #fc7f50" onclick="deleteRoadmap('{{$item->id}}','{{$item->name}}')">Delete</button></td>
                                         </tr>    
                                         @endforeach
                                         
@@ -42,4 +42,19 @@
     </div>
 
 </div>
+<script>
+    function deleteRoadmap(id,name){
+        if(confirm('Are you sure to delete '+name+'?')){
+        let formData = new FormData()
+        formData.append('id',id)
+            fetch(`{{route('mentor-roadmap-delete')}}`, {
+                method: 'POST',
+                body: formData
+            }).then(res=> {
+                alert('Delete success') 
+                $('#'+id).remove()
+            })
+    }
+}
+</script>
 @endsection

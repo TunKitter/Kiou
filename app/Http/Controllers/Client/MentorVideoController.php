@@ -367,4 +367,11 @@ class MentorVideoController extends Controller
             'data' => 'ok',
         ]);
     }
+    public function deleteRoadmap()
+    {
+        Roadmap::find(request()->id)->delete();
+        return response()->json([
+            'data' => 'ok',
+        ]);
+    }
 }
