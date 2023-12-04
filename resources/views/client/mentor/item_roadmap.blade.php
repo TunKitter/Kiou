@@ -77,7 +77,7 @@
 <div class="curriculum-grid mt-4 chapter_video {{$chapter = '_'. uniqid()}} ">
     <div class="curriculum-head">
     <div class="form-group">
-      <label class="add-course-label" contenteditable onchange="changeDescription('.data_{{$accordion}}',this.innerHTML)">{{$item['type_description']}}</label>
+      <label class="add-course-label" contenteditable oninput="changeDescription('.data_{{$accordion}}',this.innerHTML)">{{$item['type_description']}}</label>
       <select class="form-control" onchange="updateSelect(this.value,'#{{$accordion}}')" style="max-width:max-content  ">
             <option value="course" {{$item['type'] == 'course' ? 'selected' : ''}}>Course</option>
             <option value="lesson" {{$item['type'] == 'lesson' ? 'selected' : ''}}>Lesson</option>
@@ -89,7 +89,10 @@
     </div>
     <div class="curriculum-info">
       <div id="{{$accordion}}">
-        <div class="faq-grid" id="{{$a = '_' . uniqid()}}">
+      @php
+        $a = '_' . uniqid();
+      @endphp
+        <div class="faq-grid">
                               <div class="faq-header">
                                 <a
                                   class="collapsed faq-collapse"
@@ -115,7 +118,7 @@
                                 class="collapse"
                                 data-bs-parent="#accordion-one"
                               >
-                                <div class="faq-body">
+                                <div class="faq-body" id="{{$a}}">
                                     @include('client.mentor.item_roadmap',['roadmap'=>$item['type_id']])
                                 </div>
                               </div>

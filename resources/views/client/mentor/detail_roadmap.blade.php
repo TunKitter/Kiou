@@ -31,7 +31,7 @@
                         <div class="card instructor-card">
                             <div class="card-header">
                                 <h4 class="d-flex justify-content-between w-100">{{$roadmap->name}}</h4>
-                                <button class="btn btn-primary" onclick="updateRoadmap()">Update</button>
+                                <button class="btn btn-primary" onclick="updateRoadmap(this)">Update</button>
                             </div>
                             <div class="card-body">
                             <div class="add-course-info">
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     </div>
-<button class="btn btn-primary" onclick="updateRoadmap()">Update</button>
+<button class="btn btn-primary" onclick="updateRoadmap(this)">Update</button>
                 </div>
             </div>
         </div>
@@ -103,38 +103,8 @@
 }
   function addLecture(lecture) {
   let lecture_id = '_'+ makeid();
-  document.querySelector('#'+ lecture).innerHTML+= `
-    <div class="faq-grid" id="${a = lecture + '_' + makeid()}">
-                              <div class="faq-header">
-                                <a
-                                  class="collapsed faq-collapse"
-                                  data-bs-toggle="collapse"
-                                  href="#collapse${a}"
-                                >
-                                  <i class="fas fa-align-justify"></i>
-                                  <span class="lesson_name">Child</span>
-                                </a>
-                                <div class="faq-right">
-                              
-                                  <a
-                                    href="javascript:void(0);"
-                                    class="me-0"
-                                  >
-                                    <i class="far fa-trash-can" onclick="removeLecture('${a}')"></i>
-                                  </a>
-                                </div>
-                              </div>
-                              <div
-                                id="collapse${a}"
-                                class="collapse"
-                                data-bs-parent="#accordion-one"
-                              >
-                                <div class="faq-body" id="${lecture_id}">
-                                </div>
-                              </div>
-                            </div>
-    `
-    addSection('#'+ lecture_id,false);
+  // document.querySelector('#'+ lecture).innerHTML+= 
+    addSection('#'+ lecture,false);
   }
   function removeLecture(id){
     $('#'+ id).remove();
@@ -476,7 +446,9 @@ function renderData2(element) {
     `
   }
   var data_update =[];
-  function updateRoadmap() {
+  function updateRoadmap(obj) {
+    obj.disabled = true;
+    obj.innerText = 'Updating...';
   [...document.querySelector('.chapter_videos').children].map((e,index) => {
     data_update[index] = {}
  data_update[index] = getChild(e) 
@@ -494,7 +466,8 @@ function renderData2(element) {
   } ,
    body: data_send,
  }).then(res => res.json()).then(data => {
-   console.log(data)
+  obj.innerText = 'Updated'
+  
  })
  }
   // var index_result = 0
