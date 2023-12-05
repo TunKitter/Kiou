@@ -26,6 +26,7 @@ use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
 use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\StripeController;
+use App\Http\Controllers\Client\SiteMapController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -156,6 +157,7 @@ Route::post('course/list/{skip}/{take}/mentor', [CourseController::class, 'getMe
 Route::post('course/list/update/course/interactive', [CourseController::class, 'updateInteractive'])->name('update-interactive-course');
 Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
 Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
+Route::post('/course/add/upload/video', [MentorVideoController::class, 'uploadJob'])->name('create-lesson');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
@@ -216,3 +218,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/blog', [BlogController::class, 'Blog'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog-detail');
 Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');
+
+# ------------------------- SiteMap --------------------------------
+Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('site-map');

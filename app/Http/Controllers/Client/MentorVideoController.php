@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-
+use Google\Cloud\Storage\StorageClient;
+use App\Jobs\UploadVideoJob;
+use Illuminate\Support\Facades\Http;
 class MentorVideoController extends Controller
 {
     public function create()
@@ -129,7 +131,7 @@ class MentorVideoController extends Controller
     {
         //save a file into public folder in laravl
 
-        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));    
 
         if (!$receiver->isUploaded()) {
             return response()->json([
@@ -142,20 +144,20 @@ class MentorVideoController extends Controller
         if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
             $file = $fileReceived->getFile(); // get file
             $extension = $file->getClientOriginalExtension();
-            $fileName = str_replace('.' . $extension, '', $file->getClientOriginalName()); //file name without extenstion
-            $fileName .= '_' . md5(time()) . '.' . $extension; // a unique file name
+            // $fileName = str_replace('.' . $extension, '', $file->getClientOriginalName()); //file name without extenstion
+            $fileName = '_' . md5(time()) . uniqid() . '.' . $extension; // a unique file name
 
             $disk = Storage::disk('public');
             $path = $disk->putFileAs('videos', $file, $fileName);
 
             // delete chunked file
             unlink($file->getPathname());
-            return [
-                'path' => asset('storage/' . $path),
-                'filename' => $fileName,
-            ];
+            // $mentor_id = auth()->user()->mentor->_id;
+            // UploadVideoJob::dispatch($path,$fileName, $mentor_id);
+            return response()->json([
+               'filename' => $fileName
+            ]);         
         }
-
         // otherwise return percentage information
         $handler = $fileReceived->handler();
         return [
@@ -164,6 +166,7 @@ class MentorVideoController extends Controller
         ];
 
     }
+
     public function handleUpload()
     {
         $random_content_path = \uniqid();
@@ -193,10 +196,10 @@ class MentorVideoController extends Controller
         foreach (explode('_$_', request()->chapters) as $item) {
             $chapter_infor['infor'][uniqid()] = $item;
         }
-        Chapter::create($chapter_infor);
+        $new_chapter = Chapter::create($chapter_infor);
         return response()->json([
             'status' => true,
-            'message' => 'OK',
+            'message' => $new_chapter,
         ]);
     }
     public function cp()
@@ -359,5 +362,16 @@ class MentorVideoController extends Controller
             }
         }
         return [$aa, $bb];
+    }
+    public function uploadJob() {
+        $a = '';
+        foreach(explode(';',request()->filenames) as $fileName) {
+        UploadVideoJob::dispatch($fileName,auth()->user()->mentor->_id,request()->course_id);
+        $a.= $fileName . ',';   
+        } 
+        return response()->json([
+            'data' => (request()->filenames),
+            'index' => $a
+        ]);
     }
 }
