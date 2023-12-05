@@ -13,7 +13,7 @@
 <img src="{{asset('assets/img/logo.svg')}}" class="img-fluid" alt="Logo">
 
 </div>
-<h1>Đăng ký mentor</h1>
+<h1>Register mentor</h1>
 <form action="{{route('mentor-register')}}" method="POST">
     @csrf
 <div class="form-group">
@@ -62,7 +62,7 @@
 @enderror
 </div> 
 <div class="d-grid">
-<button class="btn btn-primary btn-start" type="submit" disabled onclick="getProfession()">Đăng ký mentor</button>
+<button class="btn btn-primary btn-start" type="submit" disabled onclick="getProfession()">Register mentor</button>
 </div>
 </form>
 </div>

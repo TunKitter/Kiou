@@ -36,8 +36,9 @@
     <input type="file" style="display: none" id="user_face" name="user_face" >
     </div>
     </div>
+    
             <div class="d-grid">
-                <lable class="btn btn-primary btn-start border-0" id="btn_submit" disabled style="background: #6db2ee">Tiếp tục</lable>
+                <label class="btn btn-primary btn-start border-0" id="btn_submit" disabled style="background: #6db2ee">Continue</label>
             </div>    </form> 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

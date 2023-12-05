@@ -18,8 +18,8 @@
         </lord-icon>
         </div>
         <div class="text-center">
-            <h1>Cảm ơn bạn đã đặt hàng, bạn vừa hoàn thành thanh toán của mình</h1>
-            <h3>Chúng tui sẽ gửi mail xác nhận cho bạn 📩</h3>
+            <h1>Thank you for your order, you have just completed your payment</h1>
+            <h3>We will send you a confirmation email 📩</h3>
             <a href="" class="btn btn-success">Tiếp tục mua hàng</a>
         </div>
         
