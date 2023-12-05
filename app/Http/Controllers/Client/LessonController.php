@@ -125,4 +125,11 @@ class LessonController extends Controller
             'status' => route('lesson-learn', [$id_course, $id_lesson]),
         ]);
     }
+    public function getLessonData()
+    {
+        return response()->json([
+            'result' => Lesson::where('name', 'like', '%' . request()->name . '%')->where('allow_buy_seperate', true)->with('course')->get(),
+            'name' => \request()->name,
+        ]);
+    }
 }

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +46,7 @@
                                 </span>
                             </a>
                             <a href="index.html" class="navbar-brand logo">
-                                <img src="{{asset('assets/img/logo.png')}}" class="img-fluid" alt="Logo">
+                                <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid" alt="Logo">
                             </a>
                         </div>
                         <div class="main-menu-wrapper">
@@ -87,18 +86,18 @@
                                                 <li><a href="students-grid.html">Grid</a></li>
                                             </ul>
                                         </li> --}}
-                                        <li><a href="{{route('revision-bookmark')}}">Revise Bookmarks</a></li>
-                                        <li><a href="{{route('revision-test')}}">Test your knowledge</a></li>
-                                        <li class="has-submenu"><a href="{{route('revision-code-list')}}">CP</a>
+                                        <li><a href="{{ route('revision-bookmark') }}">Revise Bookmarks</a></li>
+                                        <li><a href="{{ route('revision-test') }}">Test your knowledge</a></li>
+                                        <li class="has-submenu"><a href="{{ route('revision-code-list') }}">CP</a>
                                             <ul class="submenu">
-                                                <li><a href="{{route('revision-code-list')}}">Your CP</a></li>
-                                                <li><a href="{{route('revision-code-explore')}}">Explore CP</a></li>
+                                                <li><a href="{{ route('revision-code-list') }}">Your CP</a></li>
+                                                <li><a href="{{ route('revision-code-explore') }}">Explore CP</a></li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="{{ route('blog')}}">Documentation</a>
+                                    <a href="{{ route('blog') }}">Documentation</a>
                                 </li>
                                 <li class="login-link">
                                     <a href="login.html">Login / Signup</a>
@@ -135,7 +134,7 @@
                                                 @endphp
                                                 @if (
                                                     $carts
-                                                        ::where('user_id', auth()->id())->get()->count() > 0)
+                                                        ::where('user_id', auth()->id())->where('state', '65337ecc289241e845e578d9')->get()->count() > 0)
                                                     @foreach ($carts::where('user_id', auth()->id())->get() as $cart)
                                                         @php
                                                             $tempCart = $cart;
@@ -151,7 +150,7 @@
                                                                         <a
                                                                             href="{{ route('course-detail', $cart->courses->slug) }}">
                                                                             <img alt
-                                                                                src="{{ asset('course/thumbnail/'.$cart->courses->image) }}">
+                                                                                src="{{ asset('course/thumbnail/' . $cart->courses->image) }}">
                                                                         </a>
                                                                     </div>
                                                                     <div class="media-body">
@@ -410,8 +409,13 @@
     <input class="form-check-input" type="checkbox" id="night-mode">
     </div>
     </div> --}}
+                                        @if (Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d')
+                                            <a class="dropdown-item" href="{{route('listUser')}}"><i class="feather-log-in me-1"></i>Go
+                                                to Admin</a>
+                                        @endif
                                         <a class="dropdown-item" href="http://127.0.0.1:8000/logout"><i
                                                 class="feather-log-out me-1"></i> Logout</a>
+
                                     </div>
                                 </li>
                             </ul>
@@ -503,7 +507,7 @@
                                             <img src="assets/img/pencil-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{$CourseCount}}</span>+</h4>
+                                            <h4><span>{{ $CourseCount }}</span>+</h4>
                                             <p>Online Courses</p>
                                         </div>
                                     </div>
@@ -518,7 +522,7 @@
                                             <img src="assets/img/cources-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{$MentorCount}}</span>+</h4>
+                                            <h4><span>{{ $MentorCount }}</span>+</h4>
                                             <p>Expert Tutors</p>
                                         </div>
                                     </div>
@@ -533,7 +537,8 @@
                                             <img src="assets/img/certificate-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{$RoadmapCount}}</span><i class="bi bi-clock-history"></i></h4>
+                                            <h4><span>{{ $RoadmapCount }}</span><i class="bi bi-clock-history"></i>
+                                            </h4>
                                             <p>Learning Roadmap</p>
                                         </div>
                                     </div>
@@ -548,7 +553,8 @@
                                             <img src="assets/img/gratuate-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{$EnrollmentCount}}</span><i class="bi bi-file-earmark-slides-fill"></i></h4>
+                                            <h4><span>{{ $EnrollmentCount }}</span><i
+                                                    class="bi bi-file-earmark-slides-fill"></i></h4>
                                             <p>Online Purchase</p>
                                         </div>
                                     </div>
@@ -566,10 +572,10 @@
                 <div class="section-header aos" data-aos="fade-up">
                     <div class="section-sub-head">
                         <span>Favourite Course</span>
-                        <h2>Top Category</h2>
+                        <h2>Top Profession</h2>
                     </div>
                     <div class="all-btn all-category d-flex align-items-center">
-                        <a href="job-category.html" class="btn btn-primary">All Categories</a>
+                        <a href="job-category.html" class="btn btn-primary">All profession</a>
                     </div>
                 </div>
                 <div class="section-text aos" data-aos="fade-up">
@@ -580,9 +586,7 @@
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon.png" alt>
-                                </div>
+                               
                                 <div class="feature-cont">
                                     <div class="feature-text">Angular Development</div>
                                 </div>
@@ -593,9 +597,7 @@
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-01.png" alt>
-                                </div>
+                              
                                 <div class="feature-cont">
                                     <div class="feature-text">Docker Development</div>
                                 </div>
@@ -606,9 +608,7 @@
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-02.png" alt>
-                                </div>
+                              
                                 <div class="feature-cont">
                                     <div class="feature-text">Node JS Frontend</div>
                                 </div>
@@ -619,9 +619,6 @@
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-03.png" alt>
-                                </div>
                                 <div class="feature-cont">
                                     <div class="feature-text">Swift Development</div>
                                 </div>
@@ -632,9 +629,6 @@
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-04.png" alt>
-                                </div>
                                 <div class="feature-cont">
                                     <div class="feature-text">Python Development</div>
                                 </div>
@@ -642,136 +636,7 @@
                             <p>30 Instructors</p>
                         </div>
                     </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-05.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">React<br> Native</div>
-                                </div>
-                            </div>
-                            <p>80 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-04.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Angular Development</div>
-                                </div>
-                            </div>
-                            <p>40 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-01.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Docker Development</div>
-                                </div>
-                            </div>
-                            <p>45 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-02.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Node JS Frontend</div>
-                                </div>
-                            </div>
-                            <p>40 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-03.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Swift Development</div>
-                                </div>
-                            </div>
-                            <p>23 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-04.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Python Development</div>
-                                </div>
-                            </div>
-                            <p>30 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-01.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Docker Development</div>
-                                </div>
-                            </div>
-                            <p>45 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-02.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Node JS Frontend</div>
-                                </div>
-                            </div>
-                            <p>40 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-03.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Swift Development</div>
-                                </div>
-                            </div>
-                            <p>23 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-icon">
-                                    <img src="assets/img/categories-icon-04.png" alt>
-                                </div>
-                                <div class="feature-cont">
-                                    <div class="feature-text">Python Development</div>
-                                </div>
-                            </div>
-                            <p>30 Instructors</p>
-                        </div>
-                    </div>
+                 
                 </div>
             </div>
         </section>
@@ -793,70 +658,76 @@
                         bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                 </div>
 
-                
-                
+
+
                 <div class="course-feature">
                     <div class="row">
-                    @isset($courses)
-                @foreach ($courses as $course)
-                        <div class="col-lg-4 col-md-6 d-flex">
-                            <div class="course-box d-flex aos" data-aos="fade-up">
-                                <div class="product">
-                                    <div class="product-img">
-                                    
-                                        <a href="{{route('course-detail',$course->slug)}}">
-                                            <span class="d-none course-link">{{$course->_id}}</span>
-                                            <img class="img-fluid" style="width:300px" alt src="{{asset('course/thumbnail/'.$course->image)}}">
-                                        </a>
-                                        <div class="price combo">
-                                            <h3>{{ $course->price}} <span>$99.00</span></h3>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="course-group d-flex">
-                                            <div class="course-group-img d-flex">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user6.jpg"
-                                                        alt class="img-fluid"></a>
-                                                <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">{{$course->mentor->name}}</a></h4>
-                                                    <p>Instructor</p>
+                        @isset($courses)
+                            @foreach ($courses as $course)
+                                <div class="col-lg-4 col-md-6 d-flex">
+                                    <div class="course-box d-flex aos" data-aos="fade-up">
+                                        <div class="product">
+                                            <div class="product-img">
+
+                                                <a href="{{ route('course-detail', $course->slug) }}">
+                                                    <span class="d-none course-link">{{ $course->_id }}</span>
+                                                    <img class="img-fluid" style="width:300px" alt
+                                                        src="{{ asset('course/thumbnail/' . $course->image) }}">
+                                                </a>
+                                                <div class="price combo">
+                                                    <h3>{{ $course->price }} <span>$99.00</span></h3>
                                                 </div>
                                             </div>
-                                            <div class="course-share d-flex align-items-center justify-content-center">
-                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                            <div class="product-content">
+                                                <div class="course-group d-flex">
+                                                    <div class="course-group-img d-flex">
+                                                        <a href="instructor-profile.html"><img
+                                                                src="assets/img/user/user6.jpg" alt class="img-fluid"></a>
+                                                        <div class="course-name">
+                                                            <h4><a
+                                                                    href="instructor-profile.html">{{ $course->mentor->name }}</a>
+                                                            </h4>
+                                                            <p>Instructor</p>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="course-share d-flex align-items-center justify-content-center">
+                                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h3 class="title instructor-text">{{ $course->name }}</h3>
+                                                <div class="course-info d-flex align-items-center">
+                                                    <div class="rating-img d-flex align-items-center">
+                                                        <img src="assets/img/icon/icon-01.svg" alt>
+                                                        <p>{{ $course->meta['total_lesson'] }} Lesson</p>
+                                                    </div>
+                                                    <div class="course-view d-flex align-items-center">
+                                                        <img src="assets/img/icon/icon-02.svg" alt>
+                                                        <p>{{ round($course->meta['total_time'] / 60) }}hr
+                                                            {{ round($course->meta['total_time'] % 60) }}min</p>
+                                                    </div>
+                                                </div>
+                                                <div class="rating">
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <span
+                                                        class="d-inline-block average-rating"><span>{{ $course->complete_course_rate }}</span></span>
+                                                </div>
+                                                <div class="all-btn all-category d-flex align-items-center">
+                                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <h3 class="title instructor-text">{{ $course->name}}</h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt>
-                                                <p>{{ $course->meta['total_lesson']}} Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt>
-                                                <p>{{round($course->meta['total_time']/60)}}hr {{round($course->meta['total_time']%60)}}min</p>
-                                            </div>
-                                        </div>
-                                        <div class="rating">
-                                                <i class="fas fa-star filled"></i> 
-                                                <i class="fas fa-star filled"></i> 
-                                                <i class="fas fa-star filled"></i> 
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star"></i> 
-                                            <span class="d-inline-block average-rating"><span>{{$course->complete_course_rate}}</span></span>
-                                        </div>
-                                        <div class="all-btn all-category d-flex align-items-center">
-                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        @endforeach
-                @endisset
+                            @endforeach
+                        @endisset
                     </div>
                 </div>
-               
+
             </div>
         </section>
 
@@ -954,65 +825,69 @@
                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
                         bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                 </div>
-                
-                
+
+
                 <div class="owl-carousel trending-course owl-theme aos" data-aos="fade-up">
-                @isset($courses)
-                @foreach ($buylot as $course)              
-                    <div class="course-box trend-box">
-                        <div class="product trend-product">
-                            <div class="product-img">
-                                <a href="{{route('course-detail',$course->slug)}}">
-                                    <img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
-                                </a>
-                                <div class="price">
-                                    <h3>{{ $course->price}}<span>$99.00</span></h3>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <div class="course-group d-flex">
-                                    <div class="course-group-img d-flex">
-                                        <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg" alt
-                                                class="img-fluid"></a>
-                                        <div class="course-name">
-                                            <h4><a href="instructor-profile.html">{{$course->mentor->name}}</a></h4>
-                                            <p>Instructor</p>
+                    @isset($courses)
+                        @foreach ($buylot as $course)
+                            <div class="course-box trend-box">
+                                <div class="product trend-product">
+                                    <div class="product-img">
+                                        <a href="{{ route('course-detail', $course->slug) }}">
+                                            <img class="img-fluid" alt
+                                                src="{{ asset('course/thumbnail/' . $course->image) }}">
+                                        </a>
+                                        <div class="price">
+                                            <h3>{{ $course->price }}<span>$99.00</span></h3>
                                         </div>
                                     </div>
-                                    <div class="course-share d-flex align-items-center justify-content-center">
-                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                    <div class="product-content">
+                                        <div class="course-group d-flex">
+                                            <div class="course-group-img d-flex">
+                                                <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg" alt
+                                                        class="img-fluid"></a>
+                                                <div class="course-name">
+                                                    <h4><a href="instructor-profile.html">{{ $course->mentor->name }}</a>
+                                                    </h4>
+                                                    <p>Instructor</p>
+                                                </div>
+                                            </div>
+                                            <div class="course-share d-flex align-items-center justify-content-center">
+                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                            </div>
+                                        </div>
+                                        <h3 class="title"><a href="course-details.html">{{ $course->name }}</a></h3>
+                                        <div class="course-info d-flex align-items-center">
+                                            <div class="rating-img d-flex align-items-center">
+                                                <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
+                                                <p>{{ $course->meta['total_lesson'] }} Lesson</p>
+                                            </div>
+                                            <div class="course-view d-flex align-items-center">
+                                                <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
+                                                <p>{{ round($course->meta['total_time'] / 60) }}hr
+                                                    {{ round($course->meta['total_time'] % 60) }}min</p>
+                                            </div>
+                                        </div>
+                                        <div class="rating">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span
+                                                class="d-inline-block average-rating"><span>{{ $course->complete_course_rate }}</span></span>
+                                        </div>
+                                        <div class="all-btn all-category d-flex align-items-center">
+                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <h3 class="title"><a href="course-details.html">{{ $course->name}}</a></h3>
-                                <div class="course-info d-flex align-items-center">
-                                    <div class="rating-img d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                        <p>{{ $course->meta['total_lesson']}} Lesson</p>
-                                    </div>
-                                    <div class="course-view d-flex align-items-center">
-                                        <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                        <p>{{round($course->meta['total_time']/60)}}hr {{round($course->meta['total_time']%60)}}min</p>
-                                    </div>
-                                </div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span class="d-inline-block average-rating"><span>{{$course->complete_course_rate}}</span></span>
-                                </div>
-                                <div class="all-btn all-category d-flex align-items-center">
-                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    @endforeach
-                @endisset
+                        @endforeach
+                    @endisset
                 </div>
-                
-               
+
+
 
                 <div class="feature-instructors">
                     <div class="section-header aos" data-aos="fade-up">
@@ -1181,81 +1056,6 @@
 
             </div>
         </section>
-
-
-        <section class="section lead-companies">
-            <div class="container">
-                <div class="section-header aos" data-aos="fade-up">
-                    <div class="section-sub-head feature-head text-center">
-                        <span>Trusted By</span>
-                        <h2>500+ Leading Universities And Companies</h2>
-                    </div>
-                </div>
-                <div class="lead-group aos" data-aos="fade-up">
-                    <div class="lead-group-slider owl-carousel owl-theme">
-                        <div class="item">
-                            <div class="lead-img">
-                                <img class="img-fluid" alt src="assets/img/lead-01.png">
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="lead-img">
-                                <img class="img-fluid" alt src="assets/img/lead-02.png">
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="lead-img">
-                                <img class="img-fluid" alt src="assets/img/lead-03.png">
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="lead-img">
-                                <img class="img-fluid" alt src="assets/img/lead-04.png">
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="lead-img">
-                                <img class="img-fluid" alt src="assets/img/lead-05.png">
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="lead-img">
-                                <img class="img-fluid" alt src="assets/img/lead-06.png">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="section share-knowledge">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="knowledge-img aos" data-aos="fade-up">
-                            <img src="assets/img/share.png" alt class="img-fluid">
-                        </div>
-                    </div>
-                    <div class="col-md-6 d-flex align-items-center">
-                        <div class="join-mentor aos" data-aos="fade-up">
-                            <h2>Want to share your knowledge? Join us a Mentor</h2>
-                            <p>High-definition video is video of higher resolution and quality than standard-definition.
-                                While there is no standardized meaning for high-definition, generally any video.</p>
-                            <ul class="course-list">
-                                <li><i class="fa-solid fa-circle-check"></i>Best Courses</li>
-                                <li><i class="fa-solid fa-circle-check"></i>Top rated Instructors</li>
-                            </ul>
-                            <div class="all-btn all-category d-flex align-items-center">
-                                <a href="instructor-list.html" class="btn btn-primary">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
         <section class="section user-love">
             <div class="container">
                 <div class="section-header white-header aos" data-aos="fade-up">
@@ -1288,8 +1088,8 @@
                                             make a type specimen book.</p>
                                         <div class="four-testimonial-founder">
                                             <div class="fount-about-img">
-                                                <a href="instructor-profile.html"><img
-                                                        src="assets/img/user/user1.jpg" alt class="img-fluid"></a>
+                                                <a href="instructor-profile.html"><img src="assets/img/user/user1.jpg"
+                                                        alt class="img-fluid"></a>
                                             </div>
                                             <h3><a href="instructor-profile.html">Daziy Millar</a></h3>
                                             <span>Founder of Awesomeux Technology</span>
@@ -1311,8 +1111,8 @@
                                             make a type specimen book.</p>
                                         <div class="four-testimonial-founder">
                                             <div class="fount-about-img">
-                                                <a href="instructor-profile.html"><img
-                                                        src="assets/img/user/user3.jpg" alt class="img-fluid"></a>
+                                                <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg"
+                                                        alt class="img-fluid"></a>
                                             </div>
                                             <h3><a href="instructor-profile.html">john smith</a></h3>
                                             <span>Founder of Awesomeux Technology</span>
@@ -1334,8 +1134,8 @@
                                             make a type specimen book.</p>
                                         <div class="four-testimonial-founder">
                                             <div class="fount-about-img">
-                                                <a href="instructor-profile.html"><img
-                                                        src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+                                                <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg"
+                                                        alt class="img-fluid"></a>
                                             </div>
                                             <h3><a href="instructor-profile.html">David Lee</a></h3>
                                             <span>Founder of Awesomeux Technology</span>
@@ -1392,320 +1192,6 @@
                 </div>
             </div>
         </section>
-
-
-        <section class="section latest-blog">
-            <div class="container">
-                <div class="section-header aos" data-aos="fade-up">
-                    <div class="section-sub-head feature-head text-center mb-0">
-                        <h2>Latest Blogs</h2>
-                        <div class="section-text aos" data-aos="fade-up">
-                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
-                                accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="owl-carousel blogs-slide owl-theme aos" data-aos="fade-up">
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-01.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">Attract More Attention Sales And Profits</a></h5>
-                            <p>Marketing</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>Jun 15, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-02.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">11 Tips to Help You Get New Clients</a></h5>
-                            <p>Sales Order</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>May 20, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-03.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
-                            <p>Design</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>May 25, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-02.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
-                            <p>Seo</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>Jul 15, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-02.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">Attract More Attention Sales And Profits</a></h5>
-                            <p>Marketing</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>Sep 25, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-03.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
-                            <p>Marketing</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>May 25, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-04.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
-                            <p>Analysis</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>May 15, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-02.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">11 Tips to Help You Get New Clients</a></h5>
-                            <p>Development</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>Jun 20, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-03.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
-                            <p>Sales</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>May 25, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="instructors-widget blog-widget">
-                        <div class="instructors-img">
-                            <a href="blog-list.html">
-                                <img class="img-fluid" alt src="assets/img/blog/blog-04.jpg">
-                            </a>
-                        </div>
-                        <div class="instructors-content text-center">
-                            <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
-                            <p>Marketing</p>
-                            <div class="student-count d-flex justify-content-center">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>April 15, 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="enroll-group aos" data-aos="fade-up">
-                    <div class="row ">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="total-course d-flex align-items-center">
-                                <div class="blur-border">
-                                    <div class="enroll-img ">
-                                        <img src="assets/img/icon/icon-07.svg" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="course-count">
-                                    <h3><span class="counterUp">253,085</span></h3>
-                                    <p>STUDENTS ENROLLED</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="total-course d-flex align-items-center">
-                                <div class="blur-border">
-                                    <div class="enroll-img ">
-                                        <img src="assets/img/icon/icon-08.svg" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="course-count">
-                                    <h3><span class="counterUp">1,205</span></h3>
-                                    <p>TOTAL COURSES</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="total-course d-flex align-items-center">
-                                <div class="blur-border">
-                                    <div class="enroll-img ">
-                                        <img src="assets/img/icon/icon-09.svg" alt class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="course-count">
-                                    <h3><span class="counterUp">127</span></h3>
-                                    <p>COUNTRIES</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="lab-course">
-                    <div class="section-header aos" data-aos="fade-up">
-                        <div class="section-sub-head feature-head text-center">
-                            <h2>Unlimited access to 360+ courses <br>and 1,600+ hands-on labs</h2>
-                        </div>
-                    </div>
-                    <div class="icon-group aos" data-aos="fade-up">
-                        <div class="offset-lg-1 col-lg-12">
-                            <div class="row">
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-09.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-10.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-16.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-12.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-13.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-14.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-15.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-16.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-17.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-3">
-                                    <div class="total-course d-flex align-items-center">
-                                        <div class="blur-border">
-                                            <div class="enroll-img ">
-                                                <img src="assets/img/icon/icon-18.svg" alt class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
 
         <footer class="footer">
 
@@ -1774,7 +1260,7 @@
                                             placeholder="Enter your email address" name="email">
                                     </form>
                                 </div>
-                               
+
                             </div>
 
                         </div>
@@ -1788,7 +1274,7 @@
 
                     <div class="copyright">
                         <div class="row">
-                           
+
                             <div class="col-md-12 ">
                                 <div class="copyright-text ">
                                     <p class="mb-0 text-center">&copy; 2023 KIOU</p>
@@ -1836,8 +1322,7 @@
     <script src="{{ asset('assets/plugins/feather/feather.min.js') }}"></script>
 </body>
 <style>
-    body{
-        overflow-x : hidden;
+    body {
+        overflow-x: hidden;
     }
 </style>
-

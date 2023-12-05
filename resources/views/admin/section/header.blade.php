@@ -21,6 +21,10 @@
   
     <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
     <!-- Icons css -->
+    <link rel="stylesheet" href="{{asset('assets/vendor/daterangepicker/daterangepicker.css')}}">
+
+        <!-- Vector Map css -->
+    <link rel="stylesheet" href="{{asset('assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css')}}">
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
         integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg=="
@@ -84,7 +88,6 @@
                         </form>
                     </div>
                 </div>
-
                 <ul class="topbar-menu d-flex align-items-center gap-3">
                     <li class="dropdown d-lg-none">
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
@@ -385,11 +388,11 @@
                         <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="account-user-avatar">
-                                <img src="{{asset('assets/images/users/avatar-1.jpg')}}" alt="user-image" width="32"
+                                <img src="{{ ($image = auth()->user()->image['avatar']) ? (str_starts_with($image, 'http') ? $image : asset('user/avatar/' . $image)) : asset('assets/img/user/avatar.jpg') }}" alt="user-image" width="32"
                                     class="rounded-circle">
                             </span>
                             <span class="d-lg-block d-none">
-                                <h5 class="my-0 fw-normal">Xuân Hậu <i
+                                <h5 class="my-0 fw-normal">{{ auth()->user()->name }}<i
                                         class="ri-arrow-down-s-line d-none d-sm-inline-block align-middle"></i></h5>
                             </span>
                         </a>
@@ -418,13 +421,13 @@
                             </a>
 
                             <!-- item-->
-                            <a href="auth-lock-screen.html" class="dropdown-item">
-                                <i class="ri-lock-password-line fs-18 align-middle me-1"></i>
-                                <span>Lock Screen</span>
+                            <a href="{{route('home')}}" class="dropdown-item">
+                                <i class="ri-login-box-line fs-18 align-middle me-1"></i>
+                                <span>Go to Website</span>
                             </a>
 
                             <!-- item-->
-                            <a href="auth-logout-2.html" class="dropdown-item">
+                            <a href="{{route('logoutAdmin')}}" class="dropdown-item">
                                 <i class="ri-logout-box-line fs-18 align-middle me-1"></i>
                                 <span>Logout</span>
                             </a>

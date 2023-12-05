@@ -24,11 +24,7 @@
     <div class="page-content">
         <div class="container">
             <div class="row">
-
              @include('client.mentor.sidebar')
-
-
-             
              <div class="col-xl-9 col-lg-8 col-md-12">
                 <div class="row">
                     <div class="col-md-4 d-flex">

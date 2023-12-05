@@ -25,9 +25,9 @@
     @endphp
     <div class="course-card w-100"> 
         <h6 class="cou-title">
-            <a class="collapsed" style="background:white;border-radius:0;text-decoration: none" data-bs-toggle="collapse" href="#course3_{{$loop->index}} " aria-expanded="false">{{$course['type_description']}}</a>
+            <a class="collapsed" style="background:white;border-radius:0;text-decoration: none" data-bs-toggle="collapse" href="#{{$a = '_'.uniqid()}}" aria-expanded="false">{{$course['type_description']}}</a>
         </h6>
-        <div id="course3_{{$loop->index}}" class="card-collapse collapse" style>
+        <div id="{{$a}}" class="card-collapse collapse" style>
 <ul class="border-me">
     @include('client.roadmap.item',['arr'=>$course['type_id']])
 </ul>

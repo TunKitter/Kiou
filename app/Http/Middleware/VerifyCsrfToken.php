@@ -36,5 +36,15 @@ class VerifyCsrfToken extends Middleware
         '/admin/category/update',
         '/admin/category/add',
         '/admin/notification',
+        '/course/add/upload',
+        'mentor/cp/update',
+        'mentor/create/cp',
+        'mentor/delete/cp',
+        '/course/mentor/name',
+        'lessons/get',
+        'course/roadmap/detail',
+        'mentor/roadmap/delete',
+        '/mentor/roadmap/create/new',
+        'course/add/upload/video',
     ];
 }

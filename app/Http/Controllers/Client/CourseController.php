@@ -190,7 +190,11 @@ class CourseController extends Controller
         $mentor_professions = implode(',', Profession::whereIn('_id', $course->mentor->profession)->pluck('name')->toArray());
         $category_profession = Profession::where('_id', $course->category)->first()->name;
         $lessons_db = (Lesson::where('course_id', $course->id)->get(['chapter', 'name'])->toArray());
-        $overview_video_path = (Lesson::where('course_id', $course->id)->first(['path'])->toArray())['path'];
+        try {
+            $overview_video_path = (Lesson::where('course_id', $course->id)->first(['path'])->toArray())['path'];
+        } catch (\Throwable $th) {
+            $overview_video_path = '';
+        }
         $lessons = [];
         array_map(function ($item) use (&$lessons) {
             $lessons[$item['chapter'][1]][] = $item['name'];
@@ -225,5 +229,11 @@ class CourseController extends Controller
             Course::whereIn('_id', explode(',', \request()->ids2))->increment(request()->type2);
         }
         return response()->json(['status' => true]);
+    }
+    public function getMentorName()
+    {
+        return response()->json([
+            'name' => Mentor::select('name')->where('_id', request()->id)->first()->name,
+        ]);
     }
 }
