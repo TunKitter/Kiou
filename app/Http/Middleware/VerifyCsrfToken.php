@@ -45,5 +45,6 @@ class VerifyCsrfToken extends Middleware
         'course/roadmap/detail',
         'mentor/roadmap/delete',
         '/mentor/roadmap/create/new',
+        'course/add/upload/video',
     ];
 }

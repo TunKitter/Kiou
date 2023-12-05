@@ -70,10 +70,10 @@ class LoginController extends Controller
         // Đếm số ip cử 1 tài khoản
         $count_ip = count($ip_user);
         if (Auth::attempt($request->only('email', 'password'))) {
-            if(Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d'){
+            if (Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d') {
 
                 return redirect()->route('listUser');
-            }else{
+            } else {
                 return redirect()->route('home');
             }
             //Kiểm tra thông tin trong ip user có ip đó chưa
@@ -91,14 +91,14 @@ class LoginController extends Controller
                     );
                 }
             }
-           
+
         } else {
 
             return redirect()->back()->withInput($request->only('email'))->withErrors([
-                'email' => 'Thông tin đăng nhập không đúng. '
+                'email' => 'Login information is incorrect.',
             ]);
 
         }
-        // return redirect()->route('home')->with('success', 'Đăng nhập thành công');
+        return redirect()->route('home')->with('success', 'Logged in successfully');
     }
 }

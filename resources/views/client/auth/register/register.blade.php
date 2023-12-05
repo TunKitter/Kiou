@@ -9,18 +9,18 @@
         @endif
         <div class="loginbox">
             <div class="img-logo">
-                <img src="{{ asset('assets/img/logo.svg') }}" class="img-fluid" alt="Logo">
+                <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid" alt="Logo">
                 <div class="back-home">
-                    <a href="{{ route('home') }}">Quay lại trang chủ</a>
+                    <a href="{{ route('home') }}">Go back to home</a>
                 </div>
             </div>
-            <h1>Đăng ký</h1>
+            <h1>Register</h1>
             <form action="{{ route('register') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label class="form-control-label">Họ & tên</label>
+                    <label class="form-control-label">Full name</label>
                     <input type="text" name="name" value="{{ old('name') }}" class="form-control"
-                        placeholder="Nhập họ và tên" oninput="enter_data()">
+                        placeholder="Enter your full name" oninput="enter_data()">
                     <div class="error_message">
                         @error('name')
                             <span style="color: red;font-weight:lighter">{{ $message }}</span>
@@ -29,9 +29,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label">Số điện thoại</label>
+                    <label class="form-control-label">Phone</label>
                     <input type="text" pattern="[0-9]{10}" required name="phone" value="{{ old('phone') }}"
-                        class="form-control" placeholder="Nhập số điện thoại" oninput="enter_data()">
+                        class="form-control" placeholder="Enter your phone" oninput="enter_data()">
                     <div class="error_message">
                         @error('phone')
                             <span style="color: red;font-weight:lighter">{{ $message }}</span>
@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label class="form-control-label">Email</label>
                     <input type="email" name="email" value="{{ old('email') }}" class="form-control"
-                        placeholder="Nhập địa chỉ email" oninput="enter_data()">
+                        placeholder="Enter your email" oninput="enter_data()">
                     <div class="error_message">
                         @error('email')
                             <span style="color: red;font-weight:lighter">{{ $message }}</span>
@@ -51,8 +51,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label">Tên tài khoản</label>
-                    <input type="text" name="username" class="form-control" placeholder="Nhập tên tài khoản"
+                    <label class="form-control-label">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="Enter your user name"
                         oninput="enter_data()">
                     <div class="error_message">
                         @error('username')
@@ -86,8 +86,8 @@
                 <div class="form-check remember-me">
                     <label class="form-check-label mb-0">
                         <input class="form-check-input" onchange="enter_data()" id="remember" type="checkbox"
-                            name="remember"> Tôi đồng ý với các điều khoản <a href="term-condition.html">dịch vụ</a> và <a
-                            href="privacy-policy.html">chính sách riêng tư.</a>
+                            name="remember"> I agree to the terms <a href="term-condition.html">service</a> and <a
+                            href="privacy-policy.html">privacy policy.</a>
                     </label>
                     <div class="error_message">
                         @error('remember')
@@ -97,12 +97,12 @@
                     </div>
                 </div>
                 <div class="d-grid">
-                    <button class="btn btn-primary btn-start" id="registerButton" disabled type="submit">Đăng ký</button>
+                    <button class="btn btn-primary btn-start" id="registerButton" disabled type="submit">Register</button>
                 </div>
             </form>
         </div>
         <div class="google-bg text-center">
-            <span><a href="#">Hoặc đăng nhập bằng</a></span>
+            <span><a href="#">Or log in with</a></span>
             <div class="sign-google">
                 <ul>
                     <li><a style="border-right: none !important" href="{{ route('login.google') }}"><img
@@ -111,7 +111,7 @@
                     {{-- <li><a href="#"><img src="{{asset('assets/img/net-icon-02.png')}}" class="img-fluid" alt="Logo">Sign In using Facebook</a></li> --}}
                 </ul>
             </div>
-            <p class="mb-0">Bạn có sẳn sàng để tạo một tài khoản? <a href="{{ route('login') }}">Đăng nhập</a></p>
+            <p class="mb-0">Are you ready to create an account?<a href="{{ route('login') }}">Login</a></p>
         </div>
     </div>
     <script>

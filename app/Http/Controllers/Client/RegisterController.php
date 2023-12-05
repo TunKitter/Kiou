@@ -27,7 +27,7 @@ class RegisterController extends Controller
         $count_account = User::whereIn('ip', [$ip])->count();
         // dd($count_account);
         if ($count_account > $limit) {
-            return redirect('register')->with(['deny_register' => 'Đăng ký thất bại !']);
+            return redirect('register')->with(['deny_register' => 'Registration failed !']);
         } else {
             $request->validated();
             User::create([
@@ -38,7 +38,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
                 'ip' => [$request->ip()],
             ]);
-            return redirect('login')->withSuccess('Đăng ký thành công !');
+            return redirect('login')->withSuccess('Sign Up Success !');
         }
     }
 }

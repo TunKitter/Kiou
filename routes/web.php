@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\CategoryPostController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\RoadMapController as AdminRoadmapController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\BlogController;
@@ -25,19 +24,17 @@ use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
 use App\Http\Controllers\Client\RoadMapController;
+use App\Http\Controllers\Client\SiteMapController;
 use App\Http\Controllers\Client\StripeController;
+use App\Http\Controllers\Client\UserchartController;
 use App\Http\Controllers\Client\VnpayController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Client\UserchartController;
 
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-# --------------------------- Admin Login --------------------------------
-Route::get('/admin/login', [AdminLoginController::class, 'index'])->name('loginAdmin');
-Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('login');
-Route::get('/admin/logout', [AdminLoginController::class, 'logout'])->name('logoutAdmin')->middleware('auth');
+Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 # --------------------------- Admin User --------------------------------
-Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser')->middleware(['auth','auth.admin']);
+Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser')->middleware(['auth', 'auth.admin']);
 Route::post('/admin/users/list/{take}/{skip}', [UserController::class, 'userMore']);
 Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser');
 Route::post('/admin/users/update', [UserController::class, 'updateUser'])->name('updateUser');
@@ -165,6 +162,7 @@ Route::post('course/list/update/course/interactive', [CourseController::class, '
 Route::post('/course/mentor/name', [CourseController::class, 'getMentorName'])->name('get-mentor-name');
 Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
 Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
+Route::post('/course/add/upload/video', [MentorVideoController::class, 'uploadJob'])->name('create-lesson');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
@@ -233,3 +231,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/blog', [BlogController::class, 'Blog'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'blogDetail'])->name('blog-detail');
 Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->name('blog-in-category');
+
+# ------------------------- SiteMap --------------------------------
+Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('site-map');
