@@ -227,14 +227,14 @@
                         @endphp
                     @else
                         <h3 class="text-center">
-                            Bạn chưa mua khóa học nào vui lòng mua và học để có thể xem được biểu đồ tiến trình học tập !!!
+                            You have not purchased any courses yet. Please purchase and study to see the course progress
                         </h3>
                     @endif
 
                     <figure class="highcharts-figure">
                         <div id="container"></div>
                         <p class="highcharts-description text-center">
-                            Biểu đồ thể hiện tốc độ học, ghi nhớ và thực hành của người dùng
+                            The graph shows the average score of each course
                         </p>
                     </figure>
                 </div>
@@ -272,7 +272,7 @@
             },
 
             title: {
-                text: 'Biều đồ thể hiện mức độ hiểu bài của người dùng',
+                text: 'The graph shows the average score of each course',
                 style: {
                     fontSize: '1em'
                 }
