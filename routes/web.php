@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryPostController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\RoadMapController as AdminRoadmapController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\BlogController;
@@ -20,19 +21,22 @@ use App\Http\Controllers\Client\MentorVideoController;
 use App\Http\Controllers\Client\ModerationController;
 use App\Http\Controllers\Client\MyCoursesController;
 use App\Http\Controllers\Client\PasswordController;
-use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
 use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\StripeController;
+use App\Http\Controllers\Client\VnpayController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+# --------------------------- Admin Login --------------------------------
+Route::get('/admin/login', [AdminLoginController::class, 'index'])->name('loginAdmin');
+Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('login');
+Route::get('/admin/logout', [AdminLoginController::class, 'logout'])->name('logoutAdmin')->middleware('auth');
 # --------------------------- Admin User --------------------------------
-Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser');
+Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser')->middleware(['auth','auth.admin']);
 Route::post('/admin/users/list/{take}/{skip}', [UserController::class, 'userMore']);
 Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser');
 Route::post('/admin/users/update', [UserController::class, 'updateUser'])->name('updateUser');
@@ -210,8 +214,8 @@ Route::controller(StripeController::class)->group(function () {
 });
 
 # ------------------------- Pay VnPay --------------------------------
-Route::post('/vnpay', [PaymentController::class, 'vnpay_payment']);
-
+Route::post('/vnpay', [VnpayController::class, 'create'])->name('vnpay');
+Route::get('/return', [VnpayController::class, 'return'])->name('return');
 # ------------------------- Moderation --------------------------------
 Route::middleware('auth')->group(function () {
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation');

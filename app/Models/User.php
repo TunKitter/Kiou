@@ -42,5 +42,6 @@ class User extends Model implements Authenticatable
     {
         return $this->hasOne(Mentor::class, 'user_id');
     }
+    
 
 }

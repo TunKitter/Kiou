@@ -70,6 +70,12 @@ class LoginController extends Controller
         // Đếm số ip cử 1 tài khoản
         $count_ip = count($ip_user);
         if (Auth::attempt($request->only('email', 'password'))) {
+            if(Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d'){
+
+                return redirect()->route('listUser');
+            }else{
+                return redirect()->route('home');
+            }
             //Kiểm tra thông tin trong ip user có ip đó chưa
             if (!(in_array($ip, $ip_user))) {
                 //Kiểm tra số lượng ip người dùng đã đến giới hạn chưa
@@ -79,7 +85,7 @@ class LoginController extends Controller
                         [$request->ip()]
                     );
                 } else {
-                    //Bắt lỗi tài khoảng cộng đồng
+                    //Bắt lỗi tài khoản cộng đồng
                     User::where('email', $findEmail)->update(
                         ['role' => ['652a9a45835ceedb746a99ef']]
                     );
@@ -93,6 +99,6 @@ class LoginController extends Controller
             ]);
 
         }
-        return redirect()->route('home')->with('success', 'Đăng nhập thành công');
+        // return redirect()->route('home')->with('success', 'Đăng nhập thành công');
     }
 }
