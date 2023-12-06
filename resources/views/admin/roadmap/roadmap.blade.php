@@ -77,7 +77,7 @@ function deletedCategory(obj) {
     obj.innerHTML = 'Deleting...'
     let formData = new FormData();
     formData.append('id', category_id_delete)
-    fetch('{{route("delete-category-admin")}}',{
+    fetch('{{route("admin.delete-category-admin")}}',{
         method:'POST',
         body: formData
     }).then(res => res.json()).then(data => {
@@ -96,7 +96,7 @@ function deletedCategory(obj) {
     // alert(user_id_delete)
 }
 function detailRoadmap(id) {
-    location.href = '{{route("list-roadmap-admin")}}/'+id
+    location.href = '{{route("admin.list-roadmap-admin")}}/'+id
     // $('#detail-roadmap').modal('show')
 }
 </script>

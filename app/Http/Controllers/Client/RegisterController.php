@@ -22,7 +22,7 @@ class RegisterController extends Controller
         //Lấy IP từ mấy người dùng
         $ip = $request->ip();
         //Giới hạn 1 IP mấy tính có thể tạo được 5 tài khoản
-        $limit = 5;
+        $limit = 10;
         //Đếm số tài khoản có IP giống nhau
         $count_account = User::whereIn('ip', [$ip])->count();
         // dd($count_account);

@@ -26,7 +26,7 @@
                                     <a href="dashboard-instructor.html" class="btn btn-black">Back to Course</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0);" class="btn btn-success-dark">Save</a>
+                                    <a href="" class="btn btn-success-dark">Save</a>
                                 </li>
                             </ul>
                         </div>
@@ -61,30 +61,36 @@
                                         </div>
                                         <div class="add-course-form">
                                             <form action="#">
-                                                <div class="form-group">
+                                                <div class="form-group ">
                                                     <label class="add-course-label">Course Title</label>
-                                                    <input type="text" name="title_course" class="form-control"
+                                                    <input type="text" name="title_course" class="form-control is-invalid" id ="title_course"
                                                         placeholder="Course Title" />
+                                                        <small id="title_error" style="color:red"></small>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="add-course-label">Course Description</label>
-                                                    <input type="text" name="description_course" class="form-control"
-                                                        placeholder="Course description" />
+                                                    <input type="text" name="description_course" class="form-control" id="des_course" placeholder="Course description" />
+                                                    <small id="des_error" style="color:red"></small>
+                                                   
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="add-course-label">Courses Category</label>
-                                                    <select class="form-control select" name="category_course"
+                                                    <select class="form-control select" name="category_course"  
                                                         id="category">
                                                         @foreach ($professions as $profession)
+                                                        
+                                                      
                                                             <option value="{{ $profession->id }}">{{ $profession->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    <small id="category_error" style="color:red"></small>
                                                 </div>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">Price</label>
-                                                    <input type="text" class="form-control" placeholder="10.00"
+                                                    <input type="text" class="form-control" placeholder="10.00" id ="price_course"
                                                         name="price_course" />
+                                                        <small id="price_error" style="color:red"></small>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="add-course-label">Courses Level</label>
@@ -93,20 +99,24 @@
                                                             <option value="{{ $level->id }}">{{ $level->name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <small id="level_error" style="color:red"></small>
                                                 </div>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">Course Content</label>
-                                                    <textarea name="course_content" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="course_content" class="form-control" id="content_course" cols="30" rows="10"></textarea>
+                                                    <small id="content_error" style="color:red"></small>
                                                 </div>
                                                 <br>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">Requirements</label>
-                                                    <textarea name="course_requirement" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="course_requirement" class="form-control" id="requirement"cols="30" rows="10"></textarea>
+                                                    <small id="requirement_error" style="color:red"></small>
                                                 </div>
                                                 <br>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">What students will learn</label>
-                                                    <textarea name="course_will_learn" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="course_will_learn" class="form-control" id="learn" cols="30" rows="10"></textarea>
+                                                    <small id="learn_error" style="color:red"></small>
                                                 </div>
                                             </form>
                                         </div>
@@ -362,8 +372,59 @@ var filenames = []
                 resumable.addFile(e.files[0]);
             });
         }
-
+      
         function saveTemp() {
+            const title_course = document.getElementById('title_course');
+            const des_course = document.getElementById('des_course');
+            const price_course = document.getElementById('price_course');
+            const category_course = document.getElementById('category_course');
+            const level_course = document.getElementById('level_course');
+            const content_course = document.getElementById('content_course');
+            const requirement = document.getElementById('requirement');
+            const learn = document.getElementById('learn');
+          
+            const title_error = document.getElementById('title_error');
+            const des_error = document.getElementById('des_error');
+            const price_error = document.getElementById('price_error');
+            const category_error = document.getElementById('category_error');
+            const level_error = document.getElementById('level_error');
+            const content_error = document.getElementById('content_error');
+            const requirement_error = document.getElementById('requirement_error');
+            const learn_error = document.getElementById('learn_error');
+          
+           
+            const isRequired = value => value === '' ? false : true;
+            if (!isRequired(title_course.value.trim())) {
+                title_error.innerHTML = "Please enter your title course.";
+            }
+            if (!isRequired(des_course.value.trim())) {
+                des_error.innerHTML = "Please enter your description course.";
+                
+            }
+            if (!isRequired(price_course.value.trim())) {
+                price_error.innerHTML = "Please enter your price course.";
+               
+            }
+            // if (!isRequired(category_course.value.trim())) {
+            //     category_error.innerHTML = "Please enter your category course.";
+               
+            // }
+            // if (!isRequired(level_course.value.trim())) {
+            //     level_error.innerHTML = "Please enter your level course.";
+                
+            // }
+            if (!isRequired(content_course.value.trim())) {
+                content_error.innerHTML = "Please enter your content course.";
+               
+            }
+            if (!isRequired(requirement.value.trim())) {
+                requirement_error.innerHTML = "Please enter your requirement.";
+               
+            }
+            if (!isRequired(learn.value.trim())) {
+                learn_error.innerHTML = "Please enter your learn.";
+               
+            }
             localStorage.setItem('title', document.querySelector('input[name="title_course"]').value);
             localStorage.setItem('description', document.querySelector('input[name="description_course"]').value);
             localStorage.setItem('category', $('#category').select2('data')[0].id);
@@ -373,6 +434,7 @@ var filenames = []
             localStorage.setItem('requirement', document.querySelector('textarea[name="course_requirement"]').value);
             localStorage.setItem('will_learn', document.querySelector('textarea[name="course_will_learn"]').value);
             document.querySelector('.recover').style.display = 'none';
+
         }
     </script>
     <script>
@@ -396,7 +458,8 @@ var filenames = []
             document.querySelector('.recover').style.display = 'none';
             localStorage.clear()
         }
-
+        var lessons_name = {};
+        var lesson_index = 0;
         function saveCourse() {
             let formData = new FormData();
             formData.append('name', document.querySelector('input[name="title_course"]').value);
@@ -420,6 +483,17 @@ var filenames = []
                 body: formData
             }).then(response => response.json()).then(data2 => {
                 console.log(data2);
+              
+                [...document.querySelectorAll('.chapter_video')].map(e => {
+                    let lesson_index2 = 0;
+                    lessons_name['chapter_'+lesson_index] = [];
+                   [...e.querySelectorAll('.faq-header')].map(y => {
+
+                    lessons_name['chapter_'+lesson_index][lesson_index2] = y.querySelector('.lesson_name').innerHTML;
+                    lesson_index2++;
+                   })
+                   lesson_index++;
+                })
                 // đã có sẵn id chapter, kiểm tra lesson thuộc chapter nào sau đó fetch lên để cập nhật lesson đó
                 let formData2 = new FormData();
                 formData2.append('filenames', filenames.join(';'));

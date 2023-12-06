@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title mb-4">Posts <a href="{{route('post-create')}}" class="btn btn-primary float-end mx-2">Add post</a> </h4>
+                    <h4 class="header-title mb-4">Posts <a href="{{route('admin.post-create')}}" class="btn btn-primary float-end mx-2">Add post</a> </h4>
                     <div class="table-responsive">
                         <table class="table table-centered mb-0 table-nowrap" id="category_table">
                             <thead>
@@ -37,13 +37,13 @@
                                         <td >{{ $post->title }}</td>
                                         <td>{{ $post->category->name }}</td>
                                         <td class="project-actions d-flex justify-content-end">
-                                            <a href="{{route('post-edit', $post->slug)}}" class="btn btn-info btn-sm mx-1">
+                                            <a href="{{route('admin.post-edit', $post->slug)}}" class="btn btn-info btn-sm mx-1">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
                                                 Edit
                                             </a>
                                             <div>
-                                                <form action="{{route('post-delete',$post->_id)}}" method="POST">
+                                                <form action="{{route('admin.post-delete',$post->_id)}}" method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-danger btn-sm"
                                                     data-id="{{ $post->_id }}">

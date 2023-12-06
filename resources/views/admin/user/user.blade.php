@@ -134,7 +134,7 @@ const no_more = document.querySelector('#no_more');
             return 
         }
       loading.style.display = 'block';
-      fetch('{{route("listUser")}}/'+take+'/'+skip,{
+      fetch('{{route("admin.listUser")}}/'+take+'/'+skip,{
         method:'POST',
       }).then(response => response.json()).then(data => {
       if(data.length == 0){
@@ -197,7 +197,7 @@ function deletedUser(obj) {
     obj.innerHTML = 'Deleting...'
     let formData = new FormData();
     formData.append('id', user_id_delete)
-    fetch('{{route("deleteUser")}}',{
+    fetch('{{route("admin.deleteUser")}}',{
         method:'POST',
         body: formData
     }).then(res => res.json()).then(data => {
@@ -218,7 +218,7 @@ function deletedUser(obj) {
 function createUser(){
     let formData = new FormData(document.querySelector('#addUser'));
     // console.log(formData);
-    fetch('{{route("addUser")}}',{
+    fetch('{{route("admin.addUser")}}',{
         method: 'POST',
         body: formData
     }).then(res => res.json()).then(user => {

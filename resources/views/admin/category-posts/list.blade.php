@@ -13,7 +13,7 @@
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form id="add-category" action="{{ route('storeCategory') }}" method="POST">
+                    <form id="add-category" action="{{ route('admin.storeCategory') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label class="form-control-label">Name category</label>

@@ -13,10 +13,11 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::take(10)->get();
+        $courses_awaiting= Course::where('state','-1')->get();
+        $courses = Course::where('state','0')->take(10)->get();
         $mentor_name = Mentor::select('name', 'id')->whereIn('_id', $courses->pluck('mentor_id'))->get()->pluck('name', '_id');
         $category_name = Profession::select('name', 'id')->whereIn('_id', $courses->pluck('category'))->get()->pluck('name', '_id');
-        return view('admin.course.course', compact('courses', 'mentor_name', 'category_name'));
+        return view('admin.course.course', compact('courses','courses_awaiting', 'mentor_name', 'category_name'));
     }
     public function detail($id)
     {

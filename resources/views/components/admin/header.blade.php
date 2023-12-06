@@ -285,7 +285,7 @@
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="false" aria-expanded="false">
                             <i class="ri-notification-3-line fs-22"></i>
-                            <span class="noti-icon-badge badge text-bg-pink">3</span>
+                            <span class="noti-icon-badge badge text-bg-pink"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
                             <div class="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
@@ -302,27 +302,17 @@
                             </div>
 
                             <div style="max-height: 300px;" data-simplebar>
+                                {{-- @foreach($courses_awaiting as $course)
                                 <!-- item-->
                                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                                     <div class="notify-icon bg-primary-subtle">
                                         <i class="mdi mdi-comment-account-outline text-primary"></i>
                                     </div>
-                                    <p class="notify-details">Caleb Flakelar commented on Admin
+                                    <p class="notify-details">{{$course->name}}
                                         <small class="noti-time">1 min ago</small>
                                     </p>
                                 </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon bg-warning-subtle">
-                                        <i class="mdi mdi-account-plus text-warning"></i>
-                                    </div>
-                                    <p class="notify-details">New user registered.
-                                        <small class="noti-time">5 hours ago</small>
-                                    </p>
-                                </a>
-
-                                
+                                @endforeach --}}
 
                                 <!-- item-->
                           

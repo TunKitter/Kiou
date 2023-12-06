@@ -54,7 +54,7 @@
                                 </div>
                                 <!-- Modal body -->
                                 <div class="modal-body">
-                                    <form id="add-User" action="{{ route('addUser') }}" method="POST">
+                                    <form id="add-User" action="{{ route('admin.addUser') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
                                             <label class="form-control-label">Full name</label>

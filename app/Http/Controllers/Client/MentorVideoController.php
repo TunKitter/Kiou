@@ -192,8 +192,8 @@ class MentorVideoController extends Controller
             'level_id' => request()->level,
         ]);
         $chapter_infor = ['course_id' => $new_course->_id];
-        foreach (explode('_$_', request()->chapters) as $item) {
-            $chapter_infor['infor'][uniqid()] = $item;
+        foreach (explode('_$_', request()->chapters) as $key => $item) {
+            $chapter_infor['infor']['chapter_'.$key+1] = $item;
         }
         $new_chapter = Chapter::create($chapter_infor);
         return response()->json([
