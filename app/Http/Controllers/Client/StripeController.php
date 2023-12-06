@@ -93,7 +93,7 @@ class StripeController extends Controller
         // }
 
         Session::forget(auth()->user()->username);
-        return view('client.stripe.pay-success');
+        return redirect(route('home'))->with('success', 'Payment success');
     }
 
     public function cancel()

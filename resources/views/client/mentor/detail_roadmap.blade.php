@@ -115,8 +115,9 @@ function updateSelect(value,class_name) {
   let random_id = makeid();
   let accordion = makeid();
   if(value == 'multiple'){
+    let a = '_' + makeid()
     document.querySelector(class_name).innerHTML = `
-    <div class="faq-grid" id="${a = makeid()}">
+    <div class="faq-grid">
                               <div class="faq-header">
                                 <a
                                   class="collapsed faq-collapse"
@@ -142,7 +143,7 @@ function updateSelect(value,class_name) {
                                 class="collapse"
                                 data-bs-parent="#accordion-one"
                               >
-                                <div class="faq-body">
+                                <div class="faq-body" id="${a}">
                                 </div>
                               </div>
                             </div>

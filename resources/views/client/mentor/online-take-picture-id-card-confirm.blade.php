@@ -86,7 +86,7 @@ const btn_back_id = document.querySelector('#btn_back_id');
 const id_infor = document.querySelector('.id-infor');
 const ok_cccd_post = []
 var data_form = new FormData()
-const API_KEY = 'BNvTJhvPdCDnUNsm0qgG9KmWpKVAAXQl';
+const API_KEY = 'zV7ohtyFdIp9OEhZ8dedVxQMQAVLJqyS';
 Webcam.attach( '#my_camera' );
 Webcam.attach( '#my_camera2' );
 		function take_snapshot(camera_id) {
@@ -224,7 +224,7 @@ function sendImage() {
        
 }
 function save_data_card() {
-    fetch('http://127.0.0.1:8000/mentor/save-id-card-data', {
+    fetch('{{route("home")}}/mentor/save-id-card-data', {
         method: 'POST',
         body: data_form
         }).then(res => res.json()).then(data => {
