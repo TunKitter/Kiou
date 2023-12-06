@@ -80,7 +80,7 @@
                 <div class="card-body">
                     <div class="container mt-3">
                         <a data-bs-toggle="modal" data-bs-target="#addCategory" class="btn btn-primary">
-                            Thêm
+                            Add Category
                         </a>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                             <th>Slug</th>
                             <th>Created_at</th>
                             <th>Updated_at</th>
-                            <th style="width: 200px">Hoạt động</th>
+                            <th style="width: 200px">Action</th>
                         </tr>
                     </thead>
                     <tbody id="data">
