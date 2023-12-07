@@ -75,9 +75,9 @@
 
             </div>
             <div class="d-grid">
-                <button class="btn btn-primary btn-start" id="btn_submit" onclick="sendImage()" disabled>Đăng ký mentor</button>
+                <button class="btn btn-primary btn-start" id="btn_submit" onclick="sendImage()" disabled>Register mentor</button>
                 <br>
-                <a class="link-secondary" href="{{route('mentor-upload-id-card')}}">Hoặc upload ảnh tại đây</a>
+                <a class="link-secondary" href="{{route('mentor-upload-id-card')}}">Or upload photos here</a>
             </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>

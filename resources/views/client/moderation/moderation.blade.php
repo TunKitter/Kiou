@@ -96,7 +96,7 @@
                                             </div>
                                         @endforeach
                                     @else
-                                        <h2>Hiện chưa có dử liệu mới</h2>
+                                        <h2>Data has not been updated</h2>
                                     @endif
                                 </div>
                             </div>

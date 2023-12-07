@@ -95,12 +95,12 @@ class AuthRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => 'Tên',
-            'email' => 'Địa chỉ email',
-            'phone' => 'Số điện thoại',
-            'username' => 'Tên đăng nhập',
-            'password' => 'Mật khẩu',
-            'avatar' => 'Hình ảnh',
+            'name' => 'Name',
+            'email' => 'Email',
+            'phone' => 'Phone',
+            'username' => 'Username',
+            'password' => 'Password',
+            'avatar' => 'Avatar',
         ];
     }
 }

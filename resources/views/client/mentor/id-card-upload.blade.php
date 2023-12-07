@@ -57,9 +57,9 @@
 
             </div>
         <div class="d-grid">
-            <button class="btn btn-primary btn-start" id="btn_submit" disabled>Đăng ký mentor</button>
+            <button class="btn btn-primary btn-start" id="btn_submit" disabled>Register mentor</button>
             <br>
-            <a class="link-secondary" href="{{route('mentor-taking-picture')}}">Hoặc chụp trực tiếp tại đây</a>
+            <a class="link-secondary" href="{{route('mentor-taking-picture')}}">Or upload photos here</a>
         </div>
         </form>
 

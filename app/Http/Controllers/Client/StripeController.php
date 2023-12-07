@@ -73,17 +73,16 @@ class StripeController extends Controller
         }, $chapter);
 
         $lesson = Lesson::select('id', 'course_id')->whereIn('chapter.1', $chapter)->where('chapter.2', '0')->get()->pluck('_id', 'course_id');
-        // dd( $lesson);
+
         // $enrollments = Enrollment::where('user_id', auth()->user()->_id)->whereIn('course_id', session(auth()->user()->username)[0])->get();
-        $test = [];
+        // dd(session(auth()->user()->username)[0]);
         foreach (session(auth()->user()->username)[0] as $lesson2) {
-            $test[] = Enrollment::where('user_id', auth()->user()->_id, 'course_id')->where('course_id', $lesson2)->first()->update([
+            // $test[] =
+            Enrollment::where('user_id', auth()->user()->_id, 'course_id')->where('course_id', $lesson2)->first()->update([
                 'lesson_id' => $lesson[$lesson2],
                 'state' => '65347ec024cfaf917eaad1b1',
             ]);
         };
-        // dd($test);
-
         // foreach ($enrollments as $enrollment) {
         //     $state = $enrollment->state;
         //     $enrollment['state'] = '65347ec024cfaf917eaad1b1';

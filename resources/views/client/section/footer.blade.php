@@ -7,7 +7,7 @@
     
     <div class="footer-widget footer-about">
     <div class="footer-logo">
-    <img src="{{asset('assets/img/logo.svg')}}" alt="logo">
+    <img src="{{asset('assets/img/logo.png')}}" alt="logo">
     </div>
     <div class="footer-about-content">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
