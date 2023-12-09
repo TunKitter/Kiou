@@ -472,11 +472,22 @@ class MentorVideoController extends Controller
     public function updateLessonMyCourse($course_id)
     {
         $lesson = Lesson::where('chapter.0', request()->chapter_id)->where('chapter.1', request()->chapter_child)->where('chapter.2', request()->chapter_index)->first();
-        $lesson->update([
-            'name' => request()->name,
-            'description' => request()->description,
-            'category' => request()->category,
-        ]);
+        if (request()->subtitle) {
+            $subtitle_name = '_' . \uniqid() . '.srt';
+            request()->subtitle->move(public_path('course/lesson/subtitle/'), $subtitle_name);
+            $lesson->update([
+                'name' => request()->name,
+                'description' => request()->description,
+                'category' => request()->category,
+                'subtitle' => array_merge($lesson->subtitle, [$subtitle_name]),
+            ]);
+        } else {
+            $lesson->update([
+                'name' => request()->name,
+                'description' => request()->description,
+                'category' => request()->category,
+            ]);
+        }
         return response()->json([
             'data' => $lesson,
         ]);
