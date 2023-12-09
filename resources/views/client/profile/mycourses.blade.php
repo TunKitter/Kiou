@@ -83,7 +83,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @if ($Courses == false)
+                                                    @if ($Courses)
                                                         @foreach ($Courses as $item)
                                                             <tr>
                                                                 <td>

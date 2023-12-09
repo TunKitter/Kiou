@@ -31,57 +31,55 @@ use App\Http\Controllers\Client\VnpayController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->middleware(['auth','auth.admin'])->name('admin.')->group(function() {
+Route::prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     # --------------------------- Admin User --------------------------------
-Route::get('/users/list', [UserController::class, 'listUser'])->name('listUser');
-Route::post('/users/list/{take}/{skip}', [UserController::class, 'userMore']);
-Route::post('/users/add', [UserController::class, 'store'])->name('addUser');
-Route::post('/users/update', [UserController::class, 'updateUser'])->name('updateUser');
-Route::post('/users/delete', [UserController::class, 'delete'])->name('deleteUser');
+    Route::get('/users/list', [UserController::class, 'listUser'])->name('listUser');
+    Route::post('/users/list/{take}/{skip}', [UserController::class, 'userMore']);
+    Route::post('/users/add', [UserController::class, 'store'])->name('addUser');
+    Route::post('/users/update', [UserController::class, 'updateUser'])->name('updateUser');
+    Route::post('/users/delete', [UserController::class, 'delete'])->name('deleteUser');
 
 # --------------------------- Admin Category --------------------------------
-Route::get('/category/list', [CategoryController::class, 'index'])->name('list-category-admin');
-Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
-Route::post('/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
-Route::post('/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
+    Route::get('/category/list', [CategoryController::class, 'index'])->name('list-category-admin');
+    Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
+    Route::post('/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
+    Route::post('/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
 
 # --------------------------- Admin Roadmap --------------------------------
-Route::get('/roadmap/list', [AdminRoadmapController::class, 'index'])->name('list-roadmap-admin');
-Route::get('/roadmap/list/{id}', [AdminRoadmapController::class, 'detail'])->name('detail-roadmap-admin');
+    Route::get('/roadmap/list', [AdminRoadmapController::class, 'index'])->name('list-roadmap-admin');
+    Route::get('/roadmap/list/{id}', [AdminRoadmapController::class, 'detail'])->name('detail-roadmap-admin');
 
-Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
+    Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
 # --------------------------- Admin Course --------------------------------
-Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
-Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
-Route::post('/notification', function () {
-    return response()->json([
-        'data' => Notification::create([
-            "user_id" => request()->user_id,
-            'content' => request()->content,
-        ]),
-    ]);
-})->name('create-notification');
+    Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
+    Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
+    Route::post('/notification', function () {
+        return response()->json([
+            'data' => Notification::create([
+                "user_id" => request()->user_id,
+                'content' => request()->content,
+            ]),
+        ]);
+    })->name('create-notification');
 
 # --------------------------- Admin Category --------------------------------
-Route::get('/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');
-Route::post('/category-posts/add', [CategoryPostController::class, 'storeCategory'])->name('storeCategory');
-Route::get('/category-posts/edit/{id}', [CategoryPostController::class, 'editCategory'])->name('editCategory');
-Route::post('/category-posts/update/{id}', [CategoryPostController::class, 'updateCategory'])->name('updateCategory');
-Route::get('/category-posts/delete/{id}', [CategoryPostController::class, 'delete'])->name('deleteCategory');
+    Route::get('/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');
+    Route::post('/category-posts/add', [CategoryPostController::class, 'storeCategory'])->name('storeCategory');
+    Route::get('/category-posts/edit/{id}', [CategoryPostController::class, 'editCategory'])->name('editCategory');
+    Route::post('/category-posts/update/{id}', [CategoryPostController::class, 'updateCategory'])->name('updateCategory');
+    Route::get('/category-posts/delete/{id}', [CategoryPostController::class, 'delete'])->name('deleteCategory');
 
-Route::get('/posts/list', [PostController::class, 'index'])->name('list-posts');
-Route::post('/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
-Route::get('/posts/create', [PostController::class, 'create'])->name('post-create');
-Route::post('/posts/create', [PostController::class, 'store'])->name('post-store');
-Route::get('/posts/edit/{slug}', [PostController::class, 'edit'])->name('post-edit');
-Route::post('/posts/edit/{slug}', [PostController::class, 'update'])->name('post-update');
-Route::post('/posts/list/{id}', [PostController::class, 'delete'])->name('post-delete');
+    Route::get('/posts/list', [PostController::class, 'index'])->name('list-posts');
+    Route::post('/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('post-create');
+    Route::post('/posts/create', [PostController::class, 'store'])->name('post-store');
+    Route::get('/posts/edit/{slug}', [PostController::class, 'edit'])->name('post-edit');
+    Route::post('/posts/edit/{slug}', [PostController::class, 'update'])->name('post-update');
+    Route::post('/posts/list/{id}', [PostController::class, 'delete'])->name('post-delete');
 
 });
-
-
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -89,11 +87,6 @@ Route::get('/login/google/callback', [LoginController::class, 'handleGoogleCallb
 
 # --------------------------- Home ---------------------------------
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-# --------------------------- Errors ---------------------------------
-Route::fallback(function () {
-    return view('client.errors.unrole', ['msg' => 'Page not found']);
-});
 
 # ------------------------- Auth --------------------------------
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -153,6 +146,10 @@ Route::post('course/roadmap/detail', [MentorVideoController::class, 'updateRoadm
 Route::post('/mentor/roadmap/delete', [MentorVideoController::class, 'deleteRoadmap'])->name('mentor-roadmap-delete');
 Route::get('/mentor/roadmap/create/new', [MentorVideoController::class, 'addRoadmap'])->name('mentor-roadmap-add')->middleware('auth');
 Route::post('/mentor/roadmap/create/new', [MentorVideoController::class, 'handleAddRoadmap']);
+Route::get('/mentor/my-course', [MentorVideoController::class, 'myCourses'])->middleware('auth')->name('mentor-my-courses');
+Route::get('/mentor/my-course/{id}', [MentorVideoController::class, 'detailMyCourses'])->middleware('auth')->name('mentor-detail-my-courses');
+Route::post('/mentor/my-course/{id}/edit', [MentorVideoController::class, 'updateMyCourse'])->name('mentor-update-my-courses');
+Route::post('/mentor/my-course/{id}/update-image', [MentorVideoController::class, 'updateImageMyCourse'])->name('mentor-update-image-my-courses');
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
@@ -239,3 +236,7 @@ Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->na
 
 # ------------------------- SiteMap --------------------------------
 Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('site-map');
+# --------------------------- Errors ---------------------------------
+Route::fallback(function () {
+    return view('client.errors.unrole', ['msg' => 'Page not found']);
+});

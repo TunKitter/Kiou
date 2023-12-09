@@ -193,7 +193,7 @@ class MentorVideoController extends Controller
         ]);
         $chapter_infor = ['course_id' => $new_course->_id];
         foreach (explode('_$_', request()->chapters) as $key => $item) {
-            $chapter_infor['infor']['chapter_'.$key+1] = $item;
+            $chapter_infor['infor']['chapter_' . $key + 1] = $item;
         }
         $new_chapter = Chapter::create($chapter_infor);
         return response()->json([
@@ -405,6 +405,55 @@ class MentorVideoController extends Controller
         return response()->json([
             'data' => (request()->filenames),
             'index' => $a,
+        ]);
+    }
+    public function myCourses()
+    {
+        $mentor = auth()->user()->mentor;
+        $myCourses = Course::with('lessons')->where('mentor_id', $mentor->_id)->get();
+        $mentor_name = Mentor::whereIn('_id', $myCourses->pluck('mentor_id'))->get()->pluck('name', '_id');
+        return view('client.mentor.my_course', compact('mentor', 'myCourses', 'mentor_name'));
+    }
+    public function detailMyCourses($slug)
+    {
+        $professions = Profession::all();
+        $levels = Level::all();
+        $course = Course::where('slug', $slug)->first();
+        $lessons = Lesson::where('course_id', $course->_id)->get()->toArray();
+        $chapter_lesson = [];
+        $chapter_name = Chapter::where('course_id', $course->_id)->first()->infor;
+        foreach ($lessons as $lesson) {
+            $chapter_lesson[$lesson['chapter'][1]][] = $lesson;
+        }
+        return view('client.mentor.detail_my_course', compact('professions', 'levels', 'course', 'chapter_lesson', 'chapter_name'));
+    }
+    public function updateMyCourse($course_id)
+    {
+        $course = Course::where('_id', $course_id)->first();
+        $random_content_path = $course->content_path;
+        File::put(public_path('course/overview/' . $random_content_path), json_encode([
+            'description' => request()->content,
+            'requirements' => explode('_$_', request()->requirement),
+            'objective' => explode('_$_', request()->will_learn),
+        ]));
+        $course->update([
+            'name' => request()->name,
+            'description' => request()->description,
+            'category' => request()->category,
+            'price' => request()->price,
+            'level_id' => request()->level,
+        ]);
+        return response()->json([
+            'data' => $course->refresh(),
+        ]);
+    }
+    public function updateImageMyCourse($course_id)
+    {
+        $course = Course::where('_id', $course_id)->first();
+        $image_name = $course->image;
+        request()->image->move('course/thumbnail/', $image_name);
+        return response()->json([
+            'data' => 'OK',
         ]);
     }
 }
