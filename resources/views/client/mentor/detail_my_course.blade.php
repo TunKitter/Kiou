@@ -130,7 +130,7 @@
                                             </form>
                                         </div>
                                         <div class="widget-btn">
-                                            <a class="btn btn-black prev_btn">Previous</a>
+                                            <a class="btn btn-black prev_btn" onclick="changeIndex(0)">Previous</a>
                                             <a class="btn btn-info-light next_btn" onclick="changeIndex(2)">Continue</a>
                                         </div>
                                     </div>
@@ -186,15 +186,15 @@
                                     <input type="file" class="form-control mb-2"  name="lesson[]" />
                                     <div class="form-group">
                                       <label class="add-course-label">Lesson Description</label>
-                                    <input class="me-0 mb-2 form-control lesson_description" style="width:100%" placeholder="Enter the description">
+                                    <input class="me-0 mb-2 form-control lesson_description" style="width:100%" placeholder="Enter the description" value="{{$item['description']}}">
                                       </div>
                                     <div class="form-group">
                           <label class="add-course-label"
                             >Courses Category</label
                           >
                           <select class="form-control select lesson_category">
-                              @foreach ($professions as $profession)
-                                <option value="{{ $profession->id }}}}">{{ $profession->name }}</option>
+                              @foreach ($categories as $category)
+                                <option value="{{ $category->_id}}" {{ $category ->_id == $item['category'] ? 'selected' : ''}}>{{ $category->name }}</option>
                               @endforeach
                           </select>
                         </div>
@@ -213,8 +213,8 @@
                                             @endforeach
                                         </div>
                                         <div class="widget-btn">
-                                            <a class="btn btn-black prev_btn">Previous</a>
-                                            <a class="btn btn-info-light next_btn" onclick="getCourseInfo()">Continue</a>
+                                            <a class="btn btn-black prev_btn" onclick="changeIndex(1)">Previous</a>
+                                            <a class="btn btn-info-light next_btn" onclick="changeIndex(3)">Continue</a>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -229,8 +229,8 @@
                                             </ul>
                                         </div>
                                         <div class="widget-btn">
-                                            <a class="btn btn-black prev_btn">Previous</a>
-                                            <a class="btn btn-info-light next_btn upload-btn" style="display: none" >Continue</a>
+                                            <a class="btn btn-black prev_btn" onclick="changeIndex(2)">Previous</a>
+                                            <a class="btn btn-info-light next_btn upload-btn" style="display: none" onclick="changeIndex(4)" >Continue</a>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -310,8 +310,7 @@ var filenames = []
             // location.reload();
         });
 
-        var index = 0
-
+        var index = document.querySelectorAll('.chapter_video').length
         function addSection(obj) {
             document.querySelector('.chapter_videos').innerHTML += `
     <div class="curriculum-grid mt-4 chapter_video chapter_${index} ">
@@ -387,8 +386,8 @@ var filenames = []
                             >Courses Category</label
                           >
                           <select class="form-control select lesson_category">
-                              @foreach ($professions as $profession)
-                                <option value="{{ $profession->id }}}}">{{ $profession->name }}</option>
+                              @foreach ($categories as $category)
+                                <option value="{{ $category->_id}}">{{ $category->name }}</option>
                               @endforeach
                           </select>
                         </div>
@@ -401,6 +400,7 @@ var filenames = []
                               </div>
                             </div>
     `
+    $('.lesson_category:last').select2()
         }
 
         function removeLecture(id) {
@@ -409,12 +409,11 @@ var filenames = []
 
         function getCourseInfo() {
             let lesson_name_file = document.querySelectorAll('.lesson_name');
-            let video = '';
             [...document.querySelectorAll('input[name="lesson[]"')].map((e, index) => {
-                video = document.createElement('video');
+                let video = document.createElement('video');
                 video.src = URL.createObjectURL(e.files[0]);
                 video.addEventListener('loadedmetadata', () => {
-                    // const duration = video.duration;
+                    // let duration = video.duration;
                     // console.log('Video duration:', duration);
                     total_time += parseInt(video.duration);
                 });
@@ -422,7 +421,7 @@ var filenames = []
                     '<li><span style="min-width:200px;display:inline-block;">' + lesson_name_file[index]
                     .textContent +
                     `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span class="current_progress_upload" style="width:0;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
-                resumable.addFile(e.files[0]);
+                // resumable.addFile(e.files[0]);
             });
         }
       
@@ -479,7 +478,8 @@ var filenames = []
                 //    lesson_index++;
                 // })
                 // đã có sẵn id chapter, kiểm tra lesson thuộc chapter nào sau đó fetch lên để cập nhật lesson đó
-                let f/* ormData2 = new FormData();
+                // let f
+                /* ormData2 = new FormData();
                 formData2.append('filenames', filenames.join(';'));
                 formData2.append('course_id', data2.message['course_id']);
                 fetch('{{route("create-lesson")}}',{
@@ -515,12 +515,24 @@ var filenames = []
         function saveIndex2() {
             let formData = new FormData();
             formData.append('image', document.querySelector('input[name="image"]').files[0]);
-            fetch('{{ route('mentor-update-image-my-courses',$course->_id) }}', {
+            fetch('{{ route('mentor-update-image-my-courses',$course->_id)}}', {
                 method: 'POST',
                 body: formData
             }).then(response => response.json()).then(data2 => {
                 console.log(data2);
             })      
+        }
+        var chapter_lesson = ''
+        function saveIndex3() {
+            let chapter_name = {}
+             chapter_lesson = [...document.querySelectorAll('.chapter_video')].map((e,index) => {
+            let temp_chapter_name = 'chapter_' + (index)
+            chapter_name[[temp_chapter_name]] = e.querySelector('.chapter_name').innerHTML
+                return {[e.querySelector('.chapter_name').innerHTML]: [...e.querySelectorAll('.faq-grid')].map(i => {
+                    return [i.querySelector('.lesson_name').innerHTML, i.querySelector('.lesson_description').value,$(i.querySelector('.lesson_category')).select2('data')[0].id,i.querySelector('.lesson_subtitle').files[0]]
+                })}
+                })
+            updateChapter(chapter_name)
         }
         document.body.onload = function() {
         fetch('{{asset("course/overview/".$course->content_path)}}').then(response => response.json()).then(data => {
@@ -543,6 +555,39 @@ var filenames = []
         function changeIndex(index) {
          current_index =  index          
         }
-
+        function updateChapter(arr) {
+            let formData = new FormData();
+            arr = JSON.stringify(arr)
+            // console.log(arr);
+            formData.append('infor', arr );
+            fetch('{{ route("mentor-update-chapter-my-courses",$course->_id)}}', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json()).then(data2 => {
+                let chapter_id = data2.chapter_id
+                let index_lesson  =0
+                chapter_lesson.map((e,index) => Object.values(e).map((a) => a.map((i)=> {
+                    let formData = new FormData();
+                    formData.append('name', i[0]);
+                    formData.append('description', i[1]);
+                    formData.append('category', i[2]);
+                    formData.append('chapter_id', chapter_id);
+                    formData.append('chapter_child', 'chapter_'+index);
+                    formData.append('chapter_index', index_lesson);
+                    if(i[3]) {
+                        formData.append('subtitle', i[3]);
+                    }
+                    index_lesson++;
+                    fetch('{{ route("mentor-update-lesson-my-courses",$course->_id)}}', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json()).then(data2 => {
+                        console.log(data2);
+                    })
+                })))
+              
+                  
+            })
+        }
     </script>
 @endsection

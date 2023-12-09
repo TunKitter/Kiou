@@ -150,6 +150,8 @@ Route::get('/mentor/my-course', [MentorVideoController::class, 'myCourses'])->mi
 Route::get('/mentor/my-course/{id}', [MentorVideoController::class, 'detailMyCourses'])->middleware('auth')->name('mentor-detail-my-courses');
 Route::post('/mentor/my-course/{id}/edit', [MentorVideoController::class, 'updateMyCourse'])->name('mentor-update-my-courses');
 Route::post('/mentor/my-course/{id}/update-image', [MentorVideoController::class, 'updateImageMyCourse'])->name('mentor-update-image-my-courses');
+Route::post('/mentor/my-course/{id}/update-chapter', [MentorVideoController::class, 'updateChapterMyCourse'])->name('mentor-update-chapter-my-courses');
+Route::post('/mentor/my-course/{id}/update-lesson', [MentorVideoController::class, 'updateLessonMyCourse'])->name('mentor-update-lesson-my-courses');
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');

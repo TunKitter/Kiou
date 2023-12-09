@@ -425,7 +425,8 @@ class MentorVideoController extends Controller
         foreach ($lessons as $lesson) {
             $chapter_lesson[$lesson['chapter'][1]][] = $lesson;
         }
-        return view('client.mentor.detail_my_course', compact('professions', 'levels', 'course', 'chapter_lesson', 'chapter_name'));
+        $categories = Category::all();
+        return view('client.mentor.detail_my_course', compact('professions', 'levels', 'course', 'chapter_lesson', 'chapter_name', 'categories'));
     }
     public function updateMyCourse($course_id)
     {
@@ -454,6 +455,30 @@ class MentorVideoController extends Controller
         request()->image->move('course/thumbnail/', $image_name);
         return response()->json([
             'data' => 'OK',
+        ]);
+    }
+    public function updateChapterMyCourse($course_id)
+    {
+        $chapter_update = json_decode(html_entity_decode(stripslashes((request()->infor))));
+        $chapter = Chapter::where('course_id', $course_id)->first();
+        $chapter->update([
+            'infor' => $chapter_update,
+        ]);
+        return response()->json([
+            'data' => $chapter_update,
+            'chapter_id' => $chapter->_id,
+        ]);
+    }
+    public function updateLessonMyCourse($course_id)
+    {
+        $lesson = Lesson::where('chapter.0', request()->chapter_id)->where('chapter.1', request()->chapter_child)->where('chapter.2', request()->chapter_index)->first();
+        $lesson->update([
+            'name' => request()->name,
+            'description' => request()->description,
+            'category' => request()->category,
+        ]);
+        return response()->json([
+            'data' => $lesson,
         ]);
     }
 }
