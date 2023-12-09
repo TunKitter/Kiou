@@ -1,3 +1,3 @@
-@include('admin.section.header')
+@include('components.admin.header')
 @yield('content')
 @include('admin.section.footer')

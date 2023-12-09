@@ -133,7 +133,7 @@ function deletedCategory(obj) {
     obj.innerHTML = 'Deleting...'
     let formData = new FormData();
     formData.append('id', category_id_delete)
-    fetch('{{route("delete-category-admin")}}',{
+    fetch('{{route("admin.delete-category-admin")}}',{
         method:'POST',
         body: formData
     }).then(res => res.json()).then(data => {
@@ -155,7 +155,7 @@ function createCategory(){
     let formData = new FormData(document.querySelector('#addCategory'));
     formData.append('profession', JSON.stringify($('select').val()))
     // console.log(formData);
-    fetch('{{route("add-category-admin")}}',{
+    fetch('{{route("admin.add-category-admin")}}',{
         method: 'POST',
         body: formData
     }).then(res => res.json()).then(category => {
@@ -183,7 +183,7 @@ function changeProfession(index,id) {
     formData.append('parent_profession', JSON.stringify(temp_profession))
     formData.append('action', 'edit')
     // console.log(formData);
-    fetch('{{route("update-category-admin")}}',{
+    fetch('{{route("admin.update-category-admin")}}',{
         method: 'POST',
         body: formData
     }).then(res => res.json()).then(category => {

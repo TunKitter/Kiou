@@ -13,7 +13,7 @@
                     <h4 class="header-title">Create Post</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('post-store')}}" method="POST">
+                    <form action="{{route('admin.post-store')}}" method="POST">
                         @csrf
                         <div class="row g-2">
                             <div class="mb-3 col-md-6">
