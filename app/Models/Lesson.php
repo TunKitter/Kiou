@@ -2,9 +2,11 @@
 namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\SoftDeletes;
 
 class Lesson extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'name',
         'description',
@@ -17,7 +19,9 @@ class Lesson extends Model
         'allow_buy_seperate',
         'path',
     ];
-    protected $attributes = [];
+    protected $attributes = [
+        'allow_buy_seperate' => false,
+    ];
 
     public function bookmark()
     {

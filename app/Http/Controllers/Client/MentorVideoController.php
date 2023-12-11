@@ -420,8 +420,9 @@ class MentorVideoController extends Controller
         $levels = Level::all();
         $course = Course::where('slug', $slug)->first();
         $lessons = Lesson::where('course_id', $course->_id)->get()->toArray();
-        $chapter_lesson = [];
         $chapter_name = Chapter::where('course_id', $course->_id)->first()->infor;
+        $keys = array_map('strval', array_keys($chapter_name));
+        $chapter_lesson = (\array_fill_keys($keys, []));
         foreach ($lessons as $lesson) {
             $chapter_lesson[$lesson['chapter'][1]][] = $lesson;
         }
@@ -464,32 +465,64 @@ class MentorVideoController extends Controller
         $chapter->update([
             'infor' => $chapter_update,
         ]);
+        $keys = array_map('strval', array_keys((array) $chapter->infor));
+        Lesson::whereNotIn('chapter.1', $keys)->where('course_id', $course_id)->delete();
         return response()->json([
             'data' => $chapter_update,
             'chapter_id' => $chapter->_id,
+            'data2' => array_map('strval', array_keys((array) $chapter->infor)),
+
         ]);
     }
     public function updateLessonMyCourse($course_id)
     {
-        $lesson = Lesson::where('chapter.0', request()->chapter_id)->where('chapter.1', request()->chapter_child)->where('chapter.2', request()->chapter_index)->first();
+        $lesson = Lesson::where('path', request()->path);
+        $is_allow_buy_seperate = $lesson->get()->isEmpty() ? [] : ['allow_buy_seperate' => false];
         if (request()->subtitle) {
             $subtitle_name = '_' . \uniqid() . '.srt';
             request()->subtitle->move(public_path('course/lesson/subtitle/'), $subtitle_name);
-            $lesson->update([
+            if (isset($lesson->first()->subtitle)) {
+                $lesson_subtitle = array_merge($lesson->first()->subtitle, [$subtitle_name]);
+            } else {
+                $lesson_subtitle = [];
+            }
+            $lesson->update(array_merge([
                 'name' => request()->name,
                 'description' => request()->description,
                 'category' => request()->category,
-                'subtitle' => array_merge($lesson->subtitle, [$subtitle_name]),
-            ]);
+                'subtitle' => $lesson_subtitle,
+                'course_id' => request()->course_id,
+                'slug' => Str::slug(request()->name),
+                'chapter' => [
+                    request()->chapter_id,
+                    request()->chapter_child,
+                    request()->chapter_index,
+                ],
+            ], $is_allow_buy_seperate), ['upsert' => true]);
         } else {
-            $lesson->update([
+            $lesson->update(array_merge([
                 'name' => request()->name,
                 'description' => request()->description,
                 'category' => request()->category,
-            ]);
+                'path' => request()->path,
+                'course_id' => request()->course_id,
+                'chapter' => [
+                    request()->chapter_id,
+                    request()->chapter_child,
+                    request()->chapter_index,
+                ],
+                'slug' => Str::slug(request()->name),
+            ], $is_allow_buy_seperate), ['upsert' => true]);
         }
         return response()->json([
             'data' => $lesson,
+        ]);
+    }
+    public function deleteLessonMyCourse($course_id)
+    {
+        Lesson::where('_id', request()->id_lesson)->first()->delete();
+        return response()->json([
+            'data' => 'OK',
         ]);
     }
 }

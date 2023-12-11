@@ -4,6 +4,23 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="title_modal">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+    <div class="modal-body">
+        Are you sure you want to delete this lesson? This step can not be undone.
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="removeLectureAfterConfirm()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
     <section class="page-content course-sec">
         <div class="container">
             <div class="row align-items-center">
@@ -165,6 +182,7 @@
                                 >
                                   <i class="fas fa-align-justify"></i>
                                   <span contenteditable class="lesson_name">{{$item['name']}}</span>
+                                  <span class="lesson_path d-none">{{$item['path']}}</span>
                                 </a>
                                 <div class="faq-right">
                               
@@ -172,7 +190,7 @@
                                     href="javascript:void(0);"
                                     class="me-0"
                                   >
-                                    <i class="far fa-trash-can" onclick="removeLecture('{{$a}}')"></i>
+                                    <i class="far fa-trash-can" onclick="removeLecture('{{$a}}','{{$item['_id']}}')"></i>
                                   </a>
                                 </div>
                               </div>
@@ -349,6 +367,7 @@ var filenames = []
         }
 
         function addLecture(lecture) {
+        let random_id = '_'+makeid();
             document.querySelector('#' + lecture).innerHTML += `
     <div class="faq-grid" id="${a = lecture + '_' + makeid()}">
                               <div class="faq-header">
@@ -359,6 +378,7 @@ var filenames = []
                                 >
                                   <i class="fas fa-align-justify"></i>
                                   <span contenteditable class="lesson_name">Lesson name</span>
+                                  <span class="lesson_path d-none">${random_id}</span>
                                 </a>
                                 <div class="faq-right">
                               
@@ -386,7 +406,7 @@ var filenames = []
                           <label class="add-course-label"
                             >Courses Category</label
                           >
-                          <select class="form-control select lesson_category">
+                          <select class="form-control select lesson_category ${random_id}">
                               @foreach ($categories as $category)
                                 <option value="{{ $category->_id}}">{{ $category->name }}</option>
                               @endforeach
@@ -401,13 +421,30 @@ var filenames = []
                               </div>
                             </div>
     `
-    $('.lesson_category:last').select2()
+    $('.'+random_id).select2()
         }
-
-        function removeLecture(id) {
-            $('#' + id).remove();
+        var current_id_delete_lesson  = ''
+        var current_id_lesson = ''
+        function removeLecture(id,id_lesson = null) {
+            $('#confirmModal').modal('show');
+            current_id_delete_lesson = id
+            current_id_lesson = id_lesson
         }
+        function removeLectureAfterConfirm() {
+            $('#' + current_id_delete_lesson).remove();
+            if(current_id_lesson) {
+                let formData = new FormData();
+                formData.append('id_lesson', current_id_lesson );
+                fetch('{{ route("mentor-delete-lesson-my-courses",$course->_id)}}', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.text()).then(data2 => {
+                        console.log(data2);
+                    })
+            }
+            $('#confirmModal').modal('hide');
 
+        }
         function getCourseInfo() {
             let lesson_name_file = document.querySelectorAll('.lesson_name');
             [...document.querySelectorAll('input[name="lesson[]"')].map((e, index) => {
@@ -508,7 +545,7 @@ var filenames = []
             fetch('{{ route('mentor-update-my-courses',$course->_id) }}', {
                 method: 'POST',
                 body: formData
-            }).then(response => response.json()).then(data2 => {
+            }).then(response => response.text()).then(data2 => {
                 console.log(data2);
             })  
  
@@ -519,7 +556,7 @@ var filenames = []
             fetch('{{ route('mentor-update-image-my-courses',$course->_id)}}', {
                 method: 'POST',
                 body: formData
-            }).then(response => response.json()).then(data2 => {
+            }).then(response => response.text()).then(data2 => {
                 console.log(data2);
             })      
         }
@@ -530,7 +567,7 @@ var filenames = []
             let temp_chapter_name = 'chapter_' + (index)
             chapter_name[[temp_chapter_name]] = e.querySelector('.chapter_name').innerHTML
                 return {[e.querySelector('.chapter_name').innerHTML]: [...e.querySelectorAll('.faq-grid')].map(i => {
-                    return [i.querySelector('.lesson_name').innerHTML, i.querySelector('.lesson_description').value,$(i.querySelector('.lesson_category')).select2('data')[0].id,i.querySelector('.lesson_subtitle').files[0]]
+                    return [i.querySelector('.lesson_name').innerHTML, i.querySelector('.lesson_description').value,$(i.querySelector('.lesson_category')).select2('data')[0].id,i.querySelector('.lesson_subtitle').files[0],i.querySelector('.lesson_path').innerHTML]
                 })}
                 })
             updateChapter(chapter_name)
@@ -568,14 +605,17 @@ var filenames = []
                 method: 'POST',
                 body: formData
             }).then(response => response.json()).then(data2 => {
+            console.log(data2);
                 let chapter_id = data2.chapter_id
                 let index_lesson  =0
                 chapter_lesson.map((e,index) => Object.values(e).map((a) => a.map((i)=> {
                     let formData = new FormData();
                     formData.append('name', i[0]);
                     formData.append('description', i[1]);
+                    formData.append('course_id', '{{ $course->_id }}');
                     formData.append('category', i[2]);
                     formData.append('chapter_id', chapter_id);
+                    formData.append('path', i[4]);
                     formData.append('chapter_child', 'chapter_'+index);
                     formData.append('chapter_index', index_lesson);
                     if(i[3]) {
@@ -585,7 +625,7 @@ var filenames = []
                     fetch('{{ route("mentor-update-lesson-my-courses",$course->_id)}}', {
                         method: 'POST',
                         body: formData
-                    }).then(response => response.json()).then(data2 => {
+                    }).then(response => response.text()).then(data2 => {
                         console.log(data2);
                     })
                 })))
