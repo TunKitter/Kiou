@@ -214,7 +214,7 @@
                                         </div>
                                         <div class="widget-btn">
                                             <a class="btn btn-black prev_btn" onclick="changeIndex(1)">Previous</a>
-                                            <a class="btn btn-info-light next_btn" onclick="changeIndex(3)">Continue</a>
+                                            <a class="btn btn-info-light next_btn" onclick="saveIndex4()">Continue</a>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -256,7 +256,8 @@ var current_index = 0;
         var resumable = new Resumable({
             target: '{{ route('upload-resumable') }}',
             query: {
-                _token: '{{ csrf_token() }}'
+                _token: '{{ csrf_token() }}',
+                course_id: '{{$course->_id}}'
             }, // CSRF token
             fileType: ['mp4'],
             fileParameterName: 'file',
@@ -289,7 +290,7 @@ var current_index = 0;
         });
 var filenames = []
         resumable.on('fileSuccess', function(file, response) {
-            filenames[filenames.length] = (JSON.parse(response)).filename;
+            // filenames[filenames.length] = (JSON.parse(response)).filename;
             if (currentProgress == document.querySelectorAll('.current_progress_upload').length - 1) {
                 document.querySelector('.upload-btn').style.display = 'block';
                 localStorage.clear();   
@@ -421,7 +422,7 @@ var filenames = []
                     '<li><span style="min-width:200px;display:inline-block;">' + lesson_name_file[index]
                     .textContent +
                     `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span class="current_progress_upload" style="width:0;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
-                // resumable.addFile(e.files[0]);
+                resumable.addFile(e.files[0]);
             });
         }
       
@@ -533,6 +534,9 @@ var filenames = []
                 })}
                 })
             updateChapter(chapter_name)
+        }
+        function saveIndex4() {
+            getCourseInfo()
         }
         document.body.onload = function() {
         fetch('{{asset("course/overview/".$course->content_path)}}').then(response => response.json()).then(data => {

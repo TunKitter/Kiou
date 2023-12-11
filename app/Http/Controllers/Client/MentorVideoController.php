@@ -150,9 +150,9 @@ class MentorVideoController extends Controller
             $path = $disk->putFileAs('videos', $file, $fileName);
 
             // delete chunked file
-            unlink($file->getPathname());
-            // $mentor_id = auth()->user()->mentor->_id;
-            // UploadVideoJob::dispatch($path,$fileName, $mentor_id);
+            // unlink($file->getPathname());
+            $mentor_id = auth()->user()->mentor->_id;
+            UploadVideoJob::dispatch($mentor_id, request()->course_id, $fileName);
             return response()->json([
                 'filename' => $fileName,
             ]);
