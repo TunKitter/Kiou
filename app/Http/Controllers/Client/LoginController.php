@@ -72,7 +72,7 @@ class LoginController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             if (Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d') {
 
-                return redirect()->route('listUser');
+                return redirect()->route('admin.dashboard');
             } else {
                 return redirect()->route('home');
             }

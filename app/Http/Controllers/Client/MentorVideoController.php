@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use App\Events\CourseNotication;
+
 
 class MentorVideoController extends Controller
 {
@@ -176,21 +178,30 @@ class MentorVideoController extends Controller
         ]));
         $image_name = md5(uniqid() . \request()->image->getClientOriginalName()) . '.' . request()->image->getClientOriginalExtension();
         request()->image->move('course/thumbnail/', $image_name);
+       
         $new_course = Course::create([
             'name' => request()->name,
             'description' => request()->description,
             'content_path' => $random_content_path . '.json',
             'category' => request()->category,
-            'price' => request()->price,
+            'price' => (int) request()->price,
             'image' => $image_name,
-            'price' => request()->price,
             'meta.total_chapter' => request()->total_chapter,
             'meta.total_lesson' => request()->total_lesson,
             'meta.total_time' => request()->total_time,
             'slug' => Str::slug(request()->name),
             'mentor_id' => auth()->user()->mentor->_id,
             'level_id' => request()->level,
+            'state' => '-1'
         ]);
+
+        $data_Send = [
+            'id' => $new_course->_id,
+            'name' => $new_course->name,
+            'time' => $new_course->created_at->format('D, d/mY'),
+        ];
+        event(new CourseNotication($data_Send));
+      
         $chapter_infor = ['course_id' => $new_course->_id];
         foreach (explode('_$_', request()->chapters) as $key => $item) {
             $chapter_infor['infor']['chapter_'.$key+1] = $item;

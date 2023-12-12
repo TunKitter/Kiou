@@ -241,21 +241,52 @@
 
 <!-- App js -->
 <script src="{{ asset('assets/js/app.min.js') }}"></script>
-<script src="{{ assert('assets/vendor/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
-<script src="{{ asset('assets/js/pages/toastr.init.js') }}"></script>
 
 <script src="{{ asset('assets/vendor/select2/js/select2.min.js') }}"></script>
-<script src="{{asset('assets/vendor/daterangepicker/moment.min.js')}}"></script>
-<script src="{{asset('assets/vendor/daterangepicker/daterangepicker.js')}}"></script>
+<script src="{{ asset('assets/vendor/daterangepicker/moment.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/daterangepicker/daterangepicker.js') }}"></script>
 <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
 <script src="https://apexcharts.com/samples/assets/series1000.js"></script>
 <script src="https://apexcharts.com/samples/assets/github-data.js"></script>
 <script src="https://apexcharts.com/samples/assets/irregular-data-series.js"></script>
 <!-- Apex Charts js -->
-<script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
-<!-- Vector Map js -->
-<script src="{{asset('assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js')}}"></script>
-<script src="{{asset('assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js')}}"></script>
+<script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    var detailCourseAdminRoute = "{{ route('admin.detail-course-admin', ['id' => '__id__']) }}";
+    function notication(data) {
+        toastr.info("Notice of course censorship")
+        var route = detailCourseAdminRoute.replace('__id__', data.id);
+        $("#notication").prepend(`
+            <a href="${route}" class="dropdown-item notify-item">
+                <div class="notify-icon bg-primary-subtle">
+                    <i class="mdi mdi-comment-account-outline text-primary"></i>
+                </div>
+                <p class="notify-details">${data.name}
+                    <small class="noti-time">${data.time}</small>
+                </p>
+            </a>
+        `);
+    };
+</script>
+  <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('3079c0604d8f8f102a12', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(response) {
+           notication(response.data);
+        });
+    </script>
 @stack('script')
 </body>
 

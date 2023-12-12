@@ -55,6 +55,8 @@ Route::post('/category/list/delete', [CategoryController::class, 'delete'])->nam
 # --------------------------- Admin Course --------------------------------
 Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
 Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
+Route::patch('/course/accept-course/{id}', [AdminCourseController::class, 'acceptCourse'])->name('accept-course-admin');
+Route::post('/course/refuse/{id}', [AdminCourseController::class, 'delete'])->name('refuse-course-admin');
 Route::post('/notification', function () {
     return response()->json([
         'data' => Notification::create([
