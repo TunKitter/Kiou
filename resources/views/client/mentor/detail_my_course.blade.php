@@ -270,6 +270,7 @@
     </section>
     <script>
 var current_index = 0;
+var lesson_name_change = []
         var total_time = 0;
         var resumable = new Resumable({
             target: '{{ route('upload-resumable') }}',
@@ -307,11 +308,24 @@ var current_index = 0;
             }
         });
 var filenames = []
+var filepath = []
         resumable.on('fileSuccess', function(file, response) {
-            // filenames[filenames.length] = (JSON.parse(response)).filename;
+            filepath[filepath.length] = (JSON.parse(response)).path;
             if (currentProgress == document.querySelectorAll('.current_progress_upload').length - 1) {
                 document.querySelector('.upload-btn').style.display = 'block';
                 localStorage.clear();   
+                filepath.forEach((element,index) => {
+                let formData = new FormData();
+                formData.append('lesson_path', filepath[index]);
+                formData.append('lesson_name', lesson_name_change[index]);
+                fetch('{{route("mentor-update-lesson-path-my-courses",$course->_id)}}',{
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.text()).then(data2 => {
+                    console.log(data2);
+                })    
+                })
+                
             }
             currentProgress++
         });
@@ -448,6 +462,8 @@ var filenames = []
         function getCourseInfo() {
             let lesson_name_file = document.querySelectorAll('.lesson_name');
             [...document.querySelectorAll('input[name="lesson[]"')].map((e, index) => {
+            if(e.files[0]) {
+                lesson_name_change[lesson_name_change.length] = lesson_name_file[index].textContent
                 let video = document.createElement('video');
                 video.src = URL.createObjectURL(e.files[0]);
                 video.addEventListener('loadedmetadata', () => {
@@ -460,6 +476,7 @@ var filenames = []
                     .textContent +
                     `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span class="current_progress_upload" style="width:0;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
                 resumable.addFile(e.files[0]);
+                    }
             });
         }
       

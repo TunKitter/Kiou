@@ -154,7 +154,7 @@ class MentorVideoController extends Controller
             $mentor_id = auth()->user()->mentor->_id;
             UploadVideoJob::dispatch($mentor_id, request()->course_id, $fileName);
             return response()->json([
-                'filename' => $fileName,
+                'path' => 'https://storage.googleapis.com/kiou_lesson/stream/' . $mentor_id . '/' . request()->course_id . '/' . $fileName . '/media-hd.m3u8',
             ]);
         }
         // otherwise return percentage information
@@ -484,7 +484,7 @@ class MentorVideoController extends Controller
             if (isset($lesson->first()->subtitle)) {
                 $lesson_subtitle = array_merge($lesson->first()->subtitle, [$subtitle_name]);
             } else {
-                $lesson_subtitle = [];
+                $lesson_subtitle = [$subtitle_name];
             }
             $lesson->update(array_merge([
                 'name' => request()->name,
@@ -523,6 +523,17 @@ class MentorVideoController extends Controller
         Lesson::where('_id', request()->id_lesson)->first()->delete();
         return response()->json([
             'data' => 'OK',
+        ]);
+    }
+    public function updateLessonPathMyCourse($course_id)
+    {
+        $state = Lesson::where('name', request()->lesson_name)->update([
+            'path' => request()->lesson_path,
+        ]);
+        return response()->json([
+            'path' => request()->lesson_path,
+            'name' => request()->lesson_name,
+            'data' => "ok",
         ]);
     }
 }
