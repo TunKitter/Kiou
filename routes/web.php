@@ -154,6 +154,7 @@ Route::post('/mentor/my-course/{id}/update-chapter', [MentorVideoController::cla
 Route::post('/mentor/my-course/{id}/update-lesson', [MentorVideoController::class, 'updateLessonMyCourse'])->name('mentor-update-lesson-my-courses');
 Route::post('/mentor/my-course/{id}/delete-lesson', [MentorVideoController::class, 'deleteLessonMyCourse'])->name('mentor-delete-lesson-my-courses');
 Route::post('/mentor/my-course/{id}/update-lesson-path', [MentorVideoController::class, 'updateLessonPathMyCourse'])->name('mentor-update-lesson-path-my-courses');
+Route::post('/mentor/my-course/{id}/add-lesson', [MentorVideoController::class, 'createLesson'])->name('mentor-create-lesson-my-courses');
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');

@@ -29,7 +29,8 @@ class MentorVideoController extends Controller
     {
         $professions = Profession::all();
         $levels = Level::all();
-        return view('client.courses.create-course', compact('professions', 'levels'));
+        $categories = Category::all();
+        return view('client.courses.create-course', compact('professions', 'levels', 'categories'));
     }
     public function dashboard()
     {
@@ -155,6 +156,7 @@ class MentorVideoController extends Controller
             UploadVideoJob::dispatch($mentor_id, request()->course_id, $fileName);
             return response()->json([
                 'path' => 'https://storage.googleapis.com/kiou_lesson/stream/' . $mentor_id . '/' . request()->course_id . '/' . $fileName . '/media-hd.m3u8',
+                'filename' => $fileName,
             ]);
         }
         // otherwise return percentage information
@@ -397,14 +399,41 @@ class MentorVideoController extends Controller
     }
     public function uploadJob()
     {
-        $a = '';
-        foreach (explode(';', request()->filenames) as $fileName) {
-            UploadVideoJob::dispatch($fileName, auth()->user()->mentor->_id, request()->course_id);
-            $a .= $fileName . ',';
+        // $a = '';
+        // foreach (explode(';', request()->filenames) as $fileName) {
+        $mentor_id = \strval(auth()->user()->mentor->_id);
+        UploadVideoJob::dispatch($mentor_id, request()->course_id, request()->path);
+        // $a .= $fileName . ',';
+        // }
+        $subtitle = request()->subtitle ? [request()->subtitle] : [];
+        if (request()->subtitle) {
+            $subtitle_name = '_' . \uniqid() . '.srt';
+            request()->subtitle->move(public_path('course/lesson/subtitle/'), $subtitle_name);
+            $subtitle = ['subtitle' => [$subtitle_name]];
+        } else {
+            $subtitle = ['subtitle' => []];
         }
+
+        Lesson::insert(array_merge([
+            'name' => request()->name,
+            'description' => request()->description,
+            'category' => request()->category,
+            'course_id' => request()->course_id,
+            'slug' => Str::slug(request()->name),
+            'allow_buy_seperate' => false,
+            'path' => 'https://storage.googleapis.com/kiou_lesson/stream/' . $mentor_id . '/' . request()->course_id . '/' . request()->path . '/media-hd.m3u8',
+            'action' => [],
+            'point' => [],
+            'chapter' => [
+                request()->chapter_id,
+                request()->chapter_child,
+                request()->chapter_index,
+            ],
+            'slug' => Str::slug(request()->name),
+        ], $subtitle));
         return response()->json([
-            'data' => (request()->filenames),
-            'index' => $a,
+            'data' => (request()->all()),
+            // 'index' => $a,
         ]);
     }
     public function myCourses()
@@ -535,5 +564,9 @@ class MentorVideoController extends Controller
             'name' => request()->lesson_name,
             'data' => "ok",
         ]);
+    }
+    public function createLesson($course_id)
+    {
+
     }
 }

@@ -21,6 +21,8 @@ class Lesson extends Model
     ];
     protected $attributes = [
         'allow_buy_seperate' => false,
+        'action' => [],
+        'point' => [],
     ];
 
     public function bookmark()
