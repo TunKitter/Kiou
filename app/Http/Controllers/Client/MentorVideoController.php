@@ -31,7 +31,8 @@ class MentorVideoController extends Controller
     {
         $professions = Profession::all();
         $levels = Level::all();
-        return view('client.courses.create-course', compact('professions', 'levels'));
+        $categories = Category::all();
+        return view('client.courses.create-course', compact('professions', 'levels', 'categories'));
     }
     public function dashboard()
     {
@@ -152,10 +153,11 @@ class MentorVideoController extends Controller
             $path = $disk->putFileAs('videos', $file, $fileName);
 
             // delete chunked file
-            unlink($file->getPathname());
-            // $mentor_id = auth()->user()->mentor->_id;
-            // UploadVideoJob::dispatch($path,$fileName, $mentor_id);
+            // unlink($file->getPathname());
+            $mentor_id = auth()->user()->mentor->_id;
+            UploadVideoJob::dispatch($mentor_id, request()->course_id, $fileName);
             return response()->json([
+                'path' => 'https://storage.googleapis.com/kiou_lesson/stream/' . $mentor_id . '/' . request()->course_id . '/' . $fileName . '/media-hd.m3u8',
                 'filename' => $fileName,
             ]);
         }
@@ -204,7 +206,7 @@ class MentorVideoController extends Controller
       
         $chapter_infor = ['course_id' => $new_course->_id];
         foreach (explode('_$_', request()->chapters) as $key => $item) {
-            $chapter_infor['infor']['chapter_'.$key+1] = $item;
+            $chapter_infor['infor']['chapter_' . $key + 1] = $item;
         }
         $new_chapter = Chapter::create($chapter_infor);
         return response()->json([
@@ -408,14 +410,174 @@ class MentorVideoController extends Controller
     }
     public function uploadJob()
     {
-        $a = '';
-        foreach (explode(';', request()->filenames) as $fileName) {
-            UploadVideoJob::dispatch($fileName, auth()->user()->mentor->_id, request()->course_id);
-            $a .= $fileName . ',';
+        // $a = '';
+        // foreach (explode(';', request()->filenames) as $fileName) {
+        $mentor_id = \strval(auth()->user()->mentor->_id);
+        UploadVideoJob::dispatch($mentor_id, request()->course_id, request()->path);
+        // $a .= $fileName . ',';
+        // }
+        $subtitle = request()->subtitle ? [request()->subtitle] : [];
+        if (request()->subtitle) {
+            $subtitle_name = '_' . \uniqid() . '.srt';
+            request()->subtitle->move(public_path('course/lesson/subtitle/'), $subtitle_name);
+            $subtitle = ['subtitle' => [$subtitle_name]];
+        } else {
+            $subtitle = ['subtitle' => []];
+        }
+
+        Lesson::insert(array_merge([
+            'name' => request()->name,
+            'description' => request()->description,
+            'category' => request()->category,
+            'course_id' => request()->course_id,
+            'slug' => Str::slug(request()->name),
+            'allow_buy_seperate' => false,
+            'path' => 'https://storage.googleapis.com/kiou_lesson/stream/' . $mentor_id . '/' . request()->course_id . '/' . request()->path . '/media-hd.m3u8',
+            'action' => [],
+            'point' => [],
+            'chapter' => [
+                request()->chapter_id,
+                request()->chapter_child,
+                request()->chapter_index,
+            ],
+            'slug' => Str::slug(request()->name),
+        ], $subtitle));
+        return response()->json([
+            'data' => (request()->all()),
+            // 'index' => $a,
+        ]);
+    }
+    public function myCourses()
+    {
+        $mentor = auth()->user()->mentor;
+        $myCourses = Course::with('lessons')->where('mentor_id', $mentor->_id)->get();
+        $mentor_name = Mentor::whereIn('_id', $myCourses->pluck('mentor_id'))->get()->pluck('name', '_id');
+        return view('client.mentor.my_course', compact('mentor', 'myCourses', 'mentor_name'));
+    }
+    public function detailMyCourses($slug)
+    {
+        $professions = Profession::all();
+        $levels = Level::all();
+        $course = Course::where('slug', $slug)->first();
+        $lessons = Lesson::where('course_id', $course->_id)->get()->toArray();
+        $chapter_name = Chapter::where('course_id', $course->_id)->first()->infor;
+        $keys = array_map('strval', array_keys($chapter_name));
+        $chapter_lesson = (\array_fill_keys($keys, []));
+        foreach ($lessons as $lesson) {
+            $chapter_lesson[$lesson['chapter'][1]][] = $lesson;
+        }
+        $categories = Category::all();
+        return view('client.mentor.detail_my_course', compact('professions', 'levels', 'course', 'chapter_lesson', 'chapter_name', 'categories'));
+    }
+    public function updateMyCourse($course_id)
+    {
+        $course = Course::where('_id', $course_id)->first();
+        $random_content_path = $course->content_path;
+        File::put(public_path('course/overview/' . $random_content_path), json_encode([
+            'description' => request()->content,
+            'requirements' => explode('_$_', request()->requirement),
+            'objective' => explode('_$_', request()->will_learn),
+        ]));
+        $course->update([
+            'name' => request()->name,
+            'description' => request()->description,
+            'category' => request()->category,
+            'price' => request()->price,
+            'level_id' => request()->level,
+        ]);
+        return response()->json([
+            'data' => $course->refresh(),
+        ]);
+    }
+    public function updateImageMyCourse($course_id)
+    {
+        $course = Course::where('_id', $course_id)->first();
+        $image_name = $course->image;
+        request()->image->move('course/thumbnail/', $image_name);
+        return response()->json([
+            'data' => 'OK',
+        ]);
+    }
+    public function updateChapterMyCourse($course_id)
+    {
+        $chapter_update = json_decode(html_entity_decode(stripslashes((request()->infor))));
+        $chapter = Chapter::where('course_id', $course_id)->first();
+        $chapter->update([
+            'infor' => $chapter_update,
+        ]);
+        $keys = array_map('strval', array_keys((array) $chapter->infor));
+        Lesson::whereNotIn('chapter.1', $keys)->where('course_id', $course_id)->delete();
+        return response()->json([
+            'data' => $chapter_update,
+            'chapter_id' => $chapter->_id,
+            'data2' => array_map('strval', array_keys((array) $chapter->infor)),
+
+        ]);
+    }
+    public function updateLessonMyCourse($course_id)
+    {
+        $lesson = Lesson::where('path', request()->path);
+        $is_allow_buy_seperate = $lesson->get()->isEmpty() ? [] : ['allow_buy_seperate' => false];
+        if (request()->subtitle) {
+            $subtitle_name = '_' . \uniqid() . '.srt';
+            request()->subtitle->move(public_path('course/lesson/subtitle/'), $subtitle_name);
+            if (isset($lesson->first()->subtitle)) {
+                $lesson_subtitle = array_merge($lesson->first()->subtitle, [$subtitle_name]);
+            } else {
+                $lesson_subtitle = [$subtitle_name];
+            }
+            $lesson->update(array_merge([
+                'name' => request()->name,
+                'description' => request()->description,
+                'category' => request()->category,
+                'subtitle' => $lesson_subtitle,
+                'course_id' => request()->course_id,
+                'slug' => Str::slug(request()->name),
+                'chapter' => [
+                    request()->chapter_id,
+                    request()->chapter_child,
+                    request()->chapter_index,
+                ],
+            ], $is_allow_buy_seperate), ['upsert' => true]);
+        } else {
+            $lesson->update(array_merge([
+                'name' => request()->name,
+                'description' => request()->description,
+                'category' => request()->category,
+                'path' => request()->path,
+                'course_id' => request()->course_id,
+                'chapter' => [
+                    request()->chapter_id,
+                    request()->chapter_child,
+                    request()->chapter_index,
+                ],
+                'slug' => Str::slug(request()->name),
+            ], $is_allow_buy_seperate), ['upsert' => true]);
         }
         return response()->json([
-            'data' => (request()->filenames),
-            'index' => $a,
+            'data' => $lesson,
         ]);
+    }
+    public function deleteLessonMyCourse($course_id)
+    {
+        Lesson::where('_id', request()->id_lesson)->first()->delete();
+        return response()->json([
+            'data' => 'OK',
+        ]);
+    }
+    public function updateLessonPathMyCourse($course_id)
+    {
+        $state = Lesson::where('name', request()->lesson_name)->update([
+            'path' => request()->lesson_path,
+        ]);
+        return response()->json([
+            'path' => request()->lesson_path,
+            'name' => request()->lesson_name,
+            'data' => "ok",
+        ]);
+    }
+    public function createLesson($course_id)
+    {
+
     }
 }

@@ -75,9 +75,9 @@
 
             </div>
             <div class="d-grid">
-                <button class="btn btn-primary btn-start" id="btn_submit" onclick="sendImage()" disabled>Đăng ký mentor</button>
+                <button class="btn btn-primary btn-start" id="btn_submit" onclick="sendImage()" disabled>Register mentor</button>
                 <br>
-                <a class="link-secondary" href="{{route('mentor-upload-id-card')}}">Hoặc upload ảnh tại đây</a>
+                <a class="link-secondary" href="{{route('mentor-upload-id-card')}}">Or upload photos here</a>
             </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
@@ -86,7 +86,7 @@ const btn_back_id = document.querySelector('#btn_back_id');
 const id_infor = document.querySelector('.id-infor');
 const ok_cccd_post = []
 var data_form = new FormData()
-const API_KEY = 'BNvTJhvPdCDnUNsm0qgG9KmWpKVAAXQl';
+const API_KEY = 'zV7ohtyFdIp9OEhZ8dedVxQMQAVLJqyS';
 Webcam.attach( '#my_camera' );
 Webcam.attach( '#my_camera2' );
 		function take_snapshot(camera_id) {
@@ -224,7 +224,7 @@ function sendImage() {
        
 }
 function save_data_card() {
-    fetch('http://127.0.0.1:8000/mentor/save-id-card-data', {
+    fetch('{{route("home")}}/mentor/save-id-card-data', {
         method: 'POST',
         body: data_form
         }).then(res => res.json()).then(data => {

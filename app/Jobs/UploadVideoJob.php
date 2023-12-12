@@ -22,12 +22,12 @@ class UploadVideoJob implements ShouldQueue
     protected $fileName;
     protected $mentorId;
     protected $course_id;
-    public function __construct($fileName, $mentorId, $course_id)
+    public function __construct($mentorId, $course_id, $fileName, )
     {
         // $this->path = $path;
-        $this->fileName = $fileName;
         $this->mentorId = $mentorId;
         $this->course_id = $course_id;
+        $this->fileName = $fileName;
     }
 
     /**
@@ -45,12 +45,9 @@ class UploadVideoJob implements ShouldQueue
         $bucket = $storage->bucket($bucketName);
 
         $bucket->upload(fopen(storage_path('app\public\videos\\' . $this->fileName), 'r'), ['name' => $this->mentorId . '/' . $this->course_id . '/' . $this->fileName]);
-
-        Http::asForm()->post('http://127.0.0.1:8000/api/convertVideo', [
-            'url' => 'https://storage.googleapis.com/' . $bucketName . '/' . $this->mentorId . '/' . $this->course_id . '/' . $this->fileName,
-            'name' => str_replace('.mp4', '', $this->fileName),
-
+        Http::asForm()->post('https://convertvideo-53e577e37e4e.herokuapp.com/api/convertVideo', [
+            'url' => $this->mentorId . '/' . $this->course_id . '/' . $this->fileName,
+            'name' => 'stream/' . $this->mentorId . '/' . $this->course_id . '/' . $this->fileName,
         ]);
-
     }
 }

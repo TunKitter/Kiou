@@ -106,7 +106,7 @@
             <div class="sign-google">
                 <ul>
                     <li><a style="border-right: none !important" href="{{ route('login.google') }}"><img
-                                src="{{ asset('assets/img/net-icon-01.png') }}" class="img-fluid" alt="Logo"> Sign In
+                                src="{{ asset('assets/img/net-icon-01.png') }}" class="img-fluid" alt="Logo"> Login
                             using Google</a></li>
                     {{-- <li><a href="#"><img src="{{asset('assets/img/net-icon-02.png')}}" class="img-fluid" alt="Logo">Sign In using Facebook</a></li> --}}
                 </ul>

@@ -162,9 +162,9 @@ display: block;
 <div class="container">
 <div class="row">
 <div class="col-lg-4">
-{{-- @php
-    dd($lessons)
-@endphp --}}
+ @php
+ $index_lesson = 0;
+@endphp 
 <div class="lesson-group">
 @foreach ($chapters as $key => $value)
 <div class="course-card">
@@ -175,21 +175,24 @@ display: block;
 <ul class="ul_">
 @foreach ($lessons as $lesson )
     @if($lesson['chapter'][1] == $key) 
-    @if($loop->index <= $check_enrollment_lesson->chapter[2] || $check_enrollment_lesson->_id == $lesson['_id'])
+    @if($index_lesson <= $check_enrollment_lesson->chapter[2] || $check_enrollment_lesson->_id == $lesson['_id'])
     <li>
-        <p class="play-intro">{{$lesson['name']}} {!!(($loop->index < $check_enrollment_lesson->chapter[2]  )? '<i class="fa-solid fa-check d-inline-block m-auto"></i>' : '' )!!} </p>
+        <p class="play-intro">{{$lesson['name']}} {!!((($index_lesson)< $check_enrollment_lesson->chapter[2]  )? '<i class="fa-solid fa-check d-inline-block m-auto"></i>' : '' )!!} </p>
         <div>
         <img src="{{asset('assets/img/icon/play-icon.svg')}}" onclick="location.href='{{route('lesson-learn',[$id_course->slug,$lesson['slug']])}}'" >
         </div>
         </li>
         @else
         <li>
-            <p {!!((($loop->index)-1) == $check_enrollment_lesson->chapter[2]? 'class="next_lesson"' : '' )!!} id="{{$lesson['_id']}}">{{$lesson['name']}}</p>
+            <p {!!((($index_lesson)) == ($check_enrollment_lesson->chapter[2]+1) ? 'class="next_lesson"' : '' )!!} id="{{$lesson['_id']}}">{{$lesson['name']}}</p>
             <div>
             <img src="{{asset('assets/img/icon/lock.svg')}}" alt>
             </div>
             </li>
     @endif
+    @php
+    $index_lesson++;
+    @endphp
     @endif
 @endforeach
 </ul>

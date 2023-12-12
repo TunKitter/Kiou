@@ -28,6 +28,7 @@ class LessonController extends Controller
         }
         $check_enrollment_lesson = (Lesson::where('_id', $enrollment->lesson_id)->first());
         if ($id_lesson->_id != $check_enrollment_lesson->_id) {
+            // dd($id_lesson->chapter[2], $check_enrollment_lesson->chapter[2]);
             if ($id_lesson->chapter[2] > $check_enrollment_lesson->chapter[2]) {
                 return redirect()->route('lesson-learn', [$id_course->slug, $check_enrollment_lesson->slug]);
             }
