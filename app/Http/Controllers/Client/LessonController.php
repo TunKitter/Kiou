@@ -133,4 +133,9 @@ class LessonController extends Controller
             'name' => \request()->name,
         ]);
     }
+    public function editInteractive($lesson_slug)
+    {
+        $lesson = Lesson::where('slug', $lesson_slug)->first();
+        return view('client.mentor.update_interactive_lesson', compact('lesson'));
+    }
 }

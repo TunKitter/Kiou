@@ -197,6 +197,7 @@ Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBook
 Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
 Route::post('course/{id}/learn/bookmark/update', [LessonController::class, 'updateBookmark'])->name('lesson-bookmark-update');
 Route::post('lessons/get', [LessonController::class, 'getLessonData'])->name('lesson-data');
+Route::get('lessons/interactive/{id_lesson}', [LessonController::class, 'editInteractive'])->name('edit-interactive');
 
 # ------------------------- Cart --------------------------------
 
