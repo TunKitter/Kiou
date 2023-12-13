@@ -39,8 +39,8 @@
                                                     <span class="checkmark"></span> Stripe
                                                 </label>
                                                 <label class="radio-inline custom_radio">
-                                                    <input type="radio" name="pay_method" value="vnpay">
-                                                    <span class="checkmark"></span> VN Pay
+                                                    <input type="radio" name="pay_method" value="{{route("make.payment")}}">
+                                                    <span class="checkmark"></span> Paypal
                                                 </label>
                                             </div>
                                         </div>

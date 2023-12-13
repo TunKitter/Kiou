@@ -262,8 +262,8 @@
         $('body').on('click', '.category-delete', function(event) {
             var deleteid = $(this).data('id'); // Use $(this) instead of $($this)
             swal({
-                title: "Bạn có chắc chắn?",
-                text: "Sau khi xóa, bạn sẽ không thể khôi phục lại danh mục này!",
+                title: "Are you sure?",
+                text: "After deletion, you won't be able to recover this category!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
