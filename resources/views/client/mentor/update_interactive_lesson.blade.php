@@ -161,6 +161,10 @@ display: block;
 .bookmark-in-video:hover .content-bookmark-in-video {
     display: block;
 }
+.plan-box {
+ top: initial;
+ bottom: 1em;
+}
 </style>
 <div class="modal fade" id="notification_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -176,7 +180,7 @@ display: block;
         <input type="number" name="notification_duration_input" id="notification_duration_input" class="form-control" placeholder="Enter your duration">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="removeData()">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" onclick="addNewNotification()">Confirm</button>
       </div>
     </div>
@@ -198,6 +202,46 @@ display: block;
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" onclick="handleUpdateNotification()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="select_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="title_modal">Add select interactive</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+    <div class="modal-body">
+        <button class="btn btn-primary" onclick="addNewSelect()">New select</button>
+<br><br>
+        <div class="select-wrapper">
+        </div>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="handleAddNewSelect()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="update_select_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="title_modal">Update select interactive</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+    <div class="modal-body">
+        <button class="btn btn-primary" onclick="addNewSelect('.update-select-wrapper')">New select</button>
+<br><br>
+        <div class="update-select-wrapper">
+        </div>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="handleUpdateSelect()">Confirm</button>
       </div>
     </div>
   </div>
@@ -265,7 +309,8 @@ const video = document.querySelector('video');
         maxBufferHole: 0,
         enableWorker:true
     });
-    hls.loadSource('{{$lesson->path}}');
+    // hls.loadSource('{{$lesson->path}}');
+    hls.loadSource('https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8');
     hls.attachMedia(video);
     const progress = document.querySelector('#progress')
 
@@ -279,14 +324,17 @@ hls.on(window.Hls.Events.FRAG_LOADING, () => {
  }
 </script>
 <script>
+var current_update_select = ''
 var is_caption_on = false
 var video_inside = document.querySelector('#video_inside');
 var video_state = false
 var wrapper_video = document.querySelector('.wrapper-video');
 var is_fullscreen = false 
 var current_progress_video = document.querySelector('.current-progress-video');
+var is_select_mode = false
 var video_play_icon = document.querySelector('#video-play-icon');
 var current_volume = document.getElementById('current-volume');
+var parent_interactive = document.querySelector('.parent_interactive')
 function play_video(obj){
         if(!video_state){
          video.play();
@@ -304,6 +352,9 @@ function play_video(obj){
             var videoInterval;
 var timeline = document.querySelector('#timeline'); 
            video.onplay = function(){
+             if(is_select_mode){
+                video.pause()
+             }
             let current_
                 videoInterval = setInterval(() => {
                     let percent = (video.currentTime / video.duration) * 100;
@@ -316,12 +367,23 @@ var timeline = document.querySelector('#timeline');
                 timeline.innerHTML = formattedMinutes + ':' + formattedSeconds;
 
 for(let i in data_event) {
-
     if(video.currentTime >= data_event[i]['start_time'] && video.currentTime <= data_event[i]['start_time'] + data_event[i]['duration']){
-        document.querySelector(`.${data_event[i]['class_name']}`).style.display = 'block'
+      switch (data_event[i]['type']) {
+        case 'notification': {
+         document.querySelector(`.${data_event[i]['class_name']}`).style.display = 'block'
         setTimeout(() => {
             document.querySelector(`.${data_event[i]['class_name']}`).style.display = 'none'
         }, data_event[i]['duration'] * 1000);
+    break       
+        }
+        case 'select' : {
+          is_select_mode = true
+          video_state = true
+          play_video(video_play_icon)
+          document.querySelector('.'+data_event[i]['class_name']).style.display = 'block'
+          break
+        }
+      }
     }
 }
             },0)
@@ -381,6 +443,7 @@ function handleEvent(event_type) {
             break
         }
         case 'select' : {
+            $('#select_modal').modal('show')
             break
         }
         case 'axis' : {
@@ -401,7 +464,7 @@ event_list.innerHTML += `<li class="list-group-item border-0 list${random_id}"><
         message: document.querySelector('#notification_input').value
     }
 $('#notification_modal').modal('hide')
-document.querySelector('.parent_interactive').innerHTML += `
+parent_interactive.innerHTML += `
 <div class="interactive_wrapper ${random_id}" style="display:none"> <div class="plan-box" style="bottom: 2em;top: initial" >
         <div>
         <h6 style="color: #249c46 ; text-transform: capitalize">Message</h6>
@@ -452,6 +515,223 @@ function handleUpdateNotification() {
     data_event[current_id_update]['duration'] = parseInt($('#notification_update_duration_input').val())
     document.querySelector('.'+current_id_update + ' p').innerHTML = data_event[current_id_update]['message']
     $('#notification_update_modal').modal('hide')
+}
+function addNewSelect(_class_to_add = '.select-wrapper') {
+    let random_chapter = '_' + makeid();
+    let random_lesson = '_' + makeid();
+    document.querySelector(_class_to_add).innerHTML += `
+    <div class="curriculum-grid mt-4 ${random_chapter}">
+                        <div class="curriculum-head">
+                          <p class="chapter_name" contenteditable="">Enter select title</p>
+                          <a href="javascript:void(0);"><button class="btn text-white border-0" style="background:#ff4667" onclick="removeSelect('${random_chapter}')">Remove select</button></a> 
+                        </div>
+                        <div class="curriculum-info">
+                          <div id="accordion-${random_chapter}">
+   <div class="faq-grid" id="${random_lesson}"> 
+                              <div class="faq-header">
+                                <a class="collapsed faq-collapse" data-bs-toggle="collapse" href="#collapse_${random_lesson}">
+                                  <i class="fas fa-align-justify"></i>
+                                  <span contenteditable="" class="event_name">Enter event name</span>
+                                </a>
+                              </div>
+                              <div id="collapse_${random_lesson}" class="collapse" data-bs-parent="#accordion-one">
+                                <div class="faq-body">
+                                  <div class="add-article-btns">
+                                    <div class="form-group">
+                          <label class="add-course-label">Type event</label>
+                          <select class="form-control select select${random_lesson}" onchange="handleTypeEvent('content${random_lesson}',this.value)">
+                          <option value="show_message">Show message</option>
+                          <option value="jump_timeline">Jump timeline</option>
+                          <option value="send_link">Send a link</option>
+                          <option value="increase_bloom">Increase Bloom Point</option>
+                          <option value="decrease_bloom">Decrease Bloom Point</option>
+                          </select>
+                        </div>
+                  <div class="form-group content${random_lesson}">
+                    <input type="text" name="message" class="form-control message_select" placeholder="Enter value" />
+                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>                           
+                          </div>
+                        </div>
+                      </div>
+    `
+}
+function removeSelect(_class){
+  $('.'+_class).remove();
+}
+function handleTypeEvent(_class,_value) {
+  switch (_value) {
+    case 'show_message': {
+      $('.'+_class).html(`<input type="text" name="message" class="form-control message_select" placeholder="Enter value" />`)
+        break
+    }
+  case 'jump_timeline': {
+      $('.'+_class).html(`<input type="text" name="message" class="form-control message_select" placeholder="Enter value" />`)
+        break
+    }
+  case 'send_link': {
+      $('.'+_class).html(`<input type="text" name="message" class="form-control message_select" placeholder="Enter value" />`)
+        break
+    }
+    case 'increase_bloom': {
+      $('.'+_class).html(`<input type="number" name="bloom_point" class="form-control" placeholder="Enter a value" />`)
+      break;
+    }
+    case 'decrease_bloom': {
+      $('.'+_class).html(`<input type="number" name="bloom_point" class="form-control" placeholder="Enter a value" />`)
+      break;
+    }
+  }
+}
+var html_select = []
+function handleAddNewSelect() {
+let random_id = '_'+makeid()
+html_select[random_id] = document.querySelector('.select-wrapper').innerHTML
+let temp_type = []
+let temp_value = []
+data_event[random_id] = {
+  type: 'select',
+  start_time: parseInt(video.currentTime),
+  duration: 1,
+  class_name: random_id,
+  event: [...document.querySelectorAll('.select-wrapper .curriculum-grid')].map(e => {
+  temp_type.push(e.querySelector('select').value)
+  temp_value.push(e.querySelector('input').value)
+ return {[e.querySelector('select').value]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value]}
+})
+}
+parent_interactive.innerHTML+= `
+<div class="interactive_wrapper select_ideal ${random_id}" style="width: max-content;display: none">
+    <div class="plan-box" style="top:initial;bottom:1em">
+        <div class="row">
+        <h6 style="text-transform: capitalize" class="text-muted text-center">Please choose an option</h6>
+        `+ 
+        ([... document.querySelectorAll('.select-wrapper .chapter_name')].map((e,index) => ` <button class="btn col mx-1 btn-secondary" onclick="actionNow('${random_id}','${temp_type[index]}','${temp_value[index]}')">${e.innerHTML}</button>`)).join('')
+        +`
+        </div>
+        </div>
+</div>
+`
+document.querySelector('#bookmarks').innerHTML+= `
+                <div class="bookmark-in-video-wrapper bookmark_${parseInt(video.currentTime)} bookmark${random_id}" style="width: ${100/video.duration * video.currentTime}% ;z-index: 1">
+                    <div class="bookmark-in-video" style="background: #392c7d">
+                    </div>
+                    </div>
+`
+event_list.innerHTML += `<li class="list-group-item border-0 list${random_id}"><i class="fa-solid fa-trash" onclick="removeNotification('${random_id}')" style="color:#f66962"></i> <i class="fa-solid fa-pen" onclick="updateSelect('${random_id}')"></i> Select <sup class="badge bg-info">Event</sup> <span class="float-end">${document.querySelector('#timeline').innerHTML}</span>`
+$('.select-wrapper').html('')
+$('#select_modal').modal('hide')
+ 
+}
+function actionNow(_id,_type,_value) {
+  is_select_mode =false
+  video_state = false
+  document.querySelector('.'+_id).style.display = 'none'
+  play_video(video_play_icon)
+  switch (_type) {
+    case 'show_message':
+       {
+   let random_id = '_'+ makeid()
+  video.currentTime = video.currentTime + 1
+ parent_interactive.innerHTML+= `
+ <div class="interactive_wrapper ${random_id}"> <div class="plan-box" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize">Message</h6>
+        <p>${_value}</p>
+        </div>
+        </div>
+</div>
+` 
+setTimeout(() => {
+$('.'+random_id).remove()
+},4000)       
+      break;
+       }
+      case 'jump_timeline' : {
+        video.currentTime = parseInt(_value)
+        break
+      }
+  
+    default:
+      break;
+  }
+
+}
+function updateSelect(_id) {
+  current_update_select = _id;
+  $('#update_select_modal').modal('show');
+  document.querySelector('.update-select-wrapper').innerHTML = '';
+  data_event[_id]['event'].map(e => {
+    let random_id = '_'+ makeid()
+  document.querySelector('.update-select-wrapper').innerHTML += `
+<div class="curriculum-grid mt-4 ${random_id}">
+                        <div class="curriculum-head">
+                          <p class="chapter_name" contenteditable="">${e[Object.keys(e)[0]][0]}</p>
+                          <a href="javascript:void(0);"><button class="btn text-white border-0" style="background:#ff4667" onclick="removeSelect('${random_id}')">Remove select</button></a> 
+                        </div>
+                        <div class="curriculum-info">
+                          <div id="accordion-${random_id}">
+   <div class="faq-grid" id="${random_id}"> 
+                              <div class="faq-header">
+                                <a class="collapsed faq-collapse" data-bs-toggle="collapse" href="#collapse_${random_id}">
+                                  <i class="fas fa-align-justify"></i>
+                                  <span contenteditable="" class="event_name">${e[Object.keys(e)[0]][1]}</span>
+                                </a>
+                              </div>
+                              <div id="collapse_${random_id}" class="collapse" data-bs-parent="#accordion-one">
+                                <div class="faq-body">
+                                  <div class="add-article-btns">
+                                    <div class="form-group">
+                          <label class="add-course-label">Type event</label>
+                          <select class="form-control select select${random_id}" value="${Object.keys(e)[0]}" onchange="handleTypeEvent('content${random_id}',this.value)">
+                          <option value="show_message">Show message</option>
+                          <option value="jump_timeline">Jump timeline</option>
+                          <option value="send_link">Send a link</option>
+                          <option value="increase_bloom">Increase Bloom Point</option>
+                          <option value="decrease_bloom">Decrease Bloom Point</option>
+                          </select>
+                        </div>
+                  <div class="form-group content${random_id}">
+                    <input type="text" name="message" class="form-control message_select" placeholder="Enter value" value="${e[Object.keys(e)[0]][2]}">
+                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>                           
+                          </div>
+                        </div>
+                      </div>
+  `;
+  });
+}
+function handleUpdateSelect() {
+let random_id = current_update_select;
+let temp_type = [];
+let temp_value = [];
+data_event[random_id] = {
+  type: 'select',
+  start_time: data_event[random_id]['start_time'],
+  duration: 1,
+  class_name: random_id,
+  event: [...document.querySelectorAll('.update-select-wrapper .curriculum-grid')].map(e => {
+  temp_type.push(e.querySelector('select').value)
+  temp_value.push(e.querySelector('input').value)
+ return {[e.querySelector('select').value]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value]}
+})
+};
+document.querySelector('.'+random_id).innerHTML= `
+    <div class="plan-box" style="top:initial;bottom:1em">
+        <div class="row">
+        <h6 style="text-transform: capitalize" class="text-muted text-center">Please choose an option</h6>
+        `+ 
+        ([... document.querySelectorAll('.update-select-wrapper .chapter_name')].map((e,index) => ` <button class="btn col mx-1 btn-secondary" onclick="actionNow('${random_id}','${temp_type[index]}','${temp_value[index]}')">${e.innerHTML}</button>`)).join('')
+        +`
+        </div>
+        </div>`;
+$('#update_select_modal').modal('hide');
 }
 </script>
 @endsection
