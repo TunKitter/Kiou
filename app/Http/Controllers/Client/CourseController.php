@@ -236,4 +236,13 @@ class CourseController extends Controller
             'name' => Mentor::select('name')->where('_id', request()->id)->first()->name,
         ]);
     }
+    public function detailPlainData()
+    {
+        $course = Course::where('slug', request()->slug)->first();
+        return response()->json([
+            'data' => $course,
+            'mentor_name' => isset($course->mentor->name) ? $course->mentor->name : 'Not found',
+            'slug' => request()->slug,
+        ]);
+    }
 }

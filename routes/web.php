@@ -161,6 +161,7 @@ Route::get('course/list', [CourseController::class, 'list'])->name('course-list'
 Route::get('course/explore', [CourseController::class, 'exploreUser'])->name('course-explore-user');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
+Route::post('course/plain-data', [CourseController::class, 'detailPlainData'])->name('course-detail-plain-data');
 Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
 Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getCourseDataBuyMost'])->name('course-data-buy-most');
 Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');

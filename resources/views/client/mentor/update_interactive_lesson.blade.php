@@ -165,6 +165,17 @@ display: block;
  top: initial;
  bottom: 1em;
 }
+.plan-box.send_link_type {
+  animation: show_message_wingly 1s forwards
+}
+@keyframes show_message_wingly {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-20%);
+  }
+} 
 </style>
 <div class="modal fade" id="notification_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -264,7 +275,7 @@ display: block;
 <div class="wrapper-video"> 
 <div class="parent_interactive position-absolute" style="left: 7%;bottom:4em;">
  </div>
-    <div id="progress" ></div> <video ondblclick="fullscreenVideo()" id="video" src="https://storage.googleapis.com/kiou_lesson/tunkit/tunkit.m3u8" width="100%"></video><div class="video-player">
+    <div id="progress" ></div> <video ondblclick="fullscreenVideo()" id="video" src="https://storage.googleapis.com/kiou_lesson/tunkit/tunkit.m3u8" style="width: 100%;min-width: 50vw"></video><div class="video-player">
     <div class="controls">
         <i class="fa-solid fa-backward" onclick="backWardVideo()"></i>
         <i class="fa-solid fa-play" id="video-play-icon" onclick="play_video(this)"></i>
@@ -573,7 +584,7 @@ function handleTypeEvent(_class,_value) {
         break
     }
   case 'send_link': {
-      $('.'+_class).html(`<input type="text" name="message" class="form-control message_select" placeholder="Enter value" />`)
+      $('.'+_class).html(`<input type="text" name="message" class="form-control message_select" placeholder="Enter value" /><br><input type="number" name="duration_sendlink" class="form-control duration_sendlink" placeholder="Enter duration" style="margin-top: -0.5em" />`)
         break
     }
     case 'increase_bloom': {
@@ -586,12 +597,11 @@ function handleTypeEvent(_class,_value) {
     }
   }
 }
-var html_select = []
 function handleAddNewSelect() {
 let random_id = '_'+makeid()
-html_select[random_id] = document.querySelector('.select-wrapper').innerHTML
 let temp_type = []
 let temp_value = []
+let random_ids = []
 data_event[random_id] = {
   type: 'select',
   start_time: parseInt(video.currentTime),
@@ -600,7 +610,79 @@ data_event[random_id] = {
   event: [...document.querySelectorAll('.select-wrapper .curriculum-grid')].map(e => {
   temp_type.push(e.querySelector('select').value)
   temp_value.push(e.querySelector('input').value)
- return {[e.querySelector('select').value]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value]}
+  let type_action = e.querySelector('select').value
+  if(type_action == 'send_link'){
+    let random_id2 = '_'+makeid()
+  random_ids.push(random_id2)
+    let formData = new FormData();
+    let duration_sendlink = e.querySelector('input').value
+  console.log(duration_sendlink,duration_sendlink.substring(duration_sendlink.lastIndexOf('/')+1));
+  formData.append('slug', duration_sendlink.substring(duration_sendlink.lastIndexOf('/')+1));
+  fetch('{{route("course-detail-plain-data")}}', {
+    method: 'POST',
+    body: formData
+  }).then(res => res.json()).then(data => {
+ 
+    parent_interactive.innerHTML+= `
+ <div class="interactive_wrapper ${random_id2}" style="display: none"> <div class="plan-box send_link_type p-0 px-2 pt-2" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize pt-2">Video course link</h6>
+        <div class="col-lg-12 col-md-12 d-flex">
+<div class="course-box course-design list-course d-flex border-0">
+<div class="product">
+<div class="product-img">
+<a href="">
+<img class="img-fluid" alt src="{{ asset('course/thumbnail/')}}/${data.data.image}">
+</a>
+<div class="price">
+<h3>${data.data.price} <span>$99.00</span></h3>
+</div>
+</div>
+<div class="product-content">
+<div class="head-course-title">
+<h3 class="title">${data.data.name}</h3>
+<div class="all-btn all-category d-flex align-items-center">
+<a href="#" class="btn btn-primary">See detail</a>
+</div>
+</div>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+<div class="rating-img d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
+<p>${data.data.meta['total_lesson']} Lesson</p>
+</div>
+<div class="course-view d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
+<p>${(parseInt(data.data.meta['total_time'])/60).toFixed()}hr ${parseInt(data.data.meta['total_time'])%60}min</p>
+</div>
+</div>
+<div class="rating">
+<span class="d-inline-block average-rating"><span>${data.data.complete_course_rate}</span> <span>(${data.data.total_enrollment} enrolled)</span></span>
+</div>
+
+<div class="course-group d-flex mb-0">
+<div class="course-group-img d-flex">
+<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+<div class="course-name">
+<h4><a href="instructor-profile.html">${data.mentor_name}</a></h4>
+<p>Instructor</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+        </div>
+        </div>
+</div>
+`;
+  })
+ return {[type_action]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value,e.querySelector('.duration_sendlink').value,random_ids[0]]}
+  }
+  else {
+  return {[type_action]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value]}   
+  }
+
 })
 }
 parent_interactive.innerHTML+= `
@@ -609,12 +691,13 @@ parent_interactive.innerHTML+= `
         <div class="row">
         <h6 style="text-transform: capitalize" class="text-muted text-center">Please choose an option</h6>
         `+ 
-        ([... document.querySelectorAll('.select-wrapper .chapter_name')].map((e,index) => ` <button class="btn col mx-1 btn-secondary" onclick="actionNow('${random_id}','${temp_type[index]}','${temp_value[index]}')">${e.innerHTML}</button>`)).join('')
+        ([... document.querySelectorAll('.select-wrapper .chapter_name')].map((e,index) => ` <button class="btn col mx-1 btn-secondary" onclick="actionNow('${random_id}','${temp_type[index]}','${temp_value[index]}','${random_ids[0]}')">${e.innerHTML}</button>`)).join('')
         +`
         </div>
         </div>
 </div>
 `
+delete random_ids[0]
 document.querySelector('#bookmarks').innerHTML+= `
                 <div class="bookmark-in-video-wrapper bookmark_${parseInt(video.currentTime)} bookmark${random_id}" style="width: ${100/video.duration * video.currentTime}% ;z-index: 1">
                     <div class="bookmark-in-video" style="background: #392c7d">
@@ -626,7 +709,7 @@ $('.select-wrapper').html('')
 $('#select_modal').modal('hide')
  
 }
-function actionNow(_id,_type,_value) {
+function actionNow(_id,_type,_value,_id_link) {
   is_select_mode =false
   video_state = false
   document.querySelector('.'+_id).style.display = 'none'
@@ -654,10 +737,25 @@ $('.'+random_id).remove()
         video.currentTime = parseInt(_value)
         break
       }
-  
-    default:
+    case 'send_link' : {
+    let random_id = '_'+ makeid()
+  video.currentTime = video.currentTime + 1
+  // data_event[_id]['event'].find(e => e['send_link'][4] == _id_link)
+  document.querySelector('.'+_id_link).style.display = 'block'
+  let aaav = data_event[_id]['event'].find(e => {
+ if(e['send_link']){
+   return e['send_link'][4] == _id_link
+ } 
+ return false 
+})['send_link'][3]
+console.log(aaav);
+setTimeout(() => {
+$('.'+_id_link).css('display','none')
+},parseInt(aaav)*1000);
       break;
-  }
+     
+    }
+  };
 
 }
 function updateSelect(_id) {
@@ -686,16 +784,17 @@ function updateSelect(_id) {
                                   <div class="add-article-btns">
                                     <div class="form-group">
                           <label class="add-course-label">Type event</label>
-                          <select class="form-control select select${random_id}" value="${Object.keys(e)[0]}" onchange="handleTypeEvent('content${random_id}',this.value)">
-                          <option value="show_message">Show message</option>
-                          <option value="jump_timeline">Jump timeline</option>
-                          <option value="send_link">Send a link</option>
-                          <option value="increase_bloom">Increase Bloom Point</option>
-                          <option value="decrease_bloom">Decrease Bloom Point</option>
+                          <select class="form-control select select${random_id}" onchange="handleTypeEvent('content${random_id}',this.value)">
+                          <option value="show_message" ${Object.keys(e)[0] == "show_message" ? 'selected' : ''}>Show message</option>
+                          <option value="jump_timeline" ${Object.keys(e)[0] == "jump_timeline" ? 'selected' : ''}>Jump timeline</option>
+                          <option value="send_link" ${Object.keys(e)[0] == "send_link" ? 'selected' : ''}>Send a link</option>
+                          <option value="increase_bloom" ${Object.keys(e)[0] == "increase_bloom" ? 'selected' : ''}>Increase Bloom Point</option>
+                          <option value="decrease_bloom" ${Object.keys(e)[0] == "decrease_bloom" ? 'selected' : ''}>Decrease Bloom Point</option>
                           </select>
                         </div>
                   <div class="form-group content${random_id}">
                     <input type="text" name="message" class="form-control message_select" placeholder="Enter value" value="${e[Object.keys(e)[0]][2]}">
+                    ${Object.keys(e)[0] == "send_link" ? `<br><input type="number" name="duration_sendlink" class="form-control duration_sendlink" placeholder="Enter duration" style="margin-top: -0.5em" value="${e[Object.keys(e)[0]][3]}">` : ''}
                     </div>
                                   </div>
                                 </div>
@@ -711,6 +810,10 @@ function handleUpdateSelect() {
 let random_id = current_update_select;
 let temp_type = [];
 let temp_value = [];
+let temp_data_event = data_event[random_id]['event'].filter(e => {
+  return e['send_link'];
+}).map(i => i['send_link'][4]);
+console.log(temp_data_event);
 data_event[random_id] = {
   type: 'select',
   start_time: data_event[random_id]['start_time'],
@@ -719,7 +822,15 @@ data_event[random_id] = {
   event: [...document.querySelectorAll('.update-select-wrapper .curriculum-grid')].map(e => {
   temp_type.push(e.querySelector('select').value)
   temp_value.push(e.querySelector('input').value)
- return {[e.querySelector('select').value]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value]}
+  let type_action = e.querySelector('select').value
+  if(type_action == 'send_link'){
+ return {[type_action]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value,e.querySelector('.duration_sendlink').value,temp_data_event[0]]}
+   // need resolve
+  }
+  else {
+  return {[e.querySelector('select').value]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value]}   
+  }
+
 })
 };
 document.querySelector('.'+random_id).innerHTML= `
@@ -727,10 +838,11 @@ document.querySelector('.'+random_id).innerHTML= `
         <div class="row">
         <h6 style="text-transform: capitalize" class="text-muted text-center">Please choose an option</h6>
         `+ 
-        ([... document.querySelectorAll('.update-select-wrapper .chapter_name')].map((e,index) => ` <button class="btn col mx-1 btn-secondary" onclick="actionNow('${random_id}','${temp_type[index]}','${temp_value[index]}')">${e.innerHTML}</button>`)).join('')
+        ([... document.querySelectorAll('.update-select-wrapper .chapter_name')].map((e,index) => ` <button class="btn col mx-1 btn-secondary" onclick="actionNow('${random_id}','${temp_type[index]}','${temp_value[index]}','${temp_data_event[0]}')">${e.innerHTML}</button>`)).join('')
         +`
         </div>
         </div>`;
+delete temp_data_event[0];
 $('#update_select_modal').modal('hide');
 }
 </script>
