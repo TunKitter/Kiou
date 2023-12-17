@@ -257,6 +257,112 @@ display: block;
     </div>
   </div>
 </div>
+<div class="modal fade" id="axis_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="title_modal">Create a new event of the axis</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+    <div class="modal-body">
+      <div class="curriculum-grid mt-4 _oiNN">
+        <div class="curriculum-head">
+          <p class="chapter_name_axis" contenteditable="">Enter select title</p>
+        </div>
+        <div class="curriculum-info">
+          <div id="accordion-_oiNN">
+<div class="faq-grid"> 
+              <div class="faq-header">
+                <a class="faq-collapse collapsed" data-bs-toggle="collapse" href="#collapse__PYiJ" aria-expanded="false">
+                  <i class="fas fa-align-justify"></i>
+                  <span contenteditable="" class="event_name_axis">Enter event name</span>
+                </a>
+              </div>
+              <div id="collapse__PYiJ" class="collapse" data-bs-parent="#accordion-one" style="">
+                <div class="faq-body">
+                  <div class="add-article-btns">
+                    <div class="form-group">
+          <label class="add-course-label">Type event</label>
+          <select class="form-control select_axis" onchange="handleTypeEvent('content_PYiJ',this.value)">
+          <option value="show_message">Show message</option>
+          <option value="jump_timeline">Jump timeline</option>
+          <option value="send_link">Send a link</option>
+          <option value="increase_bloom">Increase Bloom Point</option>
+          <option value="decrease_bloom">Decrease Bloom Point</option>
+          </select>
+        </div>
+  <div class="form-group content_PYiJ">
+    <input type="text" name="message" class="form-control message_select" placeholder="Enter value">
+    <br>
+    </div>
+                  </div>
+                </div>
+              </div>
+            </div>                           
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="addNewAxis()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="axis_update_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="title_modal">Update axis</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+    <div class="modal-body">
+      <div class="curriculum-grid mt-4 _oiNNss">
+        <div class="curriculum-head">
+          <p class="chapter_name_axis_update" contenteditable="">Enter select title</p>
+        </div>
+        <div class="curriculum-info">
+          <div id="accordion-_oiNNss">
+<div class="faq-grid"> 
+              <div class="faq-header">
+                <a class="faq-collapse collapsed" data-bs-toggle="collapse" href="#collapse__PYiJss" aria-expanded="false">
+                  <i class="fas fa-align-justify"></i>
+                  <span contenteditable="" class="event_name_axis_update">Enter event name</span>
+                </a>
+              </div>
+              <div id="collapse__PYiJss" class="collapse" data-bs-parent="#accordion-one" style="">
+                <div class="faq-body">
+                  <div class="add-article-btns">
+                    <div class="form-group">
+          <label class="add-course-label">Type event</label>
+          <select class="form-control select_axis_update" onchange="handleTypeEvent('content_PYiJss',this.value)">
+          <option value="show_message">Show message</option>
+          <option value="jump_timeline">Jump timeline</option>
+          <option value="send_link">Send a link</option>
+          <option value="increase_bloom">Increase Bloom Point</option>
+          <option value="decrease_bloom">Decrease Bloom Point</option>
+          </select>
+        </div>
+  <div class="form-group content_PYiJ">
+    <input type="text" name="message" class="form-control message_select_update" placeholder="Enter value">
+    <br>
+    </div>
+                  </div>
+                </div>
+              </div>
+            </div>                           
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="addNewAxis()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="video-wrapper d-flex justify-content-between">
 <div class="interactive flex-fill" style="width: 400px">
     <h2 class="text-center">Event <div class="dropdown-center float-end me-2">
@@ -273,6 +379,7 @@ display: block;
 </ul>
 </div>
 <div class="wrapper-video"> 
+<div class="rect interactive_wrapper" style="width: 20px;height: 20px;background: red;position:absolute;z-index:100;display:none"></div>
 <div class="parent_interactive position-absolute" style="left: 7%;bottom:4em;">
  </div>
     <div id="progress" ></div> <video ondblclick="fullscreenVideo()" id="video" src="https://storage.googleapis.com/kiou_lesson/tunkit/tunkit.m3u8" style="width: 100%;min-width: 50vw"></video><div class="video-player">
@@ -335,6 +442,8 @@ hls.on(window.Hls.Events.FRAG_LOADING, () => {
  }
 </script>
 <script>
+var rect_ = document.querySelector('.rect.interactive_wrapper');
+var is_confirm_axis = false
 var current_update_select = ''
 var is_caption_on = false
 var video_inside = document.querySelector('#video_inside');
@@ -392,6 +501,94 @@ for(let i in data_event) {
           video_state = true
           play_video(video_play_icon)
           document.querySelector('.'+data_event[i]['class_name']).style.display = 'block'
+          break
+        }
+        case 'axis' : {
+          rect_.style.display = 'block'
+          setTimeout(() => {
+            rect_.style.display = 'none'
+          },3400)
+          rect_.style.left = data_event[i]['x']
+          rect_.style.top = data_event[i]['y']
+          rect_.onclick = function(){
+            if(data_event[i]['event']['type'] == 'send_link') {
+            let random_id2 = '_'+makeid()
+    let formData = new FormData();
+    let duration_sendlink = data_event[i]['event']['content']['content']
+  formData.append('slug', duration_sendlink.substring(duration_sendlink.lastIndexOf('/')+1));
+  fetch('{{route("course-detail-plain-data")}}', {
+    method: 'POST',
+    body: formData
+  }).then(res => res.json()).then(data => {
+    parent_interactive.innerHTML+= `
+ <div class="interactive_wrapper ${random_id2}" style="display: none"> <div class="plan-box send_link_type p-0 px-2 pt-2" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize pt-2">Video course link</h6>
+        <div class="col-lg-12 col-md-12 d-flex">
+<div class="course-box course-design list-course d-flex border-0">
+<div class="product">
+<div class="product-img">
+<a href="">
+<img class="img-fluid" alt src="{{ asset('course/thumbnail/')}}/${data.data.image}">
+</a>
+<div class="price">
+<h3>${data.data.price} <span>$99.00</span></h3>
+</div>
+</div>
+<div class="product-content">
+<div class="head-course-title">
+<h3 class="title">${data.data.name}</h3>
+<div class="all-btn all-category d-flex align-items-center">
+<a href="#" class="btn btn-primary">See detail</a>
+</div>
+</div>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+<div class="rating-img d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
+<p>${data.data.meta['total_lesson']} Lesson</p>
+</div>
+<div class="course-view d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
+<p>${(parseInt(data.data.meta['total_time'])/60).toFixed()}hr ${parseInt(data.data.meta['total_time'])%60}min</p>
+</div>
+</div>
+<div class="rating">
+<span class="d-inline-block average-rating"><span>${data.data.complete_course_rate}</span> <span>(${data.data.total_enrollment} enrolled)</span></span>
+</div>
+
+<div class="course-group d-flex mb-0">
+<div class="course-group-img d-flex">
+<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+<div class="course-name">
+<h4><a href="instructor-profile.html">${data.mentor_name}</a></h4>
+<p>Instructor</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+        </div>
+        </div>
+</div>
+`;
+$('.'+random_id2).show()
+setTimeout(() => {
+  $('.'+random_id2).hide()
+  rect_.onclick = function() {
+    is_confirm_axis = true
+    $('#axis_modal').modal('show')
+  }
+}, parseInt(data_event[i]['event']['content']['duration']) * 1000);
+  })
+
+            // actionNow('rect', data_event[i]['event']['type'], data_event[i]['event']['content']['content'],random_id2)
+            }
+            else {
+            actionNow('rect', data_event[i]['event']['type'], data_event[i]['event']['content'])
+            }
+          }
           break
         }
       }
@@ -457,7 +654,13 @@ function handleEvent(event_type) {
             $('#select_modal').modal('show')
             break
         }
-        case 'axis' : {
+        case 'axis' : {      
+          rect_.style.display = 'block'
+          is_confirm_axis = false
+          rect_.onclick = function() {
+            is_confirm_axis = true
+            $('#axis_modal').modal('show')
+          }
             break
         }
     }
@@ -588,11 +791,11 @@ function handleTypeEvent(_class,_value) {
         break
     }
     case 'increase_bloom': {
-      $('.'+_class).html(`<input type="number" name="bloom_point" class="form-control" placeholder="Enter a value" />`)
+      $('.'+_class).html(`<input type="number" name="bloom_point" class="form-control bloom_point" placeholder="Enter a value" />`)
       break;
     }
     case 'decrease_bloom': {
-      $('.'+_class).html(`<input type="number" name="bloom_point" class="form-control" placeholder="Enter a value" />`)
+      $('.'+_class).html(`<input type="number" name="bloom_point" class="form-control bloom_point" placeholder="Enter a value" />`)
       break;
     }
   }
@@ -710,6 +913,10 @@ $('#select_modal').modal('hide')
  
 }
 function actionNow(_id,_type,_value,_id_link) {
+rect_.onclick = function() {
+  is_confirm_axis = true
+  $('#axis_modal').modal('show')
+}
   is_select_mode =false
   video_state = false
   document.querySelector('.'+_id).style.display = 'none'
@@ -877,6 +1084,96 @@ document.querySelector('.'+random_id).innerHTML= `
         </div>`;
 delete temp_data_event[0];
 $('#update_select_modal').modal('hide');
+}
+var setint  = '';
+$(document).ready(function() {
+var val = 0;
+$('.rect.interactive_wrapper').on('mousedown',function (e) {
+   clearInterval(setint);
+   val = 0;
+   setint = setInterval(function () {
+       $("#putdata").val(++val);
+   },100);
+});
+$('.rect.interactive_wrapper').on("mouseleave mouseup", function () {
+   val = 0;
+   $("#putdata").val(val);
+   clearInterval(setint);
+});
+})  
+const element = document.querySelector('.wrapper-video');
+const indicator = document.querySelector('.rect');
+element.addEventListener('mousemove', (event) => {
+if(!is_confirm_axis){ 
+    const elementRect = element.getBoundingClientRect();
+    const mouseX = event.clientX - elementRect.left;
+    const mouseY = event.clientY - elementRect.top;
+
+    const percentageX = (mouseX / elementRect.width) * 100;
+    const percentageY = (mouseY / elementRect.height) * 100;
+
+    indicator.style.left = `${percentageX}%`;
+    indicator.style.top = `${percentageY}%`;
+}
+  });
+rect_.onclick = function() {
+  is_confirm_axis = true
+  $('#axis_modal').modal('show')
+}
+function addNewAxis() {
+let random_id = '_' + makeid();
+event_list.innerHTML += `<li class="list-group-item border-0 list${random_id}"><i class="fa-solid fa-trash" onclick="removeNotification('${random_id}')" style="color:#f66962"></i> <i class="fa-solid fa-pen" onclick="updateAxis('${random_id}')"></i> Show notification <sup class="badge bg-info">Event</sup> <span class="float-end">${document.querySelector('#timeline').innerHTML}</span>`
+  let select_type = document.querySelector('.select_axis').value
+  let content_axis = ''
+  switch (select_type) {
+    case 'show_message': {
+      content_axis = document.querySelector('#axis_modal .message_select').value
+      break;
+    }
+  case 'jump_timeline': {
+    content_axis = document.querySelector('#axis_modal .message_select').value
+    break
+  }
+  case 'send_link': {
+    content_axis = {
+      'content': document.querySelector('#axis_modal .message_select').value,
+      'duration': document.querySelector('#axis_modal .duration_sendlink').value
+    }
+    break
+  }
+  case 'increase_bloom': {
+    content_axis = document.querySelector('#axis_modal .bloom_point').value
+    break
+  }
+  case 'decrease_bloom': {
+    content_axis = document.querySelector('#axis_modal .bloom_point').value
+    break
+  }
+  }
+    data_event[random_id] = {
+        type: 'axis',
+        class_name: random_id,
+        start_time: parseInt(video.currentTime),
+        duration: 3.4,
+        x: parseFloat(indicator.style.left),
+        y:parseFloat(indicator.style.top),
+        event: {
+          type: select_type,
+          content: content_axis
+        }
+    }
+$('#axis_modal').modal('hide')
+document.querySelector('#bookmarks').innerHTML+= `
+                <div class="bookmark-in-video-wrapper bookmark_${parseInt(video.currentTime)} bookmark${random_id}" style="width: ${100/video.duration * video.currentTime}% ;z-index: 1">
+                    <div class="bookmark-in-video" style="background: #ffb534">
+                    </div>
+                    </div>
+`
+rect_.style.display = 'none'
+}
+function updateAxis(_id) {
+  $('#axis_update_modal').modal('show')
+  
 }
 </script>
 @endsection
