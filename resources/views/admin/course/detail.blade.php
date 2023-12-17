@@ -17,9 +17,12 @@
                                 <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#edit-profile"
                                         type="button" role="tab" aria-controls="home" aria-selected="true"
                                         href="#edit-profile">More</a></li>
+                                @if ($course->state === '-1')
                                 <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#projects"
                                         type="button" role="tab" aria-controls="home" aria-selected="true"
-                                        href="#projects">Action</a></li>
+                                        href="#projects">Action</a>
+                                </li>
+                                @endif
                             </ul>
 
                             <div class="tab-content m-0 p-4">
@@ -278,7 +281,7 @@
 
                                                     <div class="student-widget lesson-introduction">
                                                         <div class="lesson-widget-group">
-                                                            <h4 id="title_video">Hello</h4>
+                                                            <h4 id="title_video">{{$name_first}}</h4>
                                                             <div class="introduct-video">
                                                                 {{-- <a href="#"> --}}
                                                                 {{-- <div class="play-icon">
@@ -469,7 +472,7 @@
                                                 maxBufferHole: 0,
                                                 enableWorker: true
                                             });
-                                            hls.loadSource('');
+                                            hls.loadSource('{{$lesson_first}}');
                                             hls.attachMedia(video);
                                             const progress = document.querySelector('#progress')
 
@@ -568,8 +571,7 @@
                                         <div class="col-md-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h4 class="header-title">Modal with Pages</h4>
-                                                    <p class="text-muted mb-0">Examples of custom modals.</p>
+                                                    <h4 class="header-title">Course moderation</h4>
                                                 </div>
                                                 <div class="card-body">
                                                     <!-- Signup modal content -->
@@ -581,7 +583,8 @@
                                                                     <h3>Course approval</h3>
                                                                     </div>
                 
-                                                                    <form class="ps-3 pe-3" action="{{route('admin.refuse-course-admin', $course->_id)}}">
+                                                                    <form class="ps-3 pe-3" action="{{route('admin.refuse-course-admin', $course->_id)}}" method="POST">
+                                                                        @csrf
                                                                         <div class="mb-3">
                                                                             <label for="username" class="form-label">Name course</label>
                                                                             <input id="AboutMe" class="form-control" value="{{$course->name}}" readonly/>
@@ -590,7 +593,7 @@
                                                                         <div class="mb-3">
                                                                             <label for="username" class="form-label">Response content</label>
                                                                             <textarea style="height: 70px;" id="AboutMe" class="form-control" name="res_content"></textarea>
-                                               
+                                                                            <input type="hidden" class="form-control" value="{{$course->mentor_id}}" name="mentor_id"/>
                                                                         </div>
                 
                                                                         <div class="mb-3">
@@ -609,7 +612,7 @@
                                                         <form method="POST" action="{{ route('admin.accept-course-admin', $course->_id) }}">
                                                             @csrf
                                                             @method('PUT')
-                                                            <button type="submit" class="btn btn-primary">Accept</button>
+                                                            <button type="submit" class="btn btn-success">Accept</button>
                                                         </form>
                                                         <!-- Log In modal -->
                                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#signup-modal">Refuse</button>

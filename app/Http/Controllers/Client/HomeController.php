@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Mentor;
 use App\Models\Roadmap;
+use App\Models\Notification;
+use App\Models\Profession;
 
 class HomeController extends Controller
 {
@@ -29,9 +31,13 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        // dd($buylot);
-
-        return view('client.home.home', compact('CourseCount', 'MentorCount', 'RoadmapCount', 'EnrollmentCount', 'buylot', 'courses'));
+      if (!empty(auth()->user()->mentor->_id)){
+            $notications = Notification::where('mentor_id',auth()->user()->mentor->_id)->orderBy('created_at', 'desc')->get();
+      }else{
+        $notications = [];
+      }
+       
+        return view('client.home.home', compact('CourseCount', 'MentorCount', 'RoadmapCount', 'EnrollmentCount', 'buylot', 'courses', 'notications'));
     }
 
     public function softData($courses, $a_length)

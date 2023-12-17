@@ -273,45 +273,13 @@
                                                     <option>Unread</option>
                                                 </select>
                                             </span>
-                                            <a href="javascript:void(0)" class="clear-noti">Mark all as read <i
-                                                    class="fa-solid fa-circle-check"></i></a>
+                                            
                                         </div>
                                         <div class="noti-content">
                                             <ul class="notification-list">
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt=""
-                                                                    src="assets/img/user/user1.jpg">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">Lex Murphy requested
-                                                                    <span>access to</span> UNIX directory tree hierarchy
-                                                                </a></h6>
-                                                            <button class="btn btn-accept">Accept</button>
-                                                            <button class="btn btn-reject">Reject</button>
-                                                            <p>Today at 9:42 AM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt=""
-                                                                    src="assets/img/user/user2.jpg">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">Ray Arnold left 6
-                                                                    <span>comments on</span> Isla Nublar SOC2 compliance
-                                                                    report</a></h6>
-                                                            <p>Yesterday at 11:42 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                @if (count($notications )> 0)
+                                                @foreach($notications as $notication)
+                                              
                                                 <li class="notification-message">
                                                     <div class="media d-flex">
                                                         <div>
@@ -321,32 +289,19 @@
                                                             </a>
                                                         </div>
                                                         <div class="media-body">
-                                                            <h6><a href="notifications.html">Dennis Nedry <span>commented
-                                                                        on</span> Isla Nublar SOC2 compliance report</a>
+                                                            <h6>
+                                                                {{$notication->title}}
                                                             </h6>
-                                                            <p class="noti-details">“Oh, I finished de-bugging the phones,
-                                                                but the system's compiling for eighteen minutes, or twenty.
-                                                                So, some minor systems may go on and off for a while.”</p>
-                                                            <p>Yesterday at 5:42 PM</p>
+                                                            <p class="noti-details">“{{$notication->content}}”</p>
+                                                            <p>{{$notication->created_at}}</p>
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt=""
-                                                                    src="assets/img/user/user1.jpg">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">John Hammond
-                                                                    <span>created</span> Isla Nublar SOC2 compliance report
-                                                                </a></h6>
-                                                            <p>Last Wednesday at 11:15 AM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                @endforeach
+                                                @else
+                                                <p class="text-center pt-5">There are no announcements</p>
+                                                @endif
+
                                             </ul>
                                         </div>
                                     </div>

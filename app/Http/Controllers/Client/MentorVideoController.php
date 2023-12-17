@@ -206,7 +206,7 @@ class MentorVideoController extends Controller
       
         $chapter_infor = ['course_id' => $new_course->_id];
         foreach (explode('_$_', request()->chapters) as $key => $item) {
-            $chapter_infor['infor']['chapter_' . $key + 1] = $item;
+            $chapter_infor['infor']['chapter_' . $key] = $item;
         }
         $new_chapter = Chapter::create($chapter_infor);
         return response()->json([
@@ -440,7 +440,6 @@ class MentorVideoController extends Controller
                 request()->chapter_child,
                 request()->chapter_index,
             ],
-            'slug' => Str::slug(request()->name),
         ], $subtitle));
         return response()->json([
             'data' => (request()->all()),

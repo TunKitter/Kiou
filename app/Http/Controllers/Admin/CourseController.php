@@ -8,16 +8,18 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Mentor;
 use App\Models\Profession;
+use App\Models\Notification;
+use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
     public function index()
     {
-        $courses_awaiting= Course::where('state','-1')->get();
-        $courses = Course::where('state','0')->take(10)->get();
+       
+        $courses = Course::where('state','0')->take(10)->orderBy('created_at', 'desc')->get();
         $mentor_name = Mentor::select('name', 'id')->whereIn('_id', $courses->pluck('mentor_id'))->get()->pluck('name', '_id');
         $category_name = Profession::select('name', 'id')->whereIn('_id', $courses->pluck('category'))->get()->pluck('name', '_id');
-        return view('admin.course.course', compact('courses','courses_awaiting', 'mentor_name', 'category_name'));
+        return view('admin.course.course', compact('courses', 'mentor_name', 'category_name'));
     }
     public function detail($id)
     {
@@ -36,19 +38,19 @@ class CourseController extends Controller
        
         $course->save();
         
-        return redirect()->route('list-course-admin');
+        return redirect()->route('admin.list-course-admin');
     }
 
-    public function delete($id) {
-        Course::find($id)->delete();
-        return redirect()->route('list-course-admin');
+    public function delete(Request $request, $id) {
+       
+        if(Course::find($id)->delete()) {
+            Notification::create([
+                'title' => 'Refuse the course',
+                'mentor_id' => $request->mentor_id,
+                'content' => $request->res_content,
+            ]);
+        }
+        return redirect()->route('admin.list-course-admin');
     } 
 
-    // public function moderation($id) {
-    //     $course = Course::find($id);
-    //     $category_name = Profession::select('name')->where('_id', $course->category)->first()->name;
-    //     $lessons = Lesson::where('course_id', $id)->get()->groupBy('chapter.1');
-    //     $chapter = Chapter::select('infor')->where('course_id', $id)->first()->infor;
-    //     return view('admin.course.detail', compact('course', 'category_name', 'lessons', 'chapter'));
-    // }
 }
