@@ -753,8 +753,42 @@ setTimeout(() => {
 $('.'+_id_link).css('display','none')
 },parseInt(aaav)*1000);
       break;
-     
-    }
+  }
+    case 'increase_bloom' : {
+    let random_id = '_'+ makeid()
+  video.currentTime = video.currentTime + 1;
+ parent_interactive.innerHTML+= `
+ <div class="interactive_wrapper ${random_id}"> <div class="plan-box" >
+        <div>
+        <h6 style="text-transform: capitalize">Notification<sup class="badge badge-info">Server</sup></h6>
+        <p style="color: #249c46">+${_value} Point</p>
+        </div>
+        </div>
+</div>
+` 
+setTimeout(() => {
+$('.'+random_id).remove()
+},4000)       
+      break;
+  }
+  case 'decrease_bloom' :
+{
+    let random_id = '_'+ makeid()
+  video.currentTime = video.currentTime + 1
+ parent_interactive.innerHTML+= `
+ <div class="interactive_wrapper ${random_id}"> <div class="plan-box" >
+        <div>
+        <h6 style="text-transform: capitalize">Notification<sup class="badge badge-info">Server</sup></h6>
+        <p style="color: #f66962">-${_value} Point</p>
+        </div>
+        </div>
+</div>
+` 
+setTimeout(() => {
+$('.'+random_id).remove()
+},4000)       
+      break;
+  }
   };
 
 }
@@ -825,7 +859,6 @@ data_event[random_id] = {
   let type_action = e.querySelector('select').value
   if(type_action == 'send_link'){
  return {[type_action]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value,e.querySelector('.duration_sendlink').value,temp_data_event[0]]}
-   // need resolve
   }
   else {
   return {[e.querySelector('select').value]: [e.querySelector('.chapter_name').innerHTML,e.querySelector('.event_name').innerHTML,e.querySelector('input').value]}   
