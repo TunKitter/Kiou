@@ -6,8 +6,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Dreams LMS</title>
-
+    <title>
+        @if(!empty($meta_title))
+        {{$meta_title}}
+        @else
+        Khóa học online - Học mọi thứ theo lịch trình của bạn | KIOU
+        @endif
+    </title>
+    @if(!empty($meta_description))
+    <meta name="description" content="{{$meta_description}}">
+    @endif
+    @if(!empty($meta_keywords))
+    <meta name="keywords" content="{{$meta_keywords}}">
+    @endif
+    <link rel="canoical" href="{{url()->current()}}"/>
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.svg') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">

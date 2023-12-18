@@ -18,6 +18,7 @@ class CourseController extends Controller
         // dd($this->softMentorData(Mentor::all(), count(Mentor::all()) - 1));
         // dd(Mentor::orderBy('course.total_enrollment', 'desc')->get());
         //
+        $meta_title = "Online Courses | KIOU";
         switch ($request->type) {
             case 'auto':
             case 'course':
@@ -66,7 +67,7 @@ class CourseController extends Controller
                         return view('client.courses.course-list', ['mentors' => count($mentors) > 0 ? $mentors : $this->getMentorData(), 'is_not_found' => count($mentors) == 0, 'q' => $request->q, 'type' => $request->type]);
                     }
                     $mentors = $this->getMentorData();
-                    return view('client.courses.course-list', ['mentors' => $this->softMentorData($mentors, count($mentors) - 1), 'type' => $request->type]);
+                    return view('client.courses.course-list', compact('meta_title'), ['mentors' => $this->softMentorData($mentors, count($mentors) - 1), 'type' => $request->type]);
                 }
 
         }

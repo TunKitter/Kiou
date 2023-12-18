@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Storage;
 class BlogController extends Controller
 {
     public function blog(){
-
+        $meta_title = "Learn about: Find detailed information and professional guidance | KIOU Blog";
         $blogs = Post::paginate(4);
         $blog_categories  = PostCategory::all();
         
-        return view("client.blog.blog", compact('blogs','blog_categories'));
+        return view("client.blog.blog", compact('blogs','blog_categories', 'meta_title'));
     }
 
     public function blogDetail($slug) {

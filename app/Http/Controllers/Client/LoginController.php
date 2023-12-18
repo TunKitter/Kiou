@@ -28,11 +28,15 @@ class LoginController extends Controller
 
     public function index()
     {
+        $meta_title = "Log in and start learning";
+        $meta_description = "KIOU is an online teaching platform and offers a variety of courses.";
+        $meta_keywords = "kiou, online learning website, programming course";
 
         if (auth()->check()) {
             return redirect()->route('home');
         }
-        return view('client.auth.login.login');
+
+        return view('client.auth.login.login', compact('meta_title', 'meta_description', 'meta_keywords'));
     }
 
     public function handleGoogleCallback()

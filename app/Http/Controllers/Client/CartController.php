@@ -11,10 +11,10 @@ class CartController extends Controller
 {
     public function index()
     {
-
+        $meta_title = "Cart | KIOU";
         $userId = Auth::id();
         $carts = Enrollment::where('user_id', $userId)->where('state','65337ecc289241e845e578d9')->get();
-        return view('client.cart.cart', compact('carts'));
+        return view('client.cart.cart', compact('carts', 'meta_title'));
     }
 
     public function store(Request $request)

@@ -16,7 +16,8 @@ class MentorController extends Controller
 {
     public function overview()
     {
-        return view('client.mentor.overview');
+        $meta_title = "Teach online - Share your knowledge with millions of students globally and earn income";
+        return view('client.mentor.overview', compact('meta_title'));
     }
     public function register()
     {

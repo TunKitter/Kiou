@@ -11,10 +11,13 @@ class RegisterController extends Controller
 {
     public function index()
     {
+        $meta_title = "Sign up and start learning";
+        $meta_description = "KIOU is an online teaching platform and offers a variety of courses.";
+        $meta_keywords = "kiou, online learning website, programming course";
         if (auth()->check()) {
             return redirect()->route('home');
         }
-        return view('client.auth.register.register');
+        return view('client.auth.register.register', compact('meta_title', 'meta_description', 'meta_keywords'));
 
     }
     public function register(AuthRequest $request)
