@@ -345,7 +345,7 @@ display: block;
           </select>
         </div>
   <div class="form-group content_PYiJ">
-    <input type="text" name="message" class="form-control message_select_update" placeholder="Enter value">
+    <input type="text" name="message" class="form-control message_select" placeholder="Enter value">
     <br>
     </div>
                   </div>
@@ -358,7 +358,7 @@ display: block;
     </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="addNewAxis()">Confirm</button>
+        <button type="button" class="btn btn-primary" onclick="handleAddNewAxis()">Confirm</button>
       </div>
     </div>
   </div>
@@ -511,83 +511,7 @@ for(let i in data_event) {
           rect_.style.left = data_event[i]['x']
           rect_.style.top = data_event[i]['y']
           rect_.onclick = function(){
-            if(data_event[i]['event']['type'] == 'send_link') {
-            let random_id2 = '_'+makeid()
-    let formData = new FormData();
-    let duration_sendlink = data_event[i]['event']['content']['content']
-  formData.append('slug', duration_sendlink.substring(duration_sendlink.lastIndexOf('/')+1));
-  fetch('{{route("course-detail-plain-data")}}', {
-    method: 'POST',
-    body: formData
-  }).then(res => res.json()).then(data => {
-    parent_interactive.innerHTML+= `
- <div class="interactive_wrapper ${random_id2}" style="display: none"> <div class="plan-box send_link_type p-0 px-2 pt-2" >
-        <div>
-        <h6 style="color: #249c46 ; text-transform: capitalize pt-2">Video course link</h6>
-        <div class="col-lg-12 col-md-12 d-flex">
-<div class="course-box course-design list-course d-flex border-0">
-<div class="product">
-<div class="product-img">
-<a href="">
-<img class="img-fluid" alt src="{{ asset('course/thumbnail/')}}/${data.data.image}">
-</a>
-<div class="price">
-<h3>${data.data.price} <span>$99.00</span></h3>
-</div>
-</div>
-<div class="product-content">
-<div class="head-course-title">
-<h3 class="title">${data.data.name}</h3>
-<div class="all-btn all-category d-flex align-items-center">
-<a href="#" class="btn btn-primary">See detail</a>
-</div>
-</div>
-<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
-<div class="rating-img d-flex align-items-center">
-<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
-<p>${data.data.meta['total_lesson']} Lesson</p>
-</div>
-<div class="course-view d-flex align-items-center">
-<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
-<p>${(parseInt(data.data.meta['total_time'])/60).toFixed()}hr ${parseInt(data.data.meta['total_time'])%60}min</p>
-</div>
-</div>
-<div class="rating">
-<span class="d-inline-block average-rating"><span>${data.data.complete_course_rate}</span> <span>(${data.data.total_enrollment} enrolled)</span></span>
-</div>
-
-<div class="course-group d-flex mb-0">
-<div class="course-group-img d-flex">
-<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
-<div class="course-name">
-<h4><a href="instructor-profile.html">${data.mentor_name}</a></h4>
-<p>Instructor</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-        </div>
-        </div>
-</div>
-`;
-$('.'+random_id2).show()
-setTimeout(() => {
-  $('.'+random_id2).hide()
-  rect_.onclick = function() {
-    is_confirm_axis = true
-    $('#axis_modal').modal('show')
-  }
-}, parseInt(data_event[i]['event']['content']['duration']) * 1000);
-  })
-
-            // actionNow('rect', data_event[i]['event']['type'], data_event[i]['event']['content']['content'],random_id2)
-            }
-            else {
-            actionNow('rect', data_event[i]['event']['type'], data_event[i]['event']['content'])
-            }
+            actionNow(i, Object.keys(data_event[i]['event'])[0], data_event[i]['event'][Object.keys(data_event[i]['event'])[0]][2],data_event[i]['event'][Object.keys(data_event[i]['event'])[0]][4],data_event[i]['event'][Object.keys(data_event[i]['event'])[0]][3])
           }
           break
         }
@@ -912,14 +836,16 @@ $('.select-wrapper').html('')
 $('#select_modal').modal('hide')
  
 }
-function actionNow(_id,_type,_value,_id_link) {
+function actionNow(_id,_type,_value,_id_link,time_duration) {
 rect_.onclick = function() {
   is_confirm_axis = true
   $('#axis_modal').modal('show')
 }
   is_select_mode =false
   video_state = false
+  if(document.querySelector('.'+_id)){
   document.querySelector('.'+_id).style.display = 'none'
+  }
   play_video(video_play_icon)
   switch (_type) {
     case 'show_message':
@@ -949,13 +875,20 @@ $('.'+random_id).remove()
   video.currentTime = video.currentTime + 1
   // data_event[_id]['event'].find(e => e['send_link'][4] == _id_link)
   document.querySelector('.'+_id_link).style.display = 'block'
-  let aaav = data_event[_id]['event'].find(e => {
+  let aaav = ''
+  if(!time_duration) {
+    let aaav = data_event[_id]['event'].find(e => {
  if(e['send_link']){
    return e['send_link'][4] == _id_link
  } 
  return false 
 })['send_link'][3]
 console.log(aaav);
+  }
+  else {
+    aaav = time_duration
+  }
+ 
 setTimeout(() => {
 $('.'+_id_link).css('display','none')
 },parseInt(aaav)*1000);
@@ -1127,29 +1060,76 @@ event_list.innerHTML += `<li class="list-group-item border-0 list${random_id}"><
   let content_axis = ''
   switch (select_type) {
     case 'show_message': {
-      content_axis = document.querySelector('#axis_modal .message_select').value
+      content_axis = {'show_message':[document.querySelector('.chapter_name_axis').innerHTML,document.querySelector('.event_name_axis').innerHTML,document.querySelector('#axis_modal .message_select').value]}
       break;
     }
   case 'jump_timeline': {
-    content_axis = document.querySelector('#axis_modal .message_select').value
+    content_axis = {'jump_timeline':[document.querySelector('.chapter_name_axis').innerHTML,document.querySelector('.event_name_axis').innerHTML,document.querySelector('#axis_modal .message_select').value]}
     break
   }
   case 'send_link': {
-    content_axis = {
-      'content': document.querySelector('#axis_modal .message_select').value,
-      'duration': document.querySelector('#axis_modal .duration_sendlink').value
-    }
-    break
-  }
-  case 'increase_bloom': {
-    content_axis = document.querySelector('#axis_modal .bloom_point').value
-    break
-  }
-  case 'decrease_bloom': {
-    content_axis = document.querySelector('#axis_modal .bloom_point').value
-    break
-  }
-  }
+    let random_id2 = '_'+makeid()
+    let formData = new FormData();
+    let duration_sendlink = document.querySelector('#axis_modal .message_select').value
+  formData.append('slug', duration_sendlink.substring(duration_sendlink.lastIndexOf('/')+1));
+  fetch('{{route("course-detail-plain-data")}}', {
+    method: 'POST',
+    body: formData
+  }).then(res => res.json()).then(data => {
+    parent_interactive.innerHTML+= `
+ <div class="interactive_wrapper ${random_id2}" style="display: none"> <div class="plan-box send_link_type p-0 px-2 pt-2" >
+        <div>
+        <h6 style="color: #249c46 ; text-transform: capitalize pt-2">Video course link</h6>
+        <div class="col-lg-12 col-md-12 d-flex">
+<div class="course-box course-design list-course d-flex border-0">
+<div class="product">
+<div class="product-img">
+<a href="">
+<img class="img-fluid" alt src="{{ asset('course/thumbnail/')}}/${data.data.image}">
+</a>
+<div class="price">
+<h3>${data.data.price} <span>$99.00</span></h3>
+</div>
+</div>
+<div class="product-content">
+<div class="head-course-title">
+<h3 class="title">${data.data.name}</h3>
+<div class="all-btn all-category d-flex align-items-center">
+<a href="#" class="btn btn-primary">See detail</a>
+</div>
+</div>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+<div class="rating-img d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
+<p>${data.data.meta['total_lesson']} Lesson</p>
+</div>
+<div class="course-view d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
+<p>${(parseInt(data.data.meta['total_time'])/60).toFixed()}hr ${parseInt(data.data.meta['total_time'])%60}min</p>
+</div>
+</div>
+<div class="rating">
+<span class="d-inline-block average-rating"><span>${data.data.complete_course_rate}</span> <span>(${data.data.total_enrollment} enrolled)</span></span>
+</div>
+
+<div class="course-group d-flex mb-0">
+<div class="course-group-img d-flex">
+<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+<div class="course-name">
+<h4><a href="instructor-profile.html">${data.mentor_name}</a></h4>
+<p>Instructor</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+        </div>
+        </div>
+</div>
+`;
+    content_axis = { 'send_link' : [document.querySelector('.chapter_name_axis').innerHTML,document.querySelector('.event_name_axis').innerHTML,document.querySelector('#axis_modal .message_select').value,document.querySelector('#axis_modal .duration_sendlink').value,random_id2]};
     data_event[random_id] = {
         type: 'axis',
         class_name: random_id,
@@ -1157,11 +1137,31 @@ event_list.innerHTML += `<li class="list-group-item border-0 list${random_id}"><
         duration: 3.4,
         x: parseFloat(indicator.style.left),
         y:parseFloat(indicator.style.top),
-        event: {
-          type: select_type,
-          content: content_axis
-        }
+        event: content_axis
     }
+  })
+  break
+  }
+  case 'increase_bloom': {
+    content_axis = {'increase_bloom':[document.querySelector('.chapter_name_axis').value,document.querySelector('.event_name_axis').value,document.querySelector('#axis_modal .bloom_point').value]}
+    break
+  }
+  case 'decrease_bloom': {
+    content_axis = {'decrease_bloom':[document.querySelector('.chapter_name_axis').value,document.querySelector('.event_name_axis').value,document.querySelector('#axis_modal .bloom_point').value]}
+    break
+  }
+  }
+  if(select_type != 'send_link'){
+    data_event[random_id] = {
+        type: 'axis',
+        class_name: random_id,
+        start_time: parseInt(video.currentTime),
+        duration: 3.4,
+        x: parseFloat(indicator.style.left),
+        y:parseFloat(indicator.style.top),
+        event: content_axis
+    }
+  }
 $('#axis_modal').modal('hide')
 document.querySelector('#bookmarks').innerHTML+= `
                 <div class="bookmark-in-video-wrapper bookmark_${parseInt(video.currentTime)} bookmark${random_id}" style="width: ${100/video.duration * video.currentTime}% ;z-index: 1">
@@ -1171,9 +1171,25 @@ document.querySelector('#bookmarks').innerHTML+= `
 `
 rect_.style.display = 'none'
 }
+var current_id_axis = ''
 function updateAxis(_id) {
+
+  current_id_axis = _id
   $('#axis_update_modal').modal('show')
-  
+  switch (Object.keys(data_event[_id]['event'])[0]) {
+    case 'show_message':
+      case 'jump_timeline' :  
+      {
+        document.querySelector('.chapter_name_axis_update').innerHTML = data_event[_id]['event'][Object.keys(data_event[_id]['event'])[0]][0]
+        document.querySelector('.event_name_axis_update').innerHTML = data_event[_id]['event'][Object.keys(data_event[_id]['event'])[0]][1]       
+        document.querySelector('#axis_update_modal .message_select').value = data_event[_id]['event'][Object.keys(data_event[_id]['event'])[0]][2]
+      break
+    }
+
+  }
+}
+function handleAddNewAxis() {
+
 }
 </script>
 @endsection
