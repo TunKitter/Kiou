@@ -83,48 +83,48 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                  
-                                                        @foreach ($Courses as $item)
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="sell-table-group d-flex align-items-center">
-                                                                        <div class="sell-group-img">
-                                                                            <a
-                                                                                href="{{ route('lesson-learn', [$item->slug, $lessons[$item->id]]) }}">
-                                                                                <img src="{{ asset('course/thumbnail/' . $item->image) }}"
-                                                                                    class="img-fluid " alt=""
-                                                                                    width="120" height="120">
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="sell-tabel-info">
-                                                                            <p><a
-                                                                                    href="{{ route('lesson-learn', [$item->slug, $lessons[$item->id]]) }}">{{ $item->name }}</a>
-                                                                            </p>
+
+                                                    @foreach ($Courses as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="sell-table-group d-flex align-items-center">
+                                                                    <div class="sell-group-img">
+                                                                        <a
+                                                                            href="{{ route('lesson-learn', [$item->slug, $lessons[$item->id]]) }}">
+                                                                            <img src="{{ asset('course/thumbnail/' . $item->image) }}"
+                                                                                class="img-fluid " alt=""
+                                                                                width="120" height="120">
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="sell-tabel-info">
+                                                                        <p><a
+                                                                                href="{{ route('lesson-learn', [$item->slug, $lessons[$item->id]]) }}">{{ $item->name }}</a>
+                                                                        </p>
+                                                                        <div
+                                                                            class="course-info d-flex align-items-center border-bottom-0 pb-0">
                                                                             <div
-                                                                                class="course-info d-flex align-items-center border-bottom-0 pb-0">
-                                                                                <div
-                                                                                    class="rating-img d-flex align-items-center">
-                                                                                    <img src="{{ asset('assets/img/icon/icon-01.svg') }}"
-                                                                                        alt>
-                                                                                    <p>{{ $item->meta['total_lesson'] }}
-                                                                                        lession</p>
-                                                                                </div>
-                                                                                <div
-                                                                                    class="course-view d-flex align-items-center">
-                                                                                    <img src="{{ asset('assets/img/icon/icon-02.svg') }}"
-                                                                                        alt>
-                                                                                    <p>{{ round($item->meta['total_time'] / 60) }}
-                                                                                        hr
-                                                                                        {{ round($item->meta['total_time'] % 60) }}
-                                                                                        min</p>
-                                                                                </div>
+                                                                                class="rating-img d-flex align-items-center">
+                                                                                <img src="{{ asset('assets/img/icon/icon-01.svg') }}"
+                                                                                    alt>
+                                                                                <p>{{ $item->meta['total_lesson'] }}
+                                                                                    lession</p>
+                                                                            </div>
+                                                                            <div
+                                                                                class="course-view d-flex align-items-center">
+                                                                                <img src="{{ asset('assets/img/icon/icon-02.svg') }}"
+                                                                                    alt>
+                                                                                <p>{{ round($item->meta['total_time'] / 60) }}
+                                                                                    hr
+                                                                                    {{ round($item->meta['total_time'] % 60) }}
+                                                                                    min</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </td>
-                                                                <td><span class="badge info-low">Live</span></td>
-                                                            </tr>
-                                                        @endforeach
+                                                                </div>
+                                                            </td>
+                                                            <td><span class="badge info-low">Live</span></td>
+                                                        </tr>
+                                                    @endforeach
 
                                                 </tbody>
 
