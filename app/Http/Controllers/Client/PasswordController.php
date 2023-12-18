@@ -88,4 +88,24 @@ class PasswordController extends Controller
             return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công');
         }
     }
+
+    // public function sentSmsOtp(){
+    //     $otp = request()->otp;
+    //     $username =  request()->username;
+
+    //     $request_mail = $request->email;
+    //     $user_from_request_mail = User::where('email', $request_mail)->first();
+    //     if ($user_from_request_mail) {
+    //         $randomNumber = mt_rand(100000, 999999);
+    //         $token_id = uniqid();
+    //         Session::push($token_id, [$request_mail, $randomNumber]);
+    //         return redirect(route('confirm-code', ['token_id' => $token_id]));
+    //     } else {
+    //         return redirect()->route("enter-email")->with('no_user', 'Không tìm thấy người dùng');
+    //     }
+
+
+
+
+    // }
 }

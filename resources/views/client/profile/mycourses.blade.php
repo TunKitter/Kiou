@@ -83,7 +83,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @if ($Courses == false)
+                                                  
                                                         @foreach ($Courses as $item)
                                                             <tr>
                                                                 <td>
@@ -125,12 +125,6 @@
                                                                 <td><span class="badge info-low">Live</span></td>
                                                             </tr>
                                                         @endforeach
-                                                    @else
-                                                        <tr>
-                                                            <td>There are no courses</td>
-                                                        </tr>
-                                                    @endif
-
 
                                                 </tbody>
 

@@ -234,3 +234,7 @@ Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->na
 
 # ------------------------- SiteMap --------------------------------
 Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('site-map');
+
+
+# ------------------------- SMS --------------------------------
+Route::post('get/smsotp', [PasswordController::class, 'sentSmsOtp'])->name('send-otp');
