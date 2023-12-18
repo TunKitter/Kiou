@@ -565,8 +565,10 @@ class MentorVideoController extends Controller
             'data' => "ok",
         ]);
     }
-    public function createLesson($course_id)
+    public function updateInteractive()
     {
-
+        return response()->json([
+            'data' => request()->all,
+        ]);
     }
 }

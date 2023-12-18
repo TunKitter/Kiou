@@ -177,6 +177,8 @@ display: block;
   }
 } 
 </style>
+<button class="btn btn-submit ms-2" style="width: 200px" onclick="saveData(this)">Save</button>
+<br><br>
 <div class="modal fade" id="notification_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -1191,5 +1193,18 @@ function updateAxis(_id) {
 function handleAddNewAxis() {
 
 }
+function saveData(obj) {
+ fetch('{{route("update-interactive")}}',{
+  method: 'POST',
+  headers: {                              
+    "Content-Type": "application/json"  
+  },
+  body: JSON.stringify({
+    'data': data_event
+  })
+ }).then(res => res.json()).then(data => {
+  console.log(data);
+ })
+}
 </script>
-@endsection
+@endsection 

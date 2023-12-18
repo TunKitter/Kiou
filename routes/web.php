@@ -171,6 +171,7 @@ Route::post('/course/mentor/name', [CourseController::class, 'getMentorName'])->
 Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
 Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
 Route::post('/course/add/upload/video', [MentorVideoController::class, 'uploadJob'])->name('create-lesson');
+Route::post('/course/update/interactive', [MentorVideoController::class, 'updateInteractive'])->name('update-interactive');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
