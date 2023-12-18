@@ -53,16 +53,18 @@ Route::prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->grou
 
     Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
 # --------------------------- Admin Course --------------------------------
-    Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
-    Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
-    Route::post('/notification', function () {
-        return response()->json([
-            'data' => Notification::create([
-                "user_id" => request()->user_id,
-                'content' => request()->content,
-            ]),
-        ]);
-    })->name('create-notification');
+Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
+Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
+Route::put('/course/accept-course/{id}', [AdminCourseController::class, 'acceptCourse'])->name('accept-course-admin');
+Route::post('/course/refuse/{id}', [AdminCourseController::class, 'delete'])->name('refuse-course-admin');
+Route::post('/notification', function () {
+    return response()->json([
+        'data' => Notification::create([
+            "user_id" => request()->user_id,
+            'content' => request()->content,
+        ]),
+    ]);
+})->name('create-notification');
 
 # --------------------------- Admin Category --------------------------------
     Route::get('/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');

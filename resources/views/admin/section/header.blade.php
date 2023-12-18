@@ -9,27 +9,27 @@
     <meta content="Techzaa" name="author" />
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
     <!-- Theme Config Js -->
-    <script src="{{asset('assets/js/config.js')}}"></script>
+    <script src="{{ asset('assets/js/config.js') }}"></script>
 
     <!-- App css -->
-    <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" id="app-style" />
-    
-    <link href="{{asset('assets/vendor/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
-  
-    <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
-    <!-- Icons css -->
-    <link rel="stylesheet" href="{{asset('assets/vendor/daterangepicker/daterangepicker.css')}}">
+    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 
-        <!-- Vector Map css -->
-    <link rel="stylesheet" href="{{asset('assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css')}}">
-   
+    <link href="{{ asset('assets/vendor/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- Icons css -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/daterangepicker/daterangepicker.css') }}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
         integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -47,20 +47,20 @@
                         <!-- Logo light -->
                         <a href="index.html" class="logo-light">
                             <span class="logo-lg">
-                                <img src="{{asset('assets/img/logo.png')}}" alt="logo">
+                                <img src="{{ asset('assets/img/logo.png') }}" alt="logo">
                             </span>
                             <span class="logo-sm">
-                                <img src="{{asset('assets/img/logo.png')}}" alt="small logo">
+                                <img src="{{ asset('assets/img/logo.png') }}" alt="small logo">
                             </span>
                         </a>
 
                         <!-- Logo Dark -->
                         <a href="index.html" class="logo-dark">
                             <span class="logo-lg">
-                                <img src="{{asset('assets/images/logo-dark.png')}}" alt="dark logo">
+                                <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
                             </span>
                             <span class="logo-sm">
-                                <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
+                                <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
                             </span>
                         </a>
                     </div>
@@ -68,7 +68,7 @@
                     <!-- Sidebar Menu Toggle Button -->
                     <button class="button-toggle-menu">
                         <i class="ri-menu-line"></i>
-                    </button>       
+                    </button>
                     <!-- Horizontal Menu Toggle Button -->
                     <button class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
                         <div class="lines">
@@ -90,8 +90,8 @@
                 </div>
                 <ul class="topbar-menu d-flex align-items-center gap-3">
                     <li class="dropdown d-lg-none">
-                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="false" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ri-search-line fs-22"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
@@ -101,9 +101,51 @@
                             </form>
                         </div>
                     </li>
+
+                    <li class="dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
+                            <img src="{{ asset('assets/images/flags/us.jpg') }}" alt="user-image" class="me-0 me-sm-1"
+                                height="12">
+                            <span class="align-middle d-none d-lg-inline-block">English</span> <i
+                                class="ri-arrow-down-s-line d-none d-sm-inline-block align-middle"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <img src="{{ asset('assets/images/flags/germany.jpg') }}" alt="user-image"
+                                    class="me-1" height="12">
+                                <span class="align-middle">German</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <img src="{{ asset('assets/images/flags/italy.jpg') }}" alt="user-image"
+                                    class="me-1" height="12">
+                                <span class="align-middle">Italian</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <img src="{{ asset('assets/images/flags/spain.jpg') }}" alt="user-image"
+                                    class="me-1" height="12">
+                                <span class="align-middle">Spanish</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <img src="{{ asset('assets/images/flags/russia.jpg') }}" alt="user-image"
+                                    class="me-1" height="12">
+                                <span class="align-middle">Russian</span>
+                            </a>
+
+                        </div>
+                    </li>
+
                     <li class="dropdown notification-list">
-                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="false" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ri-mail-line fs-22"></i>
                             <span class="noti-icon-badge badge text-bg-purple">4</span>
                         </a>
@@ -130,7 +172,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
                                                 <div class="notify-icon">
-                                                    <img src="{{asset('assets/images/users/avatar-1.jpg')}}"
+                                                    <img src="{{ asset('assets/images/users/avatar-1.jpg') }}"
                                                         class="img-fluid rounded-circle" alt="" />
                                                 </div>
                                             </div>
@@ -138,7 +180,8 @@
                                                 <h5 class="noti-item-title fw-semibold fs-14">Cristina Pride <small
                                                         class="fw-normal text-muted float-end ms-1">1 day ago</small>
                                                 </h5>
-                                                <small class="noti-item-subtitle text-muted">Hi, How are you? What about
+                                                <small class="noti-item-subtitle text-muted">Hi, How are you? What
+                                                    about
                                                     our
                                                     next meeting</small>
                                             </div>
@@ -153,7 +196,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
                                                 <div class="notify-icon">
-                                                    <img src="{{asset('assets/images/users/avatar-2.jpg')}}"
+                                                    <img src="{{ asset('assets/images/users/avatar-2.jpg') }}"
                                                         class="img-fluid rounded-circle" alt="" />
                                                 </div>
                                             </div>
@@ -175,7 +218,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
                                                 <div class="notify-icon">
-                                                    <img src="{{asset('assets/images/users/avatar-3.jpg')}}"
+                                                    <img src="{{ asset('assets/images/users/avatar-3.jpg') }}"
                                                         class="img-fluid rounded-circle" alt="" />
                                                 </div>
                                             </div>
@@ -196,7 +239,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
                                                 <div class="notify-icon">
-                                                    <img src="{{asset('assets/images/users/avatar-4.jpg')}}"
+                                                    <img src="{{ asset('assets/images/users/avatar-4.jpg') }}"
                                                         class="img-fluid rounded-circle" alt="" />
                                                 </div>
                                             </div>
@@ -204,7 +247,8 @@
                                                 <h5 class="noti-item-title fw-semibold fs-14">Sherry Marshall <small
                                                         class="fw-normal text-muted float-end ms-1">3 day ago</small>
                                                 </h5>
-                                                <small class="noti-item-subtitle text-muted">Hi, How are you? What about
+                                                <small class="noti-item-subtitle text-muted">Hi, How are you? What
+                                                    about
                                                     our
                                                     next meeting</small>
                                             </div>
@@ -219,7 +263,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
                                                 <div class="notify-icon">
-                                                    <img src="{{asset('assets/images/users/avatar-5.jpg')}}"
+                                                    <img src="{{ asset('assets/images/users/avatar-5.jpg') }}"
                                                         class="img-fluid rounded-circle" alt="" />
                                                 </div>
                                             </div>
@@ -245,8 +289,8 @@
                     </li>
 
                     <li class="dropdown notification-list">
-                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="false" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ri-notification-3-line fs-22"></i>
                             <span class="noti-icon-badge badge text-bg-pink">3</span>
                         </a>
@@ -264,32 +308,10 @@
                                 </div>
                             </div>
 
-                            <div style="max-height: 300px;" data-simplebar>
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon bg-primary-subtle">
-                                        <i class="mdi mdi-comment-account-outline text-primary"></i>
-                                    </div>
-                                    <p class="notify-details">Caleb Flakelar commented on Admin
-                                        <small class="noti-time">1 min ago</small>
-                                    </p>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon bg-warning-subtle">
-                                        <i class="mdi mdi-account-plus text-warning"></i>
-                                    </div>
-                                    <p class="notify-details">New user registered.
-                                        <small class="noti-time">5 hours ago</small>
-                                    </p>
-                                </a>
-
+                            <div id="notication"style="max-height: 300px;" >
                                 
 
-                                <!-- item-->
-                          
-                             
+
                             </div>
 
                             <!-- All-->
@@ -308,11 +330,11 @@
                     </li>
 
                     <li class="dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="false" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown"
+                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="account-user-avatar">
-                                <img src="{{ ($image = auth()->user()->image['avatar']) ? (str_starts_with($image, 'http') ? $image : asset('user/avatar/' . $image)) : asset('assets/img/user/avatar.jpg') }}" alt="user-image" width="32"
-                                    class="rounded-circle">
+                                <img src="{{ ($image = auth()->user()->image['avatar']) ? (str_starts_with($image, 'http') ? $image : asset('user/avatar/' . $image)) : asset('assets/img/user/avatar.jpg') }}"
+                                    alt="user-image" width="32" class="rounded-circle">
                             </span>
                             <span class="d-lg-block d-none">
                                 <h5 class="my-0 fw-normal">{{ auth()->user()->name }}<i
@@ -344,7 +366,7 @@
                             </a>
 
                             <!-- item-->
-                            <a href="{{route('home')}}" class="dropdown-item">
+                            <a href="{{ route('home') }}" class="dropdown-item">
                                 <i class="ri-login-box-line fs-18 align-middle me-1"></i>
                                 <span>Go to Website</span>
                             </a>
@@ -379,10 +401,10 @@
             <!-- Brand Logo Dark -->
             <a href="index.html" class="logo logo-dark">
                 <span class="logo-lg">
-                    <img src="{{asset('assets/images/logo-dark.png')}}" alt="dark logo">
+                    <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
                 </span>
                 <span class="logo-sm">
-                    <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
+                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
                 </span>
             </a>
 
