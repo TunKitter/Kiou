@@ -33,4 +33,9 @@ class Mentor extends Model
     {
         return $this->hasMany(Course::class);
     }
+    public function profession()
+    {
+        return $this->hasMany(Profession::class);
+        // return $this->hasOne(Mentor::class, 'mentor_id');
+    }
 }

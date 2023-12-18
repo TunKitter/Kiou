@@ -19,7 +19,7 @@ class LoginController extends Controller
                
                 if(Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d'){
 
-                return redirect()->route('listUser')->with('success', 'Đăng nhập thành công');
+                return redirect()->route('dashboard')->with('success', 'Đăng nhập thành công');
             }
                    
         }

@@ -27,7 +27,7 @@ use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\SiteMapController;
 use App\Http\Controllers\Client\StripeController;
 use App\Http\Controllers\Client\UserchartController;
-use App\Http\Controllers\Client\VnpayController;
+use App\Http\Controllers\Client\PaypalController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -222,10 +222,20 @@ Route::controller(StripeController::class)->group(function () {
 
 });
 
-# ------------------------- Pay VnPay --------------------------------
-Route::post('/vnpay', [VnpayController::class, 'create'])->name('vnpay');
-Route::get('/return', [VnpayController::class, 'return'])->name('return');
-# ------------------------- Moderation --------------------------------
+// # ------------------------- Pay VnPay --------------------------------
+// Route::post('/vnpay', [VnpayController::class, 'create'])->name('vnpay');
+// Route::get('/return', [VnpayController::class, 'return'])->name('return');
+// # ------------------------- Moderation --------------------------------
+//Thanh toán Paypal
+Route::controller(PaypalController::class)
+    ->prefix('paypal')
+    ->group(function () {
+        Route::view('payment', 'cart')->name('create.payment');
+        Route::post('handle-payment', 'handlePayment')->name('make.payment');
+        Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
+        Route::get('payment-success', 'paymentSuccess')->name('success.payment');
+    });
+    
 Route::middleware('auth')->group(function () {
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation');
 });

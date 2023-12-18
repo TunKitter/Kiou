@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Mentor;
 use App\Models\Roadmap;
+use App\Models\Profession;
+use DB;
 
 class HomeController extends Controller
 {
@@ -29,11 +31,69 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        // dd($buylot);
+        
+        $top10Professions = Course::select(['category'])->get()->toArray();
+        $top10ProfessionsResult = [];
+        foreach($top10Professions as $key => $value) {
+            $top10ProfessionsResult[$value['category']]['quantity'] = (isset($top10ProfessionsResult[$value['category']]['quantity'])) ? $top10ProfessionsResult[$value['category']]['quantity']+=1 : 1; 
+/*
+  */       }
+        $profession_name = (Profession::whereIn('_id',array_keys($top10ProfessionsResult))->get()->pluck('name','_id' ));
+        $top10Mentors = Mentor::raw(function ($collection) {
+            return $collection->aggregate([
+                [
+                    '$lookup' => [
+                        'from' => 'courses',
+                        'localField' => '_id',
+                        'foreignField' => 'mentor_id',
+                        'as' => 'courses',
+                    ],
+                ],
+                [
+                    '$unwind' => '$profession', // Giải mảng profession để tiếp tục liên kết
+                ],
+                [
+                    '$lookup' => [
+                        'from' => 'professions',
+                        'localField' => 'profession',
+                        'foreignField' => '_id',
+                        'as' => 'profession_info',
+                    ],
+                ],
+                [
+                    '$project' => [
+                        'name' => 1,
+                        'image' => '$image',
+                        // 'profession' => '$profession'
+                    ],
+                ],
+                [
+                    '$limit' => 10,
+                ],
+            ]);
+        });
+        // Top 10 excellent mentors
+        $total_enrollment_mentor =  Course::raw(function ($collection) {
+            return $collection->aggregate([
+                ['$group' => [
+                    '_id' => '$mentor_id',
+                    'total_enrollment' => ['$sum' => '$total_enrollment'],
+                ]],
+                ['$sort' => ['total_enrollment' => -1]],
+                ['$limit' => 10,],
+            ]);
+        });
+        // dd( $total_enrollment_mentor);
+        $total_enrollment_mentor = $total_enrollment_mentor->pluck('total_enrollment', '_id')->toArray();
+        // dd($top10Mentors);
+        // dd(( ));
+        $mentor_name = Mentor::whereIn('_id',array_unique($top10Mentors->pluck('_id')->toArray()))->pluck('profession','_id');
+        $professions = Profession::all()->pluck('name', '_id');
 
-        return view('client.home.home', compact('CourseCount', 'MentorCount', 'RoadmapCount', 'EnrollmentCount', 'buylot', 'courses'));
+        // dd($profession);
+
+        return view('client.home.home', compact('CourseCount', 'MentorCount', 'RoadmapCount', 'EnrollmentCount', 'buylot', 'courses', 'top10Mentors', 'total_enrollment_mentor', 'mentor_name', 'professions','top10ProfessionsResult','profession_name'));
     }
-
     public function softData($courses, $a_length)
     {
         for ($i = 0; $i <= $a_length; $i++) {
@@ -50,7 +110,5 @@ class HomeController extends Controller
         }
 
         return $courses;
-
     }
-
 }
