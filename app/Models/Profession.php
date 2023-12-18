@@ -16,4 +16,8 @@ class Profession extends Model
     protected $attributes = [
         'parent_profession' => [],
     ];
+    public function mentor()
+    {
+        return $this->belongsTo(Mentor::class);
+    }
 }

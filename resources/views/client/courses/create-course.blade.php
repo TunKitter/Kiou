@@ -26,7 +26,7 @@
                                     <a href="dashboard-instructor.html" class="btn btn-black">Back to Course</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0);" class="btn btn-success-dark">Save</a>
+                                    <a href="" class="btn btn-success-dark">Save</a>
                                 </li>
                             </ul>
                         </div>
@@ -61,15 +61,19 @@
                                         </div>
                                         <div class="add-course-form">
                                             <form action="#">
-                                                <div class="form-group">
+                                                <div class="form-group ">
                                                     <label class="add-course-label">Course Title</label>
-                                                    <input type="text" name="title_course" class="form-control"
-                                                        placeholder="Course Title" />
+                                                    <input type="text" name="title_course"
+                                                        class="form-control is-invalid" id="title_course"
+                                                        placeholder="Course Title" oninput="enter_data()" />
+                                                    <small id="title_error" class="error"style="color:red"></small>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="add-course-label">Course Description</label>
                                                     <input type="text" name="description_course" class="form-control"
-                                                        placeholder="Course description" />
+                                                        id="des_course" placeholder="Course description" oninput="enter_data()"/>
+                                                    <small id="des_error" class="error" style="color:red"></small>
+
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="add-course-label">Courses Category</label>
@@ -80,11 +84,13 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    <small id="category_error" class="error" style="color:red"></small>
                                                 </div>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">Price</label>
                                                     <input type="text" class="form-control" placeholder="10.00"
-                                                        name="price_course" />
+                                                        id="price_course" name="price_course" oninput="enter_data()"/>
+                                                    <small id="price_error" class="error" style="color:red"></small>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="add-course-label">Courses Level</label>
@@ -93,26 +99,32 @@
                                                             <option value="{{ $level->id }}">{{ $level->name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <small id="level_error" class="error" style="color:red"></small>
                                                 </div>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">Course Content</label>
-                                                    <textarea name="course_content" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="course_content" class="form-control" id="content_course" cols="30" rows="10"></textarea>
+                                                    <small id="content_error" class="error" style="color:red"></small>
                                                 </div>
                                                 <br>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">Requirements</label>
-                                                    <textarea name="course_requirement" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="course_requirement" class="form-control" id="requirement" cols="30" rows="10"></textarea>
+                                                    <small id="requirement_error" class="error" style="color:red"></small>
                                                 </div>
                                                 <br>
                                                 <div class="form-group mb-0">
                                                     <label class="add-course-label">What students will learn</label>
-                                                    <textarea name="course_will_learn" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="course_will_learn" class="form-control" id="learn" cols="30" rows="10"></textarea>
+                                                    <small id="learn_error"class="error" style="color:red"></small>
                                                 </div>
+                                                
                                             </form>
                                         </div>
                                         <div class="widget-btn">
                                             <a class="btn btn-black">Back</a>
-                                            <a class="btn btn-info-light next_btn" onclick="saveTemp()">Continue</a>
+                                            <button type="submit" class="btn btn-info-light next_btn course" 
+                                                onclick="saveTemp()" disabled>Continue</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -126,7 +138,7 @@
                                                 <div class="form-group">
                                                     <label class="add-course-label">Course cover image</label>
                                                     <div class="relative-form">
-                                                        <input type="file" name="image" class="form-control" />
+                                                        <input type="file" name="image" class="form-control" oninput="enter_data2()"/>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -134,7 +146,7 @@
                                         </div>
                                         <div class="widget-btn">
                                             <a class="btn btn-black prev_btn">Previous</a>
-                                            <a class="btn btn-info-light next_btn">Continue</a>
+                                            <button class="btn btn-info-light next_btn course_2" disabled>Continue</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -151,7 +163,7 @@
                                         </div>
                                         <div class="widget-btn">
                                             <a class="btn btn-black prev_btn">Previous</a>
-                                            <a class="btn btn-info-light next_btn" onclick="getCourseInfo()">Continue</a>
+                                            <button class="btn btn-info-light next_btn" onclick="getCourseInfo()" disabled>Continue</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -165,10 +177,10 @@
                                             <ul class="list-unstyled courses_ne d-flex flex-column gap-3">
                                             </ul>
                                         </div>
-                                        <div class="widget-btn">
+                                        <div class="widget-btn">cm 
                                             <a class="btn btn-black prev_btn">Previous</a>
                                             <a class="btn btn-info-light next_btn upload-btn" style="display: none"
-                                                onclick="saveCourse()">Continue</a>
+                                                onclick="saveCourse()">Save</a>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -189,6 +201,36 @@
         </div>
     </section>
     <script>
+        var course = document.querySelector('.course');
+        var course_2 = document.querySelector('.course_2');
+        var inputs = (document.querySelectorAll('input[oninput="enter_data()"]'))
+        var inputs_length = inputs.length
+        var inputs_2 = (document.querySelectorAll('input[oninput="enter_data2()"]'))
+        var inputs_length2 = inputs2.length
+        function enter_data() {
+            let check_ = true
+            for (let i = 0; i < inputs_length; i++) {
+                if (inputs[i].value.length < 1) {
+                    course.setAttribute('disabled', true);
+                    return;
+                }
+            }
+            if (check_) course.removeAttribute('disabled');
+
+        }
+        function enter_data2() {
+            let check_ = true
+            for (let i = 0; i < inputs_length2; i++) {
+                if (inputs_2[i].value.length < 1) {
+                    course_2.setAttribute('disabled', true);
+                    return;
+                }
+            }
+            if (check_) course_2.removeAttribute('disabled');
+
+        }
+    </script>
+    <script>
         var total_time = 0;
         var resumable = new Resumable({
             target: '{{ route('upload-resumable') }}',
@@ -198,7 +240,7 @@
             fileType: ['mp4'],
             fileParameterName: 'file',
             chunkSize: 2 * 1024 *
-            1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+                1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
             headers: {
                 'Accept': 'application/json'
             },
@@ -224,12 +266,12 @@
                     '#37b24d';
             }
         });
-var filenames = []
+        var filenames = []
         resumable.on('fileSuccess', function(file, response) {
             filenames[filenames.length] = (JSON.parse(response)).filename;
             if (currentProgress == document.querySelectorAll('.current_progress_upload').length - 1) {
                 document.querySelector('.upload-btn').style.display = 'block';
-                localStorage.clear();   
+                localStorage.clear();
             }
             currentProgress++
         });
@@ -286,6 +328,7 @@ var filenames = []
         }
 
         function addLecture(lecture) {
+            let random_id = '_' + makeid();
             document.querySelector('#' + lecture).innerHTML += `
     <div class="faq-grid" id="${a = lecture + '_' + makeid()}">
                               <div class="faq-header">
@@ -296,6 +339,7 @@ var filenames = []
                                 >
                                   <i class="fas fa-align-justify"></i>
                                   <span contenteditable class="lesson_name">Lesson name</span>
+                                  <span class="lesson_path d-none">${random_id}</span>
                                 </a>
                                 <div class="faq-right">
                               
@@ -323,9 +367,9 @@ var filenames = []
                           <label class="add-course-label"
                             >Courses Category</label
                           >
-                          <select class="form-control select lesson_category">
-                              @foreach ($professions as $profession)
-                                <option value="{{ $profession->id }}}}">{{ $profession->name }}</option>
+                          <select class="form-control select lesson_category ${random_id}">
+                              @foreach ($categories as $category)
+                                <option value="{{ $category->_id }}">{{ $category->name }}</option>
                               @endforeach
                           </select>
                         </div>
@@ -338,6 +382,7 @@ var filenames = []
                               </div>
                             </div>
     `
+            $('.' + random_id).select2()
         }
 
         function removeLecture(id) {
@@ -346,24 +391,27 @@ var filenames = []
 
         function getCourseInfo() {
             let lesson_name_file = document.querySelectorAll('.lesson_name');
-            let video = '';
             [...document.querySelectorAll('input[name="lesson[]"')].map((e, index) => {
-                video = document.createElement('video');
-                video.src = URL.createObjectURL(e.files[0]);
-                video.addEventListener('loadedmetadata', () => {
-                    // const duration = video.duration;
-                    // console.log('Video duration:', duration);
-                    total_time += parseInt(video.duration);
-                });
-                document.querySelector('.courses_ne').innerHTML +=
-                    '<li><span style="min-width:200px;display:inline-block;">' + lesson_name_file[index]
-                    .textContent +
-                    `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span class="current_progress_upload" style="width:0;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
-                resumable.addFile(e.files[0]);
+                if (e.files[0]) {
+                    let video = document.createElement('video');
+                    video.src = URL.createObjectURL(e.files[0]);
+                    video.addEventListener('loadedmetadata', () => {
+                        // const duration = video.duration;
+                        // console.log('Video duration:', duration);
+                        total_time += parseInt(video.duration);
+                    });
+                    document.querySelector('.courses_ne').innerHTML +=
+                        '<li><span style="min-width:200px;display:inline-block;">' + lesson_name_file[index]
+                        .textContent +
+                        `</span><span style="width: 41%;height:10px;background: #392c7d;display:inline-block;border-radius: 12px;position: relative;"><span class="current_progress_upload" style="width:0;background:#ff4667;display: inline-block;height: 10px;position: absolute;border-radius: 12px;"></span></span></li>`
+                    resumable.addFile(e.files[0]);
+                }
             });
         }
 
+        
         function saveTemp() {
+
             localStorage.setItem('title', document.querySelector('input[name="title_course"]').value);
             localStorage.setItem('description', document.querySelector('input[name="description_course"]').value);
             localStorage.setItem('category', $('#category').select2('data')[0].id);
@@ -373,6 +421,7 @@ var filenames = []
             localStorage.setItem('requirement', document.querySelector('textarea[name="course_requirement"]').value);
             localStorage.setItem('will_learn', document.querySelector('textarea[name="course_will_learn"]').value);
             document.querySelector('.recover').style.display = 'none';
+
         }
     </script>
     <script>
@@ -396,6 +445,8 @@ var filenames = []
             document.querySelector('.recover').style.display = 'none';
             localStorage.clear()
         }
+        var lessons_name = {};
+        var lesson_index = 0;
 
         function saveCourse() {
             let formData = new FormData();
@@ -407,7 +458,7 @@ var filenames = []
             formData.append('level', $('#level').select2('data')[0].id);
             formData.append('total_chapter', document.querySelectorAll('.chapter_video').length);
             formData.append('chapters', ([...document.querySelectorAll('.chapter_name')].map(e => e.innerText)).join(
-            '_$_'));
+                '_$_'));
             formData.append('total_lesson', document.querySelectorAll('.lesson_name').length);
             formData.append('total_time', total_time);
             formData.append('content', document.querySelector('textarea[name="course_content"]').value);
@@ -420,17 +471,43 @@ var filenames = []
                 body: formData
             }).then(response => response.json()).then(data2 => {
                 console.log(data2);
-                // đã có sẵn id chapter, kiểm tra lesson thuộc chapter nào sau đó fetch lên để cập nhật lesson đó
-                let formData2 = new FormData();
-                formData2.append('filenames', filenames.join(';'));
-                formData2.append('course_id', data2.message['course_id']);
-                fetch('{{route("create-lesson")}}',{
-                    method: "POST",
-                    body: formData2
-                }).then(response => response.json()).then(data => {
-                    console.log(data);
+                let index_lesson = 0;
+
+                [...document.querySelectorAll('.chapter_video')].map((e, index) => {
+
+                    return {
+
+                        [e.querySelector('.chapter_name').innerHTML]: [...e.querySelectorAll('.faq-grid')]
+                            .map(i => {
+                                let formDataAddLesson = new FormData();
+                                formDataAddLesson.append('name', i.querySelector('.lesson_name')
+                                    .innerHTML);
+                                formDataAddLesson.append('description', i.querySelector(
+                                    '.lesson_description').value);
+                                formDataAddLesson.append('category', $(i.querySelector(
+                                    '.lesson_category')).select2('data')[0].id);
+                                let temp_subtitle = i.querySelector('.lesson_subtitle').files[0];
+                                if (temp_subtitle) {
+                                    formDataAddLesson.append('subtitle', temp_subtitle);
+                                }
+                                formDataAddLesson.append('path', filenames[index_lesson]);
+                                formDataAddLesson.append('course_id', '' + data2.message['course_id']);
+                                formDataAddLesson.append('chapter_id', data2.message['_id']);
+                                formDataAddLesson.append('chapter_child', 'chapter_' + index);
+                                formDataAddLesson.append('chapter_index', index_lesson);
+
+                                fetch('{{ route('create-lesson') }}', {
+                                    method: "POST",
+                                    body: formDataAddLesson
+                                }).then(response => response.json()).then(data => {
+                                    console.log(data);
+                                })
+                                index_lesson++;
+                                // return [i.querySelector('.lesson_name').innerHTML, i.querySelector('.lesson_description').value,$(i.querySelector('.lesson_category')).select2('data')[0].id,i.querySelector('.lesson_subtitle').files[0],i.querySelector('input[name="lesson[]"]').files[0]]
+                            })
+                    }
                 })
-                console.log(data);
+                // đã có sẵn id chapter, kiểm tra lesson thuộc chapter nào sau đó fetch lên để cập nhật lesson đó
             })
         }
     </script>

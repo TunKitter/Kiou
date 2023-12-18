@@ -273,45 +273,12 @@
                                                     <option>Unread</option>
                                                 </select>
                                             </span>
-                                            <a href="javascript:void(0)" class="clear-noti">Mark all as read <i
-                                                    class="fa-solid fa-circle-check"></i></a>
+                                            
                                         </div>
                                         <div class="noti-content">
                                             <ul class="notification-list">
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt=""
-                                                                    src="assets/img/user/user1.jpg">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">Lex Murphy requested
-                                                                    <span>access to</span> UNIX directory tree hierarchy
-                                                                </a></h6>
-                                                            <button class="btn btn-accept">Accept</button>
-                                                            <button class="btn btn-reject">Reject</button>
-                                                            <p>Today at 9:42 AM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt=""
-                                                                    src="assets/img/user/user2.jpg">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">Ray Arnold left 6
-                                                                    <span>comments on</span> Isla Nublar SOC2 compliance
-                                                                    report</a></h6>
-                                                            <p>Yesterday at 11:42 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                @if (isset($notications ))
+                                                @foreach($notications as $notication)
                                                 <li class="notification-message">
                                                     <div class="media d-flex">
                                                         <div>
@@ -321,32 +288,19 @@
                                                             </a>
                                                         </div>
                                                         <div class="media-body">
-                                                            <h6><a href="notifications.html">Dennis Nedry <span>commented
-                                                                        on</span> Isla Nublar SOC2 compliance report</a>
+                                                            <h6>
+                                                                {{$notication->title}}
                                                             </h6>
-                                                            <p class="noti-details">“Oh, I finished de-bugging the phones,
-                                                                but the system's compiling for eighteen minutes, or twenty.
-                                                                So, some minor systems may go on and off for a while.”</p>
-                                                            <p>Yesterday at 5:42 PM</p>
+                                                            <p class="noti-details">“{{$notication->content}}”</p>
+                                                            <p>{{$notication->created_at}}</p>
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt=""
-                                                                    src="assets/img/user/user1.jpg">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">John Hammond
-                                                                    <span>created</span> Isla Nublar SOC2 compliance report
-                                                                </a></h6>
-                                                            <p>Last Wednesday at 11:15 AM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                @endforeach
+                                                @else
+                                                <p class="text-center pt-5">There are no announcements</p>
+                                                @endif
+
                                             </ul>
                                         </div>
                                     </div>
@@ -410,7 +364,7 @@
     </div>
     </div> --}}
                                         @if (Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d')
-                                            <a class="dropdown-item" href="{{route('listUser')}}"><i class="feather-log-in me-1"></i>Go
+                                            <a class="dropdown-item" href="{{route('admin.dashboard')}}"><i class="feather-log-in me-1"></i>Go
                                                 to Admin</a>
                                         @endif
                                         <a class="dropdown-item" href="http://127.0.0.1:8000/logout"><i
@@ -583,18 +537,20 @@
                         maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                 </div>
                 <div class="owl-carousel mentoring-course owl-theme aos" data-aos="fade-up">
+                    @foreach($top10ProfessionsResult as $key => $top10)
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
                                
                                 <div class="feature-cont">
-                                    <div class="feature-text">Angular Development</div>
+                                    <div class="feature-text">{{ $profession_name[$key] }}</div>
                                 </div>
                             </div>
-                            <p>40 Instructors</p>
+                            <p>{{ $top10['quantity']}} courses</p>
                         </div>
                     </div>
-                    <div class="feature-box text-center ">
+                    @endforeach
+                    {{-- <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
                               
@@ -635,7 +591,7 @@
                             </div>
                             <p>30 Instructors</p>
                         </div>
-                    </div>
+                    </div> --}}
                  
                 </div>
             </div>
@@ -901,22 +857,37 @@
                         </div>
                     </div>
                     <div class="owl-carousel instructors-course owl-theme aos" data-aos="fade-up">
-                        <div class="instructors-widget">
+                        @foreach ( $top10Mentors as $mentor )
+                        @if($loop->index % 2 ==0 )
+                            <div class="instructors-widget">
                             <div class="instructors-img ">
                                 <a href="instructor-list.html">
-                                    <img class="img-fluid" alt src="assets/img/user/user7.jpg">
+                                    <img class="img-fluid" alt src="{{asset('mentor/avatar/'.$mentor->image['avatar'])}}">
                                 </a>
                             </div>
                             <div class="instructors-content text-center">
-                                <h5><a href="instructor-profile.html">David Lee</a></h5>
-                                <p>Web Developer</p>
+                                <h5><a href="#">{{$mentor->name}}</a></h5>
+                                <p>
+                                    @php
+                                        $mentor_profession = '';
+                                    @endphp
+                                    @foreach ($mentor_name[$mentor->_id] as $profession )
+                                    @php
+                                         $mentor_profession .= $professions[$profession].', ';
+                                    @endphp
+                                    @endforeach
+                                    {{rtrim($mentor_profession,', ')}}
+                                </p>
                                 <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-user-group"></i>
-                                    <span>50 Students</span>
+                                    <i class="fa-solid fa-bolt"></i>
+                                    <span>{{isset($total_enrollment_mentor[$mentor->_id]) ? $total_enrollment_mentor[$mentor->_id] :'0'}} Enrollment</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="instructors-widget">
+@endif
+                        @endforeach
+                        
+                        {{-- <div class="instructors-widget">
                             <div class="instructors-img">
                                 <a href="instructor-list.html">
                                     <img class="img-fluid" alt src="assets/img/user/user8.jpg">
@@ -1050,7 +1021,7 @@
                                     <span>40 Students</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 

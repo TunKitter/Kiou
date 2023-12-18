@@ -31,6 +31,8 @@
                                                     <th>Metadata Information</th>
                                                     <th>Total Enrollment</th>
                                                     <th>Price</th>
+                                                    <th>Action</th>
+                                                  
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -53,7 +55,9 @@
                                                     <td>{{$course->total_enrollment}}</td>
                                                     <td>{{$course->price}} $</td>
 
-                                                    <td><button class="btn text-primary" onclick="location.href='{{route('detail-course-admin', $course->_id)}}'">More Infor</button></td>
+                                                    <td>
+                                                        <button class="btn text-primary" onclick="location.href='{{route('admin.detail-course-admin', $course->_id)}}'">More Infor</button>
+                                                    </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -102,7 +106,7 @@ function deletedCategory(obj) {
     obj.innerHTML = 'Deleting...'
     let formData = new FormData();
     formData.append('id', category_id_delete)
-    fetch('{{route("delete-category-admin")}}',{
+    fetch('{{route("admin.delete-category-admin")}}',{
         method:'POST',
         body: formData
     }).then(res => res.json()).then(data => {

@@ -13,7 +13,7 @@
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form id="add-category" action="{{ route('storeCategory') }}" method="POST">
+                    <form id="add-category" action="{{ route('admin.storeCategory') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label class="form-control-label">Name category</label>
@@ -80,7 +80,7 @@
                 <div class="card-body">
                     <div class="container mt-3">
                         <a data-bs-toggle="modal" data-bs-target="#addCategory" class="btn btn-primary">
-                            Thêm
+                            Add Category
                         </a>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                             <th>Slug</th>
                             <th>Created_at</th>
                             <th>Updated_at</th>
-                            <th style="width: 200px">Hoạt động</th>
+                            <th style="width: 200px">Action</th>
                         </tr>
                     </thead>
                     <tbody id="data">
@@ -262,8 +262,8 @@
         $('body').on('click', '.category-delete', function(event) {
             var deleteid = $(this).data('id'); // Use $(this) instead of $($this)
             swal({
-                title: "Bạn có chắc chắn?",
-                text: "Sau khi xóa, bạn sẽ không thể khôi phục lại danh mục này!",
+                title: "Are you sure?",
+                text: "After deletion, you won't be able to recover this category!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,

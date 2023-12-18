@@ -72,14 +72,13 @@ class StripeController extends Controller
             return array_key_first($chapter['infor']);
         }, $chapter);
 
-
         $lesson = Lesson::select('id', 'course_id')->whereIn('chapter.1', $chapter)->where('chapter.2', '0')->get()->pluck('_id', 'course_id');
-      
+
         // $enrollments = Enrollment::where('user_id', auth()->user()->_id)->whereIn('course_id', session(auth()->user()->username)[0])->get();
         // dd(session(auth()->user()->username)[0]);
         foreach (session(auth()->user()->username)[0] as $lesson2) {
             // $test[] =
-             Enrollment::where('user_id', auth()->user()->_id, 'course_id')->where('course_id', $lesson2)->first()->update([
+            Enrollment::where('user_id', auth()->user()->_id, 'course_id')->where('course_id', $lesson2)->first()->update([
                 'lesson_id' => $lesson[$lesson2],
                 'state' => '65347ec024cfaf917eaad1b1',
             ]);
@@ -93,7 +92,7 @@ class StripeController extends Controller
         // }
 
         Session::forget(auth()->user()->username);
-        return  redirect(route('home'))->with('success','Payment success');
+        return redirect(route('home'))->with('success', 'Payment success');
     }
 
     public function cancel()

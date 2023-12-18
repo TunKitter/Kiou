@@ -13,7 +13,7 @@
                     <h4 class="header-title">Edit Post</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('post-update',$post->slug)}}" method="POST">
+                    <form action="{{route('admin.post-update',$post->slug)}}" method="POST">
                         @csrf
                         <div class="row g-2">
                             <div class="mb-3 col-md-6">

@@ -28,6 +28,7 @@ class LessonController extends Controller
         }
         $check_enrollment_lesson = (Lesson::where('_id', $enrollment->lesson_id)->first());
         if ($id_lesson->_id != $check_enrollment_lesson->_id) {
+            // dd($id_lesson->chapter[2], $check_enrollment_lesson->chapter[2]);
             if ($id_lesson->chapter[2] > $check_enrollment_lesson->chapter[2]) {
                 return redirect()->route('lesson-learn', [$id_course->slug, $check_enrollment_lesson->slug]);
             }
@@ -131,5 +132,10 @@ class LessonController extends Controller
             'result' => Lesson::where('name', 'like', '%' . request()->name . '%')->where('allow_buy_seperate', true)->with('course')->get(),
             'name' => \request()->name,
         ]);
+    }
+    public function editInteractive($lesson_slug)
+    {
+        $lesson = Lesson::where('slug', $lesson_slug)->first();
+        return view('client.mentor.update_interactive_lesson', compact('lesson'));
     }
 }

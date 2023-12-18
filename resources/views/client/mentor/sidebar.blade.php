@@ -32,6 +32,11 @@
                         <i class="feather-home"></i> My Dashboard
                     </a>
                 </li>
+                <li class="nav-item {{$route_name == 'mentor-my-courses' ? 'active' : ''}}">
+                    <a href="{{route('mentor-my-courses')}}" class="nav-link">
+                        <i class="feather-home"></i> My Courses
+                    </a>
+                </li>
                 <li class="nav-item ">
                     <a href="{{ route('mentor-profile')}}" class="nav-link">
                         <i class="feather-settings"></i> Edit Profile

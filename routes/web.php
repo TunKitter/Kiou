@@ -27,34 +27,37 @@ use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\SiteMapController;
 use App\Http\Controllers\Client\StripeController;
 use App\Http\Controllers\Client\UserchartController;
-use App\Http\Controllers\Client\VnpayController;
+use App\Http\Controllers\Client\PaypalController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
-Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-# --------------------------- Admin User --------------------------------
-Route::get('/admin/users/list', [UserController::class, 'listUser'])->name('listUser')->middleware(['auth', 'auth.admin']);
-Route::post('/admin/users/list/{take}/{skip}', [UserController::class, 'userMore']);
-Route::post('/admin/users/add', [UserController::class, 'store'])->name('addUser');
-Route::post('/admin/users/update', [UserController::class, 'updateUser'])->name('updateUser');
-Route::post('/admin/users/delete', [UserController::class, 'delete'])->name('deleteUser');
+    # --------------------------- Admin User --------------------------------
+    Route::get('/users/list', [UserController::class, 'listUser'])->name('listUser');
+    Route::post('/users/list/{take}/{skip}', [UserController::class, 'userMore']);
+    Route::post('/users/add', [UserController::class, 'store'])->name('addUser');
+    Route::post('/users/update', [UserController::class, 'updateUser'])->name('updateUser');
+    Route::post('/users/delete', [UserController::class, 'delete'])->name('deleteUser');
 
 # --------------------------- Admin Category --------------------------------
-Route::get('/admin/category/list', [CategoryController::class, 'index'])->name('list-category-admin');
-Route::post('/admin/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
-Route::post('/admin/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
-Route::post('/admin/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
+    Route::get('/category/list', [CategoryController::class, 'index'])->name('list-category-admin');
+    Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
+    Route::post('/category/update', [CategoryController::class, 'update'])->name('update-category-admin');
+    Route::post('/category/add', [CategoryController::class, 'add'])->name('add-category-admin');
 
 # --------------------------- Admin Roadmap --------------------------------
-Route::get('/admin/roadmap/list', [AdminRoadmapController::class, 'index'])->name('list-roadmap-admin');
-Route::get('/admin/roadmap/list/{id}', [AdminRoadmapController::class, 'detail'])->name('detail-roadmap-admin');
+    Route::get('/roadmap/list', [AdminRoadmapController::class, 'index'])->name('list-roadmap-admin');
+    Route::get('/roadmap/list/{id}', [AdminRoadmapController::class, 'detail'])->name('detail-roadmap-admin');
 
-Route::post('/admin/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
+    Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
 # --------------------------- Admin Course --------------------------------
-Route::get('/admin/course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
-Route::get('/admin/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
-Route::post('/admin/notification', function () {
+Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
+Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
+Route::put('/course/accept-course/{id}', [AdminCourseController::class, 'acceptCourse'])->name('accept-course-admin');
+Route::post('/course/refuse/{id}', [AdminCourseController::class, 'delete'])->name('refuse-course-admin');
+Route::post('/notification', function () {
     return response()->json([
         'data' => Notification::create([
             "user_id" => request()->user_id,
@@ -64,19 +67,21 @@ Route::post('/admin/notification', function () {
 })->name('create-notification');
 
 # --------------------------- Admin Category --------------------------------
-Route::get('/admin/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');
-Route::post('/admin/category-posts/add', [CategoryPostController::class, 'storeCategory'])->name('storeCategory');
-Route::get('/admin/category-posts/edit/{id}', [CategoryPostController::class, 'editCategory'])->name('editCategory');
-Route::post('/admin/category-posts/update/{id}', [CategoryPostController::class, 'updateCategory'])->name('updateCategory');
-Route::get('/admin/category-posts/delete/{id}', [CategoryPostController::class, 'delete'])->name('deleteCategory');
+    Route::get('/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');
+    Route::post('/category-posts/add', [CategoryPostController::class, 'storeCategory'])->name('storeCategory');
+    Route::get('/category-posts/edit/{id}', [CategoryPostController::class, 'editCategory'])->name('editCategory');
+    Route::post('/category-posts/update/{id}', [CategoryPostController::class, 'updateCategory'])->name('updateCategory');
+    Route::get('/category-posts/delete/{id}', [CategoryPostController::class, 'delete'])->name('deleteCategory');
 
-Route::get('/admin/posts/list', [PostController::class, 'index'])->name('list-posts');
-Route::post('/admin/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
-Route::get('/admin/posts/create', [PostController::class, 'create'])->name('post-create');
-Route::post('/admin/posts/create', [PostController::class, 'store'])->name('post-store');
-Route::get('/admin/posts/edit/{slug}', [PostController::class, 'edit'])->name('post-edit');
-Route::post('/admin/posts/edit/{slug}', [PostController::class, 'update'])->name('post-update');
-Route::post('/admin/posts/list/{id}', [PostController::class, 'delete'])->name('post-delete');
+    Route::get('/posts/list', [PostController::class, 'index'])->name('list-posts');
+    Route::post('/posts/list/upload', [PostController::class, 'upload'])->name('ckeditor.upload');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('post-create');
+    Route::post('/posts/create', [PostController::class, 'store'])->name('post-store');
+    Route::get('/posts/edit/{slug}', [PostController::class, 'edit'])->name('post-edit');
+    Route::post('/posts/edit/{slug}', [PostController::class, 'update'])->name('post-update');
+    Route::post('/posts/list/{id}', [PostController::class, 'delete'])->name('post-delete');
+
+});
 
 // Login Google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -84,11 +89,6 @@ Route::get('/login/google/callback', [LoginController::class, 'handleGoogleCallb
 
 # --------------------------- Home ---------------------------------
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-# --------------------------- Errors ---------------------------------
-Route::fallback(function () {
-    return view('client.errors.unrole', ['msg' => 'Page not found']);
-});
 
 # ------------------------- Auth --------------------------------
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -148,12 +148,22 @@ Route::post('course/roadmap/detail', [MentorVideoController::class, 'updateRoadm
 Route::post('/mentor/roadmap/delete', [MentorVideoController::class, 'deleteRoadmap'])->name('mentor-roadmap-delete');
 Route::get('/mentor/roadmap/create/new', [MentorVideoController::class, 'addRoadmap'])->name('mentor-roadmap-add')->middleware('auth');
 Route::post('/mentor/roadmap/create/new', [MentorVideoController::class, 'handleAddRoadmap']);
+Route::get('/mentor/my-course', [MentorVideoController::class, 'myCourses'])->middleware('auth')->name('mentor-my-courses');
+Route::get('/mentor/my-course/{id}', [MentorVideoController::class, 'detailMyCourses'])->middleware('auth')->name('mentor-detail-my-courses');
+Route::post('/mentor/my-course/{id}/edit', [MentorVideoController::class, 'updateMyCourse'])->name('mentor-update-my-courses');
+Route::post('/mentor/my-course/{id}/update-image', [MentorVideoController::class, 'updateImageMyCourse'])->name('mentor-update-image-my-courses');
+Route::post('/mentor/my-course/{id}/update-chapter', [MentorVideoController::class, 'updateChapterMyCourse'])->name('mentor-update-chapter-my-courses');
+Route::post('/mentor/my-course/{id}/update-lesson', [MentorVideoController::class, 'updateLessonMyCourse'])->name('mentor-update-lesson-my-courses');
+Route::post('/mentor/my-course/{id}/delete-lesson', [MentorVideoController::class, 'deleteLessonMyCourse'])->name('mentor-delete-lesson-my-courses');
+Route::post('/mentor/my-course/{id}/update-lesson-path', [MentorVideoController::class, 'updateLessonPathMyCourse'])->name('mentor-update-lesson-path-my-courses');
+Route::post('/mentor/my-course/{id}/add-lesson', [MentorVideoController::class, 'createLesson'])->name('mentor-create-lesson-my-courses');
 # ------------------------- Course --------------------------------
 Route::get('course/add', [MentorVideoController::class, 'create'])->name('course-add');
 Route::get('course/list', [CourseController::class, 'list'])->name('course-list');
 Route::get('course/explore', [CourseController::class, 'exploreUser'])->name('course-explore-user');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
+Route::post('course/plain-data', [CourseController::class, 'detailPlainData'])->name('course-detail-plain-data');
 Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
 Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getCourseDataBuyMost'])->name('course-data-buy-most');
 Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');
@@ -163,6 +173,7 @@ Route::post('/course/mentor/name', [CourseController::class, 'getMentorName'])->
 Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
 Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
 Route::post('/course/add/upload/video', [MentorVideoController::class, 'uploadJob'])->name('create-lesson');
+Route::post('/course/update/interactive', [MentorVideoController::class, 'updateInteractive'])->name('update-interactive');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
@@ -190,6 +201,7 @@ Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBook
 Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
 Route::post('course/{id}/learn/bookmark/update', [LessonController::class, 'updateBookmark'])->name('lesson-bookmark-update');
 Route::post('lessons/get', [LessonController::class, 'getLessonData'])->name('lesson-data');
+Route::get('lessons/interactive/{id_lesson}', [LessonController::class, 'editInteractive'])->name('edit-interactive');
 
 # ------------------------- Cart --------------------------------
 
@@ -212,10 +224,20 @@ Route::controller(StripeController::class)->group(function () {
 
 });
 
-# ------------------------- Pay VnPay --------------------------------
-Route::post('/vnpay', [VnpayController::class, 'create'])->name('vnpay');
-Route::get('/return', [VnpayController::class, 'return'])->name('return');
-# ------------------------- Moderation --------------------------------
+// # ------------------------- Pay VnPay --------------------------------
+// Route::post('/vnpay', [VnpayController::class, 'create'])->name('vnpay');
+// Route::get('/return', [VnpayController::class, 'return'])->name('return');
+// # ------------------------- Moderation --------------------------------
+//Thanh toán Paypal
+Route::controller(PaypalController::class)
+    ->prefix('paypal')
+    ->group(function () {
+        Route::view('payment', 'cart')->name('create.payment');
+        Route::post('handle-payment', 'handlePayment')->name('make.payment');
+        Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
+        Route::get('payment-success', 'paymentSuccess')->name('success.payment');
+    });
+    
 Route::middleware('auth')->group(function () {
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation');
 });
@@ -235,6 +257,7 @@ Route::get('/blog/category/{id}', [BlogController::class, 'blogInCategory'])->na
 # ------------------------- SiteMap --------------------------------
 Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('site-map');
 
-
-# ------------------------- SMS --------------------------------
-Route::post('get/smsotp', [PasswordController::class, 'sentSmsOtp'])->name('send-otp');
+# --------------------------- Errors ---------------------------------
+Route::fallback(function () {
+    return view('client.errors.unrole', ['msg' => 'Page not found']);
+});

@@ -6,7 +6,8 @@ use MongoDB\Laravel\Eloquent\Model;
 class Notification extends Model
 {
     protected $fillable = [
-        'user_id',
+        'title',
+        'mentor_id',
         'content',
     ];
     protected $attributes = [];
