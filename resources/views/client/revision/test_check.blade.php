@@ -100,7 +100,7 @@ transform: translateY(-20%) translateX(-150%);
             'x-goog-api-key': API_KEY
         },
         body: JSON.stringify({
-            prompt: { text: `return me 7 questions that one correct answer with the key is "correctAnswer" and an array with key is "wrongAnswers" contains 3 wrong answers about {{$category->name}} with json as your response as json format`},
+            prompt: { text: `return me 7 questions that one correct answer with the key is "correctAnswer" and an array with key is "wrongAnswers" contains 3 wrong answers about {{$category->name}} with json as your response as json format. The questions need to various to help me learn better and keep in mind that the response need a standard json format,one more time , your resonse need a standard json format`},
         })
     }).then(res => (res.json())).then(data => {
         document.querySelector('#quotes').style.display = 'none';
@@ -159,7 +159,7 @@ let total_correct = 0;
 let total_wrong = 0;
  for (let i = 0; i< 7; i++) {
     document.querySelector('.question_'+ i + '_correct').classList.add('text-green','fw-bold')
-    if(user_select[`question_${i}`] == correct_select[`question_${i}`]) {
+    if(user_select[`question_${i}`].includes(correct_select[`question_${i}`])) {
         total_correct++
     }
     else {
@@ -186,11 +186,11 @@ let default_0_user = {{$user_skill->infor[0]}};
 let default_1_user = {{$user_skill->infor[1]}};
 let default_2_user = {{$user_skill->infor[2]}};
 default_0_user = default_0_user - (total_wrong * 5);
-default_1_user = default_0_user - (total_wrong * 10);
-default_2_user = default_0_user - (total_wrong * 14);
-default_0_user = default_0_user < 0 ? 0 : default_0_user;
-default_1_user = default_1_user < 0 ? 0 : default_1_user;
-default_2_user = default_2_user < 0 ? 0 : default_2_user;
+default_1_user = default_1_user - (total_wrong * 10);
+default_2_user = default_2_user - (total_wrong * 14);
+default_0_user = default_0_user < 0 ? 0 : (total_wrong == 0 ? default_0_user + 7 : default_0_user );
+default_1_user = default_1_user < 0 ? 0 : (total_wrong == 0 ? default_1_user + 4 : default_0_user );
+default_2_user = default_2_user < 0 ? 0 : (total_wrong == 0 ? default_2_user + 1 : default_0_user )
     console.log(default_0_user,default_1_user,default_2_user);
         const formData = new FormData();
         const data = {

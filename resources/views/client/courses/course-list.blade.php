@@ -1,4 +1,7 @@
 @extends('client.layouts.master')
+@php
+  
+@endphp
 @section('content')
 <style>
 .slider-labels {
@@ -161,11 +164,11 @@
                             {{-- <div class="col-lg-6">
 <div class="d-flex align-items-center">
 <div class="show-result">
-<h4>Showing 1-9 of 50 results</h4>
+<h4>Showings 1-9 of 50 results</h4>
 </div>
 </div>
 </div> --}}
-<a href="#" class="text-primary">How to search better?</a>
+{{-- <a href="#" class="text-primary">How to search better?</a> --}}
 <br><br>
 <div class="col-lg-6">
 <div class="show-filter add-course-info ">
@@ -328,6 +331,74 @@
     </div>
     </div>
     </div>
+@php
+  $mentor_courses = $mentor->course;
+  @endphp
+@foreach($mentor_courses as $course) 
+<div class="col-lg-12 col-md-12 d-flex">
+<div class="course-box course-design list-course d-flex">
+<div class="product">
+<div class="product-img">
+<a href="{{route('course-detail',$course->slug)}}">
+<span class="d-none course-link">{{$course->_id}}</span>
+<img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
+</a>
+<div class="price">
+<h3>{{ $course->price}} <span>$99.00</span></h3>
+</div>
+</div>
+<div class="product-content">
+<div class="head-course-title">
+<h3 class="title">{{ $course->name}}</h3>
+<div class="all-btn all-category d-flex align-items-center">
+<a href="checkout.html" class="btn btn-primary">BUY NOW</a>
+</div>
+<div class="all-cart align-items-center mx-2">
+    <form action="{{route('add-to-cart')}}" method="POST">
+        @csrf
+        <input type="hidden" value="{{ $course->_id }}" name="course_id">
+        <input type="hidden" value="{{ $course->price }}" name="price">
+      
+        <button type="submit" class="btn btn-primary">Add to cart</button>
+    </form>
+</div>
+</div>
+<div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+<div class="rating-img d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-01.svg')}}" alt>
+<p>{{ $course->meta['total_lesson']}} Lesson</p>
+</div>
+<div class="course-view d-flex align-items-center">
+<img src="{{asset('assets/img/icon/icon-02.svg')}}" alt>
+<p>{{round(round($course->meta['total_time']/60)/60)}}hr {{(round($course->meta['total_time']/60)%60)}}min</p>
+</div>
+</div>
+<div class="rating">
+{{-- <i class="fas fa-star filled"></i> --}}
+{{-- <i class="fas fa-star filled"></i> --}}
+{{-- <i class="fas fa-star filled"></i> --}}
+<i class="fas fa-star filled"></i>
+{{-- <i class="fas fa-star"></i> --}}
+<span class="d-inline-block average-rating"><span>{{$course->complete_course_rate}}</span> <span>( {{ $course->total_enrollment}} enrolled)</span></span>
+</div>
+
+<div class="course-group d-flex mb-0">
+<div class="course-group-img d-flex">
+<a href="instructor-profile.html"><img src="assets/img/user/user2.jpg" alt class="img-fluid"></a>
+<div class="course-name">
+<h4><a href="instructor-profile.html">{{$course->mentor->name}}</a></h4>
+<p>Instructor</p>
+</div>
+</div>
+<div class="course-share d-flex align-items-center justify-content-center">
+<a href="#rate"><i class="fa-regular fa-heart"></i></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+@endforeach
 @endforeach
 @endisset
 </div>

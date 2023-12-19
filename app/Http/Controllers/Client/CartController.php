@@ -19,7 +19,7 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
-        session()->forget(auth()->id());
+        request()->session()->forget(auth()->id());
         $data = [
             'course_id' => $request->course_id,
             'user_id' => Auth::id(),
@@ -42,7 +42,7 @@ class CartController extends Controller
     public function delete($id)
     {
         Enrollment::find($id)->delete();
-        session()->forget(auth()->id());
+        request()->session()->forget(auth()->id());
         return redirect()->back()->with('success', 'Delete cart successfully');
     }
 

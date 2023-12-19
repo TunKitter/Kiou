@@ -1,11 +1,11 @@
 @inject('auth', 'Illuminate\Support\Facades\Auth')
 @php
      $user_id = auth()->id();
+    //  request()->session()->forget(auth()->id());
      $user_header = session($user_id) ? true : false;
      if (!$user_header) {
          session([$user_id => true]);
      }
-     // session()->forget(auth()->id());
      $is_login = auth()->check();
 @endphp
 
