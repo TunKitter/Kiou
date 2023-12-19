@@ -169,7 +169,7 @@
 <br><br>
 <div class="col-lg-6">
 <div class="show-filter add-course-info ">
-<form onsubmit="return searchCourse()" id="searchInput">
+<form id="searchInput">
 <div class="row gx-2 align-items-center">
 <div class="col-md-6 col-item">
 <div class=" search-group">
@@ -204,7 +204,7 @@
 </div>
 
                             <div class="col-lg-3">
-                                <input type="submit" form="searchInput" class="btn btn-primary" value="Search" />
+                              <div class="btn btn-primary" onclick="searchCourse(this)">Searching</div>
                             </div>
                         </div>
                     </div>
@@ -781,42 +781,42 @@ output: mentor
 input: sfda34
 output: mentor
 input:`
-function searchCourse() {
+function searchCourse(obj) {
+  obj.disabled = true
+  obj.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
     let keyword =document.querySelector('select[name=type]')
     if(keyword.value == 'auto'){ 
-        fetch(`https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText`,{
+        fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,{
         method: 'POST',
         headers:{
             'Content-Type': 'application/json',
-            'x-goog-api-key': API_KEY
         },
         body: JSON.stringify({
-            prompt: { text: `${is_mentor_or_course} ${search_input.value} \n output:` },
-        })
+            contents: {parts: { text: `${is_mentor_or_course} ${search_input.value} \n output:` },
+        }})
     }).then(res => (res.json())).then(data => {
-        document.querySelector(`option[value=${data['candidates'][0]['output']}]`).selected = true
+        document.querySelector(`option[value=${data['candidates'][0]['content']['parts'][0]['text']}]`).selected = true
     // (data['candidates'][0]['output']);
     })
     }
-    fetch(`https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText`,{
+    fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,{
         method: 'POST',
         headers:{
             'Content-Type': 'application/json',
-            'x-goog-api-key': API_KEY
         },
         body: JSON.stringify({
-            prompt: { text: `${training_senteces} ${search_input.value} \n output:` },
-        })
+            contents: {parts: { text: `${training_senteces} ${search_input.value} \n output:` },
+        }})
     }).then(res => (res.json())).then(data => {
-        if((data['candidates'][0]['output']).toLowerCase().includes((search_input.value).toLowerCase())){
+        if((data['candidates'][0]['content']['parts'][0]['text']).toLowerCase().includes((search_input.value).toLowerCase())){
             is_wrong_spell.value = '0'
         }
         else {
-            is_wrong_spell.value = data['candidates'][0]['output']
+            is_wrong_spell.value = data['candidates'][0]['content']['parts'][0]['text']
     }
     document.forms.namedItem("searchInput").submit()
-    })
- 
+  })
+
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
