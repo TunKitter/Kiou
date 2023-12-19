@@ -2141,7 +2141,7 @@ html.menu-opened body {
     -o-transition: all 0.5s ease;
     -ms-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
-    max-width: 130px;
+    /* max-width: 130px; */
     margin: 0 auto 25px;
 }
 .feature-bg p {

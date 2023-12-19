@@ -191,7 +191,10 @@
                                     class="me-0"
                                   >
                                     <i class="far fa-trash-can" onclick="removeLecture('{{$a}}','{{$item['_id']}}')"></i>
-                                  </a>
+                                </a>
+<a href="javascript:void(0);" class="me-0">
+<i class="fa fa-arrow-right" onclick="location.href = '{{route('edit-interactive',$item['slug'])}}'"></i>
+</a>
                                 </div>
                               </div>
                               <div

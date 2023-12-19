@@ -5,8 +5,8 @@
             <div class="col-12 text-center">
                 <script>
                     document.write(new Date().getFullYear())
-                </script> © Velonic - Theme by
-                <b>Techzaa</b>
+                </script> © Admin - Theme by
+                <b>Kiou</b>
             </div>
         </div>
     </div>

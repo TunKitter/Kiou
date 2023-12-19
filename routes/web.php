@@ -27,7 +27,7 @@ use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\SiteMapController;
 use App\Http\Controllers\Client\StripeController;
 use App\Http\Controllers\Client\UserchartController;
-use App\Http\Controllers\Client\VnpayController;
+use App\Http\Controllers\Client\PaypalController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -163,6 +163,7 @@ Route::get('course/list', [CourseController::class, 'list'])->name('course-list'
 Route::get('course/explore', [CourseController::class, 'exploreUser'])->name('course-explore-user');
 Route::get('course/explore/{id?}', [CourseController::class, 'explore'])->name('course-explore');
 Route::get('course/list/{id}', [CourseController::class, 'detail'])->name('course-detail');
+Route::post('course/plain-data', [CourseController::class, 'detailPlainData'])->name('course-detail-plain-data');
 Route::post('course/list/{skip}/{take}', [CourseController::class, 'getCourseData'])->name('course-data');
 Route::post('course/list/{skip}/{take}/buymost', [CourseController::class, 'getCourseDataBuyMost'])->name('course-data-buy-most');
 Route::post('course/list/{skip}/{take}/costmost', [CourseController::class, 'getCourseDataCostMost'])->name('course-data-cost-most');
@@ -172,6 +173,7 @@ Route::post('/course/mentor/name', [CourseController::class, 'getMentorName'])->
 Route::post('/course/add/resumable', [MentorVideoController::class, 'uploadResumable'])->name('upload-resumable');
 Route::post('/course/add/upload', [MentorVideoController::class, 'handleUpload'])->name('handle-upload');
 Route::post('/course/add/upload/video', [MentorVideoController::class, 'uploadJob'])->name('create-lesson');
+Route::post('/course/update/interactive', [MentorVideoController::class, 'updateInteractive'])->name('update-interactive');
 
 # ------------------------- Roadmap --------------------------------
 Route::get('course/roadmap', [RoadMapController::class, 'index'])->name('roadmap');
@@ -199,6 +201,7 @@ Route::post('course/{id}/learn/bookmark/add', [LessonController::class, 'addBook
 Route::post('course/{id}/learn/bookmark/delete', [LessonController::class, 'deleteBookmark'])->name('lesson-bookmark-delete');
 Route::post('course/{id}/learn/bookmark/update', [LessonController::class, 'updateBookmark'])->name('lesson-bookmark-update');
 Route::post('lessons/get', [LessonController::class, 'getLessonData'])->name('lesson-data');
+Route::get('lessons/interactive/{id_lesson}', [LessonController::class, 'editInteractive'])->name('edit-interactive');
 
 # ------------------------- Cart --------------------------------
 
@@ -221,10 +224,20 @@ Route::controller(StripeController::class)->group(function () {
 
 });
 
-# ------------------------- Pay VnPay --------------------------------
-Route::post('/vnpay', [VnpayController::class, 'create'])->name('vnpay');
-Route::get('/return', [VnpayController::class, 'return'])->name('return');
-# ------------------------- Moderation --------------------------------
+// # ------------------------- Pay VnPay --------------------------------
+// Route::post('/vnpay', [VnpayController::class, 'create'])->name('vnpay');
+// Route::get('/return', [VnpayController::class, 'return'])->name('return');
+// # ------------------------- Moderation --------------------------------
+//Thanh toán Paypal
+Route::controller(PaypalController::class)
+    ->prefix('paypal')
+    ->group(function () {
+        Route::view('payment', 'cart')->name('create.payment');
+        Route::post('handle-payment', 'handlePayment')->name('make.payment');
+        Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
+        Route::get('payment-success', 'paymentSuccess')->name('success.payment');
+    });
+    
 Route::middleware('auth')->group(function () {
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation');
 });

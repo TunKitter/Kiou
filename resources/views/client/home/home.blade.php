@@ -277,9 +277,8 @@
                                         </div>
                                         <div class="noti-content">
                                             <ul class="notification-list">
-                                                @if (count($notications )> 0)
+                                                @if (isset($notications ))
                                                 @foreach($notications as $notication)
-                                              
                                                 <li class="notification-message">
                                                     <div class="media d-flex">
                                                         <div>
@@ -538,18 +537,20 @@
                         maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                 </div>
                 <div class="owl-carousel mentoring-course owl-theme aos" data-aos="fade-up">
+                    @foreach($top10ProfessionsResult as $key => $top10)
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
                                
                                 <div class="feature-cont">
-                                    <div class="feature-text">Angular Development</div>
+                                    <div class="feature-text">{{ $profession_name[$key] }}</div>
                                 </div>
                             </div>
-                            <p>40 Instructors</p>
+                            <p>{{ $top10['quantity']}} courses</p>
                         </div>
                     </div>
-                    <div class="feature-box text-center ">
+                    @endforeach
+                    {{-- <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
                               
@@ -590,7 +591,7 @@
                             </div>
                             <p>30 Instructors</p>
                         </div>
-                    </div>
+                    </div> --}}
                  
                 </div>
             </div>
@@ -856,22 +857,37 @@
                         </div>
                     </div>
                     <div class="owl-carousel instructors-course owl-theme aos" data-aos="fade-up">
-                        <div class="instructors-widget">
+                        @foreach ( $top10Mentors as $mentor )
+                        @if($loop->index % 2 ==0 )
+                            <div class="instructors-widget">
                             <div class="instructors-img ">
                                 <a href="instructor-list.html">
-                                    <img class="img-fluid" alt src="assets/img/user/user7.jpg">
+                                    <img class="img-fluid" alt src="{{asset('mentor/avatar/'.$mentor->image['avatar'])}}">
                                 </a>
                             </div>
                             <div class="instructors-content text-center">
-                                <h5><a href="instructor-profile.html">David Lee</a></h5>
-                                <p>Web Developer</p>
+                                <h5><a href="#">{{$mentor->name}}</a></h5>
+                                <p>
+                                    @php
+                                        $mentor_profession = '';
+                                    @endphp
+                                    @foreach ($mentor_name[$mentor->_id] as $profession )
+                                    @php
+                                         $mentor_profession .= $professions[$profession].', ';
+                                    @endphp
+                                    @endforeach
+                                    {{rtrim($mentor_profession,', ')}}
+                                </p>
                                 <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-user-group"></i>
-                                    <span>50 Students</span>
+                                    <i class="fa-solid fa-bolt"></i>
+                                    <span>{{isset($total_enrollment_mentor[$mentor->_id]) ? $total_enrollment_mentor[$mentor->_id] :'0'}} Enrollment</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="instructors-widget">
+@endif
+                        @endforeach
+                        
+                        {{-- <div class="instructors-widget">
                             <div class="instructors-img">
                                 <a href="instructor-list.html">
                                     <img class="img-fluid" alt src="assets/img/user/user8.jpg">
@@ -1005,7 +1021,7 @@
                                     <span>40 Students</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
