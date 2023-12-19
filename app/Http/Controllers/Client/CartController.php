@@ -13,18 +13,18 @@ class CartController extends Controller
     {
 
         $userId = Auth::id();
-        $carts = Enrollment::where('user_id', $userId)->where('state','65337ecc289241e845e578d9')->get();
+        $carts = Enrollment::where('user_id', $userId)->where('state', '65337ecc289241e845e578d9')->get();
         return view('client.cart.cart', compact('carts'));
     }
 
     public function store(Request $request)
     {
-
+        session()->forget(auth()->id());
         $data = [
             'course_id' => $request->course_id,
             'user_id' => Auth::id(),
             'price' => ['course' => $request->price],
-            'state' => '65337ecc289241e845e578d9'
+            'state' => '65337ecc289241e845e578d9',
         ];
 
         $userId = Auth::id();
@@ -42,6 +42,7 @@ class CartController extends Controller
     public function delete($id)
     {
         Enrollment::find($id)->delete();
+        session()->forget(auth()->id());
         return redirect()->back()->with('success', 'Delete cart successfully');
     }
 

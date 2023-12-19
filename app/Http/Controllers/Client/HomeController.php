@@ -20,7 +20,14 @@ class HomeController extends Controller
         $total_roadmap = Cache::get('total_roadmap');
         $total_enrollment = Cache::get('total_enrollment');
         $top10_profession = Cache::get('top10_profession');
-        return view('client.home.home', compact('total_course', 'total_mentor', 'total_roadmap', 'total_enrollment', 'mentor_with_total_enrollment_and_avatar', 'professions_name', 'top10_profession'));
+        $user_id = auth()->id();
+        $user_header = session($user_id) ? true : false;
+        if (!$user_header) {
+            session([$user_id => true]);
+        }
+        // session()->forget(auth()->id());
+        $is_login = auth()->check();
+        return view('client.home.home', compact('total_course', 'total_mentor', 'total_roadmap', 'total_enrollment', 'mentor_with_total_enrollment_and_avatar', 'professions_name', 'top10_profession', 'user_header', 'is_login'));
     }
     public function softData($courses, $a_length)
     {
