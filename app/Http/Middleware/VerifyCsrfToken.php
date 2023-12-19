@@ -55,5 +55,6 @@ class VerifyCsrfToken extends Middleware
         '/mentor/my-course/*/add-lesson',
         'course/plain-data',
         '/course/update/interactive',
+        '/get-infor/*',
     ];
 }

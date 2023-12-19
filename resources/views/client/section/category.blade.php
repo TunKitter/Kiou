@@ -1,5 +1,7 @@
 @php
 use App\Models\Profession;
+use Illuminate\Support\Facades\Cache;
+if(!Cache::has('category')){
 function recur($id, $aa)
     {
         $bb = '<ul class="submenu">';
@@ -28,5 +30,7 @@ function recur($id, $aa)
             $temp = recur($cc[$i]->id, $aa);
             $bb .= '<li' . ($temp == '<ul class="submenu"></ul>' ? '' : ' class="has-submenu"') . '><a href="'. route('course-explore',$cc[$i]->slug) .'">' . $cc[$i]->name . '</a>' . $temp . '</li>';
         } 
+Cache::add('category', $bb);
+}
 @endphp
-{!!$bb!!}
+{!! Cache::get('category') !!}
