@@ -185,7 +185,7 @@ function saveData(obj) {
 }
 </script>
 <script src="{{asset('lib/ace.js')}}"></script>
-<script src="{{asset('lib/theme-xcode.js')}}" type="text/javascript" charset="utf-8"></script>
+{{-- <script src="{{asset('lib/theme-xcode.js')}}" type="text/javascript" charset="utf-8"></script> --}}
 <script>
     var base_code = null
     var condition_code = null
@@ -193,16 +193,17 @@ function saveData(obj) {
     var conditions = {}
     document.body.onload = function() {
          base_code= ace.edit("base_code");
-        base_code.setTheme("ace/theme/lib/xcode");
+        // base_code.setTheme("ace/theme/lib/xcode");
         base_code.session.setMode("ace/mode/javascript");
         base_code.setShowPrintMargin(false);
       condition_code = ace.edit("condition_code");
-        condition_code.setTheme("ace/theme/lib/xcode");
+        // condition_code.setTheme("ace/theme/lib/xcode");
         condition_code.session.setMode("ace/mode/json");
         condition_code.setShowPrintMargin(false);
         condition_code.getSession().setUseWorker(false);
         test_code = ace.edit("test_code");
-        test_code.setTheme("ace/theme/lib/xcode");
+        // test_code.setTheme("ace/theme/lib/xcode");
+        condition_code.setValue('"output":"Hello World"')
         test_code.session.setMode("ace/mode/javascript");
         test_code.setShowPrintMargin(false);
         test_code.setValue(base_code.getValue());
