@@ -398,7 +398,7 @@
 </div>
 </div> --}}
                                         @if(Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d')
-                                        <a class="dropdown-item" href="{{route('listUser')}}"><i
+                                        <a class="dropdown-item" href="{{route('dashboard')}}"><i
                                             class="feather-log-in me-1"></i>Go to Admin</a>
                                         @endif
                                         

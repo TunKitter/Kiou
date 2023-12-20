@@ -410,7 +410,7 @@
     </div>
     </div> --}}
                                         @if (Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d')
-                                            <a class="dropdown-item" href="{{route('listUser')}}"><i class="feather-log-in me-1"></i>Go
+                                            <a class="dropdown-item" href="{{route('dashboard')}}"><i class="feather-log-in me-1"></i>Go
                                                 to Admin</a>
                                         @endif
                                         <a class="dropdown-item" href="http://127.0.0.1:8000/logout"><i
