@@ -231,14 +231,14 @@
 <img class="img-fluid" alt src="{{ asset('course/thumbnail/'.$course->image)}}">
 </a>
 <div class="price">
-<h3>{{ $course->price}} <span>$99.00</span></h3>
+<h3>{{ $course->price}} <span>{{ $course->price + 25}}</span></h3>
 </div>
 </div>
 <div class="product-content">
 <div class="head-course-title">
 <h3 class="title">{{ $course->name}}</h3>
 <div class="all-btn all-category d-flex align-items-center">
-<a href="checkout.html" class="btn btn-primary">BUY NOW</a>
+<a href="{{route('checkout')}}" class="btn btn-primary">BUY NOW</a>
 </div>
 <div class="all-cart align-items-center mx-2">
     <form action="{{route('add-to-cart')}}" method="POST">
