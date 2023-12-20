@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('dashboard/getInfor/{type}', [DashboardController::class, 'getInfor'])->name('dashboard.getInfo');
 
     # --------------------------- Admin User --------------------------------
     Route::get('/users/list', [UserController::class, 'listUser'])->name('listUser');
