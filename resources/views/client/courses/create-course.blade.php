@@ -124,7 +124,7 @@
                                         <div class="widget-btn">
                                             <a class="btn btn-black">Back</a>
                                             <button type="submit" class="btn btn-info-light next_btn course" 
-                                                onclick="saveTemp()" disabled>Continue</button>
+                                                onclick="saveTemp()" >Continue</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -146,7 +146,7 @@
                                         </div>
                                         <div class="widget-btn">
                                             <a class="btn btn-black prev_btn">Previous</a>
-                                            <button class="btn btn-info-light next_btn course_2" disabled>Continue</button>
+                                            <button class="btn btn-info-light next_btn course_2">Continue</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -163,7 +163,7 @@
                                         </div>
                                         <div class="widget-btn">
                                             <a class="btn btn-black prev_btn">Previous</a>
-                                            <button class="btn btn-info-light next_btn" onclick="getCourseInfo()" disabled>Continue</button>
+                                            <button class="btn btn-info-light next_btn" onclick="getCourseInfo()" >Continue</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -206,27 +206,27 @@
         var inputs = (document.querySelectorAll('input[oninput="enter_data()"]'))
         var inputs_length = inputs.length
         var inputs_2 = (document.querySelectorAll('input[oninput="enter_data2()"]'))
-        var inputs_length2 = inputs2.length
+        var inputs_length2 = inputs_2.length
         function enter_data() {
             let check_ = true
             for (let i = 0; i < inputs_length; i++) {
                 if (inputs[i].value.length < 1) {
-                    course.setAttribute('disabled', true);
+                    // course.setAttribute('disabled', true);
                     return;
                 }
             }
-            if (check_) course.removeAttribute('disabled');
+            // if (check_) course.removeAttribute('disabled');
 
         }
         function enter_data2() {
             let check_ = true
             for (let i = 0; i < inputs_length2; i++) {
                 if (inputs_2[i].value.length < 1) {
-                    course_2.setAttribute('disabled', true);
+                    // course_2.setAttribute('disabled', true);
                     return;
                 }
             }
-            if (check_) course_2.removeAttribute('disabled');
+            // if (check_) course_2.removeAttribute('disabled');
 
         }
     </script>

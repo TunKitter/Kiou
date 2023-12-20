@@ -411,7 +411,8 @@ video.volume = temp_volume / 100
         maxBufferHole: 0,
         enableWorker:true
     });
-    hls.loadSource('{{$path}}');
+    // hls.loadSource('{{$path}}');
+    hls.loadSource('https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8');
     hls.attachMedia(video);
     const progress = document.querySelector('#progress')
 
