@@ -23,13 +23,14 @@
     <!-- Icons css -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/daterangepicker/daterangepicker.css') }}">
 
+    <!-- Vector Map css -->
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
         integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -45,7 +46,7 @@
                     <!-- Topbar Brand Logo -->
                     <div class="logo-topbar">
                         <!-- Logo light -->
-                        <a href="{{route('dashboard')}}" class="logo-light">
+                        <a href="{{ route('admin.dashboard') }}" class="logo-light">
                             <span class="logo-lg">
                                 <img src="{{ asset('assets/img/logo.png') }}" alt="logo">
                             </span>
@@ -55,7 +56,7 @@
                         </a>
 
                         <!-- Logo Dark -->
-                        <a href="{{route('dashboard')}}" class="logo-dark">
+                        <a href="{{ route('admin.dashboard') }}" class="logo-dark">
                             <span class="logo-lg">
                                 <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
                             </span>
@@ -101,48 +102,6 @@
                             </form>
                         </div>
                     </li>
-
-                    <li class="dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="false" aria-expanded="false">
-                            <img src="{{ asset('assets/images/flags/us.jpg') }}" alt="user-image" class="me-0 me-sm-1"
-                                height="12">
-                            <span class="align-middle d-none d-lg-inline-block">English</span> <i
-                                class="ri-arrow-down-s-line d-none d-sm-inline-block align-middle"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <img src="{{ asset('assets/images/flags/germany.jpg') }}" alt="user-image"
-                                    class="me-1" height="12">
-                                <span class="align-middle">German</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <img src="{{ asset('assets/images/flags/italy.jpg') }}" alt="user-image"
-                                    class="me-1" height="12">
-                                <span class="align-middle">Italian</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <img src="{{ asset('assets/images/flags/spain.jpg') }}" alt="user-image"
-                                    class="me-1" height="12">
-                                <span class="align-middle">Spanish</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <img src="{{ asset('assets/images/flags/russia.jpg') }}" alt="user-image"
-                                    class="me-1" height="12">
-                                <span class="align-middle">Russian</span>
-                            </a>
-
-                        </div>
-                    </li>
-
                     <li class="dropdown notification-list">
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
@@ -308,10 +267,66 @@
                                 </div>
                             </div>
 
-                            <div id="notication"style="max-height: 300px;" >
-                                
+                            <div style="max-height: 300px;" data-simplebar>
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="notify-icon bg-primary-subtle">
+                                        <i class="mdi mdi-comment-account-outline text-primary"></i>
+                                    </div>
+                                    <p class="notify-details">Caleb Flakelar commented on Admin
+                                        <small class="noti-time">1 min ago</small>
+                                    </p>
+                                </a>
 
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="notify-icon bg-warning-subtle">
+                                        <i class="mdi mdi-account-plus text-warning"></i>
+                                    </div>
+                                    <p class="notify-details">New user registered.
+                                        <small class="noti-time">5 hours ago</small>
+                                    </p>
+                                </a>
 
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="notify-icon bg-danger-subtle">
+                                        <i class="mdi mdi-heart text-danger"></i>
+                                    </div>
+                                    <p class="notify-details">Carlos Crouch liked
+                                        <small class="noti-time">3 days ago</small>
+                                    </p>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="notify-icon bg-pink-subtle">
+                                        <i class="mdi mdi-comment-account-outline text-pink"></i>
+                                    </div>
+                                    <p class="notify-details">Caleb Flakelar commented on Admi
+                                        <small class="noti-time">4 days ago</small>
+                                    </p>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="notify-icon bg-purple-subtle">
+                                        <i class="mdi mdi-account-plus text-purple"></i>
+                                    </div>
+                                    <p class="notify-details">New user registered.
+                                        <small class="noti-time">7 days ago</small>
+                                    </p>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="notify-icon bg-success-subtle">
+                                        <i class="mdi mdi-heart text-success"></i>
+                                    </div>
+                                    <p class="notify-details">Carlos Crouch liked <b>Admin</b>.
+                                        <small class="noti-time">Carlos Crouch liked</small>
+                                    </p>
+                                </a>
                             </div>
 
                             <!-- All-->
@@ -372,10 +387,10 @@
                             </a>
 
                             <!-- item-->
-                            <a href="" class="dropdown-item">
-                                <i class="ri-logout-box-line fs-18 align-middle me-1"></i>
-                                <span>Logout</span>
-                            </a>
+                            {{-- <a href="{{route('logoutAdmin')}}" class="dropdown-item">
+                                    <i class="ri-logout-box-line fs-18 align-middle me-1"></i>
+                                    <span>Logout</span>
+                                </a> --}}
                         </div>
                     </li>
                 </ul>
@@ -388,7 +403,7 @@
         <div class="leftside-menu">
 
             <!-- Brand Logo Light -->
-            <a href="{{route('dashboard')}}" class="logo logo-light h1">
+            <a href="{{ route('admin.dashboard') }}" class="logo logo-light h1">
                 KIOU
                 {{-- <span class="logo-lg">
                     <img src="{{asset('assets/img/logo.png')}}" alt="logo">
@@ -399,7 +414,7 @@
             </a>
 
             <!-- Brand Logo Dark -->
-            <a href="{{route('dashboard')}}" class="logo logo-dark">
+            <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                 <span class="logo-lg">
                     <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
                 </span>
@@ -416,7 +431,7 @@
                     <li class="side-nav-title">Main</li>
 
                     <li class="side-nav-item">
-                        <a href="{{route('dashboard')}}" class="side-nav-link">
+                        <a href="{{ route('admin.dashboard') }}" class="side-nav-link">
                             <i class="ri-dashboard-3-line"></i>
                             <span class="badge bg-success float-end"></span>
                             <span> Dashboard </span>
@@ -424,18 +439,16 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="{{route('listUser')}}"
-                            class="side-nav-link">
+                        <a href="{{ route('listUser') }}" class="side-nav-link">
                             <i class="ri-group-2-line"></i>
                             <span> User Account </span>
                             <span class="menu-arrow"></span>
                         </a>
-                     
+
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="{{route('list-category-admin')}}" 
-                            class="side-nav-link">
+                        <a href="{{ route('list-category-admin') }}" class="side-nav-link">
                             <i class="ri-layout-line"></i>
                             <span> Professions Category </span>
                             <span class="menu-arrow"></span>
@@ -443,23 +456,21 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a  href="{{(route('list-roadmap-admin'))}}" 
-                           class="side-nav-link">
+                        <a href="{{ route('list-roadmap-admin') }}" class="side-nav-link">
                             <i class="ri-donut-chart-fill"></i>
                             <span> Roadmap </span>
                             <span class="menu-arrow"></span>
                         </a>
                     </li>
                     <li class="side-nav-item">
-                        <a  href="{{route('list-course-admin')}}" 
-                           class="side-nav-link">
+                        <a href="{{ route('list-course-admin') }}" class="side-nav-link">
                             <i class="ri-compasses-2-line"></i>
                             <span>Course</span>
                             <span class="menu-arrow"></span>
                         </a>
                     </li>
                     <li class="side-nav-item">
-                        <a href="{{route('listCategory')}}" class="side-nav-link">
+                        <a href="{{ route('listCategory') }}" class="side-nav-link">
                             <i class="ri-layout-line"></i>
                             <span> Posts Category </span>
                             <span class="menu-arrow"></span>
@@ -467,7 +478,7 @@
                     </li>
 
                     <li class="side-nav-item">
-                        <a href="{{route('list-posts')}}" class="side-nav-link">
+                        <a href="{{ route('list-posts') }}" class="side-nav-link">
                             <i class="ri-survey-line"></i>
                             <span> Posts </span>
                             <span class="menu-arrow"></span>
