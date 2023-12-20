@@ -14,6 +14,7 @@ class LogoutController extends Controller
     }
     public function logout()
     {
+        request()->session()->forget(auth()->id());
         Session::flush();
         Auth::logout();
         return redirect()->route('home');

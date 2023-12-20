@@ -120,7 +120,12 @@ class CourseController extends Controller
     }
     public function getCourseDataBuyMost($skip = 0, $take = 10, $where = [])
     {
-        $courses = (Course::where('category', request()->category)->where($where)->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
+        if (\request()->category) {
+            $courses = (Course::where('category', request()->category)->where($where)->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
+        } else {
+            $courses = (Course::with('mentor')->where($where)->orderBy('total_enrollment', 'desc')->skip($skip)->take($take)->get());
+
+        }
         // $a_length = count($courses) - 1;
         // $courses = $this->softData($courses_buy_most, $a_length);
         return $courses;

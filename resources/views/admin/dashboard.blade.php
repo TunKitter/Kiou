@@ -1,5 +1,12 @@
 @extends('admin.layout.master')
 @section('content')
+<style>
+    #loading {
+        display: block !important;
+        border-color: white !important;
+        border-left: 7px solid transparent !important;
+    }
+</style>
     <!-- Start Content-->
     <div class="container-fluid">
 
@@ -28,7 +35,9 @@
                             <i class="ri-eye-line widget-icon"></i>
                         </div>
                         <h6 class="text-uppercase mt-0" title="Customers">Courses</h6>
-                        <h2 class="my-2">{{ $total_course }}</h2>
+                        <h2 class="my-2" id="total_courses">
+                            @include('client.section.loading')
+                        </h2>
 
                     </div>
                 </div>
@@ -41,7 +50,9 @@
                             <i class="ri-wallet-2-line widget-icon"></i>
                         </div>
                         <h6 class="text-uppercase mt-0" title="Customers">Revenue</h6>
-                        <h2 class="my-2">${{ $total_revenue }}</h2>
+                        <h2 class="my-2" id="total_revenue">
+                            @include('client.section.loading')
+                        </h2>
 
                     </div>
                 </div>
@@ -54,7 +65,9 @@
                             <i class="ri-shopping-basket-line widget-icon"></i>
                         </div>
                         <h6 class="text-uppercase mt-0" title="Customers">Orders</h6>
-                        <h2 class="my-2">{{ $total_order }}</h2>
+                        <h2 class="my-2" id="total_order">
+                            @include('client.section.loading')
+                        </h2>
 
                     </div>
                 </div>
@@ -67,7 +80,9 @@
                             <i class="ri-group-2-line widget-icon"></i>
                         </div>
                         <h6 class="text-uppercase mt-0" title="Customers">Users</h6>
-                        <h2 class="my-2">{{ $total_user }}</h2>
+                        <h2 class="my-2" id="total_user">
+                            @include('client.section.loading')
+                        </h2>
 
                     </div>
                 </div>
@@ -267,6 +282,28 @@
 
     </div>
     <!-- container -->
+    <script>
+        fetch('{{route("admin.dashboard.getInfo","user")}}',{
+            method: 'POST',
+        }).then(res => res.json()).then(data => {
+            document.querySelector('#total_user').innerHTML = data.total_user
+        })
+        fetch('{{route("admin.dashboard.getInfo","course")}}',{
+            method: 'POST',
+        }).then(res => res.json()).then(data => {
+            document.querySelector('#total_courses').innerHTML = data.total_course
+        })
+        fetch('{{route("admin.dashboard.getInfo","order")}}',{
+            method: 'POST',
+        }).then(res => res.json()).then(data => {
+            document.querySelector('#total_order').innerHTML = data.total_order
+        })
+    fetch('{{route("admin.dashboard.getInfo","revenue")}}',{
+        method: 'POST',
+    }).then(res => res.json()).then(data => {
+        document.querySelector('#total_revenue').innerHTML = data.total_revenue
+    })
+    </script>
 @endsection
 @push('script')
     <script>

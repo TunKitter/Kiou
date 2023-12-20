@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-<button class="btn btn-primary" onclick="updateRoadmap(this)">Update</button>
+<button class="btn btn-primary" onclick="updateRoadmap(this)">Create</button>
                 </div>
             </div>
         </div>
@@ -453,7 +453,7 @@ function renderData2(element) {
   var data_update =[];
   function updateRoadmap(obj) {
     obj.disabled = true;
-    obj.innerText = 'Updating...';
+    obj.innerText = 'Creating...';
   [...document.querySelector('.chapter_videos').children].map((e,index) => {
     data_update[index] = {}
  data_update[index] = getChild(e) 

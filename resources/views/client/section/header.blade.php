@@ -1,4 +1,13 @@
 @inject('auth', 'Illuminate\Support\Facades\Auth')
+@php
+     $user_id = auth()->id();
+    //  request()->session()->forget(auth()->id());
+     $user_header = session($user_id) ? true : false;
+     if (!$user_header) {
+         session([$user_id => true]);
+     }
+     $is_login = auth()->check();
+@endphp
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +48,7 @@
 <body>
     <div class="main-wrapper">
         <header class="header header-page">
+            @if(!$user_header || !($is_login))
             <div class="header-fixed">
                 <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
                     <div class="container ">
@@ -110,9 +120,18 @@
                             </ul>
                         </div>
                         @auth
-                            @inject('carts', 'App\Models\Enrollment')
-                            @php
-                                $total = 0;
+                        @inject('auth', 'Illuminate\Support\Facades\Auth')
+                        @inject('carts', 'App\Models\Enrollment')
+                        @inject('_courses', 'App\Models\Course')
+                        @inject('_mentors', 'App\Models\Mentor')
+                        @php
+                            $user = auth()->user();
+                            $user_cart = $carts::where([['user_id', $user->_id],['state', '65337ecc289241e845e578d9']])->get();
+                            $course_infor = $_courses::whereIn('_id', $user_cart->pluck('course_id'))->get();
+                            $mentor_name2 = $_mentors::select(['name', '_id'])->whereIn('_id', $course_infor->pluck('mentor_id'))->get()->pluck('name', '_id');
+                            $course_infor = $course_infor->toArray();
+                            $user_cart_length = $user_cart->count();
+                            $total = 0;
                             @endphp
                             <ul class="nav header-navbar-rht">
                                 <li class="nav-item cart-nav">
@@ -122,59 +141,57 @@
                                     <div class="wishes-list dropdown-menu dropdown-menu-right">
                                         <div class="wish-header">
                                             <a href="{{ route('cart') }}">View Cart</a>
-                                            {{-- <a href="javascript:void(0)" class="float-end">Checkout</a> --}}
-                                            @if ($carts::where('user_id', auth()->id())->get()->count() > 0)
-                                                    <form action="{{ route('checkout') }}" method="POST" style="display: contents">
-                                                        @csrf
-                                                        <input type="hidden" id="inputInsideForm" name="information_cart">
-                                                        <button type="submit" class="btn float-end" onclick="chuyenDuLieu()">Checkout</button>
-                                                    </form>
+                                            @if ( $user_cart_length > 0)
+                                                <form action="{{ route('checkout') }}" method="POST"
+                                                    style="display: contents">
+                                                    @csrf
+                                                    <input type="hidden" id="inputInsideForm" name="information_cart">
+                                                    <button type="submit" class="btn float-end btn-primary"
+                                                        onclick="chuyenDuLieu()">Checkout</button>
+                                                </form>
                                             @endif
                                         </div>
                                         <div class="wish-content">
                                             <ul>
-                                                @if (
-                                                    $carts
-                                                        ::where('user_id', auth()->id())->get()->count() > 0)
-                                                    @foreach ($carts::where('user_id', auth()->id())->where('state','65337ecc289241e845e578d9')->get() as $cart)
+                                                @php
+                                                    $total = 0;
+                                                @endphp
+                                                @if ( $user_cart_length > 0)
+                                                    @foreach ($user_cart as $cart)
                                                         @php
-                                                            $tempCart = $cart;
-                                                            $tempCart['img'] = $cart->courses->image;
+                                                            $temp_course = current(array_filter($course_infor, function ($value) use($cart) {
+                                                            return $value['_id'] == $cart->course_id;
+                                                        }));
                                                         @endphp
-                                                        <input type="hidden" class="inputOutsideForm" id="inputOutsideForm" name="inputOutsideForm" value="{{$tempCart}}">
-                                                        <li>
+                                                        <input type="hidden" class="inputOutsideForm"
+                                                            id="inputOutsideForm" name="inputOutsideForm">
+                                                        <li class="{{$a = '_'.uniqid()}}">
                                                             <div class="media">
                                                                 <div class="d-flex media-wide">
                                                                     <div class="avatar">
                                                                         <a
-                                                                            href="{{ route('course-detail', $cart->courses->slug) }}">
+                                                                            href="{{ route('course-detail', $temp_course['slug']) }}">
                                                                             <img alt
-                                                                                src="{{ asset('course/thumbnail/'.$cart->courses->image) }}">
+                                                                                src="{{ asset('course/thumbnail/' .  $temp_course['image']) }}">
                                                                         </a>
                                                                     </div>
                                                                     <div class="media-body">
                                                                         <h6><a
-                                                                                href="{{ route('course-detail', $cart->courses->slug) }}">{{ $cart->courses->name }}</a>
+                                                                                href="{{ route('course-detail', $temp_course['slug']) }}">{{ $temp_course['name'] }}</a>
                                                                         </h6>
-                                                                        <p>By {{ $cart->courses->mentor->name }}</p>
-                                                                        <h5>$ {{ $cart->courses->price }}
+                                                                        <p>By {{ $mentor_name2[$temp_course['mentor_id']] }}</p>
+                                                                        <h5>$ {{ $temp_course['price'] }}
                                                                             <span>$99.00</span>
                                                                         </h5>
                                                                     </div>
                                                                 </div>
                                                                 <div class="remove-btn">
-                                                                    <form action="{{ route('delete-cart', $cart->_id) }}"
-                                                                        method="POST">
-                                                                        @csrf
-
-                                                                        <button type="submit"
-                                                                            class="btn">Remove</button>
-                                                                    </form>
+                                                                        <button class="btn" onclick="removeCart('{{ route('delete-cart', $cart->_id) }}','{{ $a }}')">Remove</button>
                                                                 </div>
                                                             </div>
                                                         </li>
                                                         @php
-                                                            $total += $cart->courses->price;
+                                                            $total += $temp_course['price'];
                                                         @endphp
                                                     @endforeach
                                                 @else
@@ -184,79 +201,6 @@
                                             <div class="total-item">
                                                 <h5>Total : $ {{ $total }}</h5>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item wish-nav">
-                                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                        <img src="{{ asset('assets/img/icon/wish.svg') }}" alt="img">
-                                    </a>
-                                    <div class="wishes-list dropdown-menu dropdown-menu-right">
-                                        <div class="wish-content">
-                                            <ul>
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="d-flex media-wide">
-                                                            <div class="avatar">
-                                                                <a href="course-details.html">
-                                                                    <img alt
-                                                                        src="{{ asset('assets/img/course/course-04.jpg') }}">
-                                                                </a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6><a href="course-details.html">Learn Angular...</a></h6>
-                                                                <p>By Dave Franco</p>
-                                                                <h5>$200 <span>$99.00</span></h5>
-                                                                <div class="remove-btn">
-                                                                    <a href="#" class="btn">Add to cart</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="d-flex media-wide">
-                                                            <div class="avatar">
-                                                                <a href="course-details.html">
-                                                                    <img alt
-                                                                        src="{{ asset('assets/img/course/course-14.jpg') }}">
-                                                                </a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6><a href="course-details.html">Build Responsive
-                                                                        Real...</a></h6>
-                                                                <p>Jenis R.</p>
-                                                                <h5>$200 <span>$99.00</span></h5>
-                                                                <div class="remove-btn">
-                                                                    <a href="#" class="btn">Add to cart</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="d-flex media-wide">
-                                                            <div class="avatar">
-                                                                <a href="course-details.html">
-                                                                    <img alt
-                                                                        src="{{ asset('assets/img/course/course-15.jpg') }}">
-                                                                </a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6><a href="course-details.html">C# Developers Double
-                                                                        ...</a></h6>
-                                                                <p>Jesse Stevens</p>
-                                                                <h5>$200 <span>$99.00</span></h5>
-                                                                <div class="remove-btn">
-                                                                    <a href="#" class="btn">Remove</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </li>
@@ -277,75 +221,30 @@
                                         </div>
                                         <div class="noti-content">
                                             <ul class="notification-list">
+                                                @if (isset($notications ))
+                                                @foreach($notications as $notication)
                                                 <li class="notification-message">
                                                     <div class="media d-flex">
                                                         <div>
                                                             <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt
-                                                                    src="{{ asset('assets/img/user/user1.jpg') }}">
+                                                                <img class="avatar-img" alt=""
+                                                                    src="assets/img/user/user3.jpg">
                                                             </a>
                                                         </div>
                                                         <div class="media-body">
-                                                            <h6><a href="notifications.html">Lex Murphy requested
-                                                                    <span>access to</span> UNIX directory tree hierarchy
-                                                                </a></h6>
-                                                            <button class="btn btn-accept">Accept</button>
-                                                            <button class="btn btn-reject">Reject</button>
-                                                            <p>Today at 9:42 AM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt
-                                                                    src="{{ asset('assets/img/user/user2.jpg') }}">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">Ray Arnold left 6
-                                                                    <span>comments on</span> Isla Nublar SOC2 compliance
-                                                                    report</a></h6>
-                                                            <p>Yesterday at 11:42 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt
-                                                                    src="{{ asset('assets/img/user/user3.jpg') }}">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">Dennis Nedry <span>commented
-                                                                        on</span> Isla Nublar SOC2 compliance report</a>
+                                                            <h6>
+                                                                {{$notication->title}}
                                                             </h6>
-                                                            <p class="noti-details">“Oh, I finished de-bugging the phones,
-                                                                but the system's compiling for eighteen minutes, or twenty.
-                                                                So, some minor systems may go on and off for a while.”</p>
-                                                            <p>Yesterday at 5:42 PM</p>
+                                                            <p class="noti-details">“{{$notication->content}}”</p>
+                                                            <p>{{$notication->created_at}}</p>
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="notification-message">
-                                                    <div class="media d-flex">
-                                                        <div>
-                                                            <a href="notifications.html" class="avatar">
-                                                                <img class="avatar-img" alt
-                                                                    src="{{ asset('assets/img/user/user1.jpg') }}">
-                                                            </a>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h6><a href="notifications.html">John Hammond
-                                                                    <span>created</span> Isla Nublar SOC2 compliance report
-                                                                </a></h6>
-                                                            <p>Last Wednesday at 11:15 AM</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                @endforeach
+                                                @else
+                                                <p class="text-center pt-5">There are no announcements</p>
+                                                @endif
+
                                             </ul>
                                         </div>
                                     </div>
@@ -353,7 +252,7 @@
                                 <li class="nav-item user-nav">
                                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
                                         <span class="user-img">
-                                            <img src="{{ ($image = auth()->user()->image['avatar']) ? (str_starts_with($image, 'http') ? $image : asset('user/avatar/' . $image)) : asset('assets/img/user/avatar.jpg') }}"
+                                            <img src="{{ ($image = $user->image['avatar']) ? (str_starts_with($image, 'http') ? $image : asset('user/avatar/' . $image)) : asset('assets/img/user/avatar.jpg') }}"
                                                 style="transform: scale(0.8);">
                                             <span class="status online"></span>
                                         </span>
@@ -367,15 +266,14 @@
                                             </div>
                                             <div class="user-text">
                                                 <h6>
-                                                    {{ auth()->user()->name }}
+                                                    {{ $user->name }}
                                                 </h6>
-                                                <p class="text-muted">{{ auth()->user()->username }}</p>
+                                                <p class="text-muted">{{ $user->username }}</p>
                                             </div>
                                         </div>
                                         <a class="dropdown-item" href="{{ route('profile') }}"><i
                                                 class="feather-user me-1"></i>Profile</a>
-
-                                        @if (auth()->user()->mentor)
+                                        @if ($user->mentor)
                                             <a class="dropdown-item" href="{{ route('mentor-profile') }}"><i
                                                     class="feather-user me-1"></i> Mentor Profile <img
                                                     src="{{ asset('assets/mentor.gif') }}" width="50px"></a>
@@ -388,35 +286,17 @@
                                                 </div>
                                             </a>
                                         @endif
-                                        @php
-                                            $test = false;
-                                            foreach (auth()->user()->role as $role) {
-                                                if ($role == '65531d75139d10c7eb364114') {
-                                                    $test = true;
-                                                }
-                                            }
-                                        @endphp
-
-                                        @if ($test)
+                                        @if (in_array('65531d75139d10c7eb364114',$user->role))
                                             <a class="dropdown-item" href="{{ route('moderation') }}"><i
                                                     class="feather-clipboard"></i>Moderation</a>
                                         @endif
 
-
-
-                                        {{-- <div class="dropdown-item night-mode">
-<span><i class="feather-moon me-1"></i> Night Mode </span>
-<div class="form-check form-switch check-on m-0">
-<input class="form-check-input" type="checkbox" id="night-mode">
-</div>
-</div> --}}
-                                        @if(Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d')
-                                        <a class="dropdown-item" href="{{route('admin.dashboard')}}"><i
-                                            class="feather-log-in me-1"></i>Go to Admin</a>
+                                        @if(in_array('6523f9bcad8f1cf003fce14d', $user->role))
+                                            <a class="dropdown-item" href="{{route('admin.dashboard')}}"><i class="feather-log-in me-1"></i>Go to Admin</a>
                                         @endif
-                                        
                                         <a class="dropdown-item" href="{{ route('logout') }}"><i
                                                 class="feather-log-out me-1"></i> Logout</a>
+
                                     </div>
                                 </li>
                             </ul>
@@ -434,7 +314,17 @@
                     </div>
                 </nav>
             </div>
+@endif
         </header>
+        @if(!$is_login)
+        <script>
+            if(!localStorage.getItem('header_page'))
+            {
+                localStorage.setItem('header_page', document.querySelector('header.header-page').innerHTML);
+                location.reload();
+            }
+        </script>
+        @endif
         <script>
             function chuyenDuLieu() {
             // Lấy giá trị từ tất cả các trường ngoài form và phân tách chúng bằng dấu phẩy
@@ -446,5 +336,17 @@
             // Thiết lập giá trị cho trường trong form
             document.getElementById("inputInsideForm").value = giaTriChuoi;
         }
-    
+   @if($user_header)
+document.querySelector('header.header-page').innerHTML = localStorage.getItem('header_page')
+@else 
+localStorage.setItem('header_page', document.querySelector('header.header-page').innerHTML)
+@endif
+ 
+function removeCart(_id,_class) {
+    fetch(_id,{
+        method: 'POST',
+    }).then(res => res.text()).then(res => {
+        $('.'+_class).remove();
+    })
+}
         </script>

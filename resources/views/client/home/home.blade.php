@@ -32,8 +32,8 @@
         @include('client.section.message', ['message' => $message, 'type' => 'success'])
     @endif
     <div class="main-wrapper">
-
         <header class="header">
+            @if(!$user_header || !($is_login))
             <div class="header-fixed">
                 <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
                     <div class="container">
@@ -45,7 +45,7 @@
                                     <span></span>
                                 </span>
                             </a>
-                            <a href="index.html" class="navbar-brand logo">
+                            <a href="{{ route('home') }}" class="navbar-brand logo">
                                 <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid" alt="Logo">
                             </a>
                         </div>
@@ -107,6 +107,16 @@
                         @auth
                             @inject('auth', 'Illuminate\Support\Facades\Auth')
                             @inject('carts', 'App\Models\Enrollment')
+                            @inject('_courses', 'App\Models\Course')
+                            @inject('_mentors', 'App\Models\Mentor')
+                            @php
+                                $user = auth()->user();
+                                $user_cart = $carts::where([['user_id', $user->_id],['state', '65337ecc289241e845e578d9']])->get();
+                                $course_infor = $_courses::whereIn('_id', $user_cart->pluck('course_id'))->get();
+                                $mentor_name2 = $_mentors::select(['name', '_id'])->whereIn('_id', $course_infor->pluck('mentor_id'))->get()->pluck('name', '_id');
+                                $course_infor = $course_infor->toArray();
+                                $user_cart_length = $user_cart->count();
+                            @endphp
                             <ul class="nav header-navbar-rht">
                                 <li class="nav-item cart-nav">
                                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
@@ -115,14 +125,12 @@
                                     <div class="wishes-list dropdown-menu dropdown-menu-right">
                                         <div class="wish-header">
                                             <a href="{{ route('cart') }}">View Cart</a>
-                                            @if (
-                                                $carts
-                                                    ::where('user_id', auth()->id())->get()->count() > 0)
+                                            @if ( $user_cart_length > 0)
                                                 <form action="{{ route('checkout') }}" method="POST"
                                                     style="display: contents">
                                                     @csrf
                                                     <input type="hidden" id="inputInsideForm" name="information_cart">
-                                                    <button type="submit" class="btn float-end"
+                                                    <button type="submit" class="btn float-end btn-primary"
                                                         onclick="chuyenDuLieu()">Checkout</button>
                                                 </form>
                                             @endif
@@ -132,33 +140,31 @@
                                                 @php
                                                     $total = 0;
                                                 @endphp
-                                                @if (
-                                                    $carts
-                                                        ::where('user_id', auth()->id())->where('state', '65337ecc289241e845e578d9')->get()->count() > 0)
-                                                    @foreach ($carts::where('user_id', auth()->id())->get() as $cart)
+                                                @if ( $user_cart_length > 0)
+                                                    @foreach ($user_cart as $cart)
                                                         @php
-                                                            $tempCart = $cart;
-                                                            $tempCart['img'] = $cart->courses->image;
+                                                            $temp_course = current(array_filter($course_infor, function ($value) use($cart) {
+                                                            return $value['_id'] == $cart->course_id;
+                                                        }));
                                                         @endphp
                                                         <input type="hidden" class="inputOutsideForm"
-                                                            id="inputOutsideForm" name="inputOutsideForm"
-                                                            value="{{ $tempCart }}">
+                                                            id="inputOutsideForm" name="inputOutsideForm">
                                                         <li>
                                                             <div class="media">
                                                                 <div class="d-flex media-wide">
                                                                     <div class="avatar">
                                                                         <a
-                                                                            href="{{ route('course-detail', $cart->courses->slug) }}">
+                                                                            href="{{ route('course-detail', $temp_course['slug']) }}">
                                                                             <img alt
-                                                                                src="{{ asset('course/thumbnail/' . $cart->courses->image) }}">
+                                                                                src="{{ asset('course/thumbnail/' .  $temp_course['image']) }}">
                                                                         </a>
                                                                     </div>
                                                                     <div class="media-body">
                                                                         <h6><a
-                                                                                href="{{ route('course-detail', $cart->courses->slug) }}">{{ $cart->courses->name }}</a>
+                                                                                href="{{ route('course-detail', $temp_course['slug']) }}">{{ $temp_course['name'] }}</a>
                                                                         </h6>
-                                                                        <p>By {{ $cart->courses->mentor->name }}</p>
-                                                                        <h5>$ {{ $cart->courses->price }}
+                                                                        <p>By {{ $mentor_name2[$temp_course['mentor_id']] }}</p>
+                                                                        <h5>$ {{ $temp_course['price'] }}
                                                                             <span>$99.00</span>
                                                                         </h5>
                                                                     </div>
@@ -175,7 +181,7 @@
                                                             </div>
                                                         </li>
                                                         @php
-                                                            $total += $cart->courses->price;
+                                                            $total += $temp_course['price'];
                                                         @endphp
                                                     @endforeach
                                                 @else
@@ -185,79 +191,6 @@
                                             <div class="total-item">
                                                 <h5>Total : $ {{ $total }}</h5>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item wish-nav">
-                                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                        <img src="assets/img/icon/wish.svg" alt="img">
-                                    </a>
-                                    <div class="wishes-list dropdown-menu dropdown-menu-right">
-                                        <div class="wish-content">
-                                            <ul>
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="d-flex media-wide">
-                                                            <div class="avatar">
-                                                                <a href="course-details.html">
-                                                                    <img alt=""
-                                                                        src="assets/img/course/course-04.jpg">
-                                                                </a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6><a href="course-details.html">Learn Angular...</a></h6>
-                                                                <p>By Dave Franco</p>
-                                                                <h5>$200 <span>$99.00</span></h5>
-                                                                <div class="remove-btn">
-                                                                    <a href="#" class="btn">Add to cart</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="d-flex media-wide">
-                                                            <div class="avatar">
-                                                                <a href="course-details.html">
-                                                                    <img alt=""
-                                                                        src="assets/img/course/course-14.jpg">
-                                                                </a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6><a href="course-details.html">Build Responsive
-                                                                        Real...</a></h6>
-                                                                <p>Jenis R.</p>
-                                                                <h5>$200 <span>$99.00</span></h5>
-                                                                <div class="remove-btn">
-                                                                    <a href="#" class="btn">Add to cart</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="media">
-                                                        <div class="d-flex media-wide">
-                                                            <div class="avatar">
-                                                                <a href="course-details.html">
-                                                                    <img alt=""
-                                                                        src="assets/img/course/course-15.jpg">
-                                                                </a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6><a href="course-details.html">C# Developers Double
-                                                                        ...</a></h6>
-                                                                <p>Jesse Stevens</p>
-                                                                <h5>$200 <span>$99.00</span></h5>
-                                                                <div class="remove-btn">
-                                                                    <a href="#" class="btn">Remove</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </li>
@@ -308,7 +241,7 @@
                                 <li class="nav-item user-nav">
                                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
                                         <span class="user-img">
-                                            <img src="{{ ($image = auth()->user()->image['avatar']) ? (str_starts_with($image, 'http') ? $image : asset('user/avatar/' . $image)) : asset('assets/img/user/avatar.jpg') }}"
+                                            <img src="{{ ($image = $user->image['avatar']) ? (str_starts_with($image, 'http') ? $image : asset('user/avatar/' . $image)) : asset('assets/img/user/avatar.jpg') }}"
                                                 style="transform: scale(0.8);">
                                             <span class="status online"></span>
                                         </span>
@@ -322,14 +255,14 @@
                                             </div>
                                             <div class="user-text">
                                                 <h6>
-                                                    {{ auth()->user()->name }}
+                                                    {{ $user->name }}
                                                 </h6>
-                                                <p class="text-muted">{{ auth()->user()->username }}</p>
+                                                <p class="text-muted">{{ $user->username }}</p>
                                             </div>
                                         </div>
                                         <a class="dropdown-item" href="{{ route('profile') }}"><i
                                                 class="feather-user me-1"></i>Profile</a>
-                                        @if (auth()->user()->mentor)
+                                        @if ($user->mentor)
                                             <a class="dropdown-item" href="{{ route('mentor-profile') }}"><i
                                                     class="feather-user me-1"></i> Mentor Profile <img
                                                     src="{{ asset('assets/mentor.gif') }}" width="50px"></a>
@@ -342,32 +275,15 @@
                                                 </div>
                                             </a>
                                         @endif
-                                        @php
-                                            $test = false;
-                                            foreach (auth()->user()->role as $role) {
-                                                if ($role == '65531d75139d10c7eb364114') {
-                                                    $test = true;
-                                                }
-                                            }
-                                        @endphp
-
-                                        @if ($test)
+                                        @if (in_array('65531d75139d10c7eb364114',$user->role))
                                             <a class="dropdown-item" href="{{ route('moderation') }}"><i
                                                     class="feather-clipboard"></i>Moderation</a>
                                         @endif
 
-
-                                        {{-- <div class="dropdown-item night-mode">
-    <span><i class="feather-moon me-1"></i> Night Mode </span>
-    <div class="form-check form-switch check-on m-0">
-    <input class="form-check-input" type="checkbox" id="night-mode">
-    </div>
-    </div> --}}
-                                        @if (Auth::user()->role[0] == '6523f9bcad8f1cf003fce14d')
-                                            <a class="dropdown-item" href="{{route('admin.dashboard')}}"><i class="feather-log-in me-1"></i>Go
-                                                to Admin</a>
+                                        @if(in_array('6523f9bcad8f1cf003fce14d', $user->role))
+                                            <a class="dropdown-item" href="{{route('admin.dashboard')}}"><i class="feather-log-in me-1"></i>Go to Admin</a>
                                         @endif
-                                        <a class="dropdown-item" href="http://127.0.0.1:8000/logout"><i
+                                        <a class="dropdown-item" href="{{ route('logout') }}"><i
                                                 class="feather-log-out me-1"></i> Logout</a>
 
                                     </div>
@@ -387,8 +303,17 @@
                     </div>
                 </nav>
             </div>
+            @endif
         </header>
-
+        @if(!$is_login)
+        <script>
+            if(!localStorage.getItem('header'))
+            {
+                localStorage.setItem('header', document.querySelector('header.header').innerHTML);
+                location.reload();
+            }
+        </script>
+        @endif
 
         <section class="home-slide d-flex align-items-center">
             <div class="container">
@@ -461,7 +386,7 @@
                                             <img src="assets/img/pencil-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{ $CourseCount }}</span>+</h4>
+                                            <h4><span id="total_course">{{$total_course}}</span></h4>
                                             <p>Online Courses</p>
                                         </div>
                                     </div>
@@ -476,7 +401,7 @@
                                             <img src="assets/img/cources-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{ $MentorCount }}</span>+</h4>
+                                            <h4><span id="total_mentor">{{$total_mentor}}</span></h4>
                                             <p>Expert Tutors</p>
                                         </div>
                                     </div>
@@ -491,7 +416,7 @@
                                             <img src="assets/img/certificate-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{ $RoadmapCount }}</span><i class="bi bi-clock-history"></i>
+                                            <h4><span id="total_roadmap">{{$total_roadmap}}</span><i class="bi bi-clock-history"></i>
                                             </h4>
                                             <p>Learning Roadmap</p>
                                         </div>
@@ -507,7 +432,7 @@
                                             <img src="assets/img/gratuate-icon.svg" alt>
                                         </div>
                                         <div class="course-inner-content">
-                                            <h4><span>{{ $EnrollmentCount }}</span><i
+                                            <h4><span id="total_enrollment">{{$total_enrollment}}</span><i
                                                     class="bi bi-file-earmark-slides-fill"></i></h4>
                                             <p>Online Purchase</p>
                                         </div>
@@ -525,7 +450,7 @@
             <div class="container">
                 <div class="section-header aos" data-aos="fade-up">
                     <div class="section-sub-head">
-                        <span>Favourite Course</span>
+                        {{-- <span>Favourite Course</span> --}}
                         <h2>Top Profession</h2>
                     </div>
                     <div class="all-btn all-category d-flex align-items-center">
@@ -533,65 +458,22 @@
                     </div>
                 </div>
                 <div class="section-text aos" data-aos="fade-up">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida
-                        maecenas augue elementum et neque. Suspendisse imperdiet.</p>
+                    <p>Top 10 professions with most number of courses</p></p>
                 </div>
                 <div class="owl-carousel mentoring-course owl-theme aos" data-aos="fade-up">
-                    @foreach($top10ProfessionsResult as $key => $top10)
+                    @foreach($top10_profession as $key => $value)
                     <div class="feature-box text-center ">
                         <div class="feature-bg">
                             <div class="feature-header">
                                
                                 <div class="feature-cont">
-                                    <div class="feature-text">{{ $profession_name[$key] }}</div>
+                                    <div class="feature-text">{{ $value["name"] }}</div>
                                 </div>
                             </div>
-                            <p>{{ $top10['quantity']}} courses</p>
+                            <p>{{ $value['quantity']}} courses</p>
                         </div>
                     </div>
                     @endforeach
-                    {{-- <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                              
-                                <div class="feature-cont">
-                                    <div class="feature-text">Docker Development</div>
-                                </div>
-                            </div>
-                            <p>45 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                              
-                                <div class="feature-cont">
-                                    <div class="feature-text">Node JS Frontend</div>
-                                </div>
-                            </div>
-                            <p>40 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-cont">
-                                    <div class="feature-text">Swift Development</div>
-                                </div>
-                            </div>
-                            <p>23 Instructors</p>
-                        </div>
-                    </div>
-                    <div class="feature-box text-center ">
-                        <div class="feature-bg">
-                            <div class="feature-header">
-                                <div class="feature-cont">
-                                    <div class="feature-text">Python Development</div>
-                                </div>
-                            </div>
-                            <p>30 Instructors</p>
-                        </div>
-                    </div> --}}
                  
                 </div>
             </div>
@@ -617,70 +499,8 @@
 
 
                 <div class="course-feature">
-                    <div class="row">
-                        @isset($courses)
-                            @foreach ($courses as $course)
-                                <div class="col-lg-4 col-md-6 d-flex">
-                                    <div class="course-box d-flex aos" data-aos="fade-up">
-                                        <div class="product">
-                                            <div class="product-img">
-
-                                                <a href="{{ route('course-detail', $course->slug) }}">
-                                                    <span class="d-none course-link">{{ $course->_id }}</span>
-                                                    <img class="img-fluid" style="width:300px" alt
-                                                        src="{{ asset('course/thumbnail/' . $course->image) }}">
-                                                </a>
-                                                <div class="price combo">
-                                                    <h3>{{ $course->price }} <span>$99.00</span></h3>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <div class="course-group d-flex">
-                                                    <div class="course-group-img d-flex">
-                                                        <a href="instructor-profile.html"><img
-                                                                src="assets/img/user/user6.jpg" alt class="img-fluid"></a>
-                                                        <div class="course-name">
-                                                            <h4><a
-                                                                    href="instructor-profile.html">{{ $course->mentor->name }}</a>
-                                                            </h4>
-                                                            <p>Instructor</p>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        class="course-share d-flex align-items-center justify-content-center">
-                                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                                    </div>
-                                                </div>
-                                                <h3 class="title instructor-text">{{ $course->name }}</h3>
-                                                <div class="course-info d-flex align-items-center">
-                                                    <div class="rating-img d-flex align-items-center">
-                                                        <img src="assets/img/icon/icon-01.svg" alt>
-                                                        <p>{{ $course->meta['total_lesson'] }} Lesson</p>
-                                                    </div>
-                                                    <div class="course-view d-flex align-items-center">
-                                                        <img src="assets/img/icon/icon-02.svg" alt>
-                                                        <p>{{ round($course->meta['total_time'] / 60) }}hr
-                                                            {{ round($course->meta['total_time'] % 60) }}min</p>
-                                                    </div>
-                                                </div>
-                                                <div class="rating">
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <span
-                                                        class="d-inline-block average-rating"><span>{{ $course->complete_course_rate }}</span></span>
-                                                </div>
-                                                <div class="all-btn all-category d-flex align-items-center">
-                                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endisset
+                    <div class="row popular_courses">
+                           
                     </div>
                 </div>
 
@@ -783,64 +603,8 @@
                 </div>
 
 
-                <div class="owl-carousel trending-course owl-theme aos" data-aos="fade-up">
-                    @isset($courses)
-                        @foreach ($buylot as $course)
-                            <div class="course-box trend-box">
-                                <div class="product trend-product">
-                                    <div class="product-img">
-                                        <a href="{{ route('course-detail', $course->slug) }}">
-                                            <img class="img-fluid" alt
-                                                src="{{ asset('course/thumbnail/' . $course->image) }}">
-                                        </a>
-                                        <div class="price">
-                                            <h3>{{ $course->price }}<span>$99.00</span></h3>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="course-group d-flex">
-                                            <div class="course-group-img d-flex">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg" alt
-                                                        class="img-fluid"></a>
-                                                <div class="course-name">
-                                                    <h4><a href="instructor-profile.html">{{ $course->mentor->name }}</a>
-                                                    </h4>
-                                                    <p>Instructor</p>
-                                                </div>
-                                            </div>
-                                            <div class="course-share d-flex align-items-center justify-content-center">
-                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                        <h3 class="title"><a href="course-details.html">{{ $course->name }}</a></h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt class="img-fluid">
-                                                <p>{{ $course->meta['total_lesson'] }} Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt class="img-fluid">
-                                                <p>{{ round($course->meta['total_time'] / 60) }}hr
-                                                    {{ round($course->meta['total_time'] % 60) }}min</p>
-                                            </div>
-                                        </div>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span
-                                                class="d-inline-block average-rating"><span>{{ $course->complete_course_rate }}</span></span>
-                                        </div>
-                                        <div class="all-btn all-category d-flex align-items-center">
-                                            <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    @endisset
+                <div class="trending-course owl-theme aos row" data-aos="fade-up">
+
                 </div>
 
 
@@ -857,34 +621,32 @@
                         </div>
                     </div>
                     <div class="owl-carousel instructors-course owl-theme aos" data-aos="fade-up">
-                        @foreach ( $top10Mentors as $mentor )
-                        @if($loop->index % 2 ==0 )
+                        @foreach ( $mentor_with_total_enrollment_and_avatar as $mentor )
                             <div class="instructors-widget">
                             <div class="instructors-img ">
                                 <a href="instructor-list.html">
-                                    <img class="img-fluid" alt src="{{asset('mentor/avatar/'.$mentor->image['avatar'])}}">
+                                    <img class="img-fluid" alt src="{{asset('mentor/avatar/'.$mentor->mentor_image)}}">
                                 </a>
                             </div>
                             <div class="instructors-content text-center">
-                                <h5><a href="#">{{$mentor->name}}</a></h5>
+                                <h5><a href="#">{{$mentor->mentor_name}}</a></h5>
                                 <p>
                                     @php
                                         $mentor_profession = '';
                                     @endphp
-                                    @foreach ($mentor_name[$mentor->_id] as $profession )
+                                    @foreach ($mentor->mentor_professions as $profession )
                                     @php
-                                         $mentor_profession .= $professions[$profession].', ';
+                                         $mentor_profession .= $professions_name[$profession].', ';
                                     @endphp
                                     @endforeach
                                     {{rtrim($mentor_profession,', ')}}
                                 </p>
                                 <div class="student-count d-flex justify-content-center">
                                     <i class="fa-solid fa-bolt"></i>
-                                    <span>{{isset($total_enrollment_mentor[$mentor->_id]) ? $total_enrollment_mentor[$mentor->_id] :'0'}} Enrollment</span>
+                                    <span>{{$mentor->total_enrollment}} Enrollment</span>
                                 </div>
                             </div>
                         </div>
-@endif
                         @endforeach
                         
                         {{-- <div class="instructors-widget">
@@ -1297,3 +1059,135 @@
         overflow-x: hidden;
     }
 </style>
+<script>
+    fetch('{{ route("course-data",[0,10])}}',{
+        method: 'POST',
+    }).then(response => response.json()).then(data => {
+        data.map(e => {
+            document.querySelector('.popular_courses').innerHTML += `
+                                <div class="col-lg-4 col-md-6 d-flex">
+                                    <div class="course-box d-flex aos" data-aos="fade-up">
+                                        <div class="product">
+                                            <div class="product-img">
+
+                                                <a href="{{ route('course-list') }}/${e.slug}">
+                                                    <img class="img-fluid" style="width:300px" alt
+                                                        src="{{ asset('course/thumbnail/')}}/${e.image}">
+                                                </a>
+                                                <div class="price combo">
+                                                    <h3>${e.price} <span>$99.00</span></h3>
+                                                </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <div class="course-group d-flex">
+                                                    <div class="course-group-img d-flex">
+                                                        <a href="instructor-profile.html"><img
+                                                                src="assets/img/user/user6.jpg" alt class="img-fluid"></a>
+                                                        <div class="course-name">
+                                                            <h4><a
+                                                                    href="instructor-profile.html">${e.mentor_name}</a>
+                                                            </h4>
+                                                            <p>Instructor</p>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="course-share d-flex align-items-center justify-content-center">
+                                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h3 class="title instructor-text">${e.name}</h3>
+                                                <div class="course-info d-flex align-items-center">
+                                                    <div class="rating-img d-flex align-items-center">
+                                                        <img src="assets/img/icon/icon-01.svg" alt>
+                                                        <p>${e.meta['total_lesson']} Lesson</p>
+                                                    </div>
+                                                    <div class="course-view d-flex align-items-center">
+                                                        <img src="assets/img/icon/icon-02.svg" alt>
+                                                        <p>${(parseInt(e.meta['total_time']) / 60).toFixed() }hr
+                                                            ${e.meta['total_time'] % 60}min</p>
+                                                    </div>
+                                                </div>
+                                                <div class="rating">
+                                                    <i class="fas fa-star filled"></i>
+                                                    <span
+                                                        class="d-inline-block average-rating"><span>${e.complete_course_rate }</span></span>
+                                                </div>
+                                                <div class="all-btn all-category d-flex align-items-center">
+                                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            `
+        })
+    })
+    fetch('{{route("course-data-buy-most",[0,10])}}',{
+        method: 'POST'
+    }).then(response => response.json()).then(data => {
+        data.map(e => {
+            document.querySelector('.trending-course').innerHTML += `
+            <div class="col-lg-4 col-md-6 d-flex">
+                                    <div class="course-box d-flex aos" data-aos="fade-up">
+                                        <div class="product">
+                                            <div class="product-img">
+
+                                                <a href="{{ route('course-list') }}/${e.slug}">
+                                                    <img class="img-fluid" style="width:300px" alt
+                                                        src="{{ asset('course/thumbnail/')}}/${e.image}">
+                                                </a>
+                                                <div class="price combo">
+                                                    <h3>${e.price} <span>$99.00</span></h3>
+                                                </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <div class="course-group d-flex">
+                                                    <div class="course-group-img d-flex">
+                                                        <a href="instructor-profile.html"><img
+                                                                src="assets/img/user/user6.jpg" alt class="img-fluid"></a>
+                                                        <div class="course-name">
+                                                            <h4><a
+                                                                    href="instructor-profile.html">${e.mentor['name']}</a>
+                                                            </h4>
+                                                            <p>Instructor</p>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="course-share d-flex align-items-center justify-content-center">
+                                                        <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h3 class="title instructor-text">${e.name}</h3>
+                                                <div class="course-info d-flex align-items-center">
+                                                    <div class="rating-img d-flex align-items-center">
+                                                        <img src="assets/img/icon/icon-01.svg" alt>
+                                                        <p>${e.meta['total_lesson']} Lesson</p>
+                                                    </div>
+                                                    <div class="course-view d-flex align-items-center">
+                                                        <img src="assets/img/icon/icon-02.svg" alt>
+                                                        <p>${(parseInt(e.meta['total_time']) / 60).toFixed() }hr
+                                                            ${e.meta['total_time'] % 60}min</p>
+                                                    </div>
+                                                </div>
+                                                <div class="rating">
+                                                    <i class="fas fa-star filled"></i>
+                                                    <span
+                                                        class="d-inline-block average-rating"><span>${e.complete_course_rate }</span></span>
+                                                </div>
+                                                <div class="all-btn all-category d-flex align-items-center">
+                                                    <a href="checkout.html" class="btn btn-primary">BUY NOW</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            `
+        })
+    })
+@if($user_header)
+document.querySelector('header.header').innerHTML = localStorage.getItem('header')
+@else 
+localStorage.setItem('header', document.querySelector('header.header').innerHTML)
+@endif
+
+</script>

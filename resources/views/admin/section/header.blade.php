@@ -45,7 +45,7 @@
                     <!-- Topbar Brand Logo -->
                     <div class="logo-topbar">
                         <!-- Logo light -->
-                        <a href="index.html" class="logo-light">
+                        <a href="{{route('dashboard')}}" class="logo-light">
                             <span class="logo-lg">
                                 <img src="{{ asset('assets/img/logo.png') }}" alt="logo">
                             </span>
@@ -55,7 +55,7 @@
                         </a>
 
                         <!-- Logo Dark -->
-                        <a href="index.html" class="logo-dark">
+                        <a href="{{route('dashboard')}}" class="logo-dark">
                             <span class="logo-lg">
                                 <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
                             </span>
@@ -388,7 +388,7 @@
         <div class="leftside-menu">
 
             <!-- Brand Logo Light -->
-            <a href="index.html" class="logo logo-light h1">
+            <a href="{{route('dashboard')}}" class="logo logo-light h1">
                 KIOU
                 {{-- <span class="logo-lg">
                     <img src="{{asset('assets/img/logo.png')}}" alt="logo">
@@ -399,7 +399,7 @@
             </a>
 
             <!-- Brand Logo Dark -->
-            <a href="index.html" class="logo logo-dark">
+            <a href="{{route('dashboard')}}" class="logo logo-dark">
                 <span class="logo-lg">
                     <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
                 </span>

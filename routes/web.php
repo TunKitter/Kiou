@@ -20,6 +20,7 @@ use App\Http\Controllers\Client\MentorVideoController;
 use App\Http\Controllers\Client\ModerationController;
 use App\Http\Controllers\Client\MyCoursesController;
 use App\Http\Controllers\Client\PasswordController;
+use App\Http\Controllers\Client\PaypalController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\RevisionController;
@@ -27,12 +28,12 @@ use App\Http\Controllers\Client\RoadMapController;
 use App\Http\Controllers\Client\SiteMapController;
 use App\Http\Controllers\Client\StripeController;
 use App\Http\Controllers\Client\UserchartController;
-use App\Http\Controllers\Client\PaypalController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('dashboard/getInfor/{type}', [DashboardController::class, 'getInfor'])->name('dashboard.getInfo');
 
     # --------------------------- Admin User --------------------------------
     Route::get('/users/list', [UserController::class, 'listUser'])->name('listUser');
@@ -53,18 +54,18 @@ Route::prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->grou
 
     Route::post('/category/list/delete', [CategoryController::class, 'delete'])->name('delete-category-admin');
 # --------------------------- Admin Course --------------------------------
-Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
-Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
-Route::put('/course/accept-course/{id}', [AdminCourseController::class, 'acceptCourse'])->name('accept-course-admin');
-Route::post('/course/refuse/{id}', [AdminCourseController::class, 'delete'])->name('refuse-course-admin');
-Route::post('/notification', function () {
-    return response()->json([
-        'data' => Notification::create([
-            "user_id" => request()->user_id,
-            'content' => request()->content,
-        ]),
-    ]);
-})->name('create-notification');
+    Route::get('course/list', [AdminCourseController::class, 'index'])->name('list-course-admin');
+    Route::get('/course/list/{id}', [AdminCourseController::class, 'detail'])->name('detail-course-admin');
+    Route::put('/course/accept-course/{id}', [AdminCourseController::class, 'acceptCourse'])->name('accept-course-admin');
+    Route::post('/course/refuse/{id}', [AdminCourseController::class, 'delete'])->name('refuse-course-admin');
+    Route::post('/notification', function () {
+        return response()->json([
+            'data' => Notification::create([
+                "user_id" => request()->user_id,
+                'content' => request()->content,
+            ]),
+        ]);
+    })->name('create-notification');
 
 # --------------------------- Admin Category --------------------------------
     Route::get('/category-posts/list', [CategoryPostController::class, 'listCategory'])->name('listCategory');
@@ -89,6 +90,7 @@ Route::get('/login/google/callback', [LoginController::class, 'handleGoogleCallb
 
 # --------------------------- Home ---------------------------------
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/get-infor/{type}', [HomeController::class, 'getInfor'])->name('get-infor');
 
 # ------------------------- Auth --------------------------------
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -237,7 +239,7 @@ Route::controller(PaypalController::class)
         Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
         Route::get('payment-success', 'paymentSuccess')->name('success.payment');
     });
-    
+
 Route::middleware('auth')->group(function () {
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation');
 });
